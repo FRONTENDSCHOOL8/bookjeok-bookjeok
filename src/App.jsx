@@ -18,7 +18,7 @@ function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <ReactQueryDevtools />;
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </HelmetProvider>
   );

@@ -23,6 +23,7 @@ const theme = {
       500: '#f44336',
     },
   },
+  fontFamily: { sans: 'Pretendard-Regular' },
   fontSize: {
     xs: '0.75rem',
     sm: '0.875rem',
