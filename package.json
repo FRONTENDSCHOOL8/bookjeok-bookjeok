@@ -1,0 +1,50 @@
+{
+  "name": "bookjeok-bookjeok",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.22.2",
+    "pocketbase": "^0.21.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.4",
+    "react-router-dom": "^6.22.1",
+    "zustand": "^4.5.1"
+  },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.24.0",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vheemstra/vite-plugin-imagemin": "^2.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": ">=7",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^9.0.2",
+    "imagemin-svgo": "^10.0.1",
+    "imagemin-webp": "^8.0.0",
+    "lint-staged": ">=10",
+    "postcss": "^8.4.35",
+    "postcss-import": "^16.0.1",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prop-types": "^15.8.1",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --cache --fix"
+  }
+}
