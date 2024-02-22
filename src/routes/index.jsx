@@ -1,4 +1,5 @@
 import { MainButton } from '@/components/Atoms';
+import { SignUp } from '@/pages/index';
 import { Link } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -14,6 +15,10 @@ const routes = [
         다음
       </MainButton>
     ),
+  },
+  {
+    path: '/signup',
+    element: <SignUp></SignUp>,
   },
 ];
 
