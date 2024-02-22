@@ -1,12 +1,13 @@
 import { MainButton } from '@/components/Atoms';
-import { SignUp } from '@/pages/index';
-import { Link } from 'react-router-dom';
+import Erro404 from '@/pages/Error404/Erro404';
+import { Intro, SignUp } from '@/pages/index';
 import { createBrowserRouter } from 'react-router-dom';
-
+Erro404;
 const routes = [
   {
     path: '/',
-    element: <Link to="/atoms">atoms로 이동</Link>,
+    element: <Intro />,
+    errorElement: <Erro404 />,
   },
   {
     path: '/atoms',
