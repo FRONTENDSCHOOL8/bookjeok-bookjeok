@@ -1,6 +1,6 @@
-import { MainButton } from '@/components/Atoms';
-import { SignUp } from '@/pages/index';
-import { Link } from 'react-router-dom';
+import AtomMaking from '@/AtomMaking';
+import Erro404 from '@/pages/Error404/Erro404';
+import { Intro, SignUp } from '@/pages/index';
 import { createBrowserRouter } from 'react-router-dom';
 
 import BasicInfo from '../pages/SignUp/BasicInfo';
@@ -8,15 +8,12 @@ import DetailInfo from '../pages/SignUp/DetailInfo';
 const routes = [
   {
     path: '/',
-    element: <Link to="/atoms">atoms로 이동</Link>,
+    element: <Intro />,
+    errorElement: <Erro404 />,
   },
   {
-    path: '/atoms',
-    element: (
-      <MainButton disabled type="button">
-        다음
-      </MainButton>
-    ),
+    path: '/atomMaking',
+    element: <AtomMaking />,
   },
   {
     path: '/signup',
