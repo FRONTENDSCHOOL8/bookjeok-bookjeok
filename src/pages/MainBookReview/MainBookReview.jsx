@@ -1,5 +1,12 @@
+import { MainKindToggle } from '@/components/Molecules';
+
 function MainBookReview() {
-  return <div>MainBookReview</div>;
+  return (
+    <div>
+      <MainKindToggle bookReview />
+      MainBookReview
+    </div>
+  );
 }
 
 export default MainBookReview;
