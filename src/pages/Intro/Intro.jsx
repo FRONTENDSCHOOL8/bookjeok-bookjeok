@@ -22,7 +22,7 @@ function Intro() {
         </div>
       </div>
 
-      <Link className="absolute bottom-0 left-0" to="/atoms">
+      <Link className="absolute bottom-0 left-0" to="/atomMaking">
         atoms로 이동
       </Link>
     </div>
