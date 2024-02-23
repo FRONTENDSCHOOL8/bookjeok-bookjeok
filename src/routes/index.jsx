@@ -3,6 +3,8 @@ import { SignUp } from '@/pages/index';
 import { Link } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 
+import BasicInfo from '../pages/SignUp/BasicInfo';
+import DetailInfo from '../pages/SignUp/DetailInfo';
 const routes = [
   {
     path: '/',
@@ -18,7 +20,12 @@ const routes = [
   },
   {
     path: '/signup',
-    element: <SignUp></SignUp>,
+    element: <BasicInfo />,
+    children: [],
+  },
+  {
+    path: '/signup/detail',
+    element: <DetailInfo />,
   },
 ];
 
