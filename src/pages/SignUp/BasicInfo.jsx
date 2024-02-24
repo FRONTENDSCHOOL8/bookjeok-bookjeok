@@ -13,7 +13,14 @@ import { MainButton } from '@/components/Atoms';
 */
 
 export default function BasicInfo() {
-  const INITIAL_USER_INFO = { email: '', password: '' };
+  const INITIAL_USER_INFO = {
+    email: '',
+    password: '',
+    nickname: '',
+    phone: '',
+    birth: '',
+    gender: '',
+  };
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
