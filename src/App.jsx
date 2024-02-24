@@ -10,7 +10,7 @@ export const queryClient = new QueryClient({
     queries: {},
   },
 });
- 
+
 // 리액트 라우터 라우터 생성
 
 function App() {
