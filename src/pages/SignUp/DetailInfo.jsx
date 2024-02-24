@@ -3,6 +3,7 @@ import { MainButton } from '@/components/Atoms';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import Pocketbase from 'pocketbase';
+import { fetchReadDataAPI } from '@/utils';
 /*
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
 2. 닉네임 중복 확인 , 닉네임 유효성 검사 ? ,,,
@@ -15,6 +16,7 @@ export default function DetailInfo() {
   const { state } = useLocation();
   const [userInfo, setUserInfo] = useState(state);
   const [isValidateNickname, setIsValidateNickname] = useState(false);
+  const [isValidatePhone, setIsValidatePhone] = useState(false);
   const debouncedNickname = useDebounce(userInfo.nickname, 500);
   const debouncedPhone = useDebounce(userInfo.phone, 500);
 
@@ -36,17 +38,19 @@ export default function DetailInfo() {
 
   useEffect(() => {
     if (state && userInfo.nickname !== '') {
-      const USER_API = `${import.meta.env.VITE_PB_URL}api/collections/users/records?filter=(nickname="${debouncedNickname}")`;
-      fetch(USER_API)
-        .then((res) => res.json())
-        .then((data) => {
-          return setIsValidateNickname(data.items.length === 0);
-        })
-        .catch((error) => console.error(error));
+      fetchReadDataAPI('users', 'nickname', debouncedNickname)
+        .then((data) => setIsValidateNickname(data.length === 0))
+        .catch((error) => console.log(error));
     }
   }, [debouncedNickname]);
 
-  useEffect(() => {}, [debouncedPhone]);
+  useEffect(() => {
+    if (state && userInfo.phone !== '') {
+      fetchReadDataAPI('users', 'phone', debouncedPhone)
+        .then((data) => setIsValidatePhone(data.items.length === 0))
+        .catch((error) => console.log(error));
+    }
+  }, [debouncedPhone]);
 
   if (state) {
     return (
@@ -61,13 +65,14 @@ export default function DetailInfo() {
             maxLength="10"
             onChange={handleNickname}
           />
-          {userInfo.nickname == '' || isValidateNickname ? (
-            ''
-          ) : (
+          {userInfo.nickname == '' || isValidateNickname ? null : (
             <p>중복된 닉네임은 사용할 수 없어용 </p>
           )}
           <label htmlFor="phone">휴대폰</label>
           <input type="text" id="phone" onChange={handlePhone} />
+          {userInfo.phone == '' || isValidatePhone ? null : (
+            <p>이미 가입된 전화번호입니다! </p>
+          )}
           <label htmlFor="birth">생년월일</label>
           <input
             type="date"
@@ -95,7 +100,7 @@ export default function DetailInfo() {
             />
           </fieldset>
         </Form>
-        <Link to={{}} state={{}}>
+        <Link to="welcome" state={{}}>
           다음
         </Link>
       </>
