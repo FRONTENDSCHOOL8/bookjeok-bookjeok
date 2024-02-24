@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { Link, Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
 import { validateEmail, validatePassword } from '@/utils';
@@ -10,7 +9,7 @@ import { MainButton } from '@/components/Atoms';
 1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
 2. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
 3. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
-4. 전체 confirmPassword, isValidatePassword, isValidateEmail 둘다 true여야 다음 버튼 활성화
+4. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true여야 다음 버튼 활성화
 */
 
 export default function BasicInfo() {
@@ -19,6 +18,8 @@ export default function BasicInfo() {
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
+  const debouncedEmail = useDebounce(userInfo.email, 500);
+  const debouncedPassword = useDebounce(userInfo.password, 500);
 
   const handleEmail = (e) => {
     const tempEmail = e.target.value;
@@ -34,24 +35,26 @@ export default function BasicInfo() {
     const enteredPassword = e.target.value;
     if (enteredPassword === userInfo.password) {
       setIsConfirmPassword(true);
+    } else {
+      setIsConfirmPassword(false);
     }
   };
 
-  useDebounce(() => {
-    if (!validateEmail(userInfo.email)) {
+  useEffect(() => {
+    if (!validateEmail(debouncedEmail)) {
       setIsValidateEmail(false);
     } else {
       setIsValidateEmail(true);
     }
-  }, 500);
+  }, [debouncedEmail]);
 
-  useDebounce(() => {
-    if (!validatePassword(userInfo.password)) {
+  useEffect(() => {
+    if (!validatePassword(debouncedPassword)) {
       setIsValidatePassword(false);
     } else {
       setIsValidatePassword(true);
     }
-  }, 500);
+  }, [debouncedPassword]);
 
   return (
     <>
