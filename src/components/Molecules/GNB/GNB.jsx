@@ -12,9 +12,7 @@ function GNB({ createClub, createBookReview }) {
   }
 
   return (
-    <ul
-      className={`flex justify-evenly border-t bg-white py-4 sticky bottom-0 left-0 w-full `}
-    >
+    <ul className="flex justify-evenly border-t bg-white py-4 sticky bottom-0 left-0 w-full ">
       <li>
         <Link to="/mainClub">
           <Svg width="32px" height="32px" id="logo" />
