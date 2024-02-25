@@ -8,11 +8,11 @@ function MainClub() {
       <Helmet>
         <title>{getDocumentTitle('모임')}</title>
       </Helmet>
-      <div className="flex flex-col h-screen w-screen  relative">
+      <div className="flex flex-col h-screen w-full relative">
         <header className="flex justify-center  items-center  text-center bg-slate-400 text-b-1-medium py-4 ">
           북적북적
         </header>
-        <body>
+        <body className="px-4">
           <MainKindToggle club />
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
           commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus
@@ -147,7 +147,7 @@ function MainClub() {
           sapien, a accumsan nisi mauris ac eros. Fusce neque. Suspendisse
           faucibus, nunc et pellentesque egestas, lacus ante convallis tellus,
         </body>
-        <GNB className="fixed bottom-0" />
+        <GNB createClub />
       </div>
     </>
   );

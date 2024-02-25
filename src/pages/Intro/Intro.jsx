@@ -8,7 +8,7 @@ function Intro() {
       <Helmet>
         <title>북적북적</title>
       </Helmet>
-      <div className="w-screen h-screen bg-bjyellow-300 flex justify-center">
+      <div className="w-full h-screen bg-bjyellow-400 flex justify-center">
         <div className="flex flex-col items-center gap-2 absolute top-[30%]">
           <Svg width="60" height="60" id="logo" />
           <h1 className="text-h-1-semibold">북적북적</h1>

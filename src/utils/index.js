@@ -1,1 +1,1 @@
-export { getDocumentTitle } from '@/utils/getDocumentTitle';
+export { default as getDocumentTitle } from '@/utils/getDocumentTitle';

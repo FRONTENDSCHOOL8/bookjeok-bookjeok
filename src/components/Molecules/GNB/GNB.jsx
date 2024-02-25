@@ -1,9 +1,20 @@
 import { Svg } from '@/components/Atoms';
 import { Link } from 'react-router-dom';
+import { bool } from 'prop-types';
 
-function GNB() {
+function GNB({ createClub, createBookReview }) {
+  let centerIconPath;
+  if (createClub) {
+    centerIconPath = '/createClub';
+  }
+  if (createBookReview) {
+    centerIconPath = '/createBookReview';
+  }
+
   return (
-    <ul className="flex justify-evenly border-t bg-white py-4 sticky ">
+    <ul
+      className={`flex justify-evenly border-t bg-white py-4 sticky bottom-0 left-0 w-full `}
+    >
       <li>
         <Link to="/mainClub">
           <Svg width="32px" height="32px" id="logo" />
@@ -15,7 +26,7 @@ function GNB() {
         </Link>
       </li>
       <li>
-        <Link to="/createClub">
+        <Link to={centerIconPath}>
           <Svg width="32px" height="32px" id="plus" />
         </Link>
       </li>
@@ -32,5 +43,10 @@ function GNB() {
     </ul>
   );
 }
+
+GNB.propTypes = {
+  createClub: bool,
+  createBookReview: bool,
+};
 
 export default GNB;
