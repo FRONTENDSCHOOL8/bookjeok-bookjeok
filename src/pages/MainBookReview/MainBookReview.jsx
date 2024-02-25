@@ -9,7 +9,7 @@ function MainBookReview() {
         <title>{getDocumentTitle('독후감')}</title>
       </Helmet>
       <div>
-        <MainKindToggle bookReview />
+        <MainKindToggle />
         MainBookReview
       </div>
     </>

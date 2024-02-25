@@ -1,41 +1,40 @@
-import { Link } from 'react-router-dom';
-import { bool } from 'prop-types';
-function MainKindToggle({ club, bookReview }) {
-  let clubActive;
-  let bookReviewActive;
+import { NavLink, useLocation } from 'react-router-dom';
 
-  if (club) {
-    clubActive = 'border-bjblack';
-  } else {
-    clubActive = 'border-white';
-  }
+const toggleStyle = {
+  className:
+    'text-b-1-medium flex justify-center items-center border-b-2 w-[30%] p-4',
+};
+const activeStyle = 'border-b-black';
 
-  if (bookReview) {
-    bookReviewActive = 'border-bjblack';
-  } else {
-    bookReviewActive = 'border-white';
-  }
+function MainKindToggle() {
+  const location = useLocation();
+
+  const isActive = (pathname) => {
+    return location.pathname === pathname;
+  };
 
   return (
     <div className="flex justify-evenly gap-4">
-      <Link
-        className={`text-b-1-medium flex justify-center items-center border-b-2 ${clubActive} w-[30%] p-4`}
+      <NavLink
+        {...toggleStyle}
+        className={`${toggleStyle.className} ${
+          isActive('/mainClub') && activeStyle
+        }`}
         to="/mainClub"
       >
         북적클럽
-      </Link>
-      <Link
-        className={`text-b-1-medium flex justify-center items-center border-b-2 ${bookReviewActive} w-[30%] p-4`}
+      </NavLink>
+      <NavLink
+        {...toggleStyle}
+        className={`${toggleStyle.className} ${
+          isActive('/mainBookReview') && activeStyle
+        }`}
         to="/mainBookReview"
       >
         독후감
-      </Link>
+      </NavLink>
     </div>
   );
 }
 
-MainKindToggle.propTypes = {
-  club: bool,
-  bookReview: bool,
-};
 export default MainKindToggle;

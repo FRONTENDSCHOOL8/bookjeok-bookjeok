@@ -12,8 +12,8 @@ function MainClub() {
         <header className="flex justify-center  items-center  text-center bg-slate-400 text-b-1-medium py-4 ">
           북적북적
         </header>
-        <body className="px-4">
-          <MainKindToggle club />
+        <main className="px-4">
+          <MainKindToggle />
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
           commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus
           et magnis dis parturient montes, nascetur ridiculus mus. Donec quam
@@ -146,7 +146,7 @@ function MainClub() {
           Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique
           sapien, a accumsan nisi mauris ac eros. Fusce neque. Suspendisse
           faucibus, nunc et pellentesque egestas, lacus ante convallis tellus,
-        </body>
+        </main>
         <GNB createClub />
       </div>
     </>
