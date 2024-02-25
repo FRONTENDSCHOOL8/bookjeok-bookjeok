@@ -11,6 +11,7 @@ import { fetchReadDataAPI } from '@/utils';
 4. 
 */
 const pb = new Pocketbase(import.meta.env.VITE_PB_URL);
+import SignUp from './SignUp';
 
 export default function DetailInfo() {
   const { state } = useLocation();
@@ -47,12 +48,14 @@ export default function DetailInfo() {
   useEffect(() => {
     if (state && userInfo.phone !== '') {
       fetchReadDataAPI('users', 'phone', debouncedPhone)
-        .then((data) => setIsValidatePhone(data.items.length === 0))
+        .then((data) => {
+          console.log(data);
+          setIsValidatePhone(data.length === 0);
+        })
         .catch((error) => console.log(error));
     }
   }, [debouncedPhone]);
-
-  if (state) {
+  try {
     return (
       <>
         <h1>회원가입</h1>
@@ -100,12 +103,25 @@ export default function DetailInfo() {
             />
           </fieldset>
         </Form>
-        <Link to="welcome" state={{}}>
-          다음
+        <Link to="/welcome" state={{}}>
+          <MainButton
+            className="large_primary"
+            type="button"
+            disabled={
+              !(
+                isValidatePhone &&
+                isValidateNickname &&
+                userInfo.birth !== '' &&
+                userInfo.gender !== ''
+              )
+            }
+          >
+            다음
+          </MainButton>
         </Link>
       </>
     );
-  } else {
-    redirect('/signup');
+  } catch {
+    return redirect('/signup');
   }
 }
