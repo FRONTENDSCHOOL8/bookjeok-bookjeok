@@ -8,10 +8,9 @@ import { fetchReadDataAPI } from '@/utils';
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
 2. 닉네임 중복 확인 , 닉네임 유효성 검사 ? ,,,
 3. 휴대폰 중복 확인 , 휴대폰 유효성검사 .,... 
-  전화번호 입력시 3-4-4 자리수대로 하이픈 
+  전화번호 입력시 3-4-4 자리수대로 하이픈 .... 
 4. 다음 버튼 클릭시 db 적재  
 */
-console.log(pb);
 
 export default function DetailInfo() {
   const { state } = useLocation();
@@ -19,18 +18,17 @@ export default function DetailInfo() {
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
   const [isValidatePhone, setIsValidatePhone] = useState(false);
   const [isRegisteredPhone, setIsRegisteredPhone] = useState(true);
-  const debouncedNickname = useDebounce(userInfo.nickname, 500);
-  const debouncedPhone = useDebounce(userInfo.phone, 500);
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
   const handleUserInfo = (e) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
-    console.log(updatedUserInfo);
     setUserInfo(updatedUserInfo);
   };
 
-  const handleSubmit = (e) => {
-    console.log(e);
+  const handleSubmit = () => {
+    pb.collection('users')
+      .create(userInfo)
+      .then((data) => console.log(data));
   };
 
   //닉네임 중복 검사
@@ -62,7 +60,7 @@ export default function DetailInfo() {
       <>
         <h1>회원가입</h1>
         <h2>상세 정보</h2>
-        <Form className="flex flex-col" action="">
+        <Form className="flex flex-col" method="post">
           <label htmlFor="nickname">닉네임</label>
           <input
             type="text"
@@ -112,17 +110,14 @@ export default function DetailInfo() {
             />
           </fieldset>
         </Form>
-        <Link to="/welcome" state={{}}>
+        <Link to="/welcome">
           <MainButton
-            className="large_primary"
             type="button"
             disabled={
-              !(
-                isValidatePhone &&
-                isDuplicatedNickname &&
-                userInfo.birth !== '' &&
-                userInfo.gender !== ''
-              )
+              isRegisteredPhone ||
+              userInfo.birth == '' ||
+              userInfo.gender == '' ||
+              isDuplicatedNickname
             }
             onClick={handleSubmit}
           >

@@ -69,12 +69,11 @@ export default function BasicInfo() {
 
   //비밀번호 확인
   useEffect(() => {
-    if ('confirmPassword' in userInfo) {
-      setIsConfirmPassword(userInfo.password === userInfo.confirmPassword);
+    if ('passwordConfirm' in userInfo) {
+      setIsConfirmPassword(userInfo.password === userInfo.passwordConfirm);
     }
-  }, [userInfo.password, userInfo.confirmPassword]);
+  }, [userInfo.password, userInfo.passwordConfirm]);
 
-  console.log(TEST_PASSWORD);
   return (
     <>
       <h1>회원가입</h1>
@@ -107,7 +106,7 @@ export default function BasicInfo() {
         <input
           id="passwordConfirm"
           type="password"
-          name="confirmPassword"
+          name="passwordConfirm"
           onChange={handleUserInfo}
         />
         {isconfirmPassword || userInfo.password == ''
