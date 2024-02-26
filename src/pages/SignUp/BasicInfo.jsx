@@ -29,17 +29,11 @@ export default function BasicInfo() {
   const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
-  const debouncedEmail = useDebounce(userInfo.email, 500);
-  const debouncedPassword = useDebounce(userInfo.password, 500);
-
-  const handleEmail = (e) => {
-    const tempEmail = e.target.value;
-    setUserInfo((prev) => ({ ...prev, email: tempEmail }));
-  };
-
-  const handlePassword = (e) => {
-    const tempPassword = e.target.value;
-    setUserInfo((prev) => ({ ...prev, password: tempPassword }));
+  const debouncedUserInfo = useDebounce(userInfo, 500);
+  const handleUserInfo = (e) => {
+    const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
+    console.log(updatedUserInfo);
+    setUserInfo(updatedUserInfo);
   };
 
   const handlePasswordConfirm = (e) => {
@@ -53,9 +47,9 @@ export default function BasicInfo() {
 
   //중복검사
   useEffect(() => {
-    if (validateEmail(debouncedEmail)) {
+    if (validateEmail(debouncedUserInfo.email)) {
       setIsValidateEmail(true);
-      fetchReadDataAPI('users', 'email', debouncedEmail)
+      fetchReadDataAPI('users', 'email', debouncedUserInfo.email)
         .then((data) => {
           console.log(data);
           setIsDuplicatedEmail(data.length === 0);
@@ -64,13 +58,13 @@ export default function BasicInfo() {
     } else {
       setIsValidateEmail(false);
     }
-  }, [debouncedEmail]);
+  }, [debouncedUserInfo.email]);
 
   useEffect(() => {
-    validatePassword(debouncedPassword)
+    validatePassword(debouncedUserInfo.password)
       ? setIsValidatePassword(true)
       : setIsValidatePassword(false);
-  }, [debouncedPassword]);
+  }, [debouncedUserInfo.password]);
 
   console.log(TEST_PASSWORD);
   return (
@@ -80,9 +74,10 @@ export default function BasicInfo() {
       <Form className="flex flex-col" method="post">
         <label htmlFor="email">이메일</label>
         <input
+          name="email"
           type="email"
           id="email"
-          onChange={handleEmail}
+          onChange={handleUserInfo}
           autoComplete="off"
         />
         {userInfo.email == '' || isValidateEmail ? (
@@ -94,7 +89,12 @@ export default function BasicInfo() {
           <p>이미 가입한 이메일입니다! </p>
         )}
         <label htmlFor="password">비밀번호</label>
-        <input type="password" id="password" onChange={handlePassword} />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          onChange={handleUserInfo}
+        />
         {userInfo.password == '' || isValidatePassword ? (
           ''
         ) : (
@@ -105,6 +105,7 @@ export default function BasicInfo() {
         <input
           id="passwordConfirm"
           type="password"
+          name="confirmPassword"
           onChange={handlePasswordConfirm}
         />
         {isconfirmPassword || userInfo.password == ''

@@ -2,7 +2,7 @@ import { Link, Form, useLocation, redirect } from 'react-router-dom';
 import { MainButton } from '@/components/Atoms';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
-import Pocketbase from 'pocketbase';
+import pb from '@/api/pocketbase';
 import { fetchReadDataAPI } from '@/utils';
 /*
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
@@ -10,7 +10,7 @@ import { fetchReadDataAPI } from '@/utils';
 3. 휴대폰 중복 확인 , 휴대폰 유효성검사 .,... 
 4. 다음 버튼 클릭시 db 적재  
 */
-
+console.log(pb);
 
 export default function DetailInfo() {
   const { state } = useLocation();
