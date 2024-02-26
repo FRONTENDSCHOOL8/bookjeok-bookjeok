@@ -8,10 +8,9 @@ import { fetchReadDataAPI } from '@/utils';
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
 2. 닉네임 중복 확인 , 닉네임 유효성 검사 ? ,,,
 3. 휴대폰 중복 확인 , 휴대폰 유효성검사 .,... 
-4. 
+4. 다음 버튼 클릭시 db 적재  
 */
-const pb = new Pocketbase(import.meta.env.VITE_PB_URL);
-import SignUp from './SignUp';
+
 
 export default function DetailInfo() {
   const { state } = useLocation();
@@ -35,6 +34,9 @@ export default function DetailInfo() {
 
   const handleGender = (e) => {
     setUserInfo((prev) => ({ ...prev, gender: e.target.id }));
+  };
+  const handleSubmit = (e) => {
+    console.log(e);
   };
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export default function DetailInfo() {
                 userInfo.gender !== ''
               )
             }
+            onClick={handleSubmit}
           >
             다음
           </MainButton>
