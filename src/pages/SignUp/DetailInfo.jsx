@@ -20,21 +20,12 @@ export default function DetailInfo() {
   const debouncedNickname = useDebounce(userInfo.nickname, 500);
   const debouncedPhone = useDebounce(userInfo.phone, 500);
 
-  const handleNickname = (e) => {
-    setUserInfo((prev) => ({ ...prev, nickname: e.target.value }));
+  const handleUserInfo = (e) => {
+    const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
+    console.log(updatedUserInfo);
+    setUserInfo(updatedUserInfo);
   };
 
-  const handlePhone = (e) => {
-    setUserInfo((prev) => ({ ...prev, phone: e.target.value }));
-  };
-
-  const handleBirth = (e) => {
-    setUserInfo((prev) => ({ ...prev, birth: e.target.value }));
-  };
-
-  const handleGender = (e) => {
-    setUserInfo((prev) => ({ ...prev, gender: e.target.id }));
-  };
   const handleSubmit = (e) => {
     console.log(e);
   };
@@ -67,14 +58,20 @@ export default function DetailInfo() {
           <input
             type="text"
             id="nickname"
+            name="nickname"
             maxLength="10"
-            onChange={handleNickname}
+            onChange={handleUserInfo}
           />
           {userInfo.nickname == '' || isValidateNickname ? null : (
             <p>중복된 닉네임은 사용할 수 없어용 </p>
           )}
           <label htmlFor="phone">휴대폰</label>
-          <input type="text" id="phone" onChange={handlePhone} />
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            onChange={handleUserInfo}
+          />
           {userInfo.phone == '' || isValidatePhone ? null : (
             <p>이미 가입된 전화번호입니다! </p>
           )}
@@ -82,26 +79,27 @@ export default function DetailInfo() {
           <input
             type="date"
             id="birth"
+            name="birth"
             value={userInfo.birth}
-            onChange={handleBirth}
+            onChange={handleUserInfo}
           />
           <fieldset>
             <legend>성별</legend>
             <label htmlFor="male">남자</label>
             <input
               type="radio"
-              name="gender"
               id="male"
+              name="gender"
               checked={userInfo.gender === 'male'}
-              onChange={handleGender}
+              onChange={handleUserInfo}
             />
             <label htmlFor="female">여자</label>
             <input
               type="radio"
-              name="gender"
               id="female"
+              name="gender"
               checked={userInfo.gender === 'female'}
-              onChange={handleGender}
+              onChange={handleUserInfo}
             />
           </fieldset>
         </Form>
