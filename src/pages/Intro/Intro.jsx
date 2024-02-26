@@ -14,7 +14,7 @@ function Intro() {
           <h1 className="text-h-1-semibold">북적북적</h1>
         </div>
         <div className="absolute bottom-0 mx-auto flex flex-col gap-2 items-center h-[20%]">
-          <Link to="/mainclub">둘러보기</Link>
+          <Link to="/mainClub">둘러보기</Link>
           <div>
             <Link to="/login">로그인</Link> | <Link to="/signup">회원가입</Link>
           </div>
