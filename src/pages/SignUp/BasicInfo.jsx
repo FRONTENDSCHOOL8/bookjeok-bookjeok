@@ -3,7 +3,7 @@ import { Link, Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
 import { validateEmail, validatePassword, fetchReadDataAPI } from '@/utils';
 import { MainButton } from '@/components/Atoms';
-
+import pb from '@/api/pocketbase';
 /*
 
 1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
@@ -25,11 +25,12 @@ const TEST_PASSWORD = 'qwerty1234!';
 
 export default function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
+  const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
   const debouncedUserInfo = useDebounce(userInfo, 500);
+
   const handleUserInfo = (e) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
     console.log(updatedUserInfo);
@@ -45,26 +46,41 @@ export default function BasicInfo() {
     }
   };
 
-  //중복검사
+  // 이메일 유효성검사
   useEffect(() => {
-    if (validateEmail(debouncedUserInfo.email)) {
-      setIsValidateEmail(true);
-      fetchReadDataAPI('users', 'email', debouncedUserInfo.email)
-        .then((data) => {
-          console.log(data);
-          setIsDuplicatedEmail(data.length === 0);
-        })
-        .catch((error) => console.error(error));
-    } else {
-      setIsValidateEmail(false);
-    }
+    setIsValidateEmail(validateEmail(debouncedUserInfo.email));
   }, [debouncedUserInfo.email]);
 
+  //이메일 중복검사
+  useEffect(() => {
+    if (isValidateEmail) {
+      pb.collection('users')
+        .getList(1, 10, {
+          filter: `email="${debouncedUserInfo.email}"`,
+        })
+        .then((data) => {
+          console.log(data);
+          setIsDuplicatedEmail(data.items.length !== 0);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [debouncedUserInfo.email, isValidateEmail]);
+
+  //비밀번호 유효성 검사
   useEffect(() => {
     validatePassword(debouncedUserInfo.password)
       ? setIsValidatePassword(true)
       : setIsValidatePassword(false);
   }, [debouncedUserInfo.password]);
+
+  //비밀번호 확인 (비밀번호변경시 비밀번호 확인 변경 .. )
+  useEffect(() => {
+    if (validatePassword(debouncedUserInfo.password)) {
+      setIsConfirmPassword(userInfo.password === debouncedUserInfo.password);
+    } else {
+      setIsConfirmPassword(false);
+    }
+  }, [userInfo.password]);
 
   console.log(TEST_PASSWORD);
   return (
@@ -80,14 +96,12 @@ export default function BasicInfo() {
           onChange={handleUserInfo}
           autoComplete="off"
         />
-        {userInfo.email == '' || isValidateEmail ? (
-          ''
-        ) : (
-          <p>유효한 이메일 주소를 작성해주세요.</p>
-        )}
-        {userInfo.email == '' || isDuplicatedEmail ? null : (
-          <p>이미 가입한 이메일입니다! </p>
-        )}
+        {userInfo.email == '' || isValidateEmail
+          ? ''
+          : '이메일 형식이 올바르지 않습니다.'}
+        {userInfo.email && isValidateEmail && isDuplicatedEmail
+          ? '이미 사용 중인 이메일 주소입니다.'
+          : ''}
         <label htmlFor="password">비밀번호</label>
         <input
           type="password"
@@ -95,13 +109,9 @@ export default function BasicInfo() {
           name="password"
           onChange={handleUserInfo}
         />
-        {userInfo.password == '' || isValidatePassword ? (
-          ''
-        ) : (
-          <p>비밀번호는 8자 이상 숫자, 특수문자를 포함해야 합니다.</p>
-        )}
+        {userInfo.password == '' ||
+          validatePassword(debouncedUserInfo.password)}
         <label htmlFor="passwordConfirm">비밀번호확인</label>
-        {}
         <input
           id="passwordConfirm"
           type="password"
@@ -117,9 +127,7 @@ export default function BasicInfo() {
         <MainButton
           className="large_primary"
           type="button"
-          disabled={
-            !isValidatePassword && !isconfirmPassword && !isDuplicatedEmail
-          }
+          disabled={!isconfirmPassword && !isDuplicatedEmail}
         >
           다음
         </MainButton>
