@@ -19,8 +19,8 @@ function CheckboxForm({ id, name, value, checked, children, ...rest }) {
         name={name}
         value={value}
         checked={checked}
-        {...rest}
         className={checkboxFormStyle.classNameInput}
+        {...rest}
       />
     </div>
   );
