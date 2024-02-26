@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
-import { validateEmail, validatePassword, fetchReadDataAPI } from '@/utils';
+import { validateEmail, validatePassword } from '@/utils';
 import { MainButton } from '@/components/Atoms';
 import pb from '@/api/pocketbase';
 /*
@@ -10,7 +10,12 @@ import pb from '@/api/pocketbase';
 2. 이메일 중복 검사 => validateEmail true 이면 이펙트 함수 실행 setDuplicatedEmail 상태값 false 
 3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
 4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
-5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail true 여야 다음 버튼 활성화
+5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
+
++) 고민.... isValidatePassword 상태관리가 필요할까? 
+일단 에러메시지는 validatePassword에서 return 됨  ...
+이것두 고민 ... 단일기능만행하는함수여야될거같은데 오류메시지를 리턴해두될까?? 
+
 */
 const INITIAL_USER_INFO = {
   email: '',
@@ -37,15 +42,6 @@ export default function BasicInfo() {
     setUserInfo(updatedUserInfo);
   };
 
-  const handlePasswordConfirm = (e) => {
-    const enteredPassword = e.target.value;
-    if (enteredPassword === userInfo.password) {
-      setIsConfirmPassword(true);
-    } else {
-      setIsConfirmPassword(false);
-    }
-  };
-
   // 이메일 유효성검사
   useEffect(() => {
     setIsValidateEmail(validateEmail(debouncedUserInfo.email));
@@ -68,19 +64,15 @@ export default function BasicInfo() {
 
   //비밀번호 유효성 검사
   useEffect(() => {
-    validatePassword(debouncedUserInfo.password)
-      ? setIsValidatePassword(true)
-      : setIsValidatePassword(false);
-  }, [debouncedUserInfo.password]);
-
-  //비밀번호 확인 (비밀번호변경시 비밀번호 확인 변경 .. )
-  useEffect(() => {
-    if (validatePassword(debouncedUserInfo.password)) {
-      setIsConfirmPassword(userInfo.password === debouncedUserInfo.password);
-    } else {
-      setIsConfirmPassword(false);
-    }
+    setIsValidatePassword(validatePassword(userInfo.password));
   }, [userInfo.password]);
+
+  //비밀번호 확인
+  useEffect(() => {
+    if ('confirmPassword' in userInfo) {
+      setIsConfirmPassword(userInfo.password === userInfo.confirmPassword);
+    }
+  }, [userInfo.password, userInfo.confirmPassword]);
 
   console.log(TEST_PASSWORD);
   return (
@@ -116,7 +108,7 @@ export default function BasicInfo() {
           id="passwordConfirm"
           type="password"
           name="confirmPassword"
-          onChange={handlePasswordConfirm}
+          onChange={handleUserInfo}
         />
         {isconfirmPassword || userInfo.password == ''
           ? ''
@@ -125,7 +117,6 @@ export default function BasicInfo() {
 
       <Link to="/signup/detail" state={userInfo}>
         <MainButton
-          className="large_primary"
           type="button"
           disabled={!isconfirmPassword && !isDuplicatedEmail}
         >
