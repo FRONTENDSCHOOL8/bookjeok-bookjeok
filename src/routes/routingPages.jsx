@@ -6,10 +6,11 @@ import {
   Intro,
   Login,
   MainBookReview,
-  MainClub,
   MyPage,
   Welcome,
 } from '@/pages';
+import Filter from '@/pages/Filter/Filter';
+import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
 
@@ -24,31 +25,36 @@ const routingPages = [
   },
   {
     path: '/mainClub',
-    element: <MainClub></MainClub>,
+    element: <MainClub />,
+    loader: clubListLoader,
+  },
+  {
+    path: '/mainClub/filter',
+    element: <Filter />,
   },
   {
     path: '/mainBookReview',
-    element: <MainBookReview></MainBookReview>,
+    element: <MainBookReview />,
   },
   {
     path: '/login',
-    element: <Login></Login>,
+    element: <Login />,
   },
   {
     path: '/myClubList',
-    element: <MyClubList></MyClubList>,
+    element: <MyClubList />,
   },
   {
     path: '/createClub',
-    element: <CreateClub1></CreateClub1>,
+    element: <CreateClub1 />,
   },
   {
     path: '/chatRoomList',
-    element: <ChatRoomList></ChatRoomList>,
+    element: <ChatRoomList />,
   },
   {
     path: '/myPage',
-    element: <MyPage></MyPage>,
+    element: <MyPage />,
   },
 
   {
