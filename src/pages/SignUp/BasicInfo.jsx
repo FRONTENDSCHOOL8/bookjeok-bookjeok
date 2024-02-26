@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
-import { validateEmail, validatePassword, fetchReadDataAPI } from '@/utils';
+import { validateEmail, validatePassword } from '@/utils';
 import { MainButton } from '@/components/Atoms';
-
+import pb from '@/api/pocketbase';
 /*
 
 1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
 2. 이메일 중복 검사 => validateEmail true 이면 이펙트 함수 실행 setDuplicatedEmail 상태값 false 
 3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
 4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
-5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail true 여야 다음 버튼 활성화
+5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
+
++) 고민.... isValidatePassword 상태관리가 필요할까? 
+일단 에러메시지는 validatePassword에서 return 됨  ...
+이것두 고민 ... 단일기능만행하는함수여야될거같은데 오류메시지를 리턴해두될까?? 
+
 */
 const INITIAL_USER_INFO = {
   email: '',
@@ -25,54 +30,50 @@ const TEST_PASSWORD = 'qwerty1234!';
 
 export default function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
+  const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
-  const debouncedEmail = useDebounce(userInfo.email, 500);
-  const debouncedPassword = useDebounce(userInfo.password, 500);
+  const debouncedUserInfo = useDebounce(userInfo, 500);
 
-  const handleEmail = (e) => {
-    const tempEmail = e.target.value;
-    setUserInfo((prev) => ({ ...prev, email: tempEmail }));
+  const handleUserInfo = (e) => {
+    const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
+    console.log(updatedUserInfo);
+    setUserInfo(updatedUserInfo);
   };
 
-  const handlePassword = (e) => {
-    const tempPassword = e.target.value;
-    setUserInfo((prev) => ({ ...prev, password: tempPassword }));
-  };
-
-  const handlePasswordConfirm = (e) => {
-    const enteredPassword = e.target.value;
-    if (enteredPassword === userInfo.password) {
-      setIsConfirmPassword(true);
-    } else {
-      setIsConfirmPassword(false);
-    }
-  };
-
-  //중복검사
+  // 이메일 유효성검사
   useEffect(() => {
-    if (validateEmail(debouncedEmail)) {
-      setIsValidateEmail(true);
-      fetchReadDataAPI('users', 'email', debouncedEmail)
+    setIsValidateEmail(validateEmail(debouncedUserInfo.email));
+  }, [debouncedUserInfo.email]);
+
+  //이메일 중복검사
+  useEffect(() => {
+    if (isValidateEmail) {
+      pb.collection('users')
+        .getList(1, 10, {
+          filter: `email="${debouncedUserInfo.email}"`,
+        })
         .then((data) => {
           console.log(data);
-          setIsDuplicatedEmail(data.length === 0);
+          setIsDuplicatedEmail(data.items.length !== 0);
         })
-        .catch((error) => console.error(error));
-    } else {
-      setIsValidateEmail(false);
+        .catch((error) => console.log(error));
     }
-  }, [debouncedEmail]);
+  }, [debouncedUserInfo.email, isValidateEmail]);
 
+  //비밀번호 유효성 검사
   useEffect(() => {
-    validatePassword(debouncedPassword)
-      ? setIsValidatePassword(true)
-      : setIsValidatePassword(false);
-  }, [debouncedPassword]);
+    setIsValidatePassword(validatePassword(userInfo.password));
+  }, [userInfo.password]);
 
-  console.log(TEST_PASSWORD);
+  //비밀번호 확인
+  useEffect(() => {
+    if ('passwordConfirm' in userInfo) {
+      setIsConfirmPassword(userInfo.password === userInfo.passwordConfirm);
+    }
+  }, [userInfo.password, userInfo.passwordConfirm]);
+
   return (
     <>
       <h1>회원가입</h1>
@@ -80,32 +81,33 @@ export default function BasicInfo() {
       <Form className="flex flex-col" method="post">
         <label htmlFor="email">이메일</label>
         <input
+          name="email"
           type="email"
           id="email"
-          onChange={handleEmail}
+          onChange={handleUserInfo}
           autoComplete="off"
         />
-        {userInfo.email == '' || isValidateEmail ? (
-          ''
-        ) : (
-          <p>유효한 이메일 주소를 작성해주세요.</p>
-        )}
-        {userInfo.email == '' || isDuplicatedEmail ? null : (
-          <p>이미 가입한 이메일입니다! </p>
-        )}
+        {userInfo.email == '' || isValidateEmail
+          ? ''
+          : '이메일 형식이 올바르지 않습니다.'}
+        {userInfo.email && isValidateEmail && isDuplicatedEmail
+          ? '이미 사용 중인 이메일 주소입니다.'
+          : ''}
         <label htmlFor="password">비밀번호</label>
-        <input type="password" id="password" onChange={handlePassword} />
-        {userInfo.password == '' || isValidatePassword ? (
-          ''
-        ) : (
-          <p>비밀번호는 8자 이상 숫자, 특수문자를 포함해야 합니다.</p>
-        )}
+        <input
+          type="password"
+          id="password"
+          name="password"
+          onChange={handleUserInfo}
+        />
+        {userInfo.password == '' ||
+          validatePassword(debouncedUserInfo.password)}
         <label htmlFor="passwordConfirm">비밀번호확인</label>
-        {}
         <input
           id="passwordConfirm"
           type="password"
-          onChange={handlePasswordConfirm}
+          name="passwordConfirm"
+          onChange={handleUserInfo}
         />
         {isconfirmPassword || userInfo.password == ''
           ? ''
@@ -114,11 +116,8 @@ export default function BasicInfo() {
 
       <Link to="/signup/detail" state={userInfo}>
         <MainButton
-          className="large_primary"
           type="button"
-          disabled={
-            !isValidatePassword && !isconfirmPassword && !isDuplicatedEmail
-          }
+          disabled={!isconfirmPassword && !isDuplicatedEmail}
         >
           다음
         </MainButton>
