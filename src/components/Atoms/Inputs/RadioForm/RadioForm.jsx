@@ -16,8 +16,8 @@ function RadioForm({ name, value, checked, children, ...rest }) {
         name={name}
         value={value}
         checked={checked}
-        {...rest}
         className={radioFormStyle.classNameInput}
+        {...rest}
       />
     </label>
   );
