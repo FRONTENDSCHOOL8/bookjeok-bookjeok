@@ -1,38 +1,41 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const toggleStyle = {
-  className:
-    'text-b-1-medium flex justify-center items-center border-b-2 w-[30%] p-4',
-};
-const activeStyle = 'border-b-black';
+const assignActiveClassNames =
+  (classNames, activeClassName) =>
+  ({ isActive }) => {
+    return classNames + (isActive ? ` ${activeClassName}` : '');
+  };
+
+// [1]
+const navLinks = [
+  {
+    path: '/mainClub',
+    text: '북적클럽',
+  },
+  {
+    path: '/mainBookReview',
+    text: '독후감',
+  },
+];
 
 function MainKindToggle() {
-  const location = useLocation();
-
-  const isActive = (pathname) => {
-    return location.pathname === pathname;
-  };
+  const classNames =
+    'text-b-1-medium flex justify-center items-center border-b-2 w-[30%] p-4';
 
   return (
     <div className="flex justify-evenly gap-4">
-      <NavLink
-        {...toggleStyle}
-        className={`${toggleStyle.className} ${
-          isActive('/mainClub') && activeStyle
-        }`}
-        to="/mainClub"
-      >
-        북적클럽
-      </NavLink>
-      <NavLink
-        {...toggleStyle}
-        className={`${toggleStyle.className} ${
-          isActive('/mainBookReview') && activeStyle
-        }`}
-        to="/mainBookReview"
-      >
-        독후감
-      </NavLink>
+      {/* [2] */}
+      {navLinks.map((navLink) => {
+        return (
+          <NavLink
+            key={navLink.path}
+            to={navLink.path}
+            className={assignActiveClassNames(classNames, 'border-b-black')}
+          >
+            {navLink.text}
+          </NavLink>
+        );
+      })}
     </div>
   );
 }
