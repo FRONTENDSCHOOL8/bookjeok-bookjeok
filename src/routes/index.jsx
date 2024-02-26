@@ -1,6 +1,5 @@
-import AtomMaking from '@/AtomMaking';
 import Erro404 from '@/pages/Error404/Erro404';
-import { Intro, SignUp, Welcome } from '@/pages/index';
+
 import { createBrowserRouter } from 'react-router-dom';
 
 import BasicInfo from '../pages/SignUp/BasicInfo';
@@ -9,7 +8,7 @@ import DetailInfo from '../pages/SignUp/DetailInfo';
 const routes = [
   {
     path: '/',
-    element: <Intro />,
+    element: <RootLayout />,
     errorElement: <Erro404 />,
   },
   {
@@ -30,6 +29,8 @@ const routes = [
     path: '/Welcome',
     element: <Welcome />,
     errorElement: <Erro404 />,
+
+    children: routingPages,
   },
 ];
 
