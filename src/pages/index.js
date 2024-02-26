@@ -13,6 +13,7 @@ export { default as ChatRoom } from '@/pages/Chatting/ChatRoom/ChatRoom';
 export { default as DetailClub } from '@/pages/DetailClub/DetailClub';
 export { default as Error404 } from '@/pages/Error404/Erro404';
 export { default as MainClub } from '@/pages/MainClub/MainClub';
+export { default as RootLayout } from '@/pages/RootLayout/RootLayout';
 export { default as Welcome } from '@/pages/Welcome/Welcome';
 export { default as MyPage } from '@/pages/MyPage/MyPage';
 export { default as Search } from '@/pages/Search/Search';

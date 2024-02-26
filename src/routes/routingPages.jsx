@@ -8,8 +8,10 @@ import {
   MainBookReview,
   MainClub,
   MyPage,
-  SignUp,
+  Welcome,
 } from '@/pages';
+import BasicInfo from '@/pages/SignUp/BasicInfo';
+import DetailInfo from '@/pages/SignUp/DetailInfo';
 
 const routingPages = [
   {
@@ -18,11 +20,7 @@ const routingPages = [
   },
   {
     path: '/atomMaking',
-    element: (
-      <AtomMaking disabled type="button">
-        다음
-      </AtomMaking>
-    ),
+    element: <AtomMaking />,
   },
   {
     path: '/mainClub',
@@ -35,10 +33,6 @@ const routingPages = [
   {
     path: '/login',
     element: <Login></Login>,
-  },
-  {
-    path: '/signup',
-    element: <SignUp></SignUp>,
   },
   {
     path: '/myClubList',
@@ -55,6 +49,19 @@ const routingPages = [
   {
     path: '/myPage',
     element: <MyPage></MyPage>,
+  },
+
+  {
+    path: '/signup',
+    element: <BasicInfo />,
+  },
+  {
+    path: '/signup/detail',
+    element: <DetailInfo />,
+  },
+  {
+    path: '/Welcome',
+    element: <Welcome />,
   },
 ];
 
