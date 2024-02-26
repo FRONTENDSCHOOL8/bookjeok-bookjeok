@@ -8,6 +8,7 @@ import { fetchReadDataAPI } from '@/utils';
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
 2. 닉네임 중복 확인 , 닉네임 유효성 검사 ? ,,,
 3. 휴대폰 중복 확인 , 휴대폰 유효성검사 .,... 
+  전화번호 입력시 3-4-4 자리수대로 하이픈 
 4. 다음 버튼 클릭시 db 적재  
 */
 console.log(pb);
@@ -15,10 +16,12 @@ console.log(pb);
 export default function DetailInfo() {
   const { state } = useLocation();
   const [userInfo, setUserInfo] = useState(state);
-  const [isValidateNickname, setIsValidateNickname] = useState(false);
+  const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
   const [isValidatePhone, setIsValidatePhone] = useState(false);
+  const [isRegisteredPhone, setIsRegisteredPhone] = useState(true);
   const debouncedNickname = useDebounce(userInfo.nickname, 500);
   const debouncedPhone = useDebounce(userInfo.phone, 500);
+  const debouncedUserInfo = useDebounce(userInfo, 500);
 
   const handleUserInfo = (e) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
@@ -30,24 +33,30 @@ export default function DetailInfo() {
     console.log(e);
   };
 
+  //닉네임 중복 검사
   useEffect(() => {
     if (state && userInfo.nickname !== '') {
-      fetchReadDataAPI('users', 'nickname', debouncedNickname)
-        .then((data) => setIsValidateNickname(data.length === 0))
-        .catch((error) => console.log(error));
+      pb.collection('users')
+        .getList(1, 1, {
+          filter: `nickname = "${debouncedUserInfo.nickname}"`,
+        })
+        .then((data) => setIsDuplicatedNickname(data.items.length !== 0))
+        .catch((Error) => console.error(Error));
     }
-  }, [debouncedNickname]);
+  }, [debouncedUserInfo.nickname]);
 
+  // 가입된 휴대전화 검사
   useEffect(() => {
     if (state && userInfo.phone !== '') {
-      fetchReadDataAPI('users', 'phone', debouncedPhone)
-        .then((data) => {
-          console.log(data);
-          setIsValidatePhone(data.length === 0);
+      pb.collection('users')
+        .getList(1, 1, {
+          filter: `phone = "${debouncedUserInfo.phone}"`,
         })
-        .catch((error) => console.log(error));
+        .then((data) => setIsRegisteredPhone(data.items.length !== 0))
+        .catch((Error) => console.error(Error));
     }
-  }, [debouncedPhone]);
+  }, [debouncedUserInfo.phone]);
+
   try {
     return (
       <>
@@ -62,9 +71,9 @@ export default function DetailInfo() {
             maxLength="10"
             onChange={handleUserInfo}
           />
-          {userInfo.nickname == '' || isValidateNickname ? null : (
-            <p>중복된 닉네임은 사용할 수 없어용 </p>
-          )}
+          {userInfo.nickname && isDuplicatedNickname ? (
+            <p>여여 이미 가입 했다구 ~ </p>
+          ) : null}
           <label htmlFor="phone">휴대폰</label>
           <input
             type="text"
@@ -72,9 +81,9 @@ export default function DetailInfo() {
             name="phone"
             onChange={handleUserInfo}
           />
-          {userInfo.phone == '' || isValidatePhone ? null : (
+          {userInfo.phone && isRegisteredPhone ? (
             <p>이미 가입된 전화번호입니다! </p>
-          )}
+          ) : null}
           <label htmlFor="birth">생년월일</label>
           <input
             type="date"
@@ -88,7 +97,7 @@ export default function DetailInfo() {
             <label htmlFor="male">남자</label>
             <input
               type="radio"
-              id="male"
+              value="male"
               name="gender"
               checked={userInfo.gender === 'male'}
               onChange={handleUserInfo}
@@ -96,7 +105,7 @@ export default function DetailInfo() {
             <label htmlFor="female">여자</label>
             <input
               type="radio"
-              id="female"
+              value="female"
               name="gender"
               checked={userInfo.gender === 'female'}
               onChange={handleUserInfo}
@@ -110,7 +119,7 @@ export default function DetailInfo() {
             disabled={
               !(
                 isValidatePhone &&
-                isValidateNickname &&
+                isDuplicatedNickname &&
                 userInfo.birth !== '' &&
                 userInfo.gender !== ''
               )
