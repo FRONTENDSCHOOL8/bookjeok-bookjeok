@@ -1,33 +1,33 @@
+import pb from '@/api/pocketbase';
 import { Badge, Svg } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
-import PocketBase from 'pocketbase';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLoaderData } from 'react-router-dom';
 
-const pb = new PocketBase(import.meta.env.VITE_PB_URL);
-
 export async function loader() {
-  const clubs = await pb.collection('socialing').getList();
-  const clubItems = clubs.items.map((club) => {
+  const clubs = await pb.collection('socialing').getFullList({
+    fields:
+      'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
+    expand: 'genre,genres.title',
+  });
+
+  const clubItems = clubs.map((club) => {
     const photoURL = getPbImgs(club);
     club.photo = photoURL;
     return club;
   });
-  return { ...clubs, items: clubItems };
+  return clubItems;
 }
 
 function ClubCard() {
   const getClubList = useLoaderData();
-  console.log('getClubList', getClubList);
-  const clubItems = getClubList.items;
-
-  return clubItems.map(
+  return getClubList.map(
     ({
       id,
-      category,
       photo,
       title,
+      expand,
       dateTime,
       isOffline,
       location,
@@ -38,7 +38,9 @@ function ClubCard() {
         <Link className="my-4 flex flex-wrap">
           <div className="relative mx-auto">
             <img className="h-[200px] rounded-5xl" src={photo} alt={title} />
-            <Badge className="absolute left-2 top-2">{category}</Badge>
+            <Badge className="absolute left-2 top-2">
+              {expand.genre.title}
+            </Badge>
           </div>
           <div className="flex w-full flex-col gap-1 p-4">
             <div className="flex justify-between">
