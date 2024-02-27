@@ -24,6 +24,7 @@ const INITIAL_USER_INFO = {
   phone: '',
   birth: '',
   gender: '',
+  emailVisibility: true,
 };
 
 export default function BasicInfo() {

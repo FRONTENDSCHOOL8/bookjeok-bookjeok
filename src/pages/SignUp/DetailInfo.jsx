@@ -27,7 +27,12 @@ export default function DetailInfo() {
 
   // db 적재 !
   const handleSubmit = () => {
-    pb.collection('users').create(userInfo);
+    pb.collection('users')
+      .create(userInfo)
+      .then(() => {
+        pb.collection('users').requestVerification(`${userInfo.email}`);
+      });
+    //인증을 위한 1회 로그인 절차
   };
 
   //닉네임 중복 검사
