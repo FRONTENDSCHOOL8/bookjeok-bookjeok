@@ -3,12 +3,14 @@ import {
   CheckboxForm,
   MainButton,
   ModalButton,
+  NomalTitle,
   OutlineButton,
   RadioForm,
   RoundImage,
   SmallButton,
   TextForm,
   Textarea,
+  ThinTextForm,
 } from './components/Atoms';
 import Svg from './components/Atoms/Svg/Svg';
 
@@ -16,49 +18,6 @@ export default function AtomMaking() {
   return (
     <>
       <div className="container mx-auto max-w-screen-sm p-5">
-        {/* <pre>
-          ├─Accordion
-          <br />
-          ├─Badge
-          <br />
-          ├─Buttons
-          <br />
-          │ ├─MainButton
-          <br />
-          │ ├─ModalButton
-          <br />
-          │ ├─OutlineButton
-          <br />
-          │ └─SmallButton
-          <br />
-          ├─Inputs
-          <br />
-          │ ├─CheckboxForm
-          <br />
-          │ ├─ImageForm
-          <br />
-          │ ├─RadioForm
-          <br />
-          │ ├─Textarea
-          <br />
-          │ ├─TextForm
-          <br />
-          │ └─ThinTextForm
-          <br />
-          ├─MessageBubble
-          <br />
-          ├─RoundImage
-          <br />
-          ├─Svg
-          <br />
-          └─Title
-          <br />
-          │ ├─NomalTitle
-          <br />
-          │ └─StepTitle
-          <br />
-        </pre> */}
-
         <details open>
           <summary>Accordion</summary>
           <div className="pb-5"></div>
@@ -257,7 +216,6 @@ export default function AtomMaking() {
                 type="text"
                 hiddenLabel
                 placeholder="장소를 입력해주세요. (필수)"
-                description="description"
               >
                 장소
               </TextForm>
@@ -266,23 +224,36 @@ export default function AtomMaking() {
                 hiddenLabel
                 value="모임에 참석하기 전에 책을 읽어오셔야 돼요 !"
                 readOnly
-                description="description"
               >
                 질문 내용
               </TextForm>
-              <TextForm
-                type="text"
-                value="disabled"
-                description="description"
-                disabled
-              >
+              <TextForm type="text" value="disabled" disabled>
                 Label
               </TextForm>
             </div>
             <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
               ThinTextForm
             </h3>
-            <div className="flex flex-col gap-2"></div>
+            <div className="flex flex-col gap-2">
+              <ThinTextForm
+                svgIcon
+                svgId="arrow-left"
+                buttonTitle="뒤로 가기"
+                type="search"
+              >
+                검색
+              </ThinTextForm>
+              <ThinTextForm
+                svgIcon
+                svgId="send"
+                align="right"
+                buttonTitle="보내기"
+                type="text"
+                placeholder="메세지를 입력하세요."
+              >
+                채팅 메세지
+              </ThinTextForm>
+            </div>
           </div>
         </details>
 
@@ -298,17 +269,17 @@ export default function AtomMaking() {
               <RoundImage
                 src="/src/assets/avatar.svg"
                 alt="alt"
-                className="sm"
+                size="sm"
               ></RoundImage>
               <RoundImage
                 src="/src/assets/avatar.svg"
                 alt="alt"
-                className="md"
+                size="md"
               ></RoundImage>
               <RoundImage
                 src="/src/assets/avatar.svg"
                 alt="alt"
-                className="lg"
+                size="lg"
               ></RoundImage>
             </div>
           </div>
@@ -390,11 +361,19 @@ export default function AtomMaking() {
             <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
               NomalTitle
             </h3>
-            <div className="flex flex-col gap-2"></div>
+            <div className="flex flex-col gap-2">
+              <NomalTitle backButton textButton>
+                페이지 제목
+              </NomalTitle>
+            </div>
             <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
               StepTitle
             </h3>
-            <div className="flex flex-col gap-2"></div>
+            <div className="flex flex-col gap-2">
+              <NomalTitle backButton subText="1 of 3" textButton>
+                페이지 제목
+              </NomalTitle>
+            </div>
           </div>
         </details>
       </div>
