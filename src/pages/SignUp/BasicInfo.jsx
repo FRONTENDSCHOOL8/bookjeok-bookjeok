@@ -48,7 +48,7 @@ export default function BasicInfo() {
   useEffect(() => {
     if (isValidateEmail) {
       pb.collection('users')
-        .getList(1, 10, {
+        .getList(1, 1, {
           filter: `email="${debouncedUserInfo.email}"`,
         })
         .then((data) => {
