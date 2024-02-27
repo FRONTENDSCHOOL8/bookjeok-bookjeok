@@ -10,6 +10,7 @@ import { fetchReadDataAPI } from '@/utils';
 3. 휴대폰 중복 확인 , 휴대폰 유효성검사 .,... 
   전화번호 입력시 3-4-4 자리수대로 하이픈 .... 
 4. 다음 버튼 클릭시 db 적재  
+
 */
 
 export default function DetailInfo() {
@@ -25,10 +26,9 @@ export default function DetailInfo() {
     setUserInfo(updatedUserInfo);
   };
 
+  // db 적재 !
   const handleSubmit = () => {
-    pb.collection('users')
-      .create(userInfo)
-      .then((data) => console.log(data));
+    pb.collection('users').create(userInfo);
   };
 
   //닉네임 중복 검사
@@ -77,6 +77,7 @@ export default function DetailInfo() {
             type="text"
             id="phone"
             name="phone"
+            maxLength={11}
             onChange={handleUserInfo}
           />
           {userInfo.phone && isRegisteredPhone ? (
