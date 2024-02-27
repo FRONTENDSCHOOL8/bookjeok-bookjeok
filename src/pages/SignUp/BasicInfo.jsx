@@ -11,11 +11,6 @@ import pb from '@/api/pocketbase';
 3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
 4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
 5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
-
-+) 고민.... isValidatePassword 상태관리가 필요할까? 
-일단 에러메시지는 validatePassword에서 return 됨  ...
-이것두 고민 ... 단일기능만행하는함수여야될거같은데 오류메시지를 리턴해두될까?? 
-
 */
 const INITIAL_USER_INFO = {
   email: '',
@@ -61,15 +56,17 @@ export default function BasicInfo() {
 
   //비밀번호 유효성 검사
   useEffect(() => {
-    setIsValidatePassword(validatePassword(userInfo.password));
-  }, [userInfo.password]);
+    setIsValidatePassword(validatePassword(debouncedUserInfo.password));
+  }, [debouncedUserInfo.password]);
 
   //비밀번호 확인
   useEffect(() => {
     if ('passwordConfirm' in userInfo) {
-      setIsConfirmPassword(userInfo.password === userInfo.passwordConfirm);
+      setIsConfirmPassword(
+        debouncedUserInfo.password === debouncedUserInfo.passwordConfirm
+      );
     }
-  }, [userInfo.password, userInfo.passwordConfirm]);
+  }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
 
   return (
     <>
@@ -97,8 +94,9 @@ export default function BasicInfo() {
           name="password"
           onChange={handleUserInfo}
         />
-        {userInfo.password == '' ||
-          validatePassword(debouncedUserInfo.password)}
+        {userInfo.password == '' || isValidatePassword
+          ? ''
+          : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'}
         <label htmlFor="passwordConfirm">비밀번호확인</label>
         <input
           id="passwordConfirm"
@@ -106,7 +104,7 @@ export default function BasicInfo() {
           name="passwordConfirm"
           onChange={handleUserInfo}
         />
-        {isconfirmPassword || userInfo.password == ''
+        {userInfo.password == '' || isconfirmPassword
           ? ''
           : '동일한 비밀번호를 입력해주세요.'}
       </Form>
@@ -114,7 +112,9 @@ export default function BasicInfo() {
       <Link to="/signup/detail" state={userInfo}>
         <MainButton
           type="button"
-          disabled={!(isconfirmPassword && !isRegisteredEmail)}
+          disabled={
+            !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+          }
         >
           다음
         </MainButton>
