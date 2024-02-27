@@ -46,7 +46,7 @@ function TextForm({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row gap-4 items-center px-4 h-[64px] rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200 has-[:invalid]:border-bjred-400 peer">
+      <div className="flex flex-row gap-4 items-center px-4 h-[64px] rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 peer">
         {svgElement}
         <div className="flex flex-col flex-grow">
           {labelElement}
@@ -67,7 +67,7 @@ function TextForm({
           />
         </div>
       </div>
-      <p className="mt-2 px-4 text-b-2-regular text-bjgray-500 peer-has-[:invalid]:text-bjred-500 peer-[.error]:text-bjred-400">
+      <p className="mt-2 px-4 text-b-2-regular text-bjgray-500 peer-has-[:invalid]:text-bjred-400 peer-has-[:required]:text-bjred-400">
         {description}
       </p>
     </div>
