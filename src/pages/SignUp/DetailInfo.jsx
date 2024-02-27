@@ -64,12 +64,12 @@ export default function DetailInfo() {
 
   if (state) {
     return (
-      <>
+      <div className="flex flex-col">
         <NomalTitle backButton subText="2 of 2">
           회원가입
         </NomalTitle>
-        <h2 className="text-h-2-semibold">상세 정보</h2>
-        <Form className="flex flex-col" method="post">
+        <h2 className="h-[64px] text-h-2-semibold">상세 정보</h2>
+        <Form className="flex flex-grow flex-col" method="post">
           <TextForm
             type="text"
             id="nickname"
@@ -77,9 +77,9 @@ export default function DetailInfo() {
             maxLength={10}
             onChange={handleUserInfo}
             description={
-              userInfo.nickname && isDuplicatedNickname ? (
-                <p>이미 사용 중인 닉네임 입니다. </p>
-              ) : null
+              userInfo.nickname && isDuplicatedNickname
+                ? '이미 사용 중인 닉네임 입니다. '
+                : ''
             }
           >
             닉네임
@@ -91,9 +91,9 @@ export default function DetailInfo() {
             maxLength={11}
             onChange={handleUserInfo}
             description={
-              userInfo.phone && isRegisteredPhone ? (
-                <p>이미 가입된 전화번호입니다! </p>
-              ) : null
+              userInfo.phone && isRegisteredPhone
+                ? '이미 가입된 전화번호입니다!'
+                : ''
             }
           >
             휴대폰
@@ -139,15 +139,19 @@ export default function DetailInfo() {
           <MainButton
             type="button"
             disabled={
-              (!isRegisteredPhone && userInfo.birth !== '') ||
-              (userInfo.gender !== '' && !isDuplicatedNickname)
+              !(
+                !isRegisteredPhone &&
+                userInfo.birth !== '' &&
+                userInfo.gender !== '' &&
+                !isDuplicatedNickname
+              )
             }
             onClick={handleSubmit}
           >
             다음
           </MainButton>
         </Link>
-      </>
+      </div>
     );
   } else {
     return redirect('/signup');
