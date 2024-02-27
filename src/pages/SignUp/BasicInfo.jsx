@@ -26,8 +26,6 @@ const INITIAL_USER_INFO = {
   gender: '',
 };
 
-const TEST_PASSWORD = 'qwerty1234!';
-
 export default function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
   const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
@@ -38,7 +36,6 @@ export default function BasicInfo() {
 
   const handleUserInfo = (e) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
-    console.log(updatedUserInfo);
     setUserInfo(updatedUserInfo);
   };
 
@@ -55,7 +52,6 @@ export default function BasicInfo() {
           filter: `email="${debouncedUserInfo.email}"`,
         })
         .then((data) => {
-          console.log(data);
           setIsDuplicatedEmail(data.items.length !== 0);
         })
         .catch((error) => console.log(error));
