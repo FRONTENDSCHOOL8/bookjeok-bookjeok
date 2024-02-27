@@ -32,7 +32,6 @@ export default function DetailInfo() {
       .then(() => {
         pb.collection('users').requestVerification(`${userInfo.email}`);
       });
-    //인증을 위한 1회 로그인 절차
   };
 
   //닉네임 중복 검사

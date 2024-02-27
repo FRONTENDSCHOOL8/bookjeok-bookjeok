@@ -29,7 +29,7 @@ const INITIAL_USER_INFO = {
 
 export default function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
+  const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
@@ -53,7 +53,7 @@ export default function BasicInfo() {
           filter: `email="${debouncedUserInfo.email}"`,
         })
         .then((data) => {
-          setIsDuplicatedEmail(data.items.length !== 0);
+          setIsRegisteredEmail(data.items.length !== 0);
         })
         .catch((error) => console.log(error));
     }
@@ -87,7 +87,7 @@ export default function BasicInfo() {
         {userInfo.email == '' || isValidateEmail
           ? ''
           : '이메일 형식이 올바르지 않습니다.'}
-        {userInfo.email && isValidateEmail && isDuplicatedEmail
+        {userInfo.email && isValidateEmail && isRegisteredEmail
           ? '이미 사용 중인 이메일 주소입니다.'
           : ''}
         <label htmlFor="password">비밀번호</label>
@@ -114,7 +114,7 @@ export default function BasicInfo() {
       <Link to="/signup/detail" state={userInfo}>
         <MainButton
           type="button"
-          disabled={!isconfirmPassword && !isDuplicatedEmail}
+          disabled={!(isconfirmPassword && !isRegisteredEmail)}
         >
           다음
         </MainButton>
