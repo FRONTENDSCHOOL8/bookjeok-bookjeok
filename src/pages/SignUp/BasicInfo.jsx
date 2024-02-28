@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
 import { validateEmail, validatePassword } from '@/utils';
-import { MainButton } from '@/components/Atoms';
+import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 import pb from '@/api/pocketbase';
 /*
 
@@ -11,11 +11,6 @@ import pb from '@/api/pocketbase';
 3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
 4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
 5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
-
-+) 고민.... isValidatePassword 상태관리가 필요할까? 
-일단 에러메시지는 validatePassword에서 return 됨  ...
-이것두 고민 ... 단일기능만행하는함수여야될거같은데 오류메시지를 리턴해두될까?? 
-
 */
 const INITIAL_USER_INFO = {
   email: '',
@@ -24,11 +19,12 @@ const INITIAL_USER_INFO = {
   phone: '',
   birth: '',
   gender: '',
+  emailVisibility: true,
 };
 
 export default function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
+  const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
@@ -52,7 +48,7 @@ export default function BasicInfo() {
           filter: `email="${debouncedUserInfo.email}"`,
         })
         .then((data) => {
-          setIsDuplicatedEmail(data.items.length !== 0);
+          setIsRegisteredEmail(data.items.length !== 0);
         })
         .catch((error) => console.log(error));
     }
@@ -60,60 +56,79 @@ export default function BasicInfo() {
 
   //비밀번호 유효성 검사
   useEffect(() => {
-    setIsValidatePassword(validatePassword(userInfo.password));
-  }, [userInfo.password]);
+    setIsValidatePassword(validatePassword(debouncedUserInfo.password));
+  }, [debouncedUserInfo.password]);
 
   //비밀번호 확인
   useEffect(() => {
     if ('passwordConfirm' in userInfo) {
-      setIsConfirmPassword(userInfo.password === userInfo.passwordConfirm);
+      setIsConfirmPassword(
+        debouncedUserInfo.password === debouncedUserInfo.passwordConfirm
+      );
     }
-  }, [userInfo.password, userInfo.passwordConfirm]);
+  }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
 
   return (
     <>
-      <h1>회원가입</h1>
-      <h2>기본 정보</h2>
+      <NomalTitle backButton subText="1 of 2">
+        회원가입
+      </NomalTitle>
+      <h2 className="text-h-2-semibold">기본 정보</h2>
       <Form className="flex flex-col" method="post">
-        <label htmlFor="email">이메일</label>
-        <input
+        <TextForm
           name="email"
           type="email"
           id="email"
           onChange={handleUserInfo}
           autoComplete="off"
-        />
-        {userInfo.email == '' || isValidateEmail
-          ? ''
-          : '이메일 형식이 올바르지 않습니다.'}
-        {userInfo.email && isValidateEmail && isDuplicatedEmail
-          ? '이미 사용 중인 이메일 주소입니다.'
-          : ''}
-        <label htmlFor="password">비밀번호</label>
-        <input
+          description={
+            (userInfo.email == '' || isValidateEmail
+              ? ''
+              : '이메일 형식이 올바르지 않습니다.',
+            userInfo.email && isValidateEmail && isRegisteredEmail
+              ? '이미 사용 중인 이메일 주소입니다.'
+              : '')
+          }
+        >
+          이메일
+        </TextForm>
+
+        <TextForm
           type="password"
           id="password"
           name="password"
           onChange={handleUserInfo}
-        />
-        {userInfo.password == '' ||
-          validatePassword(debouncedUserInfo.password)}
-        <label htmlFor="passwordConfirm">비밀번호확인</label>
-        <input
+          autoComplete="off"
+          description={
+            userInfo.password == '' || isValidatePassword
+              ? ''
+              : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
+          }
+        >
+          비밀번호
+        </TextForm>
+        <TextForm
           id="passwordConfirm"
           type="password"
           name="passwordConfirm"
           onChange={handleUserInfo}
-        />
-        {isconfirmPassword || userInfo.password == ''
-          ? ''
-          : '동일한 비밀번호를 입력해주세요.'}
+          autoComplete="off"
+          description={
+            userInfo.password == '' || isconfirmPassword
+              ? ''
+              : '동일한 비밀번호를 입력해주세요.'
+          }
+        >
+          비밀번호 확인
+        </TextForm>
       </Form>
 
       <Link to="/signup/detail" state={userInfo}>
         <MainButton
           type="button"
-          disabled={!isconfirmPassword && !isDuplicatedEmail}
+          disabled={
+            !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+          }
         >
           다음
         </MainButton>

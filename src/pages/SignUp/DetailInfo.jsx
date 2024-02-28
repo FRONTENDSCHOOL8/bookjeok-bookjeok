@@ -1,5 +1,10 @@
 import { Link, Form, useLocation, redirect } from 'react-router-dom';
-import { MainButton } from '@/components/Atoms';
+import {
+  MainButton,
+  NomalTitle,
+  TextForm,
+  RadioForm,
+} from '@/components/Atoms';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import pb from '@/api/pocketbase';
@@ -16,7 +21,6 @@ export default function DetailInfo() {
   const { state } = useLocation();
   const [userInfo, setUserInfo] = useState(state);
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
-  const [isValidatePhone, setIsValidatePhone] = useState(false);
   const [isRegisteredPhone, setIsRegisteredPhone] = useState(true);
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
@@ -27,7 +31,11 @@ export default function DetailInfo() {
 
   // db 적재 !
   const handleSubmit = () => {
-    pb.collection('users').create(userInfo);
+    pb.collection('users')
+      .create(userInfo)
+      .then(() => {
+        pb.collection('users').requestVerification(`${userInfo.email}`);
+      });
   };
 
   //닉네임 중복 검사
@@ -56,75 +64,94 @@ export default function DetailInfo() {
 
   if (state) {
     return (
-      <>
-        <h1>회원가입</h1>
-        <h2>상세 정보</h2>
-        <Form className="flex flex-col" method="post">
-          <label htmlFor="nickname">닉네임</label>
-          <input
+      <div className="flex flex-col">
+        <NomalTitle backButton subText="2 of 2">
+          회원가입
+        </NomalTitle>
+        <h2 className="h-[64px] text-h-2-semibold">상세 정보</h2>
+        <Form className="flex flex-grow flex-col" method="post">
+          <TextForm
             type="text"
             id="nickname"
             name="nickname"
-            maxLength="10"
+            maxLength={10}
             onChange={handleUserInfo}
-          />
-          {userInfo.nickname && isDuplicatedNickname ? (
-            <p>여여 이미 가입 했다구 ~ </p>
-          ) : null}
-          <label htmlFor="phone">휴대폰</label>
-          <input
+            description={
+              userInfo.nickname && isDuplicatedNickname
+                ? '이미 사용 중인 닉네임 입니다. '
+                : ''
+            }
+          >
+            닉네임
+          </TextForm>
+          <TextForm
             type="text"
             id="phone"
             name="phone"
             maxLength={11}
             onChange={handleUserInfo}
-          />
-          {userInfo.phone && isRegisteredPhone ? (
-            <p>이미 가입된 전화번호입니다! </p>
-          ) : null}
-          <label htmlFor="birth">생년월일</label>
-          <input
+            description={
+              userInfo.phone && isRegisteredPhone
+                ? '이미 가입된 전화번호입니다!'
+                : ''
+            }
+          >
+            휴대폰
+          </TextForm>
+
+          <TextForm
             type="date"
             id="birth"
             name="birth"
             value={userInfo.birth}
             onChange={handleUserInfo}
-          />
-          <fieldset>
-            <legend>성별</legend>
-            <label htmlFor="male">남자</label>
-            <input
-              type="radio"
-              value="male"
-              name="gender"
-              checked={userInfo.gender === 'male'}
-              onChange={handleUserInfo}
-            />
-            <label htmlFor="female">여자</label>
-            <input
-              type="radio"
-              value="female"
-              name="gender"
-              checked={userInfo.gender === 'female'}
-              onChange={handleUserInfo}
-            />
-          </fieldset>
+          >
+            생년월일
+          </TextForm>
+
+          <div className="flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500">
+            <fieldset className="flex flex-grow flex-col">
+              <legend className="text-b-2-regular text-bjgray-500">성별</legend>
+              <div className="inline-flex justify-evenly gap-4">
+                <RadioForm
+                  type="radio"
+                  value="male"
+                  name="gender"
+                  checked={userInfo.gender === 'male'}
+                  onChange={handleUserInfo}
+                >
+                  남자
+                </RadioForm>
+                <RadioForm
+                  type="radio"
+                  value="female"
+                  name="gender"
+                  checked={userInfo.gender === 'female'}
+                  onChange={handleUserInfo}
+                >
+                  여자
+                </RadioForm>
+              </div>
+            </fieldset>
+          </div>
         </Form>
         <Link to="/welcome">
           <MainButton
             type="button"
             disabled={
-              isRegisteredPhone ||
-              userInfo.birth == '' ||
-              userInfo.gender == '' ||
-              isDuplicatedNickname
+              !(
+                !isRegisteredPhone &&
+                userInfo.birth !== '' &&
+                userInfo.gender !== '' &&
+                !isDuplicatedNickname
+              )
             }
             onClick={handleSubmit}
           >
             다음
           </MainButton>
         </Link>
-      </>
+      </div>
     );
   } else {
     return redirect('/signup');
