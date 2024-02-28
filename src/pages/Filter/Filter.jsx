@@ -1,8 +1,8 @@
 import pb from '@/api/pocketbase';
-import { CheckboxForm, MainButton, Svg } from '@/components/Atoms';
+import { CheckboxForm, MainButton, NomalTitle } from '@/components/Atoms';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { Form, Link, useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData } from 'react-router-dom';
 
 export async function loader() {
   const filters = await pb.collection('genres').getFullList();
@@ -29,7 +29,10 @@ function Filter() {
       </Helmet>
       <main>
         <Form method="get">
-          <header className="flex justify-between p-4 ">
+          <NomalTitle backButton textButton path="/mainClub">
+            필터
+          </NomalTitle>
+          {/* <header className="flex justify-between p-4 ">
             <Link>
               <Svg width="16px" height="16px" id="arrow-left" />
             </Link>
@@ -37,7 +40,7 @@ function Filter() {
             <button tabIndex="1" type="reset">
               초기화
             </button>
-          </header>
+          </header> */}
           <ul className="mx-4">
             <li>
               <CheckboxForm id="selectAll" name="selectAll">
