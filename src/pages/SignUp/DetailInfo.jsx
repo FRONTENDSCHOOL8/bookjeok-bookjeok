@@ -3,7 +3,6 @@ import { MainButton } from '@/components/Atoms';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import pb from '@/api/pocketbase';
-import { fetchReadDataAPI } from '@/utils';
 /*
 1. 만약 signup/detail로 path를 갖게 된다면 basicInfo가 없을시 basicInfo쪽으로 넘겨야됨
 2. 닉네임 중복 확인 , 닉네임 유효성 검사 ? ,,,
@@ -33,7 +32,7 @@ export default function DetailInfo() {
 
   //닉네임 중복 검사
   useEffect(() => {
-    if (state && userInfo.nickname !== '') {
+    if (state && debouncedUserInfo.nickname !== '') {
       pb.collection('users')
         .getList(1, 1, {
           filter: `nickname = "${debouncedUserInfo.nickname}"`,
@@ -45,7 +44,7 @@ export default function DetailInfo() {
 
   // 가입된 휴대전화 검사
   useEffect(() => {
-    if (state && userInfo.phone !== '') {
+    if (state && debouncedUserInfo.phone !== '') {
       pb.collection('users')
         .getList(1, 1, {
           filter: `phone = "${debouncedUserInfo.phone}"`,
@@ -55,7 +54,7 @@ export default function DetailInfo() {
     }
   }, [debouncedUserInfo.phone]);
 
-  try {
+  if (state) {
     return (
       <>
         <h1>회원가입</h1>
@@ -127,7 +126,7 @@ export default function DetailInfo() {
         </Link>
       </>
     );
-  } catch {
+  } else {
     return redirect('/signup');
   }
 }
