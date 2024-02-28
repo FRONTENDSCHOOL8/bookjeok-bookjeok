@@ -1,7 +1,7 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
-import { useRef, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 
@@ -14,7 +14,9 @@ import useUserInfoStore from '@/store/useUserInfoStore';
 */
 
 function Login() {
-  const { userInfo, setUserInfo } = useUserInfoStore((state) => state);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const { setUserInfo } = useUserInfoStore((state) => state);
   const emailRef = useRef('');
   const passwordRef = useRef('');
   const handleLoginForm = (e) => {
@@ -26,27 +28,38 @@ function Login() {
         : (passwordRef.current = e.target.value);
     }
   };
-  console.log(userInfo);
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
+
   // 로그인 이벤트 함수 (로그인 성공/실패 결과 표시 필요 ! )
   const handleLogin = () => {
     pb.collection('users')
       .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
       .then(() => {
         setUserInfo();
+        setIsModalOpen(true);
+        setIsLoginSuccess(true);
       })
-      .catch((Error) => console.error(Error));
+      .catch((Error) => {
+        setIsLoginSuccess(false);
+        setIsModalOpen(true);
+        console.error(Error);
+      });
+  };
+
+  /* 모달 닫기 함수  */
+  const handleModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
-    <div className="box-border flex h-screen  flex-grow flex-col justify-center px-4 ">
+    <div className="box-border flex h-screen flex-grow flex-col justify-center px-4 ">
       <Helmet>
         <title>{getDocumentTitle('로그인')}</title>
       </Helmet>
       <NomalTitle backButton>로그인</NomalTitle>
-      <div className="flex flex-grow flex-col " onChange={handleLoginForm}>
+      <div
+        className="flex flex-grow flex-col gap-3 "
+        onChange={handleLoginForm}
+      >
         <TextForm type="email" placeholder="email@email.com" name="email">
           이메일
         </TextForm>
@@ -54,11 +67,24 @@ function Login() {
           비밀번호
         </TextForm>
       </div>
+      {isModalOpen ? (
+        <Modal success={isLoginSuccess} onClose={handleModal} />
+      ) : (
+        ''
+      )}
       <MainButton onClick={handleLogin} className="my-4" type="button">
         로그인
       </MainButton>
     </div>
   );
 }
-
+function Modal({ success, onClose }) {
+  return (
+    <dialog className="h-4/9 bg-red flex w-4/12 flex-col" open>
+      <button onClick={onClose}>닫기</button>
+      {success ? '로그인 성공!' : '계정 정보를 확인해주세요'}
+      {success ? <MainButton to="/mainClub">메인으로 이동하기</MainButton> : ''}
+    </dialog>
+  );
+}
 export default Login;
