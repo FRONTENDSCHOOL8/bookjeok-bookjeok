@@ -3,6 +3,7 @@ import Svg from '../../Svg/Svg';
 import { Link } from 'react-router-dom';
 
 function ThinTextForm({
+  className,
   type,
   id,
   name,
@@ -25,7 +26,7 @@ function ThinTextForm({
   };
 
   return (
-    <div className={thinTextFormStyle.className}>
+    <div className={`${thinTextFormStyle.className} ${className}`}>
       <div className="peer flex h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 has-[:disabled]:bg-bjgray-200">
         <div className="order-1 flex flex-grow flex-col">
           <label htmlFor={id} className="sr-only">
@@ -68,6 +69,7 @@ function ThinTextForm({
 export default ThinTextForm;
 
 ThinTextForm.propTypes = {
+  className: string,
   children: string,
   type: string,
   id: string,
