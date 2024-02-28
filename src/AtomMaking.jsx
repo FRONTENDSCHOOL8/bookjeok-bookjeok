@@ -1,8 +1,9 @@
 import {
+  Accordion,
   Badge,
   CheckboxForm,
   MainButton,
-  ModalButton,
+  MessageBubble,
   NomalTitle,
   OutlineButton,
   RadioForm,
@@ -17,10 +18,12 @@ import Svg from './components/Atoms/Svg/Svg';
 export default function AtomMaking() {
   return (
     <>
-      <div className="container mx-auto max-w-screen-sm p-5">
+      <div className="p-5">
         <details open>
           <summary>Accordion</summary>
-          <div className="pb-5"></div>
+          <div className="pb-5">
+            <Accordion></Accordion>
+          </div>
         </details>
 
         <details open>
@@ -33,45 +36,41 @@ export default function AtomMaking() {
         <details open>
           <summary>Buttons</summary>
           <div className="pb-5">
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               MainButton
             </h3>
             <div className="flex flex-col gap-2">
-              <MainButton type="button">버튼</MainButton>
-              <MainButton type="button" color="secondary">
+              <MainButton as="a">링크</MainButton>
+              <MainButton as="button" type="button">
                 버튼
               </MainButton>
-              <MainButton disabled type="button">
+              <MainButton as="button" type="button" color="secondary">
+                버튼
+              </MainButton>
+              <MainButton as="button" type="button" disabled>
                 버튼
               </MainButton>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
-              ModalButton
-            </h3>
-            <div className="flex flex-col gap-2">
-              <ModalButton type="button">버튼</ModalButton>
-              <ModalButton type="button" color="secondary">
-                버튼
-              </ModalButton>
-              <ModalButton disabled type="button">
-                버튼
-              </ModalButton>
-            </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               OutlineButton
             </h3>
             <div className="flex flex-col gap-2">
-              <OutlineButton type="button">버튼</OutlineButton>
-              <OutlineButton disabled type="button">
+              <OutlineButton as="a">링크</OutlineButton>
+              <OutlineButton as="button" type="button">
+                버튼
+              </OutlineButton>
+              <OutlineButton as="button" type="button" disabled>
                 버튼
               </OutlineButton>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               SmallButton
             </h3>
             <div className="flex flex-row gap-2">
-              <SmallButton type="button">버튼</SmallButton>
-              <SmallButton disabled type="button">
+              <SmallButton as="button" type="button">
+                버튼
+              </SmallButton>
+              <SmallButton as="button" type="button" disabled>
                 버튼
               </SmallButton>
             </div>
@@ -81,12 +80,12 @@ export default function AtomMaking() {
         <details open>
           <summary>Inputs</summary>
           <div className="pb-5">
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               CheckboxForm
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <CheckboxForm name="name1" value="value" checked>
+                <CheckboxForm name="name1" value="value" defaultChecked>
                   체크박스 1
                 </CheckboxForm>
                 <CheckboxForm name="name1" value="value">
@@ -94,7 +93,7 @@ export default function AtomMaking() {
                 </CheckboxForm>
               </div>
               <div className="flex flex-col gap-10">
-                <CheckboxForm name="name2" value="value" checked>
+                <CheckboxForm name="name2" value="value" defaultChecked>
                   체크박스 1
                 </CheckboxForm>
                 <CheckboxForm name="name2" value="value">
@@ -102,16 +101,16 @@ export default function AtomMaking() {
                 </CheckboxForm>
               </div>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               ImageForm
             </h3>
             <div className="flex flex-col gap-2"></div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               RadioForm
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <RadioForm name="name1" value="value" checked>
+                <RadioForm name="name1" value="value" defaultChecked>
                   라디오 1
                 </RadioForm>
                 <RadioForm name="name1" value="value">
@@ -119,22 +118,22 @@ export default function AtomMaking() {
                 </RadioForm>
               </div>
               <div className="flex flex-col gap-10">
-                <RadioForm name="name2" value="value" checked>
+                <RadioForm name="name2" value="value" defaultChecked>
                   라디오 1
                 </RadioForm>
                 <RadioForm name="name2" value="value">
                   라디오 2
                 </RadioForm>
               </div>
-              <div className="flex flex-row gap-4 items-center px-4 h-[64px] rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus-within:border-bjgray-500">
-                <div className="flex flex-col flex-grow">
+              <div className="flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500">
+                <div className="flex flex-grow flex-col">
                   <div>
                     <span className="text-b-2-regular text-bjgray-500">
                       성별
                     </span>
                   </div>
                   <div className="inline-flex justify-evenly gap-4">
-                    <RadioForm name="gender" value="value">
+                    <RadioForm name="gender" value="value" defaultChecked>
                       남자
                     </RadioForm>
                     <RadioForm name="gender" value="value">
@@ -144,7 +143,7 @@ export default function AtomMaking() {
                 </div>
               </div>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               Textarea
             </h3>
             <div className="flex flex-col gap-10">
@@ -156,10 +155,10 @@ export default function AtomMaking() {
               />
               <Textarea label="label" id="textarea2" disabled length="200" />
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               TextForm
             </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
               <TextForm
                 type="email"
                 placeholder="email@email.com"
@@ -167,39 +166,23 @@ export default function AtomMaking() {
               >
                 이메일
               </TextForm>
-              <TextForm
-                type="password"
-                placeholder=""
-                description="description"
-              >
+              <TextForm type="password" description="description">
                 비밀번호
               </TextForm>
               <TextForm
                 type="password"
-                placeholder=""
                 description="동일한 비밀번호를 입력해주세요."
+                error
               >
                 비밀번호 확인
               </TextForm>
-              <TextForm
-                type="text"
-                placeholder="김멋사"
-                description="description"
-              >
+              <TextForm type="text" placeholder="김멋사">
                 닉네임
               </TextForm>
-              <TextForm
-                type="text"
-                placeholder="010-1234-1234"
-                description="description"
-              >
+              <TextForm type="text" placeholder="010-1234-1234">
                 휴대폰
               </TextForm>
-              <TextForm
-                type="text"
-                placeholder="1995-12-03"
-                description="description"
-              >
+              <TextForm type="text" placeholder="1995-12-03">
                 생년월일
               </TextForm>
               <TextForm
@@ -211,7 +194,6 @@ export default function AtomMaking() {
                 제목
               </TextForm>
               <TextForm
-                svgIcon
                 svgId="pin"
                 type="text"
                 hiddenLabel
@@ -231,25 +213,17 @@ export default function AtomMaking() {
                 Label
               </TextForm>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               ThinTextForm
             </h3>
             <div className="flex flex-col gap-2">
-              <ThinTextForm
-                svgIcon
-                svgId="arrow-left"
-                buttonTitle="뒤로 가기"
-                type="search"
-              >
+              <ThinTextForm type="search" backLink>
                 검색
               </ThinTextForm>
               <ThinTextForm
-                svgIcon
-                svgId="send"
-                align="right"
-                buttonTitle="보내기"
                 type="text"
                 placeholder="메세지를 입력하세요."
+                sendButton
               >
                 채팅 메세지
               </ThinTextForm>
@@ -259,12 +233,14 @@ export default function AtomMaking() {
 
         <details open>
           <summary>MessageBubble</summary>
-          <div className="pb-5"></div>
+          <div className="pb-5">
+            <MessageBubble></MessageBubble>
+          </div>
         </details>
 
         <details open>
           <summary>RoundImage</summary>
-          <div className="pb-5 ">
+          <div className="pb-5">
             <div className="flex flex-row gap-2">
               <RoundImage
                 src="/src/assets/avatar.svg"
@@ -358,19 +334,19 @@ export default function AtomMaking() {
         <details open>
           <summary>Title</summary>
           <div className="pb-5">
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               NomalTitle
             </h3>
             <div className="flex flex-col gap-2">
-              <NomalTitle backButton textButton>
+              <NomalTitle backLink path="/" resetButton>
                 페이지 제목
               </NomalTitle>
             </div>
-            <h3 className="text-h-3-regular py-2 border-b-[1px] border-bjgray-400 my-4">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               StepTitle
             </h3>
             <div className="flex flex-col gap-2">
-              <NomalTitle backButton subText="1 of 3" textButton>
+              <NomalTitle backLink subText="1 of 3">
                 페이지 제목
               </NomalTitle>
             </div>

@@ -1,5 +1,6 @@
 import { string, bool, number } from 'prop-types';
 import Svg from '../../Svg/Svg';
+import { Link } from 'react-router-dom';
 
 function ThinTextForm({
   type,
@@ -12,33 +13,21 @@ function ThinTextForm({
   minLength,
   maxLength,
   children,
-  svgIcon = false,
-  svgId,
-  align = 'left',
-  buttonTitle,
+  path,
+  backLink = false,
+  sendButton = false,
   ...rest
 }) {
-  const buttonStyle = {
-    left: 'flex-row-reverse',
-    right: 'flex-row',
+  const thinTextFormStyle = {
+    className: 'flex flex-col',
+    input:
+      'bg-transparent text-b-1-regular text-bjblack placeholder:text-b-1-regular placeholder:text-bjgray-500 read-only:text-bjblack focus:outline-none disabled:text-bjgray-500',
   };
 
-  let svgElement = null;
-
-  if (svgIcon) {
-    svgElement = (
-      <button type="button" title={buttonTitle} aria-label={buttonTitle}>
-        <Svg id={svgId} />
-      </button>
-    );
-  }
-
   return (
-    <div className="flex flex-col">
-      <div
-        className={`flex flex-row gap-4 items-center px-4 h-[40px] rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 peer ${buttonStyle[align]}`}
-      >
-        <div className="flex flex-col flex-grow">
+    <div className={thinTextFormStyle.className}>
+      <div className="peer flex h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 has-[:disabled]:bg-bjgray-200">
+        <div className="order-1 flex flex-grow flex-col">
           <label htmlFor={id} className="sr-only">
             {children}
           </label>
@@ -52,11 +41,25 @@ function ThinTextForm({
             required={required}
             minLength={minLength}
             maxLength={maxLength}
-            className="bg-transparent focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:text-bjgray-500 read-only:text-bjblack"
+            className={thinTextFormStyle.input}
             {...rest}
           />
         </div>
-        {svgElement}
+        {backLink && (
+          <Link to={path} title="뒤로 가기" aria-label="뒤로 가기">
+            <Svg id="arrow-left" />
+          </Link>
+        )}
+        {sendButton && (
+          <button
+            type="submit"
+            title="보내기"
+            aria-label="보내기"
+            className="order-2 text-b-1-medium text-bjblack"
+          >
+            <Svg id="send" />
+          </button>
+        )}
       </div>
     </div>
   );
@@ -65,10 +68,6 @@ function ThinTextForm({
 export default ThinTextForm;
 
 ThinTextForm.propTypes = {
-  align: string,
-  buttonTitle: string,
-  svgIcon: bool,
-  svgId: string,
   children: string,
   type: string,
   id: string,
@@ -79,4 +78,7 @@ ThinTextForm.propTypes = {
   required: bool,
   minLength: number,
   maxLength: number,
+  path: string,
+  backLink: bool,
+  sendButton: bool,
 };
