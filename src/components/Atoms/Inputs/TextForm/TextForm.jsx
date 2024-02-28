@@ -2,6 +2,7 @@ import { string, bool, number } from 'prop-types';
 import Svg from '../../Svg/Svg';
 
 function TextForm({
+  className,
   type,
   id,
   name,
@@ -41,7 +42,7 @@ function TextForm({
   }
 
   return (
-    <div className={textFormStyle.className}>
+    <div className={`${textFormStyle.className} ${className}`}>
       <div
         className={`flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500 focus-within:read-only:border-transparent has-[:disabled]:bg-bjgray-200 ${error ? 'border-bjred-400 focus-within:!border-bjred-400' : ''}`}
       >
@@ -83,6 +84,7 @@ function TextForm({
 export default TextForm;
 
 TextForm.propTypes = {
+  className: string,
   svgId: string,
   hiddenLabel: bool,
   children: string,

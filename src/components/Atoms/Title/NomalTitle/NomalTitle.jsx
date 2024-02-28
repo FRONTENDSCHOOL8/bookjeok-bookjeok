@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Atoms';
 
 function NomalTitle({
+  className,
   backLink = false,
   children,
   subText,
@@ -34,7 +35,7 @@ function NomalTitle({
   }
 
   return (
-    <div className={nomalTitleStyle.className}>
+    <div className={`${nomalTitleStyle.className} ${className}`}>
       <div className="flex flex-1 items-center justify-start">
         {backLinkElement}
       </div>
@@ -52,6 +53,7 @@ function NomalTitle({
 export default NomalTitle;
 
 NomalTitle.propTypes = {
+  className: string,
   backLink: bool,
   children: string,
   subText: string,
