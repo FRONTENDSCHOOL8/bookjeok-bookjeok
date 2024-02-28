@@ -1,14 +1,6 @@
 import { string, bool } from 'prop-types';
 
-function CheckboxForm({
-  className,
-  id,
-  name,
-  value,
-  checked,
-  children,
-  ...rest
-}) {
+function CheckboxForm({ id, name, value, checked, children, ...rest }) {
   const checkboxFormStyle = {
     className:
       'flex flex-row flex-nowrap justify-between items-center gap-4 h-full',
@@ -18,7 +10,7 @@ function CheckboxForm({
   };
 
   return (
-    <div className={`${checkboxFormStyle.className} ${className}`}>
+    <div className={checkboxFormStyle.className}>
       <label htmlFor={id} className={checkboxFormStyle.classNameLabelText}>
         {children}
       </label>
@@ -38,7 +30,6 @@ function CheckboxForm({
 export default CheckboxForm;
 
 CheckboxForm.propTypes = {
-  className: string,
   id: string,
   name: string,
   value: string,
