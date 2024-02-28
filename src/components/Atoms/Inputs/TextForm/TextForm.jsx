@@ -14,21 +14,17 @@ function TextForm({
   minLength,
   maxLength,
   description,
+  error = false,
   children,
-  svgIcon = false,
   svgId,
   hiddenLabel = false,
   ...rest
 }) {
-  let svgElement = null;
-
-  if (svgIcon) {
-    svgElement = (
-      <div>
-        <Svg id={svgId} />
-      </div>
-    );
-  }
+  const textFormStyle = {
+    className: 'flex flex-col',
+    input:
+      'bg-transparent text-b-1-regular text-bjblack placeholder:text-b-1-regular  placeholder:text-bjgray-500 read-only:text-bjblack focus:outline-none disabled:text-bjgray-500',
+  };
 
   let labelElement = (
     <label htmlFor={id}>
@@ -45,10 +41,16 @@ function TextForm({
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row gap-4 items-center px-4 h-[64px] rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 peer">
-        {svgElement}
-        <div className="flex flex-col flex-grow">
+    <div className={textFormStyle.className}>
+      <div
+        className={`flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500 focus-within:read-only:border-transparent has-[:disabled]:bg-bjgray-200 ${error ? 'border-bjred-400 focus-within:!border-bjred-400' : ''}`}
+      >
+        {svgId && (
+          <div>
+            <Svg id={svgId} />
+          </div>
+        )}
+        <div className="flex flex-grow flex-col">
           {labelElement}
           <input
             type={type}
@@ -62,14 +64,18 @@ function TextForm({
             required={required}
             minLength={minLength}
             maxLength={maxLength}
-            className="bg-transparent focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:text-bjgray-500 read-only:text-bjblack"
+            className={textFormStyle.input}
             {...rest}
           />
         </div>
       </div>
-      <p className="mt-2 px-4 text-b-2-regular text-bjgray-500 peer-has-[:invalid]:text-bjred-400 peer-has-[:required]:text-bjred-400">
-        {description}
-      </p>
+      {description && (
+        <p
+          className={`mt-2 px-4 text-b-2-regular text-bjgray-500 ${error ? 'text-bjred-400' : ''}`}
+        >
+          {description}
+        </p>
+      )}
     </div>
   );
 }
@@ -77,7 +83,6 @@ function TextForm({
 export default TextForm;
 
 TextForm.propTypes = {
-  svgIcon: bool,
   svgId: string,
   hiddenLabel: bool,
   children: string,
@@ -93,4 +98,5 @@ TextForm.propTypes = {
   minLength: number,
   maxLength: number,
   description: string,
+  error: bool,
 };
