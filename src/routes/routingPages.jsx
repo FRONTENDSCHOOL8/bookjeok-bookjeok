@@ -3,12 +3,14 @@ import { MyClubList } from '@/components/Molecules';
 import {
   ChatRoomList,
   CreateClub1,
+  DetailClub,
   Intro,
   Login,
   MainBookReview,
   MyPage,
   Welcome,
 } from '@/pages';
+import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
@@ -32,6 +34,11 @@ const routingPages = [
     path: '/mainClub/filter',
     element: <Filter />,
     loader: filterListLoader,
+  },
+  {
+    path: '/mainClub/:clubId',
+    element: <DetailClub />,
+    loader: clubDetailLoader,
   },
   {
     path: '/mainBookReview',
