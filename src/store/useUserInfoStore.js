@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const useUserInfo = create((set) => ({
+const useUserInfoStore = create((set) => ({
   userInfo: {},
   setUserInfo: async () => {
     try {
@@ -14,4 +14,4 @@ const useUserInfo = create((set) => ({
   updateUserInfo: () => {},
 }));
 
-export default useUserInfo;
+export default useUserInfoStore;

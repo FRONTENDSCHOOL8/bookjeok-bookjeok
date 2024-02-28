@@ -1,9 +1,9 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import pb from '@/api/pocketbase';
-import useUserInfo from '../../store/useUserInfo.js';
+import useUserInfoStore from '@/store/useUserInfoStore';
 
 /*
 1. useRef로 email, password -> useRef 상태관리x 
@@ -14,7 +14,7 @@ import useUserInfo from '../../store/useUserInfo.js';
 */
 
 function Login() {
-  const { setUserInfo } = useUserInfo((state) => state);
+  const { userInfo, setUserInfo } = useUserInfoStore((state) => state);
   const emailRef = useRef('');
   const passwordRef = useRef('');
   const handleLoginForm = (e) => {
@@ -26,7 +26,10 @@ function Login() {
         : (passwordRef.current = e.target.value);
     }
   };
-
+  console.log(userInfo);
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
   // 로그인 이벤트 함수 (로그인 성공/실패 결과 표시 필요 ! )
   const handleLogin = () => {
     pb.collection('users')
