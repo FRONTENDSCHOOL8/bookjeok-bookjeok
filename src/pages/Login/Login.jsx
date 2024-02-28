@@ -1,15 +1,90 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
+import { useRef, useState } from 'react';
+import pb from '@/api/pocketbase';
+import useUserInfoStore from '@/store/useUserInfoStore';
+
+/*
+1. useRef로 email, password -> useRef 상태관리x 
+2. 버튼을 눌렀을때 이메일과 패스워드가 맞는지 확인 => 완료  
+3. 어떻게 로그인 성공 / 실패를 알려야될까.. 고민중. . .
+  - 시각적 에니메이션 -> 어떻게 스크린리더사용자에게 전달할수 있을까?
+  - 성공 알림 모달-> 확인 버튼 클릭시 메인으로 이동 | 실패 모달 ?  
+*/
 
 function Login() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const { setUserInfo } = useUserInfoStore((state) => state);
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
+  const handleLoginForm = (e) => {
+    const target = e.target.closest('input');
+    if (!target) return;
+    if (target) {
+      e.target.name === 'email'
+        ? (emailRef.current = e.target.value)
+        : (passwordRef.current = e.target.value);
+    }
+  };
+
+  // 로그인 이벤트 함수 (로그인 성공/실패 결과 표시 필요 ! )
+  const handleLogin = () => {
+    pb.collection('users')
+      .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
+      .then(() => {
+        setUserInfo();
+        setIsModalOpen(true);
+        setIsLoginSuccess(true);
+      })
+      .catch((Error) => {
+        setIsLoginSuccess(false);
+        setIsModalOpen(true);
+        console.error(Error);
+      });
+  };
+
+  /* 모달 닫기 함수  */
+  const handleModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <>
+    <div className="box-border flex h-screen flex-grow flex-col justify-center px-4 ">
       <Helmet>
         <title>{getDocumentTitle('로그인')}</title>
       </Helmet>
-      <div>Login</div>
-    </>
+      <NomalTitle backButton>로그인</NomalTitle>
+      <div
+        className="flex flex-grow flex-col gap-3 "
+        onChange={handleLoginForm}
+      >
+        <TextForm type="email" placeholder="email@email.com" name="email">
+          이메일
+        </TextForm>
+        <TextForm type="password" placeholder="" name="password">
+          비밀번호
+        </TextForm>
+      </div>
+      {isModalOpen ? (
+        <Modal success={isLoginSuccess} onClose={handleModal} />
+      ) : (
+        ''
+      )}
+      <MainButton onClick={handleLogin} className="my-4" type="button">
+        로그인
+      </MainButton>
+    </div>
   );
 }
-
+function Modal({ success, onClose }) {
+  return (
+    <dialog className="h-4/9 bg-red flex w-4/12 flex-col" open>
+      <button onClick={onClose}>닫기</button>
+      {success ? '로그인 성공!' : '계정 정보를 확인해주세요'}
+      {success ? <MainButton to="/mainClub">메인으로 이동하기</MainButton> : ''}
+    </dialog>
+  );
+}
 export default Login;
