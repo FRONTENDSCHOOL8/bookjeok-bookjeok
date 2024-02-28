@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
 import { useRef } from 'react';
 import pb from '@/api/pocketbase';
+import useUserInfo from '../../store/useUserInfo.js';
 
 /*
 1. useRef로 email, password -> useRef 상태관리x 
@@ -13,6 +14,7 @@ import pb from '@/api/pocketbase';
 */
 
 function Login() {
+  const { setUserInfo } = useUserInfo((state) => state);
   const emailRef = useRef('');
   const passwordRef = useRef('');
   const handleLoginForm = (e) => {
@@ -24,11 +26,14 @@ function Login() {
         : (passwordRef.current = e.target.value);
     }
   };
+
   // 로그인 이벤트 함수 (로그인 성공/실패 결과 표시 필요 ! )
   const handleLogin = () => {
     pb.collection('users')
       .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
-      .then((data) => console.log(data))
+      .then(() => {
+        setUserInfo();
+      })
       .catch((Error) => console.error(Error));
   };
 
@@ -46,7 +51,7 @@ function Login() {
           비밀번호
         </TextForm>
       </div>
-      <MainButton onClick={handleLogin} className="my-16" type="button">
+      <MainButton onClick={handleLogin} className="my-4" type="button">
         로그인
       </MainButton>
     </div>
