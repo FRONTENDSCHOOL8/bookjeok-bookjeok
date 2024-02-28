@@ -10,11 +10,17 @@ function RoundImage({ size, src, alt, ...rest }) {
       'relative overflow-hidden rounded-full border-[1px] border-bjgray-200',
     img: 'aspect-square w-full object-cover',
   };
+  const defaultProfileImage = '/defaultProfile.webp';
 
   return (
     <div className={roundImageStyle.className}>
       <div className={`${roundImageStyle[size]} ${roundImageStyle.imgWrap}`}>
-        <img src={src} alt={alt} className={roundImageStyle.img} {...rest} />
+        <img
+          src={!src ? defaultProfileImage : src}
+          alt={alt}
+          className={roundImageStyle.img}
+          {...rest}
+        />
       </div>
     </div>
   );
