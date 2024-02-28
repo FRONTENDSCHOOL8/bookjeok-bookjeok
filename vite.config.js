@@ -1,9 +1,17 @@
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import ViteSvgSpriteWrapper from 'vite-svg-sprite-wrapper';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    ViteSvgSpriteWrapper({
+      icons: './src/assets/icons/*.svg',
+      outputDir: './public/icons',
+      sprite: {},
+    }),
+  ],
   server: {
     host: 'localhost', // default:'local'
     port: 3000, // default: 5173
