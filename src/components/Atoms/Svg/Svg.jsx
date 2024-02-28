@@ -1,23 +1,28 @@
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 
-function Svg({ width = '24', height = '24', id }) {
+function Svg({
+  id,
+  size = 24,
+  width,
+  height,
+  color = '#212121',
+  ...restProps
+}) {
+  const iconStyles = { width: width ?? size, height: height ?? size, color };
+
   return (
-    <svg
-      aria-hidden="true"
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      role="img"
-    >
-      <use href={`src/assets/icons/_sprite.svg#${id}`} />
+    <svg aria-hidden="true" style={iconStyles} {...restProps}>
+      <use href={`/icons/sprite.svg#${id}`} />
     </svg>
   );
 }
 
 Svg.propTypes = {
-  width: string,
-  height: string,
-  id: string,
+  id: string.isRequired,
+  size: number,
+  width: number,
+  height: number,
+  color: string,
 };
 
 export default Svg;

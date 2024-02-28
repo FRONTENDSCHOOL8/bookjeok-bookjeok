@@ -9,7 +9,7 @@ export async function loader() {
   const clubs = await pb.collection('socialing').getFullList({
     fields:
       'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
-    expand: 'genre,genres.title',
+    expand: 'genre',
   });
 
   const clubItems = clubs.map((club) => {
@@ -54,11 +54,11 @@ function ClubCard() {
             </span>
             <div className="flex justify-between">
               <span className="flex items-center text-b-3-regular text-bjgray-500">
-                <Svg width="16px" height="16px" id="pin" />
+                <Svg width={16} height={16} id="pin" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center text-b-3-regular text-bjgray-500">
-                <Svg width="16px" height="16px" id="user" />
+                <Svg width={16} height={16} id="user" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
