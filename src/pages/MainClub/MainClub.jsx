@@ -35,7 +35,7 @@ function ClubCard() {
       confirmUser,
     }) => (
       <li key={id}>
-        <Link className="my-4 flex flex-wrap">
+        <Link to={`/mainClub/${id}`} className="my-4 flex flex-wrap">
           <div className="relative mx-auto">
             <img className="h-[200px] rounded-5xl" src={photo} alt={title} />
             <Badge className="absolute left-2 top-2">
