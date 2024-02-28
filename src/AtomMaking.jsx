@@ -126,21 +126,19 @@ export default function AtomMaking() {
                 </RadioForm>
               </div>
               <div className="flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500">
-                <div className="flex flex-grow flex-col">
-                  <div>
-                    <span className="text-b-2-regular text-bjgray-500">
-                      성별
-                    </span>
-                  </div>
+                <fieldset className="flex flex-grow flex-col">
+                  <legend className="text-b-2-regular text-bjgray-500">
+                    성별
+                  </legend>
                   <div className="inline-flex justify-evenly gap-4">
-                    <RadioForm name="gender" value="value" defaultChecked>
+                    <RadioForm type="radio" value="male" name="gender">
                       남자
                     </RadioForm>
-                    <RadioForm name="gender" value="value">
+                    <RadioForm type="radio" value="female" name="gender">
                       여자
                     </RadioForm>
                   </div>
-                </div>
+                </fieldset>
               </div>
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">

@@ -1,6 +1,7 @@
 import { string, bool, number } from 'prop-types';
 
 function Textarea({
+  className,
   label,
   id,
   name,
@@ -17,13 +18,12 @@ function Textarea({
   ...rest
 }) {
   const textareaStyle = {
-    className: '',
     textarea:
       'w-full p-4 rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus:border-bjgray-400 focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:bg-bjgray-200 disabled:text-bjgray-500',
   };
 
   return (
-    <div className={textareaStyle.className}>
+    <div className={`${textareaStyle.className} ${className}`}>
       <label htmlFor={id} className="sr-only">
         {label}
       </label>
@@ -52,6 +52,7 @@ function Textarea({
 export default Textarea;
 
 Textarea.propTypes = {
+  className: string,
   label: string,
   id: string,
   name: string,

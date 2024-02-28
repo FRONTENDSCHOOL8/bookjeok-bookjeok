@@ -1,8 +1,7 @@
 import { string } from 'prop-types';
 
-function RoundImage({ size, src, alt, ...rest }) {
+function RoundImage({ className, size, src, alt, ...rest }) {
   const roundImageStyle = {
-    className: '',
     sm: 'w-[24px] h-[24px]',
     md: 'w-[36px] h-[36px]',
     lg: 'w-[56px] h-[56px]',
@@ -12,7 +11,7 @@ function RoundImage({ size, src, alt, ...rest }) {
   };
 
   return (
-    <div className={roundImageStyle.className}>
+    <div className={`${roundImageStyle.className} ${className}`}>
       <div className={`${roundImageStyle[size]} ${roundImageStyle.imgWrap}`}>
         <img src={src} alt={alt} className={roundImageStyle.img} {...rest} />
       </div>
@@ -23,6 +22,7 @@ function RoundImage({ size, src, alt, ...rest }) {
 export default RoundImage;
 
 RoundImage.propTypes = {
+  className: string,
   size: string,
   src: string,
   alt: string,
