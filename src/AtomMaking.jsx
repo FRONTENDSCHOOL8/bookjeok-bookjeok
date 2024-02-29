@@ -2,6 +2,7 @@ import {
   Accordion,
   Badge,
   CheckboxForm,
+  ImageForm,
   MainButton,
   MessageBubble,
   NomalTitle,
@@ -119,7 +120,9 @@ export default function AtomMaking() {
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               ImageForm
             </h3>
-            <div className="flex flex-col gap-2"></div>
+            <div className="flex flex-col gap-2">
+              <ImageForm src="/src/assets/temp.png" alt="" />
+            </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               RadioForm
             </h3>
