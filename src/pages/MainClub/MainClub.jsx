@@ -100,9 +100,11 @@ function MainClub() {
             필터
           </MainButton>
         </div>
-        <ul className=" grid grid-cols-2 gap-4">
-          <ClubCard />
-        </ul>
+        <main>
+          <ul className=" grid grid-cols-2 gap-4">
+            <ClubCard />
+          </ul>
+        </main>
       </div>
       <GNB createClub />
     </>

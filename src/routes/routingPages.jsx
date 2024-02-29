@@ -1,4 +1,5 @@
 import AtomMaking from '@/AtomMaking';
+import { ProtectRoute } from '@/components/Common';
 import { MyClubList } from '@/components/Molecules';
 import {
   ApplicationClub1,
@@ -9,7 +10,6 @@ import {
   Login,
   MainBookReview,
   MyPage,
-  ProtectRoute,
   Welcome,
 } from '@/pages';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
@@ -19,11 +19,10 @@ import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
 
 const isLogined = true;
-
 const routingPages = [
   {
     path: '/',
-    element: <Intro />,
+    element: <Intro isAllowed={isLogined} />,
   },
   {
     path: '/atomMaking',

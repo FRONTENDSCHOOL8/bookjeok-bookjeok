@@ -1,7 +1,12 @@
 import { Navigate } from 'react-router-dom';
-import { bool, string, node } from 'prop-types';
-function ProtectRoute({ isAllowed = false, redirectPath = '/', children }) {
-  if (!isAllowed) {
+import { string, node } from 'prop-types';
+import useUserInfoStore from '@/store/useUserInfoStore';
+
+function ProtectRoute({ redirectPath = '/', children }) {
+  const { userInfo } = useUserInfoStore();
+  console.log(userInfo);
+
+  if (!userInfo) {
     return <Navigate to={redirectPath} replace />;
   }
   return children;
@@ -10,7 +15,6 @@ function ProtectRoute({ isAllowed = false, redirectPath = '/', children }) {
 export default ProtectRoute;
 
 ProtectRoute.propTypes = {
-  isAllowed: bool,
   redirectPath: string,
   children: node,
 };
