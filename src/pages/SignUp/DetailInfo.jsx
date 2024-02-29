@@ -1,4 +1,4 @@
-import { Link, Form, useLocation, redirect } from 'react-router-dom';
+import { useNavigate, Form, useLocation } from 'react-router-dom';
 import {
   MainButton,
   NomalTitle,
@@ -19,6 +19,7 @@ import pb from '@/api/pocketbase';
 
 export default function DetailInfo() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(state);
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
   const [isRegisteredPhone, setIsRegisteredPhone] = useState(true);
@@ -34,8 +35,9 @@ export default function DetailInfo() {
     pb.collection('users')
       .create(userInfo)
       .then(() => {
-        pb.collection('users').requestVerification(`${userInfo.email}`);
-      });
+        navigate('/welcome');
+      })
+      .catch((Error) => console.error(Error));
   };
 
   //닉네임 중복 검사
@@ -61,6 +63,13 @@ export default function DetailInfo() {
         .catch((Error) => console.error(Error));
     }
   }, [debouncedUserInfo.phone]);
+
+  //기본 정보 미기입 후 주소창 /signup/detail 페이지로 이동시 강제로 기본정보 입력 페이지로 이동
+  useEffect(() => {
+    if (!state) {
+      return navigate('/signup');
+    }
+  }, [state]);
 
   if (state) {
     return (
@@ -135,25 +144,22 @@ export default function DetailInfo() {
             </fieldset>
           </div>
         </Form>
-        <Link to="/welcome">
-          <MainButton
-            type="button"
-            disabled={
-              !(
-                !isRegisteredPhone &&
-                userInfo.birth !== '' &&
-                userInfo.gender !== '' &&
-                !isDuplicatedNickname
-              )
-            }
-            onClick={handleSubmit}
-          >
-            다음
-          </MainButton>
-        </Link>
+
+        <MainButton
+          as="button"
+          disabled={
+            !(
+              !isRegisteredPhone &&
+              userInfo.birth !== '' &&
+              userInfo.gender !== '' &&
+              !isDuplicatedNickname
+            )
+          }
+          onClick={handleSubmit}
+        >
+          다음
+        </MainButton>
       </div>
     );
-  } else {
-    return redirect('/signup');
   }
 }
