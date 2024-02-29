@@ -1,49 +1,41 @@
+import { string } from 'prop-types';
 import RoundImage from '../RoundImage/RoundImage';
 
-function MessageBubble() {
+function MessageBubble({
+  className,
+  align = 'left',
+  src,
+  alt,
+  nickname,
+  children,
+  time,
+}) {
+  const messageBubbleStyle = {
+    className: '*:py-[9px]',
+    left: 'group-left',
+    right: 'group-right',
+  };
+
   return (
     <>
-      <ul className="*:py-[9px]">
-        <li>
-          <div className="flex flex-row items-center gap-4 group-[.group-rtl]:flex-row-reverse group-[.group-rtl]:text-right">
+      <ul className={`${messageBubbleStyle.className} ${className}`}>
+        <li className={`${messageBubbleStyle[align]} group`}>
+          <div className="flex flex-row items-center gap-4 group-[.group-right]:flex-row-reverse group-[.group-right]:text-right">
             <div className="self-start pt-3">
-              <RoundImage
-                src="/src/assets/avatar.svg"
-                alt="alt"
-                size="md"
-              ></RoundImage>
+              <RoundImage src={src} alt={alt} size="md"></RoundImage>
             </div>
-            <div>
-              <p className="text-b-2-regular text-bjgray-500">작성자</p>
-              <div className="flex flex-row items-end gap-2 group-[.group-rtl]:flex-row-reverse">
-                <div className="flex min-h-9 min-w-24 items-center justify-start rounded-[10px] rounded-tl-none bg-bjyellow-400 px-4 py-2 text-b-2-medium">
-                  내용
+            <div className="basis-4/5">
+              <p className="text-b-2-regular text-bjgray-500">{nickname}</p>
+              <div className="flex flex-row items-end gap-2 group-[.group-right]:flex-row-reverse">
+                <div className="flex min-h-9 min-w-24 items-center justify-start whitespace-break-spaces break-keep rounded-[10px] rounded-tl-none bg-bjyellow-400 px-4 py-2 text-b-2-medium group-[.group-right]:justify-end group-[.group-left]:rounded-tl-none group-[.group-right]:rounded-tl-[10px] group-[.group-right]:rounded-tr-none">
+                  {children}
                 </div>
-                <div className="whitespace-nowrap text-b-3-light text-bjgray-500">
-                  오후 2:00
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li className="group-rtl group">
-          <div className="flex flex-row items-center gap-4 group-[.group-rtl]:flex-row-reverse group-[.group-rtl]:text-right">
-            <div className="self-start pt-3">
-              <RoundImage
-                src="/src/assets/avatar.svg"
-                alt="alt"
-                size="md"
-              ></RoundImage>
-            </div>
-            <div>
-              <p className="text-b-2-regular text-bjgray-500">작성자</p>
-              <div className="flex flex-row items-end gap-2 group-[.group-rtl]:flex-row-reverse">
-                <div className="m-h-9 flex min-w-24 items-center justify-start break-keep rounded-[10px] rounded-tl-none bg-bjyellow-400 px-4 py-2 text-b-2-medium group-[.group-rtl]:rounded-[10px] group-[.group-rtl]:rounded-tr-none">
-                  모임에 참석하기 전에 책을 읽어오셔야 돼요 !
-                </div>
-                <div className="whitespace-nowrap text-b-3-light text-bjgray-500">
-                  오후 2:00
-                </div>
+                <time
+                  className="whitespace-nowrap text-b-3-light text-bjgray-500"
+                  dateTime={time}
+                >
+                  {time}
+                </time>
               </div>
             </div>
           </div>
@@ -54,3 +46,13 @@ function MessageBubble() {
 }
 
 export default MessageBubble;
+
+MessageBubble.propTypes = {
+  className: string,
+  align: string,
+  src: string,
+  alt: string,
+  nickname: string,
+  children: string,
+  time: string,
+};

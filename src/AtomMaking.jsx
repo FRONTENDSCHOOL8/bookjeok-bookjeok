@@ -22,7 +22,22 @@ export default function AtomMaking() {
         <details open>
           <summary>Accordion</summary>
           <div className="pb-5">
-            <Accordion></Accordion>
+            <Accordion
+              smallText="신청 후 24시간이 지나면 자동으로 대기가 취소돼요."
+              open
+              src="/src/assets/avatar.svg"
+              nickname="닉네임"
+              text="내용"
+            >
+              참여 대기 멤버 <span className="text-bjred-400">2</span>명 참여
+            </Accordion>
+            <Accordion
+              src="/src/assets/avatar.svg"
+              nickname="닉네임"
+              text="내용"
+            >
+              확정 멤버 4명 중 <span className="text-bjgray-500">0</span>명
+            </Accordion>
           </div>
         </details>
 
@@ -232,7 +247,23 @@ export default function AtomMaking() {
         <details open>
           <summary>MessageBubble</summary>
           <div className="pb-5">
-            <MessageBubble></MessageBubble>
+            <MessageBubble
+              src="/src/assets/avatar.svg"
+              alt="작성자"
+              nickname="작성자"
+              time="오후 2:00"
+            >
+              모임에 참석하기 전에 책을 읽어오셔야 돼요 !
+            </MessageBubble>
+            <MessageBubble
+              align="right"
+              src="/src/assets/avatar.svg"
+              alt="작성자"
+              nickname="작성자"
+              time="오후 2:00"
+            >
+              내용
+            </MessageBubble>
           </div>
         </details>
 
