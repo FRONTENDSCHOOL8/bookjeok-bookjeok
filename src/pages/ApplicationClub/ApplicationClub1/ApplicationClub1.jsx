@@ -62,7 +62,7 @@ function ApplicationClub1() {
         </CheckboxForm>
         <MainButton
           color={isAgreement ? 'primary' : 'secondary'}
-          to={isAgreement ? `/applicationClub2/${socialingId}` : '#'}
+          to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : '#'}
         >
           다음
         </MainButton>
