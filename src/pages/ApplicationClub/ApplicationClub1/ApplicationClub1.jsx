@@ -1,8 +1,24 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { NomalTitle, RadioForm, MainButton } from '@/components/Atoms';
+import { NomalTitle, CheckboxForm, MainButton } from '@/components/Atoms';
 import { Svg } from '@/components/Atoms';
+import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+
+export async function loader({ params }) {
+  const socialingId = params;
+  return { socialingId };
+}
+
 function ApplicationClub1() {
+  const { socialingId } = useLoaderData();
+
+  const [isAgreement, setIsAgreement] = useState(false);
+
+  const handleChecked = () => {
+    setIsAgreement((prev) => !prev);
+  };
+
   return (
     <>
       <Helmet>
@@ -14,14 +30,14 @@ function ApplicationClub1() {
         </NomalTitle>
         <p>모두가 즐거운 소셜링이 될 수 있도록 함께 지켜주세요</p>
         <ul>
-          <li className="text-bjgreen-400 flex">
+          <li className="flex text-bjgreen-400">
             <Svg id="info" color="bjgreen-400" />
             <p>
               모임 시작 전 부득이하게 참여가 어려워진 경우, 반드시 호스트에게
               미리 알려주세요.
             </p>
           </li>
-          <li className="text-bjgreen-400 flex">
+          <li className="flex text-bjgreen-400">
             <Svg id="info" color="bjgreen-400" />
             <p>
               나와 다른 의견에도 귀 기울이며, 함께하는 멤버들을 존중하는 태도를
@@ -36,10 +52,20 @@ function ApplicationClub1() {
             </p>
           </li>
         </ul>
-        <RadioForm className="b-2-regular">
+        <CheckboxForm
+          className="b-2-regular"
+          name="agreement"
+          onChange={handleChecked}
+          checked={isAgreement}
+        >
           소셜링 이용규칙을 지키겠습니다!
-        </RadioForm>
-        <MainButton>다음</MainButton>
+        </CheckboxForm>
+        <MainButton
+          color={isAgreement ? 'primary' : 'secondary'}
+          to={isAgreement ? `/applicationClub2/${socialingId}` : '#'}
+        >
+          다음
+        </MainButton>
       </div>
     </>
   );
