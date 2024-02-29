@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 function RootLayout() {
   return (
-    <div className="max-w-[430px] mx-auto">
+    <div className="mx-auto max-w-[430px] bg-white">
       <Outlet />
     </div>
   );

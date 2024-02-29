@@ -8,6 +8,7 @@ import {
   Login,
   MainBookReview,
   MyPage,
+  ProtectRoute,
   Welcome,
 } from '@/pages';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
@@ -15,6 +16,8 @@ import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
+
+const isLogined = true;
 
 const routingPages = [
   {
@@ -32,17 +35,30 @@ const routingPages = [
   },
   {
     path: '/mainClub/filter',
-    element: <Filter />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <Filter />
+      </ProtectRoute>
+    ),
     loader: filterListLoader,
+    action: Filter.action,
   },
   {
     path: '/mainClub/:clubId',
-    element: <DetailClub />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <DetailClub />
+      </ProtectRoute>
+    ),
     loader: clubDetailLoader,
   },
   {
     path: '/mainBookReview',
-    element: <MainBookReview />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <MainBookReview />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/login',
@@ -50,19 +66,35 @@ const routingPages = [
   },
   {
     path: '/myClubList',
-    element: <MyClubList />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <MyClubList />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/createClub',
-    element: <CreateClub1 />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <CreateClub1 />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/chatRoomList',
-    element: <ChatRoomList />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <ChatRoomList />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/myPage',
-    element: <MyPage />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <MyPage />
+      </ProtectRoute>
+    ),
   },
 
   {
@@ -75,7 +107,11 @@ const routingPages = [
   },
   {
     path: '/Welcome',
-    element: <Welcome />,
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <Welcome />
+      </ProtectRoute>
+    ),
   },
 ];
 

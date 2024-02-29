@@ -24,7 +24,9 @@ function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <NomalTitle backButton>모임 상세보기</NomalTitle>
+      <NomalTitle backLink path="/mainClub">
+        모임 상세보기
+      </NomalTitle>
 
       <main className="relative flex h-full w-full flex-col">
         <figure className="relative max-h-[263px] max-w-[430px] overflow-hidden">
@@ -34,27 +36,29 @@ function DetailClub() {
         <div className="">
           <Avatar nickName={expand.createUser.nickname} text={title}></Avatar>
         </div>
-        <section className="flex h-full flex-col gap-4 bg-bjgray-100 px-4">
+        <section className="flex h-full min-h-svh flex-col gap-4 bg-bjgray-100 px-4">
           <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
             <span className="flex items-center">
-              <Svg width={16} height={16} id="pin" />
+              <Svg color="#9e9e9e" size={12} id="pin" />
               {!isOffline ? '온라인' : location}
             </span>
             <span className="flex items-center">
-              <Svg width={16} height={16} id="calendar" />
+              <Svg color="#9e9e9e" size={12} id="calendar" />
               {calcDay(dateTime)}
             </span>
             <span className="flex items-center">
-              <Svg width={16} height={16} id="user" />
+              <Svg color="#9e9e9e" size={12} id="user" />
               {confirmUser.length}/{limitPerson}
             </span>
           </div>
           <div>{detail}</div>
         </section>
         <div>{active}</div>
-        <MainButton className="my-4" to="/">
-          신청하기
-        </MainButton>
+        <div className="px-4">
+          <MainButton className="my-4" to="/createClub">
+            신청하기
+          </MainButton>
+        </div>
       </main>
       <GNB createClub />
     </>

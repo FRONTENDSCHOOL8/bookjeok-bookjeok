@@ -1,5 +1,5 @@
 import pb from '@/api/pocketbase';
-import { Badge, Svg } from '@/components/Atoms';
+import { Badge, MainButton, Svg } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
@@ -35,7 +35,7 @@ function ClubCard() {
       confirmUser,
     }) => (
       <li key={id}>
-        <Link to={`/mainClub/${id}`} className="my-4 flex flex-wrap">
+        <Link to={`/mainClub/${id}`} className="mx-2 my-2 flex flex-wrap">
           <div className="relative mx-auto">
             <img className="h-[200px] rounded-5xl" src={photo} alt={title} />
             <Badge className="absolute left-2 top-2">
@@ -44,7 +44,9 @@ function ClubCard() {
           </div>
           <div className="flex w-full flex-col gap-1 p-4">
             <div className="flex justify-between">
-              <h4 className="text-b-1-medium">{title}</h4>
+              <h4 className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-b-1-medium">
+                {title}
+              </h4>
               <button>
                 <Svg id="heart" />
               </button>
@@ -54,11 +56,11 @@ function ClubCard() {
             </span>
             <div className="flex justify-between">
               <span className="flex items-center text-b-3-regular text-bjgray-500">
-                <Svg width={16} height={16} id="pin" />
+                <Svg color="#9e9e9e" width={16} height={16} id="pin" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center text-b-3-regular text-bjgray-500">
-                <Svg width={16} height={16} id="user" />
+                <Svg color="#9e9e9e" width={16} height={16} id="user" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
@@ -80,12 +82,23 @@ function MainClub() {
           북적북적
         </header>
         <MainKindToggle />
-        <Link to="/mainClub/filter">필터</Link>
-        <ul className="mx-4 grid grid-cols-2 gap-4">
+        <div className="flex items-center justify-center gap-4   pt-2">
+          <MainButton className="mx-2 h-9" color="secondary" to="/mainClub/">
+            정렬
+          </MainButton>
+          <MainButton
+            className="mx-2 h-9"
+            color="secondary"
+            to="/mainClub/filter"
+          >
+            필터
+          </MainButton>
+        </div>
+        <ul className=" grid grid-cols-2 gap-4">
           <ClubCard />
         </ul>
-        <GNB createClub />
       </div>
+      <GNB createClub />
     </>
   );
 }
