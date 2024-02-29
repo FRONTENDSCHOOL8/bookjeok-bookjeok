@@ -22,6 +22,13 @@ const theme = {
       400: '#ef5350',
       500: '#f44336',
     },
+    bjgreen: {
+      100: '##c8e6c9',
+      200: '#a5d6a7',
+      300: '#81c784',
+      400: '#66bb6a',
+      500: '#4caf50',
+    },
   },
   fontFamily: { sans: 'Pretendard-Regular' },
   fontSize: {
