@@ -1,6 +1,5 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import { OutlineButton } from '@/components/Atoms';
 function Welcome() {
   return (
@@ -29,12 +28,12 @@ function Welcome() {
           <span>이제 북적북적에서 </span>
           <span>책을 모여서 읽어봐요!</span>
         </div>
-        <Link
+        <OutlineButton
           className="mb-14 h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
           to="/login"
         >
-          <OutlineButton>홈으로 돌아가기</OutlineButton>
-        </Link>
+          홈으로 돌아가기
+        </OutlineButton>
       </div>
     </>
   );
