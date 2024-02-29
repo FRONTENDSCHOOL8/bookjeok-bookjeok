@@ -12,7 +12,6 @@ export async function loader() {
 
 function FilterList() {
   const filterList = useLoaderData();
-  console.log(filterList);
   return filterList.map(({ id, title }) => {
     return (
       <li key={id}>
@@ -38,15 +37,6 @@ function Filter() {
           <NomalTitle backButton textButton path="/mainClub">
             필터
           </NomalTitle>
-          {/* <header className="flex justify-between p-4 ">
-            <Link>
-              <Svg width={16} height={16} id="arrow-left" />
-            </Link>
-            <h1 className="text-b-1-medium">카테고리</h1>
-            <button tabIndex="1" type="reset">
-              초기화
-            </button>
-          </header> */}
           <ul className="mx-4">
             <li>
               <CheckboxForm
@@ -59,9 +49,11 @@ function Filter() {
             </li>
             <FilterList />
           </ul>
-          <MainButton as="button" type="submit">
-            선택완료
-          </MainButton>
+          <div className="p-4">
+            <MainButton as="button" type="submit">
+              선택완료
+            </MainButton>
+          </div>
         </Form>
       </main>
     </>
