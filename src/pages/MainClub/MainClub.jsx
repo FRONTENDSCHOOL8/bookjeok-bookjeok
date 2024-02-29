@@ -82,12 +82,18 @@ function MainClub() {
           북적북적
         </header>
         <MainKindToggle />
-        <div className="flex items-center justify-center gap-4   pt-2">
-          <MainButton className="mx-2 h-9" color="secondary" to="/mainClub/">
+        <div className="flex items-center justify-center gap-4 pt-2">
+          <MainButton
+            className="mx-2"
+            size="sm"
+            color="secondary"
+            to="/mainClub/"
+          >
             정렬
           </MainButton>
           <MainButton
             className="mx-2 h-9"
+            size="sm"
             color="secondary"
             to="/mainClub/filter"
           >

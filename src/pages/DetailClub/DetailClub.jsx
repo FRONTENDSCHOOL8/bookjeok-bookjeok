@@ -17,6 +17,7 @@ function DetailClub() {
     limitPerson,
     location,
     expand,
+    id,
   } = useLoaderData();
 
   return (
@@ -55,7 +56,7 @@ function DetailClub() {
         </section>
         <div>{active}</div>
         <div className="px-4">
-          <MainButton className="my-4" to="/createClub">
+          <MainButton className="my-4" to={`/applicationClub/${id}`}>
             신청하기
           </MainButton>
         </div>
