@@ -51,31 +51,37 @@ function Login() {
   };
 
   return (
-    <div className="box-border flex h-screen flex-grow flex-col justify-center px-4 ">
-      <Helmet>
-        <title>{getDocumentTitle('로그인')}</title>
-      </Helmet>
-      <NomalTitle backButton>로그인</NomalTitle>
-      <div
-        className="flex flex-grow flex-col gap-3 "
-        onChange={handleLoginForm}
-      >
-        <TextForm type="email" placeholder="email@email.com" name="email">
-          이메일
-        </TextForm>
-        <TextForm type="password" placeholder="" name="password">
-          비밀번호
-        </TextForm>
+    <>
+      <div className="flex h-dvh h-screen flex-col">
+        <Helmet>
+          <title>{getDocumentTitle('로그인')}</title>
+        </Helmet>
+        <NomalTitle backLink>로그인</NomalTitle>
+        <div className="flex-grow">
+          <div
+            className="flex flex-col gap-y-4 px-4 py-2"
+            onChange={handleLoginForm}
+          >
+            <TextForm type="email" placeholder="email@email.com" name="email">
+              이메일
+            </TextForm>
+            <TextForm type="password" placeholder="" name="password">
+              비밀번호
+            </TextForm>
+          </div>
+          {isModalOpen ? (
+            <Modal success={isLoginSuccess} onClose={handleModal} />
+          ) : (
+            ''
+          )}
+        </div>
+        <div className="mt-auto p-4">
+          <MainButton onClick={handleLogin} type="button">
+            로그인
+          </MainButton>
+        </div>
       </div>
-      {isModalOpen ? (
-        <Modal success={isLoginSuccess} onClose={handleModal} />
-      ) : (
-        ''
-      )}
-      <MainButton onClick={handleLogin} className="my-4" type="button">
-        로그인
-      </MainButton>
-    </div>
+    </>
   );
 }
 function Modal({ success, onClose }) {
