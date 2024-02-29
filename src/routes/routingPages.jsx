@@ -1,6 +1,7 @@
 import AtomMaking from '@/AtomMaking';
 import { MyClubList } from '@/components/Molecules';
 import {
+  ApplicationClub1,
   ChatRoomList,
   CreateClub1,
   DetailClub,
@@ -77,6 +78,14 @@ const routingPages = [
     element: (
       <ProtectRoute isAllowed={isLogined}>
         <CreateClub1 />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/applicationClub/:clubId',
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <ApplicationClub1 />
       </ProtectRoute>
     ),
   },
