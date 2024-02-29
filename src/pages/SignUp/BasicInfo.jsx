@@ -70,74 +70,79 @@ export default function BasicInfo() {
 
   return (
     <>
-      <NomalTitle backButton subText="1 of 2">
-        회원가입
-      </NomalTitle>
-      <h2 className="text-h-2-semibold">기본 정보</h2>
-      <Form className="flex flex-col" method="post">
-        <TextForm
-          name="email"
-          type="email"
-          id="email"
-          onChange={handleUserInfo}
-          autoComplete="off"
-          description={
-            (userInfo.email == '' || isValidateEmail
-              ? ''
-              : '이메일 형식이 올바르지 않습니다.',
-            userInfo.email && isValidateEmail && isRegisteredEmail
-              ? '이미 사용 중인 이메일 주소입니다.'
-              : '')
-          }
-        >
-          이메일
-        </TextForm>
+      <div className="flex h-dvh h-screen flex-col">
+        <NomalTitle backLink subText="1 of 2">
+          회원가입
+        </NomalTitle>
+        <div className="flex-grow">
+          <h2 className="p-4 text-h-2-semibold">기본 정보</h2>
+          <Form className="flex flex-col gap-y-4 px-4 py-2" method="post">
+            <TextForm
+              name="email"
+              type="email"
+              id="email"
+              onChange={handleUserInfo}
+              autoComplete="off"
+              description={
+                (userInfo.email == '' || isValidateEmail
+                  ? ''
+                  : '이메일 형식이 올바르지 않습니다.',
+                userInfo.email && isValidateEmail && isRegisteredEmail
+                  ? '이미 사용 중인 이메일 주소입니다.'
+                  : '')
+              }
+            >
+              이메일
+            </TextForm>
 
-        <TextForm
-          type="password"
-          id="password"
-          name="password"
-          onChange={handleUserInfo}
-          autoComplete="off"
-          description={
-            userInfo.password == '' || isValidatePassword
-              ? ''
-              : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
-          }
-        >
-          비밀번호
-        </TextForm>
-        <TextForm
-          id="passwordConfirm"
-          type="password"
-          name="passwordConfirm"
-          onChange={handleUserInfo}
-          autoComplete="off"
-          description={
-            userInfo.password == '' || isconfirmPassword
-              ? ''
-              : '동일한 비밀번호를 입력해주세요.'
-          }
-        >
-          비밀번호 확인
-        </TextForm>
-      </Form>
-
-      <MainButton
-        state={userInfo}
-        to={
-          !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-            ? '#'
-            : '/signup/detail'
-        }
-        color={
-          !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-            ? 'secondary'
-            : 'primary'
-        }
-      >
-        다음
-      </MainButton>
+            <TextForm
+              type="password"
+              id="password"
+              name="password"
+              onChange={handleUserInfo}
+              autoComplete="off"
+              description={
+                userInfo.password == '' || isValidatePassword
+                  ? ''
+                  : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
+              }
+            >
+              비밀번호
+            </TextForm>
+            <TextForm
+              id="passwordConfirm"
+              type="password"
+              name="passwordConfirm"
+              onChange={handleUserInfo}
+              autoComplete="off"
+              description={
+                userInfo.password == '' || isconfirmPassword
+                  ? ''
+                  : '동일한 비밀번호를 입력해주세요.'
+              }
+            >
+              비밀번호 확인
+            </TextForm>
+          </Form>
+        </div>
+        <div className="mt-auto p-4">
+          <MainButton
+            state={userInfo}
+            to={
+              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+                ? '#'
+                : '/signup/detail'
+            }
+            color={
+              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+                ? 'secondary'
+                : 'primary'
+            }
+          >
+            다음
+          </MainButton>
+        </div>
+      </div>
     </>
   );
 }
