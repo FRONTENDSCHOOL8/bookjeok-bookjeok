@@ -11,7 +11,8 @@ function NomalTitle({
   path,
 }) {
   const nomalTitleStyle = {
-    className: 'h-[56px] px-4 flex flex-row justify-center items-center',
+    className:
+      'h-[56px] px-4 flex flex-row justify-center items-center shrink-0',
   };
 
   let backLinkElement = null;
