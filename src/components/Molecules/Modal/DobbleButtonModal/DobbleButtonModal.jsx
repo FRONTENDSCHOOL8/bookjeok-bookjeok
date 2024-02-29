@@ -28,7 +28,7 @@ function DobbleButtonModal({
       {...rest}
     >
       <div className="fixed inset-0 bg-bjblack bg-opacity-70 transition-opacity" />
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div className="fixed inset-0 z-10 w-screen overflow-y-hidden">
         <div className="flex min-h-full items-center justify-center p-8 text-center">
           <div className="relative transform overflow-hidden rounded-5xl bg-white text-center shadow-xl transition-all">
             <div
@@ -77,11 +77,17 @@ function DobbleButtonModal({
               </div>
               {closeButton && (
                 <button
-                  className="absolute right-4 top-4"
+                  className="absolute right-4 top-4 h-4 w-4"
                   title="닫기"
                   aria-label="닫기"
                 >
-                  <Svg id="close" width="24" height="24" color="#212121" />
+                  <Svg
+                    id="close"
+                    width="24"
+                    height="24"
+                    color="#212121"
+                    className="absolute right-0 top-0 h-4 w-4"
+                  />
                 </button>
               )}
             </div>
