@@ -15,10 +15,24 @@ import {
   ThinTextForm,
 } from './components/Atoms';
 import Svg from './components/Atoms/Svg/Svg';
+import { DobbleButtonModal } from './components/Molecules';
 
 export default function AtomMaking() {
   return (
     <>
+      <DobbleButtonModal
+        open
+        svgId="logo"
+        title="북적북적을 이용하시려면 로그인을 해주세요."
+        closeButton
+        primaryButtonText="메인으로 이동하기"
+        primaryButtonPath="/"
+        secondaryButtonText="취소"
+        secondaryButtonPath="/"
+      >
+        소셜링 참여 신청을 수락하시겠어요?
+      </DobbleButtonModal>
+
       <div className="p-5">
         <details open>
           <summary>Accordion</summary>
