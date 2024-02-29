@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, Form } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import { useDebounce } from '@/hooks/index';
 import { validateEmail, validatePassword } from '@/utils';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
@@ -123,16 +123,21 @@ export default function BasicInfo() {
         </TextForm>
       </Form>
 
-      <Link to="/signup/detail" state={userInfo}>
-        <MainButton
-          type="button"
-          disabled={
-            !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-          }
-        >
-          다음
-        </MainButton>
-      </Link>
+      <MainButton
+        state={userInfo}
+        to={
+          !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+            ? '#'
+            : '/signup/detail'
+        }
+        color={
+          !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
+            ? 'secondary'
+            : 'primary'
+        }
+      >
+        다음
+      </MainButton>
     </>
   );
 }

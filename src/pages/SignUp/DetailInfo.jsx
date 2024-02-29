@@ -1,4 +1,4 @@
-import { Link, Form, useLocation, redirect } from 'react-router-dom';
+import { useNavigate, Form, useLocation, redirect } from 'react-router-dom';
 import {
   MainButton,
   NomalTitle,
@@ -19,6 +19,7 @@ import pb from '@/api/pocketbase';
 
 export default function DetailInfo() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(state);
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
   const [isRegisteredPhone, setIsRegisteredPhone] = useState(true);
@@ -34,8 +35,9 @@ export default function DetailInfo() {
     pb.collection('users')
       .create(userInfo)
       .then(() => {
-        pb.collection('users').requestVerification(`${userInfo.email}`);
-      });
+        navigate('/welcome');
+      })
+      .catch((Error) => console.error(Error));
   };
 
   //닉네임 중복 검사
@@ -61,99 +63,93 @@ export default function DetailInfo() {
         .catch((Error) => console.error(Error));
     }
   }, [debouncedUserInfo.phone]);
+  return (
+    <div className="flex flex-col">
+      <NomalTitle backButton subText="2 of 2">
+        회원가입
+      </NomalTitle>
+      <h2 className="h-[64px] text-h-2-semibold">상세 정보</h2>
+      <Form className="flex flex-grow flex-col" method="post">
+        <TextForm
+          type="text"
+          id="nickname"
+          name="nickname"
+          maxLength={10}
+          onChange={handleUserInfo}
+          description={
+            userInfo.nickname && isDuplicatedNickname
+              ? '이미 사용 중인 닉네임 입니다. '
+              : ''
+          }
+        >
+          닉네임
+        </TextForm>
+        <TextForm
+          type="text"
+          id="phone"
+          name="phone"
+          maxLength={11}
+          onChange={handleUserInfo}
+          description={
+            userInfo.phone && isRegisteredPhone
+              ? '이미 가입된 전화번호입니다!'
+              : ''
+          }
+        >
+          휴대폰
+        </TextForm>
 
-  if (state) {
-    return (
-      <div className="flex flex-col">
-        <NomalTitle backButton subText="2 of 2">
-          회원가입
-        </NomalTitle>
-        <h2 className="h-[64px] text-h-2-semibold">상세 정보</h2>
-        <Form className="flex flex-grow flex-col" method="post">
-          <TextForm
-            type="text"
-            id="nickname"
-            name="nickname"
-            maxLength={10}
-            onChange={handleUserInfo}
-            description={
-              userInfo.nickname && isDuplicatedNickname
-                ? '이미 사용 중인 닉네임 입니다. '
-                : ''
-            }
-          >
-            닉네임
-          </TextForm>
-          <TextForm
-            type="text"
-            id="phone"
-            name="phone"
-            maxLength={11}
-            onChange={handleUserInfo}
-            description={
-              userInfo.phone && isRegisteredPhone
-                ? '이미 가입된 전화번호입니다!'
-                : ''
-            }
-          >
-            휴대폰
-          </TextForm>
+        <TextForm
+          type="date"
+          id="birth"
+          name="birth"
+          value={userInfo.birth}
+          onChange={handleUserInfo}
+        >
+          생년월일
+        </TextForm>
 
-          <TextForm
-            type="date"
-            id="birth"
-            name="birth"
-            value={userInfo.birth}
-            onChange={handleUserInfo}
-          >
-            생년월일
-          </TextForm>
+        <div className="flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500">
+          <fieldset className="flex flex-grow flex-col">
+            <legend className="text-b-2-regular text-bjgray-500">성별</legend>
+            <div className="inline-flex justify-evenly gap-4">
+              <RadioForm
+                type="radio"
+                value="male"
+                name="gender"
+                checked={userInfo.gender === 'male'}
+                onChange={handleUserInfo}
+              >
+                남자
+              </RadioForm>
+              <RadioForm
+                type="radio"
+                value="female"
+                name="gender"
+                checked={userInfo.gender === 'female'}
+                onChange={handleUserInfo}
+              >
+                여자
+              </RadioForm>
+            </div>
+          </fieldset>
+        </div>
+      </Form>
 
-          <div className="flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500">
-            <fieldset className="flex flex-grow flex-col">
-              <legend className="text-b-2-regular text-bjgray-500">성별</legend>
-              <div className="inline-flex justify-evenly gap-4">
-                <RadioForm
-                  type="radio"
-                  value="male"
-                  name="gender"
-                  checked={userInfo.gender === 'male'}
-                  onChange={handleUserInfo}
-                >
-                  남자
-                </RadioForm>
-                <RadioForm
-                  type="radio"
-                  value="female"
-                  name="gender"
-                  checked={userInfo.gender === 'female'}
-                  onChange={handleUserInfo}
-                >
-                  여자
-                </RadioForm>
-              </div>
-            </fieldset>
-          </div>
-        </Form>
-        <Link to="/welcome">
-          <MainButton
-            type="button"
-            disabled={
-              !(
-                !isRegisteredPhone &&
-                userInfo.birth !== '' &&
-                userInfo.gender !== '' &&
-                !isDuplicatedNickname
-              )
-            }
-            onClick={handleSubmit}
-          >
-            다음
-          </MainButton>
-        </Link>
-      </div>
-    );
-  } else {
-    return redirect('/signup');
-  }
+      <MainButton
+        as="button"
+        disabled={
+          !(
+            !isRegisteredPhone &&
+            userInfo.birth !== '' &&
+            userInfo.gender !== '' &&
+            !isDuplicatedNickname
+          )
+        }
+        onClick={handleSubmit}
+      >
+        다음
+      </MainButton>
+    </div>
+  );
 }
