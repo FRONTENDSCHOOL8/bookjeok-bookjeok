@@ -10,6 +10,7 @@ import {
 import { Svg } from '@/components/Atoms';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
+import useUserInfoStore from '@/store/useUserInfoStore';
 
 /*
 1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
@@ -32,9 +33,8 @@ export async function loader({ params }) {
 }
 
 function ApplicationClub1() {
-  const { club, profile, profilePhoto } = useLoaderData();
-  console.log(club, profile, profilePhoto);
-
+  const { club, profilePhoto } = useLoaderData();
+  const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
 
   // 답변 폼
@@ -44,18 +44,21 @@ function ApplicationClub1() {
 
   //제출 버튼
   const handleSubmit = () => {
-    const answerData = {
-      socialing: club.id,
-      answerUser: profile.id,
-      answer: answerForm,
-    };
-    pb.collection('socialingQueryAnswer')
-      .create(answerData)
-      .then(() => {
-        const updateData = { participantSocialing: [`${club.id}`] };
-        pb.collection('users').update(profile.id, updateData);
-      })
-      .catch((Error) => console.error(Error));
+    console.log(userInfo);
+    if (answerForm) {
+      const answerData = {
+        socialing: club.id,
+        answerUser: userInfo.id,
+        answer: answerForm,
+      };
+      pb.collection('socialingQueryAnswer')
+        .create(answerData)
+        .then(() => {
+          const updateData = { participantSocialing: [`${club.id}`] };
+          pb.collection('users').update(userInfo.id, updateData);
+        })
+        .catch((Error) => console.error(Error));
+    }
   };
 
   return (
