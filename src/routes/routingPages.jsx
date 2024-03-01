@@ -95,7 +95,7 @@ const routingPages = [
   {
     path: '/applicationClub2/:clubId',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <ApplicationClub2 />
       </ProtectRoute>
     ),
