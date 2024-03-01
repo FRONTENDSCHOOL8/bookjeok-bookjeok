@@ -14,7 +14,7 @@ function Textarea({
   minLength,
   maxLength,
   rows = '5',
-  length = '0',
+  length = 0,
   ...rest
 }) {
   const textareaStyle = {
@@ -65,5 +65,5 @@ Textarea.propTypes = {
   minLength: number,
   maxLength: number,
   rows: number,
-  length: string,
+  length: number,
 };
