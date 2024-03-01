@@ -5,9 +5,8 @@ function CreateClub1() {
   return (
     <>
       <Helmet>
-        <title>{getDocumentTitle('모임 생성하기')}</title>
+        <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <div>CreateClub1</div>
     </>
   );
 }
