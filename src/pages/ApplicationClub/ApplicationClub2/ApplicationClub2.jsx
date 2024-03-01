@@ -18,8 +18,6 @@ import { useState } from 'react';
 3. onChange시 하단의 length 가 변경되어야됨. 
   10자 이상이어야 버튼 활성화 
 4. users, socialing DB에 적재 
-
-
 */
 
 export async function loader({ params }) {
@@ -53,9 +51,10 @@ function ApplicationClub1() {
     };
     pb.collection('socialingQueryAnswer')
       .create(answerData)
-      .then(() =>
-        pb.collection('users').update('participantSocialing', club.id)
-      )
+      .then(() => {
+        const updateData = { participantSocialing: [`${club.id}`] };
+        pb.collection('users').update(profile.id, updateData);
+      })
       .catch((Error) => console.error(Error));
   };
 
@@ -65,7 +64,7 @@ function ApplicationClub1() {
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
       <div>
-        <NomalTitle backLink subText="1 of 2">
+        <NomalTitle backLink subText="2 of 2">
           모임신청
         </NomalTitle>
         <RoundImage size="md" src={profilePhoto} />
@@ -75,10 +74,8 @@ function ApplicationClub1() {
         </div>
         <Textarea
           onChange={handleAnswerForm}
-          placeholder={'내용을 입력해 주세요(최소 10자 이상)'}
+          placeholder={'내용을 입력해 주세요'}
           maxLength={200}
-          //믿을수가없어.... debounce를 걸면 바로바로 몇글잔지 안보이잖아..
-          //
           length={answerForm.length}
         ></Textarea>
         <Svg id="subsctract" color="bjred-400" />
