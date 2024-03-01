@@ -1,7 +1,6 @@
 import AtomMaking from '@/AtomMaking';
 import { MyClubList } from '@/components/Molecules';
 import {
-  ApplicationClub1,
   ChatRoomList,
   CreateClub1,
   DetailClub,
@@ -15,6 +14,12 @@ import {
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
+import ApplicationClub1, {
+  loader as ApplicationClub1Loader,
+} from '@/pages/ApplicationClub/ApplicationClub1/ApplicationClub1';
+import ApplicationClub2, {
+  loader as ApplicationClub2Loader,
+} from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
 
@@ -88,6 +93,16 @@ const routingPages = [
         <ApplicationClub1 />
       </ProtectRoute>
     ),
+    loader: ApplicationClub1Loader,
+  },
+  {
+    path: '/applicationClub2/:clubId',
+    element: (
+      <ProtectRoute isAllowed={isLogined}>
+        <ApplicationClub2 />
+      </ProtectRoute>
+    ),
+    loader: ApplicationClub2Loader,
   },
   {
     path: '/chatRoomList',
