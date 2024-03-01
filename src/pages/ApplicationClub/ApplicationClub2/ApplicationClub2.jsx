@@ -32,7 +32,7 @@ export async function loader({ params }) {
   return { club, profile, profilePhoto };
 }
 
-function ApplicationClub1() {
+function ApplicationClub2() {
   const { club, profilePhoto } = useLoaderData();
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
@@ -66,14 +66,18 @@ function ApplicationClub1() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div>
+      <div className="flex h-dvh h-screen flex-col p-4 ">
         <NomalTitle backLink subText="2 of 2">
           모임신청
         </NomalTitle>
-        <RoundImage size="md" src={profilePhoto} />
-        <div>
-          <p>{club.query}</p>
-          <span>작성한 답변은 호스트와 스태프에게만 공개돼요.</span>
+        <div className="flex gap-4 ">
+          <RoundImage size="md" src={profilePhoto} />
+          <div>
+            <p className="text-b-1-regular">{club.query}</p>
+            <span className="text-b-2-regular text-bjgray-500">
+              작성한 답변은 호스트와 스태프에게만 공개돼요.
+            </span>
+          </div>
         </div>
         <Textarea
           onChange={handleAnswerForm}
@@ -81,15 +85,25 @@ function ApplicationClub1() {
           maxLength={200}
           length={answerForm.length}
         ></Textarea>
-        <Svg id="subsctract" color="bjred-400" />
-        <p>
-          전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인 정보를
-          요구하는 경우 가이드 위반 모임이므로 고객센터에 신고해주세요.
-        </p>
-        <MainButton onClick={handleSubmit}>모임 신청하기</MainButton>
+        <div className="flex items-center justify-center gap-4 text-bjred-400">
+          <Svg size={24} id="subsctract" color="bjred-400" />
+          <p className="m-[13.5px] text-b-1-regular text-bjred-400">
+            전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인 정보를
+            요구하는 경우 가이드 위반 모임이므로 고객센터에 신고해주세요.
+          </p>
+        </div>
+        <div className="mt-auto ">
+          <MainButton
+            to={answerForm.length > 10 ? `/mainClub/${club.id}` : '#'}
+            onClick={handleSubmit}
+            color={answerForm.length > 10 ? 'primary' : 'secondary'}
+          >
+            모임 신청하기
+          </MainButton>
+        </div>
       </div>
     </>
   );
 }
 
-export default ApplicationClub1;
+export default ApplicationClub2;
