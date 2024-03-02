@@ -8,6 +8,7 @@ import {
   Intro,
   Login,
   MainBookReview,
+  ManagementClub,
   MyPage,
   Welcome,
 } from '@/pages';
@@ -100,6 +101,14 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: ApplicationClub2Loader,
+  },
+  {
+    path: '/managementClub',
+    element: (
+      <ProtectRoute>
+        <ManagementClub />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/chatRoomList',

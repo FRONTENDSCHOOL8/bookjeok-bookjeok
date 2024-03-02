@@ -1,5 +1,5 @@
 import { string, bool, number } from 'prop-types';
-import Svg from '../../Svg/Svg';
+import { Svg } from '@/components/Atoms';
 
 function TextForm({
   className,
