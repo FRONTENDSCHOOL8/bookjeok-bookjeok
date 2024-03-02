@@ -1,7 +1,7 @@
 import AtomMaking from '@/AtomMaking';
+import { ProtectRoute } from '@/components/Common';
 import { MyClubList } from '@/components/Molecules';
 import {
-  ApplicationClub1,
   ChatRoomList,
   CreateClub1,
   DetailClub,
@@ -9,16 +9,19 @@ import {
   Login,
   MainBookReview,
   MyPage,
-  ProtectRoute,
   Welcome,
 } from '@/pages';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
+import ApplicationClub1, {
+  loader as ApplicationClub1Loader,
+} from '@/pages/ApplicationClub/ApplicationClub1/ApplicationClub1';
+import ApplicationClub2, {
+  loader as ApplicationClub2Loader,
+} from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
-
-const isLogined = true;
 
 const routingPages = [
   {
@@ -37,17 +40,16 @@ const routingPages = [
   {
     path: '/mainClub/filter',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <Filter />
       </ProtectRoute>
     ),
     loader: filterListLoader,
-    action: Filter.action,
   },
   {
     path: '/mainClub/:clubId',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <DetailClub />
       </ProtectRoute>
     ),
@@ -56,7 +58,7 @@ const routingPages = [
   {
     path: '/mainBookReview',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <MainBookReview />
       </ProtectRoute>
     ),
@@ -68,7 +70,7 @@ const routingPages = [
   {
     path: '/myClubList',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <MyClubList />
       </ProtectRoute>
     ),
@@ -76,7 +78,7 @@ const routingPages = [
   {
     path: '/createClub',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <CreateClub1 />
       </ProtectRoute>
     ),
@@ -84,15 +86,25 @@ const routingPages = [
   {
     path: '/applicationClub/:clubId',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <ApplicationClub1 />
       </ProtectRoute>
     ),
+    loader: ApplicationClub1Loader,
+  },
+  {
+    path: '/applicationClub2/:clubId',
+    element: (
+      <ProtectRoute>
+        <ApplicationClub2 />
+      </ProtectRoute>
+    ),
+    loader: ApplicationClub2Loader,
   },
   {
     path: '/chatRoomList',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <ChatRoomList />
       </ProtectRoute>
     ),
@@ -100,7 +112,7 @@ const routingPages = [
   {
     path: '/myPage',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <MyPage />
       </ProtectRoute>
     ),
@@ -117,7 +129,7 @@ const routingPages = [
   {
     path: '/Welcome',
     element: (
-      <ProtectRoute isAllowed={isLogined}>
+      <ProtectRoute>
         <Welcome />
       </ProtectRoute>
     ),

@@ -1,8 +1,12 @@
 import { Svg } from '@/components/Atoms';
 import { Helmet } from 'react-helmet-async';
+import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
-function Intro() {
+import { bool } from 'prop-types';
+function Intro({ isAllowed }) {
+  if (isAllowed) {
+    return <Navigate to="/mainClub" replace />;
+  }
   return (
     <>
       <Helmet>
@@ -29,3 +33,7 @@ function Intro() {
 }
 
 export default Intro;
+
+Intro.propTypes = {
+  isAllowed: bool,
+};

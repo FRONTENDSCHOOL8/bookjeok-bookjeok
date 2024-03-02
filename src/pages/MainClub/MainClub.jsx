@@ -5,11 +5,28 @@ import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLoaderData } from 'react-router-dom';
 
-export async function loader() {
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const filters = url.searchParams.get('filters');
+
+  let filterQuery = null;
+
+  if (filters) {
+    if (filters.includes(',')) {
+      filterQuery = filters
+        .split('.')
+        .map((filter) => `genre.title~"${filter}"`)
+        .join('||');
+    } else {
+      filterQuery = `genre.title~"${filters}"`;
+    }
+  }
+
   const clubs = await pb.collection('socialing').getFullList({
     fields:
       'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
     expand: 'genre',
+    filter: filterQuery,
   });
 
   const clubItems = clubs.map((club) => {
@@ -100,9 +117,11 @@ function MainClub() {
             필터
           </MainButton>
         </div>
-        <ul className=" grid grid-cols-2 gap-4">
-          <ClubCard />
-        </ul>
+        <main>
+          <ul className=" grid grid-cols-2 gap-4">
+            <ClubCard />
+          </ul>
+        </main>
       </div>
       <GNB createClub />
     </>
