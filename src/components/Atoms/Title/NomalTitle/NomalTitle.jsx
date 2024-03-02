@@ -21,6 +21,8 @@ function NomalTitle({
         onClick={() => window.history.back()}
         title="뒤로 가기"
         aria-label="뒤로 가기"
+        className="cursor-pointer"
+        tabIndex={1}
       >
         <Svg id="arrow-left" />
       </a>
