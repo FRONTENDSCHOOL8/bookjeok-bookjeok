@@ -247,6 +247,9 @@ export default function AtomMaking() {
               ThinTextForm
             </h3>
             <div className="flex flex-col gap-2">
+              <ThinTextForm type="search" searchIcon>
+                검색
+              </ThinTextForm>
               <ThinTextForm type="search" backLink>
                 검색
               </ThinTextForm>

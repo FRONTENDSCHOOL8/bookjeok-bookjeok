@@ -15,6 +15,7 @@ function ThinTextForm({
   maxLength,
   children,
   path,
+  searchIcon = false,
   backLink = false,
   sendButton = false,
   ...rest
@@ -46,6 +47,7 @@ function ThinTextForm({
             {...rest}
           />
         </div>
+        {searchIcon && <Svg id="search" color="#9E9E9E" />}
         {backLink && (
           <Link to={path} title="뒤로 가기" aria-label="뒤로 가기">
             <Svg id="arrow-left" />
@@ -81,6 +83,7 @@ ThinTextForm.propTypes = {
   minLength: number,
   maxLength: number,
   path: string,
+  searchIcon: bool,
   backLink: bool,
   sendButton: bool,
 };
