@@ -4,6 +4,8 @@ import { MyClubList } from '@/components/Molecules';
 import {
   ChatRoomList,
   CreateClub1,
+  CreateClub2,
+  CreateClub3,
   DetailClub,
   Intro,
   Login,
@@ -23,6 +25,7 @@ import ApplicationClub2, {
 } from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
+import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
 
 const routingPages = [
   {
@@ -81,6 +84,23 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <CreateClub1 />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/createClub2',
+    element: (
+      <ProtectRoute>
+        <CreateClub2 />
+      </ProtectRoute>
+    ),
+    loader: genreLoader,
+  },
+  {
+    path: '/createClub3',
+    element: (
+      <ProtectRoute>
+        <CreateClub3 />
       </ProtectRoute>
     ),
   },
