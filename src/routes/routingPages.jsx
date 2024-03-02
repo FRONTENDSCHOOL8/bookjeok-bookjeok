@@ -9,6 +9,7 @@ import {
   MyPage,
   ProtectRoute,
   Welcome,
+  MyClubList,
 } from '@/pages';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
@@ -19,10 +20,6 @@ import ApplicationClub1, {
 import ApplicationClub2, {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
-
-import MyClubList, {
-  loader as myClubListLoader,
-} from '@/pages/MyClubList/MyClubList';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
 
@@ -80,7 +77,6 @@ const routingPages = [
         <MyClubList />
       </ProtectRoute>
     ),
-    loader: myClubListLoader,
   },
   {
     path: '/createClub',
