@@ -33,8 +33,11 @@ function Login() {
   const handleLogin = () => {
     pb.collection('users')
       .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
-      .then(() => {
-        setUserInfo();
+      .then(({ record, token }) => {
+        setUserInfo({
+          ...record,
+          token,
+        });
         setIsModalOpen(true);
         setIsLoginSuccess(true);
       })
