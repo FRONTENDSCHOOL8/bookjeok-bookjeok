@@ -10,6 +10,8 @@ import { getPbImgs } from '@/utils';
 1. socialing db에서 applicant가 사용자인 경우, 
   creator가 나인 경우를 분리하여 렌더링
 2. 3개이상인 경우 더보기 버튼 =>  
+  일단 3개가 초기 값인 상태를 보여줌......
+  더보기 버튼을 누르면 전체 길이로 상태변경 이게되나?
 
 3. 
 */
@@ -19,6 +21,7 @@ function MyClubList() {
   const [createdClub, setCreatedClub] = useState([]);
   const [confirmedClub, setConfirmedClub] = useState([]);
 
+  // 데이터 불러오는 이펙트 함수
   useEffect(() => {
     const fetchPb = async () => {
       try {
@@ -28,13 +31,17 @@ function MyClubList() {
             filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
           })
         ).items;
+        const created = [];
+        const confirmed = [];
         data.forEach((item) => {
           if (item.createUser === userInfo.id) {
-            setCreatedClub((prev) => [...prev, item]);
+            created.push(item);
           } else {
-            setConfirmedClub((prev) => [...prev, item]);
+            confirmed.push(item);
           }
         });
+        setCreatedClub(created);
+        setConfirmedClub(confirmed);
       } catch (error) {
         console.error(error);
       }
