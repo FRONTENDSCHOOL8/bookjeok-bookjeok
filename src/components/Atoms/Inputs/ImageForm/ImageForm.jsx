@@ -32,7 +32,7 @@ function ImageForm({ className, src, alt, ...rest }) {
           className="absolute right-1 top-1 rounded-full opacity-50"
         >
           <span className="sr-only">삭제</span>
-          <Svg id="clear" color="Ffffff" width="18" height="18" />
+          <Svg id="clear" color="#FFFFFF" width={18} height={18} />
         </button>
       </div>
     </div>
