@@ -1,6 +1,5 @@
 import AtomMaking from '@/AtomMaking';
 import { ProtectRoute } from '@/components/Common';
-import { MyClubList } from '@/components/Molecules';
 import {
   ChatRoomList,
   CreateClub1,
@@ -13,6 +12,7 @@ import {
   ManagementClub,
   MyPage,
   Welcome,
+  MyClubList,
 } from '@/pages';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
