@@ -37,6 +37,11 @@ const INITIAL_VALUE = {
   confirmedClub: 3,
 };
 
+const style = {
+  ul: 'flex flex-col gap-y-4',
+  h2: 'pb-4 pl-4 pt-5 text-b-1-regular text-bjblack',
+};
+
 function MyClubList() {
   const { userInfo } = useUserInfoStore();
   const [createdClub, setCreatedClub] = useState([]);
@@ -107,25 +112,26 @@ function MyClubList() {
     setSearchResult({ confirmedClub: confirmValue, createdClub: createValue });
   }, [debouncedKeyword]);
 
-  console.log(searchResult);
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('나의 모임 리스트')}</title>
       </Helmet>
-      <div>
+      <div className="relative flex h-screen w-full flex-col">
         <NomalTitle backLink>모임 리스트</NomalTitle>
         <ThinTextForm
           onChange={handleSearch}
-          backLink
           type="search"
+          searchIcon
           placeholder="search"
+          className="my-2"
         />
-        <ul>
-          <p>참여중인 모임</p>
+        <ul className={`${style['ul']}`}>
+          <h2 className={`${style['h2']}`}>참여중인 모임</h2>
           {isSearchState
             ? searchResult['confirmedClub'].map((item) => (
                 <ClubList
+                  id={item.id}
                   key={item.id}
                   title={item.title}
                   schedule={item.dateTime}
@@ -136,6 +142,7 @@ function MyClubList() {
                 .slice(0, showValue.confirmedClub)
                 .map((item) => (
                   <ClubList
+                    id={item.id}
                     key={item.id}
                     title={item.title}
                     schedule={item.dateTime}
@@ -150,11 +157,12 @@ function MyClubList() {
             ''
           )}
         </ul>
-        <ul>
-          <p>내가 만든 모임</p>
+        <ul className={`${style['ul']}`}>
+          <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
           {isSearchState
             ? searchResult['createdClub'].map((item) => (
                 <ClubList
+                  id={item.id}
                   key={item.id}
                   title={item.title}
                   schedule={item.dateTime}
@@ -165,6 +173,7 @@ function MyClubList() {
                 .slice(0, showValue.createdClub)
                 .map((item) => (
                   <ClubList
+                    id={item.id}
                     key={item.id}
                     title={item.title}
                     schedule={item.dateTime}
