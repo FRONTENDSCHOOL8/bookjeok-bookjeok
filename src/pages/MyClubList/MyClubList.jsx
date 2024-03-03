@@ -32,13 +32,13 @@ import { useDebounce } from '@/hooks';
 4. 해당 항목 클릭시 상세페이지로 이동 ! 
 */
 
-const INITIAL_VALUE = {
+const INITIAL_QUANTITY = {
   createdClub: 3,
   confirmedClub: 3,
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4',
+  ul: 'flex flex-col gap-y-4 px-3',
   h2: 'pb-4 pl-4 pt-5 text-b-1-regular text-bjblack',
 };
 
@@ -46,7 +46,7 @@ function MyClubList() {
   const { userInfo } = useUserInfoStore();
   const [createdClub, setCreatedClub] = useState([]);
   const [confirmedClub, setConfirmedClub] = useState([]);
-  const [showValue, setShowValue] = useState(INITIAL_VALUE);
+  const [showQuantity, setShowQuantity] = useState(INITIAL_QUANTITY);
 
   const [isSearchState, setIsSearchState] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState();
@@ -83,21 +83,20 @@ function MyClubList() {
   // 더보기 버튼 클릭시 작동하는 함수
   const handleMoreValue = (e) => {
     if (e.target.name == 'createdClub') {
-      setShowValue({ ...showValue, [e.target.name]: createdClub.length });
+      setShowQuantity({ ...showQuantity, [e.target.name]: createdClub.length });
     }
     if (e.target.name == 'confirmedClub') {
-      setShowValue({ ...showValue, [e.target.name]: confirmedClub.length });
+      setShowQuantity({
+        ...showQuantity,
+        [e.target.name]: confirmedClub.length,
+      });
     }
   };
 
   // 검색창 이벤트 함수
   const handleSearch = (e) => {
     setSearchKeyword(e.target.value);
-    if (searchKeyword === '') {
-      setIsSearchState(false);
-    } else {
-      setIsSearchState(true);
-    }
+    setIsSearchState(e.target.value !== '');
   };
 
   //검색시 실행되는 이펙트 함수
@@ -105,7 +104,6 @@ function MyClubList() {
     const confirmValue = confirmedClub.filter((item) =>
       item['title'].includes(debouncedKeyword)
     );
-    console.log(confirmValue);
     const createValue = createdClub.filter((item) =>
       item['title'].includes(debouncedKeyword)
     );
@@ -139,7 +137,7 @@ function MyClubList() {
                 ></ClubList>
               ))
             : confirmedClub
-                .slice(0, showValue.confirmedClub)
+                .slice(0, showQuantity.confirmedClub)
                 .map((item) => (
                   <ClubList
                     id={item.id}
@@ -149,7 +147,7 @@ function MyClubList() {
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
-          {confirmedClub.length > showValue.confirmedClub ? (
+          {confirmedClub.length > showQuantity.confirmedClub ? (
             <button name="confirmedClub" onClick={handleMoreValue}>
               더 보기
             </button>
@@ -170,7 +168,7 @@ function MyClubList() {
                 ></ClubList>
               ))
             : createdClub
-                .slice(0, showValue.createdClub)
+                .slice(0, showQuantity.createdClub)
                 .map((item) => (
                   <ClubList
                     id={item.id}
@@ -180,7 +178,7 @@ function MyClubList() {
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
-          {showValue.createdClub < createdClub.length ? (
+          {showQuantity.createdClub < createdClub.length ? (
             <button name="createdClub" onClick={handleMoreValue}>
               더 보기
             </button>
