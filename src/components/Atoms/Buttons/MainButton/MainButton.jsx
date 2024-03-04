@@ -1,5 +1,6 @@
-import { oneOfType, string, elementType } from 'prop-types';
+import { oneOfType, string, elementType, bool } from 'prop-types';
 import { Link } from 'react-router-dom';
+import Svg from '../../Svg/Svg';
 
 function MainButton({
   as: ComponentName = Link,
@@ -7,6 +8,7 @@ function MainButton({
   children,
   className,
   size = 'lg',
+  svgId = false,
   ...rest
 }) {
   const buttonStyle = {
@@ -26,6 +28,7 @@ function MainButton({
       {...rest}
     >
       {children}
+      {svgId && <Svg id={svgId} width={18} height={18} className="ml-1" />}
     </ComponentName>
   );
 }
@@ -38,4 +41,5 @@ MainButton.propTypes = {
   size: string,
   children: string,
   className: string,
+  svgId: bool,
 };

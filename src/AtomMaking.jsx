@@ -21,7 +21,7 @@ export default function AtomMaking() {
   return (
     <>
       <DobbleButtonModal
-        open
+        // open
         svgId="logo"
         title="북적북적을 이용하시려면 로그인을 해주세요."
         closeButton
@@ -80,6 +80,26 @@ export default function AtomMaking() {
               <MainButton as="button" type="button" disabled>
                 버튼
               </MainButton>
+              <div className="flex gap-x-[15px]">
+                <MainButton
+                  as="button"
+                  type="button"
+                  color="secondary"
+                  size="sm"
+                  svgId="direction-vertical"
+                >
+                  정렬
+                </MainButton>
+                <MainButton
+                  as="button"
+                  type="button"
+                  color="secondary"
+                  size="sm"
+                  svgId="filter"
+                >
+                  필터
+                </MainButton>
+              </div>
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               OutlineButton
