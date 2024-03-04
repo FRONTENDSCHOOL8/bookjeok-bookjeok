@@ -14,6 +14,7 @@ import {
   MyPage,
   Welcome,
   MyClubList,
+  DetailBookReview,
 } from '@/pages';
 import ApplicationClub1, {
   loader as ApplicationClub1Loader,
@@ -65,6 +66,14 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <MainBookReview />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/mainBookReview/:bookreviewId',
+    element: (
+      <ProtectRoute>
+        <DetailBookReview />
       </ProtectRoute>
     ),
   },
