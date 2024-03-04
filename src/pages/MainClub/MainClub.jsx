@@ -99,7 +99,7 @@ function MainClub() {
           북적북적
         </header>
         <MainKindToggle />
-        <div className="flex items-center justify-center gap-4 pt-2">
+        <section className="flex items-center justify-center gap-4 pt-2">
           <MainButton
             className="mx-2"
             size="sm"
@@ -116,14 +116,14 @@ function MainClub() {
           >
             필터
           </MainButton>
-        </div>
+        </section>
         <main>
-          <ul className=" grid grid-cols-2 gap-4">
+          <ul className="mb-[65px] grid grid-cols-2 gap-4">
             <ClubCard />
           </ul>
         </main>
+        <GNB createClub className="fixed" />
       </div>
-      <GNB createClub />
     </>
   );
 }

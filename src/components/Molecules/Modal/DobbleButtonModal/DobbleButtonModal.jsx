@@ -39,8 +39,8 @@ function DobbleButtonModal({
               {svgId && (
                 <Svg
                   id={svgId}
-                  width="60"
-                  height="60"
+                  width={60}
+                  height={60}
                   color="#FFD60A"
                   className="m-auto my-5"
                 />
@@ -83,8 +83,8 @@ function DobbleButtonModal({
                 >
                   <Svg
                     id="close"
-                    width="24"
-                    height="24"
+                    width={24}
+                    height={24}
                     color="#212121"
                     className="absolute right-0 top-0 h-4 w-4"
                   />
