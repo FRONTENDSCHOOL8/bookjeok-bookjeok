@@ -8,8 +8,12 @@ const clubInfoStore = (set) => ({
     genre: [],
     image: null,
     alt: null,
-    clubTitle: null,
-    clubDetail: null,
+    title: null,
+    detail: null,
+    date: null,
+    time: null,
+    limit: '3',
+    query: null,
   },
   changeLocationType: (location) => {
     set(
@@ -80,28 +84,76 @@ const clubInfoStore = (set) => ({
       'removeImage'
     );
   },
-  addTitle: (title) => {
+  addTitle: (text) => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          clubTitle: title,
+          title: text,
         },
       }),
       false,
       'addTitle'
     );
   },
-  addDetail: (detail) => {
+  addDetail: (text) => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          clubDetail: detail,
+          detail: text,
         },
       }),
       false,
       'addDetail'
+    );
+  },
+  setDate: (date) => {
+    set(
+      (state) => ({
+        clubInfo: {
+          ...state.clubInfo,
+          date,
+        },
+      }),
+      false,
+      'setDate'
+    );
+  },
+  setTime: (time) => {
+    set(
+      (state) => ({
+        clubInfo: {
+          ...state.clubInfo,
+          time,
+        },
+      }),
+      false,
+      'setTime'
+    );
+  },
+  setLimit: (limit) => {
+    set(
+      (state) => ({
+        clubInfo: {
+          ...state.clubInfo,
+          limit,
+        },
+      }),
+      false,
+      'setLimit'
+    );
+  },
+  setQuery: (query) => {
+    set(
+      (state) => ({
+        clubInfo: {
+          ...state.clubInfo,
+          query,
+        },
+      }),
+      false,
+      'setQuery'
     );
   },
   resetClubInfo: () => {
