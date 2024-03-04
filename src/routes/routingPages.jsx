@@ -9,10 +9,10 @@ import {
   DetailClub,
   Intro,
   Login,
-  MainBookReview,
   ManagementClub,
   MyPage,
   Welcome,
+  DetailBookReview,
   MyClubList,
   DetailBookReview,
 } from '@/pages';
@@ -28,6 +28,11 @@ import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
+
+import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
+import MainBookReview, {
+  loader as bookReviewListLoader,
+} from '@/pages/MainBookReview/MainBookReview';
 
 const routingPages = [
   {
@@ -66,6 +71,15 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <MainBookReview />
+      </ProtectRoute>
+    ),
+    loader: bookReviewListLoader,
+  },
+  {
+    path: '/mainClub/:bookreviewId',
+    element: (
+      <ProtectRoute>
+        <DetailBookReview />
       </ProtectRoute>
     ),
   },
