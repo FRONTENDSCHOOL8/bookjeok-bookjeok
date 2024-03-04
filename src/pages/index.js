@@ -10,6 +10,7 @@ export { default as CreateClub4 } from '@/pages/CreateClub/CreateClub4/CreateClu
 export { default as MainBookReview } from '@/pages/MainBookReview/MainBookReview';
 export { default as ManagementClub } from '@/pages/ManagementClub/ManagementClub';
 export { default as ChatRoom } from '@/pages/Chatting/ChatRoom/ChatRoom';
+export { default as MyClubList } from '@/pages/MyClubList/MyClubList';
 export { default as DetailClub } from '@/pages/DetailClub/DetailClub';
 export { default as Error404 } from '@/pages/Error404/Erro404';
 export { default as MainClub } from '@/pages/MainClub/MainClub';

@@ -5,7 +5,6 @@ export { default as BookReviewList } from '@/components/Molecules/BookReviewList
 export { default as MainKindToggle } from '@/components/Molecules/MainKindToggle/MainKindToggle';
 export { default as ApplicantList } from '@/components/Molecules/ApplicantList/ApplicantList';
 export { default as ChatRoomList } from '@/components/Molecules/ChatRoomList/ChatRoomList';
-export { default as MyClubList } from '@/components/Molecules/MyClubList/MyClubList';
 export { default as ClubList } from '@/components/Molecules/ClubList/ClubList';
 export { default as Avatar } from '@/components/Molecules/Avatar/Avatar';
 export { default as GNB } from '@/components/Molecules/GNB/GNB';

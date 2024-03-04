@@ -1,9 +1,11 @@
 import AtomMaking from '@/AtomMaking';
 import { ProtectRoute } from '@/components/Common';
-import { MyClubList } from '@/components/Molecules';
 import {
   ChatRoomList,
   CreateClub1,
+  CreateClub2,
+  CreateClub3,
+  CreateClub4,
   DetailClub,
   Intro,
   Login,
@@ -11,16 +13,18 @@ import {
   ManagementClub,
   MyPage,
   Welcome,
+  MyClubList,
 } from '@/pages';
-import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
-import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
-import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import ApplicationClub1, {
   loader as ApplicationClub1Loader,
 } from '@/pages/ApplicationClub/ApplicationClub1/ApplicationClub1';
 import ApplicationClub2, {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
+import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
+import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
+import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
+import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
 
@@ -81,6 +85,31 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <CreateClub1 />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/createClub2',
+    element: (
+      <ProtectRoute>
+        <CreateClub2 />
+      </ProtectRoute>
+    ),
+    loader: genreLoader,
+  },
+  {
+    path: '/createClub3',
+    element: (
+      <ProtectRoute>
+        <CreateClub3 />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/createClub4',
+    element: (
+      <ProtectRoute>
+        <CreateClub4 />
       </ProtectRoute>
     ),
   },
