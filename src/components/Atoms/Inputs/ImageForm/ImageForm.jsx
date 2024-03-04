@@ -67,4 +67,6 @@ ImageForm.propTypes = {
   alt: string,
   onChange: func,
   onClick: func,
+  id: string,
+  name: string,
 };
