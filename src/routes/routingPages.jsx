@@ -8,6 +8,7 @@ import {
   CreateClub4,
   DetailClub,
   Intro,
+  CreateBookReview,
   Login,
   ManagementClub,
   MyPage,
@@ -27,7 +28,6 @@ import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
-import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
 import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
@@ -176,7 +176,14 @@ const routingPages = [
       </ProtectRoute>
     ),
   },
-
+  {
+    path: '/createBookReview',
+    element: (
+      <ProtectRoute>
+        <CreateBookReview />
+      </ProtectRoute>
+    ),
+  },
   {
     path: '/signup',
     element: <BasicInfo />,
