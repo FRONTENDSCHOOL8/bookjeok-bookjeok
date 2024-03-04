@@ -1,6 +1,11 @@
 module.exports = {
-  // 화살표 함수 식 매개변수 () 생략 여부 (ex: (a) => a)
-  arrowParens: 'always',
+  resolve: {
+    extensions: ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx'],
+  },
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindConfig: './tailwind.config.js',
+ 
+  
   // 닫는 괄호(>) 위치 설정
   // ex: <div
   //       id="unique-id"
