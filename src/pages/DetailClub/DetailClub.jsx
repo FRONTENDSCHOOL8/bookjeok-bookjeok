@@ -54,74 +54,7 @@ function DetailClub() {
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
-            <div>
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-              {detail}
-            </div>
+            <pre>{detail}</pre>
           </section>
           <div>{active}</div>
         </main>
