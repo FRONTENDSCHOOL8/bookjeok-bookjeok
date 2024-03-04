@@ -1,7 +1,16 @@
 import { string, func, object } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
-function ImageForm({ className, onChange, onClick, src, alt, ...rest }) {
+function ImageForm({
+  className,
+  onChange,
+  onClick,
+  id,
+  name,
+  src,
+  alt,
+  ...rest
+}) {
   const imageFormStyle = {
     className: 'flex justify-center gap-2',
   };
@@ -9,7 +18,7 @@ function ImageForm({ className, onChange, onClick, src, alt, ...rest }) {
   return (
     <div className={`${imageFormStyle.className} ${className}`}>
       <div className="relative box-content block h-16 w-16 rounded-[8px] border-[1px] border-bjgray-500 bg-white hover:bg-gray-50">
-        <label htmlFor="clubImage">
+        <label htmlFor={id}>
           <span className="sr-only">사진 업로드</span>
           <Svg
             id="camera"
@@ -20,8 +29,8 @@ function ImageForm({ className, onChange, onClick, src, alt, ...rest }) {
         <input
           type="file"
           accept="image/*"
-          id="clubImage"
-          name="clubImage"
+          id={id}
+          name={name}
           onChange={onChange}
           className="h-16 w-16 appearance-none file:m-0 file:h-16 file:w-16 file:appearance-none file:border-none file:bg-transparent file:p-0 file:text-transparent file:outline-none"
           {...rest}
