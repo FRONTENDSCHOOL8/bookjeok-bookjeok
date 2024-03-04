@@ -15,9 +15,7 @@ function CreateBookReview() {
       </Helmet>
       <main className="flex h-svh flex-col justify-between px-4">
         <form className="flex flex-col gap-6">
-          <NomalTitle backLink subText="3 of 4">
-            모임 만들기
-          </NomalTitle>
+          <NomalTitle backLink>독후감 작성하기</NomalTitle>
           <h2 className="p-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
           <ImageForm />
           <div className="flex flex-col gap-2">
@@ -26,7 +24,7 @@ function CreateBookReview() {
               placeholder="제목을 입력해 주세요. (필수)"
               hiddenLabel
             >
-              모임제목
+           독후감 제목
             </TextForm>
             <span className="px-2 text-b-2-regular text-bjgray-500">
               독후감에 걸맞는 멋진 제목을 지어주세요 !
