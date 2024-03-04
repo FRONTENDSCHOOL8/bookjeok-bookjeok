@@ -2,6 +2,8 @@ import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { Link, useLoaderData } from 'react-router-dom';
+
 
 function MainBookReview() {
   return (
