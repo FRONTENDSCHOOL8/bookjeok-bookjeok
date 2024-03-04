@@ -1,8 +1,8 @@
 import { Svg } from '@/components/Atoms';
 import { Link } from 'react-router-dom';
-import { bool } from 'prop-types';
+import { bool, string } from 'prop-types';
 
-function GNB({ createClub, createBookReview }) {
+function GNB({ createClub, createBookReview, className }) {
   let centerIconPath;
   if (createClub) {
     centerIconPath = '/createClub';
@@ -12,7 +12,9 @@ function GNB({ createClub, createBookReview }) {
   }
 
   return (
-    <ul className="sticky bottom-0 left-0 flex w-full justify-evenly border-t bg-white py-4 ">
+    <ul
+      className={`bottom-0 flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
+    >
       <li>
         <Link to="/mainClub">
           <Svg width={32} height={32} id="logo" />
@@ -45,6 +47,7 @@ function GNB({ createClub, createBookReview }) {
 GNB.propTypes = {
   createClub: bool,
   createBookReview: bool,
+  className: string,
 };
 
 export default GNB;
