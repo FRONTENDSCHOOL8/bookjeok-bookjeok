@@ -16,7 +16,7 @@ function GNB({ createClub, createBookReview, className }) {
       className={`bottom-0 flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
     >
       <li>
-        <Link to="/mainClub">
+        <Link to="/">
           <Svg width={32} height={32} id="logo" />
         </Link>
       </li>

@@ -3,11 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { bool } from 'prop-types';
-import pb from '@/api/pocketbase';
+import useUserInfoStore from '@/store/useUserInfoStore';
 
-function Intro({ isAllowed }) {
-  console.log(pb);
-  if (isAllowed) {
+function Intro() {
+  const { userInfo } = useUserInfoStore((state) => ({
+    userInfo: state.userInfo,
+  }));
+  if (userInfo) {
     return <Navigate to="/mainClub" replace />;
   }
   return (
