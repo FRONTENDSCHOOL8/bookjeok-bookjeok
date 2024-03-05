@@ -3,31 +3,40 @@ import { devtools } from 'zustand/middleware';
 
 const clubInfoStore = (set) => ({
   clubInfo: {
-    location: 'online',
-    placeName: '',
-    genre: [],
-    image: null,
+    isOffline: false,
+    location: '',
+    genre: null,
+    img: null,
     alt: null,
     title: null,
     detail: null,
-    date: null,
-    time: null,
-    limit: '3',
+    dateTime: null,
+    limitPerson: 3,
     query: null,
+    createUser: null,
   },
-  changeLocationType: (location) => {
+  setUserId: (createUser) => {
     set(
       (state) => ({
-        clubInfo: { ...state.clubInfo, location, placeName: '' },
+        clubInfo: { ...state.clubInfo, createUser },
+      }),
+      false,
+      'setUserId'
+    );
+  },
+  changeLocationType: (isOffline) => {
+    set(
+      (state) => ({
+        clubInfo: { ...state.clubInfo, isOffline, placeName: '' },
       }),
       false,
       'changeLocationType'
     );
   },
-  addPlaceName: (placeName) => {
+  addPlaceName: (location) => {
     set(
       (state) => ({
-        clubInfo: { ...state.clubInfo, placeName },
+        clubInfo: { ...state.clubInfo, location },
       }),
       false,
       'addPlaceName'
@@ -38,32 +47,31 @@ const clubInfoStore = (set) => ({
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          genre: [...state.clubInfo.genre, genre],
+          genre,
         },
       }),
       false,
       'addGenre'
     );
   },
-  removeGenre: (genre) => {
+  removeGenre: () => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          genre: state.clubInfo.genre.filter((item) => item !== genre),
+          genre: null,
         },
       }),
       false,
       'removeGenre'
     );
   },
-  // https://pocketbase.io/docs/files-handling/#file-url 나중에 pb업로드 할때 이미지 처리 참고
   setImage: (file) => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          image: file,
+          img: file,
           alt: file.name,
         },
       }),
@@ -76,7 +84,7 @@ const clubInfoStore = (set) => ({
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          image: null,
+          img: null,
           alt: null,
         },
       }),
@@ -108,36 +116,24 @@ const clubInfoStore = (set) => ({
       'addDetail'
     );
   },
-  setDate: (date) => {
+  setDateTime: (dateTime) => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          date,
+          dateTime,
         },
       }),
       false,
-      'setDate'
+      'setDateTime'
     );
   },
-  setTime: (time) => {
+  setLimit: (limitPerson) => {
     set(
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          time,
-        },
-      }),
-      false,
-      'setTime'
-    );
-  },
-  setLimit: (limit) => {
-    set(
-      (state) => ({
-        clubInfo: {
-          ...state.clubInfo,
-          limit,
+          limitPerson: limitPerson * 1,
         },
       }),
       false,
@@ -159,7 +155,19 @@ const clubInfoStore = (set) => ({
   resetClubInfo: () => {
     set(
       () => ({
-        clubInfo: { location: 'online', placeName: '' },
+        clubInfo: {
+          isOffline: false,
+          location: '',
+          genre: null,
+          img: null,
+          alt: null,
+          title: null,
+          detail: null,
+          dateTime: null,
+          limitPerson: 3,
+          query: null,
+          createUser: null,
+        },
       }),
       false,
       'resetClubInfo'

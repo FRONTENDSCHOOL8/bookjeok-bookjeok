@@ -5,29 +5,39 @@ import {
   TextForm,
 } from '@/components/Atoms';
 import useCreateClubStore from '@/store/useCreateClubStore';
+import useUserInfoStore from '@/store/useUserInfoStore';
 import { getDocumentTitle } from '@/utils';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 function CreateClub1() {
-  const { clubInfo, changeLocationType, addPlaceName } = useCreateClubStore(
-    (state) => ({
+  const { clubInfo, setUserID, changeLocationType, addPlaceName } =
+    useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
+      setUserID: state.setUserId,
       changeLocationType: state.changeLocationType,
       addPlaceName: state.addPlaceName,
-    })
-  );
+    }));
 
   const handleClickOnline = (e) => {
     e.preventDefault();
-    changeLocationType('online');
+    changeLocationType(false);
   };
   const handleClickOffline = (e) => {
     e.preventDefault();
-    changeLocationType('offline');
+    changeLocationType(true);
   };
   const handlePlaceName = (e) => {
     addPlaceName(e.target.value);
   };
+
+  const { userInfo } = useUserInfoStore((state) => ({
+    userInfo: state.userInfo,
+  }));
+
+  useEffect(() => setUserID(userInfo.id), [setUserID, userInfo.id]);
+
+  console.log(clubInfo);
 
   return (
     <>
@@ -46,7 +56,7 @@ function CreateClub1() {
                 as="button"
                 type="button"
                 onClick={handleClickOnline}
-                clicked={clubInfo.location === 'online'}
+                clicked={!clubInfo.isOffline}
               >
                 온라인
               </OutlineButton>
@@ -54,16 +64,16 @@ function CreateClub1() {
                 as="button"
                 type="button"
                 onClick={handleClickOffline}
-                clicked={clubInfo.location === 'offline'}
+                clicked={clubInfo.isOffline}
               >
                 오프라인
               </OutlineButton>
-              {clubInfo.location === 'offline' ? (
+              {clubInfo.isOffline ? (
                 <TextForm
                   svgId="pin"
                   placeholder="장소를 입력해주세요. (필수)"
                   required
-                  value={clubInfo.placeName}
+                  value={clubInfo.location}
                   onChange={handlePlaceName}
                 />
               ) : (
@@ -75,7 +85,7 @@ function CreateClub1() {
         <div className="px-4">
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${clubInfo.location == 'online' || clubInfo.placeName.length > 0 ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!clubInfo.isOffline || clubInfo.location.length > 0 ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
             to="/createClub2"
           >
             다음
