@@ -15,10 +15,15 @@ function CreateClub2() {
 
   const handlegenreButton = (e) => {
     e.preventDefault();
-    if (clubInfo.genre.includes(e.target.name)) {
-      removeGenre(e.target.name);
+    if (clubInfo.genre === null) {
+      addGenre(e.target.value);
+      return;
+    }
+
+    if (clubInfo.genre.includes(e.target.value)) {
+      removeGenre(e.target.value);
     } else {
-      addGenre(e.target.name);
+      addGenre(e.target.value);
     }
   };
 
@@ -35,7 +40,7 @@ function CreateClub2() {
           <h2 className="p-4 text-h-2-semibold">모임주제를 선택해볼까요?</h2>
           <div className="flex flex-col px-4">
             <span className="text-b-2-regular text-bjgray-500">
-              책 장르 (최소 1개 이상)
+              책 장르 (1개 필수 선택)
             </span>
             <ul className="flex flex-wrap gap-3 py-4">
               <GenreButton
@@ -49,7 +54,7 @@ function CreateClub2() {
         <div className="px-4">
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${clubInfo.genre.length < 1 ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${clubInfo.genre === null ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
             to="/createClub3"
           >
             다음
@@ -77,8 +82,9 @@ function GenreButton({ className, state, genres, onClick, ...restProps }) {
       <button
         type="button"
         name={title}
+        value={id}
         onClick={onClick}
-        className={`${BASE_SYTLE.className} ${className} ${state.genre.includes(title) ? 'bg-black text-white' : 'bg-white text-bjblack'}`}
+        className={`${BASE_SYTLE.className} ${className} ${state.genre !== null && state.genre.includes(id) ? 'bg-black text-white' : 'bg-white text-bjblack'}`}
         {...restProps}
       >
         {title}
