@@ -11,6 +11,7 @@ import { Svg } from '@/components/Atoms';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import useUserInfoStore from '@/store/useUserInfoStore';
+import { DobbleButtonModal } from '@/components/Molecules';
 
 /*
 1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
@@ -36,7 +37,7 @@ function ApplicationClub2() {
   const { club, profilePhoto } = useLoaderData();
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
-
+  const [isSuccess, setIsSuccess] = useState(false);
   // 답변 폼
   const handleAnswerForm = (e) => {
     setAnswerForm(e.target.value);
@@ -57,6 +58,13 @@ function ApplicationClub2() {
           const updateData = { participantSocialing: [`${club.id}`] };
           pb.collection('users').update(userInfo.id, updateData);
         })
+        .then(() => {
+          const updateData = {
+            applicant: [...club.applicant, `${userInfo.id}`],
+          };
+          pb.collection('socialing').update(club.id, updateData);
+        })
+        .then(() => {})
         .catch((Error) => console.error(Error));
     }
   };
