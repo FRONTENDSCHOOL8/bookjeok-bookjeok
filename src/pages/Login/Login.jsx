@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
-import { redirect } from 'react-router-dom';
+
 /*
 1. useRef로 email, password -> useRef 상태관리x 
 2. 버튼을 눌렀을때 이메일과 패스워드가 맞는지 확인 => 완료  
@@ -47,11 +47,6 @@ function Login() {
         setIsModalOpen(true);
         console.error(Error);
       });
-  };
-
-  /* 모달 닫기 함수  */
-  const handleModal = () => {
-    setIsModalOpen(false);
   };
 
   return (
