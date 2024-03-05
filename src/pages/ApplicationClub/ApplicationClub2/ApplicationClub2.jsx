@@ -86,7 +86,12 @@ function ApplicationClub2() {
           length={answerForm.length}
         ></Textarea>
         <div className="flex items-center justify-center gap-4 text-bjred-400">
-          <Svg size={24} id="subsctract" color="bjred-400" />
+          <Svg
+            size={24}
+            id="subsctract"
+            color="bjred-400"
+            className="shrink-0"
+          />
           <p className="m-[13.5px] text-b-1-regular text-bjred-400">
             전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인 정보를
             요구하는 경우 가이드 위반 모임이므로 고객센터에 신고해주세요.
