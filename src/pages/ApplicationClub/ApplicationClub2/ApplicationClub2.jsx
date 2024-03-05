@@ -28,9 +28,11 @@ export async function loader({ params }) {
     .collection('socialing')
     .getOne(clubId, { expand: ' createUser' });
   const profile = await pb.collection('users').getOne(club.createUser);
-  console.log(profile);
-  const profilePhoto = getPbImgs(profile);
-  return { club, profile, profilePhoto };
+  if (profile.img) {
+    const profilePhoto = getPbImgs(profile);
+    return { club, profilePhoto };
+  }
+  return { club };
 }
 
 function ApplicationClub2() {
@@ -38,14 +40,15 @@ function ApplicationClub2() {
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   // 답변 폼
   const handleAnswerForm = (e) => {
     setAnswerForm(e.target.value);
   };
 
   //제출 버튼
-  const handleSubmit = () => {
-    console.log(userInfo);
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (answerForm) {
       const answerData = {
         socialing: club.id,
@@ -63,12 +66,13 @@ function ApplicationClub2() {
             applicant: [...club.applicant, `${userInfo.id}`],
           };
           pb.collection('socialing').update(club.id, updateData);
+          setIsSuccess(true);
+          setIsOpenModal(true);
         })
-        .then(() => {})
         .catch((Error) => console.error(Error));
     }
   };
-
+  console.log(isSuccess);
   return (
     <>
       <Helmet>
@@ -89,9 +93,10 @@ function ApplicationClub2() {
         </div>
         <Textarea
           onChange={handleAnswerForm}
-          placeholder={'내용을 입력해 주세요'}
+          placeholder={'내용을 입력해 주세요. (10자 이상)'}
           maxLength={200}
           length={answerForm.length}
+          className="py-3"
         ></Textarea>
         <div className="flex items-center justify-center gap-4 text-bjred-400">
           <Svg size={24} id="subsctract" color="bjred-400" />
@@ -100,9 +105,26 @@ function ApplicationClub2() {
             요구하는 경우 가이드 위반 모임이므로 고객센터에 신고해주세요.
           </p>
         </div>
+        {isSuccess ? (
+          <DobbleButtonModal
+            open={isOpenModal}
+            title="모임 신청이 완료되었습니다."
+            primaryButtonText="홈으로"
+            primaryButtonPath="/mainClub"
+          >
+            호스트의 수락을 기다려주세요
+          </DobbleButtonModal>
+        ) : (
+          ''
+        )}
+
         <div className="mt-auto ">
           <MainButton
-            to={answerForm.length > 10 ? `/mainClub/${club.id}` : '#'}
+            className={
+              answerForm.length > 10
+                ? `pointer-events-auto`
+                : `pointer-events-none`
+            }
             onClick={handleSubmit}
             color={answerForm.length > 10 ? 'primary' : 'secondary'}
           >

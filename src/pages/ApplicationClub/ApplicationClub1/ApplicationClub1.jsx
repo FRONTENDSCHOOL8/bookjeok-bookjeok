@@ -24,12 +24,12 @@ function ApplicationClub1() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div>
+      <div className='px-4" flex  h-full h-screen flex-col'>
         <NomalTitle backLink subText="1 of 2">
           모임신청
         </NomalTitle>
 
-        <div className="flex h-dvh h-screen flex-col px-4">
+        <div className="flex h-full flex-col px-4">
           <div className="flex flex-col py-4 text-h-2-regular">
             <span>모두가 즐거운 소셜링이 될 수 있도록 </span>
             <span>함께 지켜주세요</span>
@@ -65,10 +65,13 @@ function ApplicationClub1() {
           >
             소셜링 이용규칙을 지키겠습니다!
           </CheckboxForm>
-          <div className="mt-auto">
+          <div className="mt-auto p-4">
             <MainButton
               color={isAgreement ? 'primary' : 'secondary'}
-              to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : '#'}
+              to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : ''}
+              className={
+                isAgreement ? `pointer-events-auto` : `pointer-events-none`
+              }
             >
               다음
             </MainButton>
