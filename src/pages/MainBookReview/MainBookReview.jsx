@@ -2,7 +2,8 @@ import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
+
 
 function MainBookReview() {
   return (
@@ -101,4 +102,7 @@ function MainBookReview() {
   );
 }
 
+export async function loader() {
+  return '';
+}
 export default MainBookReview;
