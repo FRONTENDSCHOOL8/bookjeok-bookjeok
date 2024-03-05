@@ -1,4 +1,4 @@
-import { string, bool } from 'prop-types';
+import { string, bool, func } from 'prop-types';
 import { MainButton, Svg } from '@/components/Atoms';
 
 function DobbleButtonModal({
@@ -12,6 +12,7 @@ function DobbleButtonModal({
   secondaryButtonText,
   secondaryButtonPath,
   closeButton = false,
+  onClick,
   ...rest
 }) {
   const modalStyle = {
@@ -80,6 +81,7 @@ function DobbleButtonModal({
                   className="absolute right-4 top-4 h-6 w-6"
                   title="닫기"
                   aria-label="닫기"
+                  onClick={onClick}
                 >
                   <Svg
                     id="close"
@@ -113,4 +115,5 @@ DobbleButtonModal.propTypes = {
   secondaryButtonText: string,
   secondaryButtonPath: string,
   closeButton: bool,
+  onClick: func,
 };
