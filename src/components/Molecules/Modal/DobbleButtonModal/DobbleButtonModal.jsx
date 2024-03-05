@@ -30,7 +30,7 @@ function DobbleButtonModal({
       <div className="fixed inset-0 bg-bjblack bg-opacity-70 transition-opacity" />
       <div className="fixed inset-0 z-10 w-screen overflow-y-hidden">
         <div className="flex min-h-full items-center justify-center p-8 text-center">
-          <div className="relative transform overflow-hidden rounded-5xl bg-white text-center shadow-xl transition-all">
+          <div className="relative w-full max-w-[400px] transform overflow-hidden rounded-5xl bg-white text-center shadow-xl transition-all">
             <div
               role="document"
               tabIndex="-1"
@@ -77,7 +77,7 @@ function DobbleButtonModal({
               </div>
               {closeButton && (
                 <button
-                  className="absolute right-4 top-4 h-4 w-4"
+                  className="absolute right-4 top-4 h-6 w-6"
                   title="닫기"
                   aria-label="닫기"
                 >
@@ -86,7 +86,7 @@ function DobbleButtonModal({
                     width={24}
                     height={24}
                     color="#212121"
-                    className="absolute right-0 top-0 h-4 w-4"
+                    className="absolute right-0 top-0"
                   />
                 </button>
               )}
