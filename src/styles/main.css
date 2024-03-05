@@ -1,3 +1,8 @@
 @import url('./tailwind.css');
 @import url('./inputDate.css');
 @import url('./inputTime.css');
+
+button,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
