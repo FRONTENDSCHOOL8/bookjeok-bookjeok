@@ -10,7 +10,7 @@ function NomalTitle({
 }) {
   const nomalTitleStyle = {
     className:
-      'h-[56px] px-4 flex flex-row justify-center items-center shrink-0 bg-white',
+      'h-[56px] flex flex-row justify-center items-center shrink-0 bg-white',
   };
 
   let backLinkElement = null;
@@ -21,7 +21,7 @@ function NomalTitle({
         onClick={() => window.history.back()}
         title="뒤로 가기"
         aria-label="뒤로 가기"
-        className="cursor-pointer"
+        className="cursor-pointer p-4"
         tabIndex={1}
       >
         <Svg id="arrow-left" />
@@ -33,7 +33,7 @@ function NomalTitle({
 
   if (resetButton) {
     resetButtonElement = (
-      <button type="reset" className="text-b-1-medium text-bjblack">
+      <button type="reset" className="p-4 text-b-1-medium text-bjblack">
         초기화
       </button>
     );
