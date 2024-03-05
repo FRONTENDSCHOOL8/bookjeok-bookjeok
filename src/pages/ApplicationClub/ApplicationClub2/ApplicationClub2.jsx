@@ -57,6 +57,13 @@ function ApplicationClub2() {
           const updateData = { participantSocialing: [`${club.id}`] };
           pb.collection('users').update(userInfo.id, updateData);
         })
+        .then(() => {
+          const updateData = {
+            applicant: [...club.applicant, `${userInfo.id}`],
+          };
+          console.log(...club.applicant);
+          pb.collection('socialing').update(club.id, updateData);
+        })
         .catch((Error) => console.error(Error));
     }
   };

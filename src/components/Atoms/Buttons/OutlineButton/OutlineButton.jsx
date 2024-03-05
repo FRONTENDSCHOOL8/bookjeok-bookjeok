@@ -24,5 +24,5 @@ export default OutlineButton;
 OutlineButton.propTypes = {
   as: oneOfType([string, elementType]),
   className: string,
-  clicked: bool.isRequired,
+  clicked: bool,
 };

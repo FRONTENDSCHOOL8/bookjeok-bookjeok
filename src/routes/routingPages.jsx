@@ -31,6 +31,7 @@ import DetailInfo from '@/pages/SignUp/DetailInfo';
 import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
+import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
 
 const routingPages = [
   {
@@ -159,7 +160,7 @@ const routingPages = [
         <ManagementClub />
       </ProtectRoute>
     ),
-    loader: clubDetailLoader,
+    loader: answerLoader,
   },
   {
     path: '/chatRoomList',
