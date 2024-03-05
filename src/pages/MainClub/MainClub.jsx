@@ -14,7 +14,7 @@ export async function loader({ request }) {
   if (filters) {
     if (filters.includes(',')) {
       filterQuery = filters
-        .split('.')
+        .split(',')
         .map((filter) => `genre.title~"${filter}"`)
         .join('||');
     } else {
@@ -27,6 +27,7 @@ export async function loader({ request }) {
       'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
     expand: 'genre',
     filter: filterQuery,
+    sort: '-created',
   });
 
   const clubItems = clubs.map((club) => {
