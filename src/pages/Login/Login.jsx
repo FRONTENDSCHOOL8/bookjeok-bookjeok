@@ -4,7 +4,8 @@ import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
 import { useRef, useState } from 'react';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
-
+import { DobbleButtonModal } from '@/components/Molecules';
+import { redirect } from 'react-router-dom';
 /*
 1. useRef로 email, password -> useRef 상태관리x 
 2. 버튼을 눌렀을때 이메일과 패스워드가 맞는지 확인 => 완료  
@@ -72,10 +73,26 @@ function Login() {
               비밀번호
             </TextForm>
           </div>
-          {isModalOpen ? (
-            <Modal success={isLoginSuccess} onClose={handleModal} />
+          {isLoginSuccess ? (
+            <DobbleButtonModal
+              open={isModalOpen}
+              svgId="logo"
+              closeButton
+              title="로그인 성공"
+              onClick={() => setIsModalOpen(false)}
+              primaryButtonText="홈으로 이동"
+              primaryButtonPath="/MainClub"
+            ></DobbleButtonModal>
           ) : (
-            ''
+            <DobbleButtonModal
+              open={isModalOpen}
+              closeButton
+              title="로그인 실패"
+              svgId="logo"
+              onClick={() => setIsModalOpen(false)}
+            >
+              계정 정보를 확인해주세요
+            </DobbleButtonModal>
           )}
         </div>
         <div className="mt-auto p-4">
@@ -87,13 +104,5 @@ function Login() {
     </>
   );
 }
-function Modal({ success, onClose }) {
-  return (
-    <dialog className="h-4/9 bg-red flex w-4/12 flex-col" open>
-      <button onClick={onClose}>닫기</button>
-      {success ? '로그인 성공!' : '계정 정보를 확인해주세요'}
-      {success ? <MainButton to="/mainClub">메인으로 이동하기</MainButton> : ''}
-    </dialog>
-  );
-}
+
 export default Login;
