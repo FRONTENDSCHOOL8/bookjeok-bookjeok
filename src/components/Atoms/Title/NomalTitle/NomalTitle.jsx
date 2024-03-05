@@ -4,6 +4,7 @@ import { Svg } from '@/components/Atoms';
 function NomalTitle({
   className,
   backLink = false,
+  path,
   children,
   subText,
   resetButton = false,
@@ -18,7 +19,8 @@ function NomalTitle({
   if (backLink) {
     backLinkElement = (
       <a
-        onClick={() => window.history.back()}
+        onClick={path ? () => {} : () => window.history.back()}
+        href={path ? path : ''}
         title="뒤로 가기"
         aria-label="뒤로 가기"
         className="cursor-pointer p-4"
@@ -58,6 +60,7 @@ function NomalTitle({
 export default NomalTitle;
 
 NomalTitle.propTypes = {
+  path: string,
   className: string,
   backLink: bool,
   children: string,
