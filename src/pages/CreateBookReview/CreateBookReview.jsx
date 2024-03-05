@@ -7,24 +7,92 @@ import {
   TextForm,
   Textarea,
 } from '@/components/Atoms';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { useState } from 'react';
+import { Form } from 'react-router-dom';
+import pb from '@/api/pocketbase';
+
+/*
+1.pb api data 
+  const data = {
+    "writer": "RELATION_RECORD_ID",( 필수 )
+    "title": "test", ( 필수 )
+    "detail": "test", ( 필수 )
+    "bookTitle": "test"
+};
+2. 다음 버튼이 링크가 아니라 버튼 ! 
+3. 등록 성공하면 모달-> 홈 화면으로 이동? / 상세페이지로 이동 ! 
+4. title, detail이 없으면 submit 통신 방지
+
+*/
 function CreateBookReview() {
+  const { userInfo } = useUserInfoStore((state) => state);
+  const INITIAL_DATA = {
+    writer: userInfo.id,
+    detail: '',
+    title: '',
+  };
+  const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
+
+  const handleReviewForm = {
+    set: ({ target }) => {
+      setBookReviewForm({ ...bookReviewForm, [target.id]: target.value });
+    },
+    submit: () =>
+      pb
+        .collection('bookReview')
+        .create(bookReviewForm)
+        .then(() => {}),
+  };
+
+  const handleReviewImage = {
+    set: ({ target: { files } }) => {
+      setBookReviewForm({ ...bookReviewForm, img: files[0] });
+    },
+    remove: (e) => {
+      e.preventDefault();
+      setBookReviewForm({ ...bookReviewForm, img: null });
+    },
+  };
+
+  console.log(bookReviewForm);
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('독후감 쓰기')}</title>
       </Helmet>
       <main className="flex h-svh flex-col justify-between px-4">
-        <form className="flex flex-col gap-6">
+        <Form className="flex flex-col gap-6">
           <NomalTitle backLink>독후감 작성하기</NomalTitle>
           <h2 className="p-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
-          <ImageForm />
+          <ImageForm
+            id="img"
+            onChange={handleReviewImage.set}
+            onClick={handleReviewImage.remove}
+            src={bookReviewForm.img}
+          />
+          <div className="flex flex-col gap-2">
+            <TextForm
+              id="bookTitle"
+              placeholder="책 제목을 입력해주세요(필수)"
+              hiddenLabel
+              onChange={handleReviewForm.set}
+            >
+              읽은 책 제목
+            </TextForm>
+            <span className="px-2 text-b-2-regular text-bjgray-500">
+              예시) 까라마조프 가의 형제들
+            </span>
+          </div>
           <div className="flex flex-col gap-2">
             <TextForm
               required
               placeholder="제목을 입력해 주세요. (필수)"
               hiddenLabel
+              id="title"
+              onChange={handleReviewForm.set}
             >
-           독후감 제목
+              독후감 제목
             </TextForm>
             <span className="px-2 text-b-2-regular text-bjgray-500">
               독후감에 걸맞는 멋진 제목을 지어주세요 !
@@ -32,14 +100,32 @@ function CreateBookReview() {
           </div>
           <Textarea
             placeholder="내용을 입력해 주세요. (필수)"
-            label="모임 상세내용"
+            label="독후감 상세내용"
+            id="detail"
+            length={bookReviewForm['detail'].length || ''}
+            onChange={handleReviewForm.set}
+            maxLength={200}
           />
-        </form>
-        <div>
-          <MainButton className="my-4" color="primary">
-            다음
-          </MainButton>
-        </div>
+        </Form>
+        <MainButton
+          onClick={handleReviewForm.submit}
+          className="my-4"
+          as="button"
+          color={
+            bookReviewForm.bookTitle !== '' &&
+            bookReviewForm.title !== '' &&
+            bookReviewForm.detail !== ''
+              ? 'primary'
+              : 'secondary'
+          }
+          disabled={
+            bookReviewForm.bookTitle == '' &&
+            bookReviewForm.title == '' &&
+            bookReviewForm.detail == ''
+          }
+        >
+          등록
+        </MainButton>
       </main>
     </>
   );
