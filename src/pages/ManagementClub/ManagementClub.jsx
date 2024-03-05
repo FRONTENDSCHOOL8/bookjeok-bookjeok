@@ -1,15 +1,39 @@
-import { Accordion, NomalTitle, TextForm } from '@/components/Atoms';
-import { DobbleButtonModal, GNB } from '@/components/Molecules';
+import {
+  Accordion,
+  AccordionChidren1,
+  NomalTitle,
+  TextForm,
+} from '@/components/Atoms';
+import { GNB } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { useLoaderData } from 'react-router-dom';
 
 function ManagementClub() {
+  const {
+    title,
+    applicant,
+    expand,
+    // photo,
+    // active,
+    // dateTime,
+    // detail,
+    // isOffline,
+    // confirmUser,
+    // limitPerson,
+    // createUser,
+    // location,
+    // id,
+    query,
+  } = useLoaderData();
+  console.log(expand);
+  const data = useLoaderData();
+  console.log(data);
+
   return (
     <>
       <Helmet>
-        <title>
-          {getDocumentTitle('이곳에 모임 이름을 받아서 넣어줘야하지 않을까요?')}
-        </title>
+        <title>{getDocumentTitle(`${title} 모임관리`)}</title>
       </Helmet>
 
       <div className="relative flex h-screen w-full flex-col">
@@ -21,7 +45,7 @@ function ManagementClub() {
           <TextForm
             type="text"
             hiddenLabel
-            value="모임에 참석하기 전에 책을 읽어오셔야 돼요 !"
+            value={query}
             readOnly
             className="mb-4 mt-2"
           >
@@ -30,25 +54,29 @@ function ManagementClub() {
           <Accordion
             smallText="신청 후 24시간이 지나면 자동으로 대기가 취소돼요."
             open
-            src="/public/defaultProfile.webp"
-            nickname="바기"
-            text="오백년 전에 이미 읽었습니다. . . "
+            management
+            mainText={applicant.length}
           >
-            참여 대기 멤버 <span className="text-bjred-400">2</span>명 참여
+            <AccordionChidren1
+              src={applicant}
+              nickname={applicant}
+              text="오백년 전에 이미 읽었습니다. . . "
+            ></AccordionChidren1>
           </Accordion>
-          <Accordion
+          {/* <Accordion
             src="/public/defaultProfile.webp"
             nickname="쭈니"
             text="당연하죠 ㅎ"
           >
-            확정 멤버 4명 중 <span className="text-bjgray-500">0</span>명
-          </Accordion>
+            확정 멤버 {limitPerson}명 중{' '}
+            <span className="text-bjgray-500">{confirmUser.length}</span>명
+          </Accordion> */}
         </main>
       </div>
       <GNB createClub />
 
       {/* 모임 관리 페이지 팝업 1 */}
-      <DobbleButtonModal
+      {/* <DobbleButtonModal
         open
         title="바기 님의"
         primaryButtonText="네, 수락할게요"
@@ -57,17 +85,17 @@ function ManagementClub() {
         secondaryButtonPath="/"
       >
         소셜링 참여 신청을 수락하시겠어요?
-      </DobbleButtonModal>
+      </DobbleButtonModal> */}
 
       {/* 모임 관리 페이지 팝업 2 */}
-      <DobbleButtonModal
+      {/* <DobbleButtonModal
         // open
         title="참여인원이 모두 모였어요!"
         primaryButtonText="채팅방으로 이동하기"
         primaryButtonPath="/"
       >
         채팅방에서 이야기 나눠봐요
-      </DobbleButtonModal>
+      </DobbleButtonModal> */}
     </>
   );
 }

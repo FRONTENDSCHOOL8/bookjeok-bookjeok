@@ -1,4 +1,5 @@
 export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton';
+export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm';
 export { default as ModalButton } from '@/components/Atoms/Buttons/ModalButton/ModalButton';

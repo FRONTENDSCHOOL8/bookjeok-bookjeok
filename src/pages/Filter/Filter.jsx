@@ -2,7 +2,6 @@ import pb from '@/api/pocketbase';
 import { CheckboxForm, MainButton, NomalTitle } from '@/components/Atoms';
 import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
 import { getDocumentTitle } from '@/utils';
-import { useLayoutEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
@@ -22,7 +21,6 @@ function FilterList() {
     })
   );
   console.log(filterListState);
-
   const handleFilterCheckbox = (e) => {
     const { name, checked } = e.target;
     if (checked) {
@@ -51,11 +49,11 @@ function FilterList() {
 function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
-  const resetFilter = useFilterStore((state) => state.resetFilter);
+  // const resetFilter = useFilterStore((state) => state.resetFilter);
 
-  useLayoutEffect(() => {
-    resetFilter();
-  }, [resetFilter]);
+  // useLayoutEffect(() => {
+  //   resetFilter();
+  // }, [resetFilter]);
   return (
     <>
       <Helmet>
@@ -78,22 +76,10 @@ function Filter() {
             );
           }}
         >
-          <NomalTitle backButton textButton path="/mainClub">
+          <NomalTitle backLink textButton path="/mainClub">
             필터
           </NomalTitle>
           <ul className="mx-4">
-            <li>
-              <CheckboxForm
-                className="h-[64px]"
-                id="selectAll"
-                name="selectAll"
-                onChange={(e) => {
-                  console.log(e.target);
-                }}
-              >
-                전체선택
-              </CheckboxForm>
-            </li>
             <FilterList />
           </ul>
           <div className="p-4">

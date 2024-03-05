@@ -1,19 +1,59 @@
+import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
+import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
 import { getDocumentTitle } from '@/utils';
+import { useState } from 'react';
+import { useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 function CreateClub4() {
-  const { clubInfo, setDate, setTime, setLimit, setQuery } = useCreateClubStore(
-    (state) => ({
+  const { clubInfo, setLimit, setQuery, setDateTime, resetClubInfo } =
+    useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
-      setDate: state.setDate,
-      setTime: state.setTime,
       setLimit: state.setLimit,
       setQuery: state.setQuery,
-    })
-  );
-  console.log(clubInfo);
+      setDateTime: state.setDateTime,
+      resetClubInfo: state.resetClubInfo,
+    }));
+
+  const dateTimeRef = useRef({
+    date: null,
+    time: null,
+  });
+
+  const handleDate = ({ target }) => {
+    dateTimeRef.current.date = target.value;
+    if (
+      dateTimeRef.current.date !== null &&
+      dateTimeRef.current.time !== null
+    ) {
+      const { date, time } = dateTimeRef.current;
+      const dateTimeString = `${date} ${time}`;
+      const dateTime = new Date(dateTimeString).toISOString();
+      setDateTime(dateTime);
+    }
+  };
+  const handleTime = ({ target }) => {
+    dateTimeRef.current.time = target.value;
+    if (
+      dateTimeRef.current.date !== null &&
+      dateTimeRef.current.time !== null
+    ) {
+      const { date, time } = dateTimeRef.current;
+      const dateTimeString = `${date} ${time}`;
+      const dateTime = new Date(dateTimeString).toISOString();
+      setDateTime(dateTime);
+    }
+  };
+  const handleLimit = ({ target }) => {
+    setLimit(target.value);
+  };
+  const handleQuery = ({ target }) => {
+    setQuery(target.value);
+  };
+
+  const isValidate = !clubInfo.dateTime || !clubInfo.query;
 
   function createNumberArray(start, end) {
     const numbers = [];
@@ -24,27 +64,22 @@ function CreateClub4() {
   }
   const clubLimitNumber = createNumberArray(3, 15);
 
-  const handleDate = ({ target }) => {
-    setDate(target.value);
-  };
-  const handleTime = ({ target }) => {
-    setTime(target.value);
-  };
-  const handleLimit = ({ target }) => {
-    console.log(target.selectedOptions[0].label);
-    setLimit(target.value);
-  };
-  const handleQuery = ({ target }) => {
-    setQuery(target.value);
-  };
+  const [modalState, setModalState] = useState(false);
 
+  const handleSubmitClubInfoForCreate = async (e) => {
+    e.preventDefault();
+    await pb.collection('socialing').create(clubInfo);
+    await resetClubInfo();
+    setModalState(true);
+  };
+  console.log(clubInfo);
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
       <main className="flex h-svh flex-col justify-between px-4">
-        <form className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <NomalTitle backLink subText="4 of 4">
             모임 만들기
           </NomalTitle>
@@ -114,12 +149,25 @@ function CreateClub4() {
               ></input>
             </div>
           </div>
-        </form>
-        <div>
+          {modalState ? (
+            <DobbleButtonModal
+              open
+              svgId="logo"
+              title="모임을 개설했습니다."
+              primaryButtonText="홈으로"
+              primaryButtonPath="/mainClub"
+            >
+              참가자들의 신청을 기다려볼까요?
+            </DobbleButtonModal>
+          ) : (
+            ''
+          )}
+        </div>
+        <div className="py-4">
           <MainButton
-            color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!clubInfo ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
-            to="/createClub4"
+            as="button"
+            onClick={handleSubmitClubInfoForCreate}
+            disabled={isValidate}
           >
             다음
           </MainButton>

@@ -153,12 +153,13 @@ const routingPages = [
     loader: ApplicationClub2Loader,
   },
   {
-    path: '/managementClub',
+    path: '/managementClub/:clubId',
     element: (
       <ProtectRoute>
         <ManagementClub />
       </ProtectRoute>
     ),
+    loader: clubDetailLoader,
   },
   {
     path: '/chatRoomList',
@@ -194,11 +195,7 @@ const routingPages = [
   },
   {
     path: '/Welcome',
-    element: (
-      <ProtectRoute>
-        <Welcome />
-      </ProtectRoute>
-    ),
+    element: <Welcome />,
   },
 ];
 
