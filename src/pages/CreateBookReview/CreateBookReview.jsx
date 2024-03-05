@@ -7,6 +7,7 @@ import {
   TextForm,
   Textarea,
 } from '@/components/Atoms';
+import { DobbleButtonModal } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useState } from 'react';
 import { Form } from 'react-router-dom';
@@ -22,17 +23,25 @@ import pb from '@/api/pocketbase';
 };
 2. 다음 버튼이 링크가 아니라 버튼 ! 
 3. 등록 성공하면 모달-> 홈 화면으로 이동? / 상세페이지로 이동 ! 
-4. title, detail이 없으면 submit 통신 방지
+4. title, detail이 없으면 submit 통신 방지 => disabled 해버림 ! 
 
 */
+
+const style = {
+  div: 'flex flex-col gap-2',
+  span: 'px-2 text-b-2-regular text-bjgray-500',
+};
+
 function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
   const INITIAL_DATA = {
+    id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
     writer: userInfo.id,
     detail: '',
     title: '',
   };
   const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
+  const [isModalState, setIsModalState] = useState(false);
 
   const handleReviewForm = {
     set: ({ target }) => {
@@ -42,7 +51,10 @@ function CreateBookReview() {
       pb
         .collection('bookReview')
         .create(bookReviewForm)
-        .then(() => {}),
+        .then(() => {
+          setIsModalState(true);
+        })
+        .catch((Error) => console.error(Error)),
   };
 
   const handleReviewImage = {
@@ -54,8 +66,6 @@ function CreateBookReview() {
       setBookReviewForm({ ...bookReviewForm, img: null });
     },
   };
-
-  console.log(bookReviewForm);
   return (
     <>
       <Helmet>
@@ -71,7 +81,7 @@ function CreateBookReview() {
             onClick={handleReviewImage.remove}
             src={bookReviewForm.img}
           />
-          <div className="flex flex-col gap-2">
+          <div className={`${style['div']}`}>
             <TextForm
               id="bookTitle"
               placeholder="책 제목을 입력해주세요(필수)"
@@ -80,11 +90,11 @@ function CreateBookReview() {
             >
               읽은 책 제목
             </TextForm>
-            <span className="px-2 text-b-2-regular text-bjgray-500">
+            <span className={`${style['span']}`}>
               예시) 까라마조프 가의 형제들
             </span>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className={`${style['div']}`}>
             <TextForm
               required
               placeholder="제목을 입력해 주세요. (필수)"
@@ -94,7 +104,7 @@ function CreateBookReview() {
             >
               독후감 제목
             </TextForm>
-            <span className="px-2 text-b-2-regular text-bjgray-500">
+            <span className={`${style['span']}`}>
               독후감에 걸맞는 멋진 제목을 지어주세요 !
             </span>
           </div>
@@ -102,7 +112,7 @@ function CreateBookReview() {
             placeholder="내용을 입력해 주세요. (필수)"
             label="독후감 상세내용"
             id="detail"
-            length={bookReviewForm['detail'].length || ''}
+            length={bookReviewForm['detail'].length || ''.length}
             onChange={handleReviewForm.set}
             maxLength={200}
           />
@@ -127,6 +137,16 @@ function CreateBookReview() {
           등록
         </MainButton>
       </main>
+      <DobbleButtonModal
+        open={isModalState}
+        title="독후감 작성 완료! "
+        primaryButtonText="홈에서 확인하기"
+        primaryButtonPath="/mainBookReview"
+        secondaryButtonText="내가 쓴 독후감 보기"
+        secondaryButtonPath={`/mainBookReview/${bookReviewForm.id}`}
+      >
+        작성한 독후감을 확인해보세요
+      </DobbleButtonModal>
     </>
   );
 }
