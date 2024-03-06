@@ -1,11 +1,44 @@
-import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
-import { GNB, MainKindToggle } from '@/components/Molecules';
+import pb from '@/api/pocketbase';
+import { NomalTitle, ThinTextForm } from '@/components/Atoms';
+import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
+export async function loader() {
+  const bookReview = await pb.collection('bookReview').getFullList({
+    sort: '-created',
+    expand: 'writer',
+  });
+  return { bookReview };
+}
 
 function MainBookReview() {
+  const data = useLoaderData();
+  console.log(data);
+
+  // 검색창 이벤트 함수
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    setSearchKeyword(e.target.value);
+    setIsSearchState(e.target.value !== '');
+  };
+
+  const [isSearchState, setIsSearchState] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState();
+  const [searchResult, setSearchResult] = useState();
+  console.log(searchKeyword);
+  console.log(isSearchState);
+
+  //검색시 실행되는 이펙트 함수
+  useEffect(() => {
+    const createValue = data.bookReview.filter((item) =>
+      item['title'].includes(searchKeyword)
+    );
+    setSearchResult({ resultArray: createValue });
+  }, [data, searchKeyword]);
+
   return (
     <>
       <Helmet>
@@ -14,8 +47,9 @@ function MainBookReview() {
       <div className="relative flex h-screen w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
         <MainKindToggle />
-        <div className="px-4">
+        <div className="px-4 pb-16">
           <ThinTextForm
+            onChange={handleSearch}
             type="search"
             searchIcon
             placeholder="search"
@@ -24,85 +58,77 @@ function MainBookReview() {
             검색
           </ThinTextForm>
           <ul className="py-2">
-            <li className="py-4">
-              <Link>
-                <div className="flex items-center gap-x-2">
-                  <RoundImage
-                    src="/public/defaultProfile.webp"
-                    alt="alt"
-                    size="sm"
-                  ></RoundImage>
-                  <span className="text-b-1-medium text-bjblack">
-                    Erin Mango
-                  </span>
-                  <span className="ml-auto whitespace-nowrap text-b-2-regular text-bjgray-500">
-                    1시간 전
-                  </span>
-                </div>
-                <div className="my-[7px] flex items-center gap-x-2">
-                  <div>
-                    <p className="text-b-0-regular text-bjblack">
-                      아이는 무엇으로 자라는가...
-                    </p>
-                    <p className="text-b-2-regular text-bjgray-500">
-                      자녀가 있는 집에 이 책이 없다는 건 말이 되지 않는다
-                      &lt;타임지&gt;
-                    </p>
-                  </div>
-                  <div className="ml-auto shrink-0">
-                    <img
-                      src="/src/assets/temp.png"
-                      alt=""
-                      className="aspect-square w-[54px] rounded-4xl object-cover"
+            {isSearchState
+              ? searchResult.resultArray.map(
+                  ({
+                    id,
+                    title,
+                    expand: {
+                      writer: {
+                        nickname,
+                        collectionId: writerCollectionId,
+                        id: writerID,
+                        img: writerImg,
+                      },
+                    },
+                    detail,
+                    img,
+                    created,
+                    collectionId,
+                  }) => (
+                    <BookReviewList
+                      id={id}
+                      key={id}
+                      title={title}
+                      nickname={nickname}
+                      writerCollectionId={writerCollectionId}
+                      writerID={writerID}
+                      writerImg={writerImg}
+                      detail={detail}
+                      img={img}
+                      created={created}
+                      collectionId={collectionId}
                     />
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-4">
-              <Link>
-                <div className="flex items-center gap-x-2">
-                  <RoundImage
-                    src="/public/defaultProfile.webp"
-                    alt="alt"
-                    size="sm"
-                  ></RoundImage>
-                  <span className="text-b-1-medium text-bjblack">
-                    Erin Mango
-                  </span>
-                  <span className="ml-auto whitespace-nowrap text-b-2-regular text-bjgray-500">
-                    1시간 전
-                  </span>
-                </div>
-                <div className="my-[7px] flex items-center gap-x-2">
-                  <div>
-                    <p className="text-b-0-regular text-bjblack">
-                      아이는 무엇으로 자라는가...
-                    </p>
-                    <p className="text-b-2-regular text-bjgray-500">
-                      자녀가 있는 집에 이 책이 없다는 건 말이 되지 않는다
-                      &lt;타임지&gt;
-                    </p>
-                  </div>
-                  <div className="ml-auto shrink-0">
-                    <img
-                      src="/src/assets/temp.png"
-                      alt=""
-                      className="aspect-square w-[54px] rounded-4xl object-cover"
+                  )
+                )
+              : data.bookReview.map(
+                  ({
+                    id,
+                    title,
+                    expand: {
+                      writer: {
+                        nickname,
+                        collectionId: writerCollectionId,
+                        id: writerID,
+                        img: writerImg,
+                      },
+                    },
+                    detail,
+                    img,
+                    created,
+                    collectionId,
+                  }) => (
+                    <BookReviewList
+                      id={id}
+                      key={id}
+                      title={title}
+                      nickname={nickname}
+                      writerCollectionId={writerCollectionId}
+                      writerID={writerID}
+                      writerImg={writerImg}
+                      detail={detail}
+                      img={img}
+                      created={created}
+                      collectionId={collectionId}
                     />
-                  </div>
-                </div>
-              </Link>
-            </li>
+                  )
+                )}
           </ul>
         </div>
+        <GNB createBookReview className="fixed" />
       </div>
-      <GNB createClub />
     </>
   );
 }
 
-export async function loader() {
-  return '';
-}
 export default MainBookReview;
