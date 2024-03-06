@@ -65,6 +65,8 @@ function ApplicationClub2() {
           const updateData = {
             applicant: [...club.applicant, `${userInfo.id}`],
           };
+          console.log(...club.applicant);
+          pb.collection('socialing').update(club.id, updateData);
           pb.collection('socialing').update(club.id, updateData);
           setIsSuccess(true);
           setIsOpenModal(true);

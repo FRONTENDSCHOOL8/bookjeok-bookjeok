@@ -1,8 +1,10 @@
-import { bool, string, element, any } from 'prop-types';
+import { bool, string, array, any, number } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
 function Accordion({
-  management,
+  applicant,
+  confirmUser,
+  limitPerson,
   className,
   open = false,
   mainText,
@@ -17,13 +19,26 @@ function Accordion({
     <details className={`${accordionStyle.className} ${className}`} open={open}>
       <summary className="flex h-[64px] flex-row items-center">
         <div className="flex flex-1 flex-col">
-          {management ? (
+          {applicant ? (
             <p className="text-h-2-semibold text-bjblack">
-              참여 대기 멤버 <span className="text-bjred-400">{mainText}</span>
+              참여 대기 멤버 <span className="text-bjred-400">{applicant}</span>
               명
             </p>
           ) : (
+            ''
+          )}
+          {confirmUser ? (
+            <p className="text-h-2-semibold text-bjblack">
+              참여 확정 멤버 {limitPerson}명 중{' '}
+              <span className="text-bjgray-500">{confirmUser}</span>명
+            </p>
+          ) : (
+            ''
+          )}
+          {mainText ? (
             <p className="text-h-2-semibold text-bjblack">{mainText}</p>
+          ) : (
+            ''
           )}
           <p className="text-b-2-regular text-bjgray-500">{smallText}</p>
         </div>
@@ -42,10 +57,12 @@ function Accordion({
 export default Accordion;
 
 Accordion.propTypes = {
-  management: bool,
+  applicant: number,
+  confirmUser: number,
+  limitPerson: number,
   className: string,
   open: bool,
-  children: element,
+  children: array,
   mainText: any,
   smallText: string,
   src: string,
