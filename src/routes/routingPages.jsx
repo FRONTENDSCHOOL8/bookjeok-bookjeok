@@ -33,6 +33,8 @@ import MainBookReview, {
 import DetailBookReview, {
   loader as detailBookReviewloader,
 } from '@/pages/DetailBookReview/DetailBookReview';
+import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
+
 
 const routingPages = [
   {
@@ -154,7 +156,7 @@ const routingPages = [
         <ManagementClub />
       </ProtectRoute>
     ),
-    loader: clubDetailLoader,
+    loader: answerLoader,
   },
   {
     path: '/chatRoomList',
