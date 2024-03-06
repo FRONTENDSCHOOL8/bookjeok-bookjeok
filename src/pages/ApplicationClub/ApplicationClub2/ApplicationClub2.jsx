@@ -51,6 +51,7 @@ function ApplicationClub2() {
     e.preventDefault();
     if (answerForm) {
       const answerData = {
+        id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
         socialing: club.id,
         answerUser: userInfo.id,
         answer: answerForm,
@@ -63,6 +64,7 @@ function ApplicationClub2() {
         })
         .then(() => {
           const updateData = {
+            answer: [...club.answer, `${answerData.id}`],
             applicant: [...club.applicant, `${userInfo.id}`],
           };
           pb.collection('socialing').update(club.id, updateData);
