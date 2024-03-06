@@ -2,19 +2,19 @@ import AtomMaking from '@/AtomMaking';
 import { ProtectRoute } from '@/components/Common';
 import {
   ChatRoomList,
+  CreateBookReview,
   CreateClub1,
   CreateClub2,
   CreateClub3,
   CreateClub4,
+  DetailBookReview,
   DetailClub,
   Intro,
-  CreateBookReview,
   Login,
   ManagementClub,
+  MyClubList,
   MyPage,
   Welcome,
-  DetailBookReview,
-  MyClubList,
 } from '@/pages';
 import ApplicationClub1, {
   loader as ApplicationClub1Loader,
@@ -25,13 +25,13 @@ import ApplicationClub2, {
 import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
-import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
-import BasicInfo from '@/pages/SignUp/BasicInfo';
-import DetailInfo from '@/pages/SignUp/DetailInfo';
 import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
+import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
+import BasicInfo from '@/pages/SignUp/BasicInfo';
+import DetailInfo from '@/pages/SignUp/DetailInfo';
 
 const routingPages = [
   {

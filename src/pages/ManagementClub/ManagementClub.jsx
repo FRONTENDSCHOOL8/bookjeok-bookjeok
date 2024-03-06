@@ -7,14 +7,24 @@ import {
 } from '@/components/Atoms';
 import { DobbleButtonModal, GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 function ManagementClub() {
   const { answer, socialing } = useLoaderData();
-
+  const { clubId } = useParams();
   console.log(answer);
   console.log(socialing);
+
+  useEffect(() => {
+    pb.collection('socialing').subscribe(clubId, (e) => {
+      console.log(e.action, e.record);
+    });
+    return () => {
+      pb.collection('socialing').unsubscribe(clubId);
+    };
+  }, [clubId]);
 
   const handleApprove = (userId) => (e) => {
     console.log(userId);
