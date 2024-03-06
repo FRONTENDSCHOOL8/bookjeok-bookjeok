@@ -1,11 +1,10 @@
-import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle } from '@/components/Atoms';
 import useCreateClubStore from '@/store/useCreateClubStore';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 
-function CreateClub2() {
+export function CreateClub2() {
   const genres = useLoaderData();
   const { clubInfo, addGenre, removeGenre } = useCreateClubStore((state) => ({
     clubInfo: state.clubInfo,
@@ -63,13 +62,6 @@ function CreateClub2() {
       </main>
     </>
   );
-}
-
-export default CreateClub2;
-
-export async function loader() {
-  const data = await pb.collection('genres').getFullList();
-  return data;
 }
 
 function GenreButton({ className, state, genres, onClick, ...restProps }) {

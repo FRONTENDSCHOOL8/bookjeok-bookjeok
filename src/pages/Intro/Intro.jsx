@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { bool } from 'prop-types';
 import useUserInfoStore from '@/store/useUserInfoStore';
 
-function Intro() {
+export function Intro() {
   const { userInfo } = useUserInfoStore((state) => ({
     userInfo: state.userInfo,
   }));
@@ -36,8 +36,6 @@ function Intro() {
     </>
   );
 }
-
-export default Intro;
 
 Intro.propTypes = {
   isAllowed: bool,

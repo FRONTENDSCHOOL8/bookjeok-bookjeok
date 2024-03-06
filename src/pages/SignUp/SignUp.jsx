@@ -1,8 +1,7 @@
-
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 
-function SignUp() {
+export function SignUp() {
   return (
     <>
       <Helmet>
@@ -12,5 +11,3 @@ function SignUp() {
     </>
   );
 }
-
-export default SignUp;

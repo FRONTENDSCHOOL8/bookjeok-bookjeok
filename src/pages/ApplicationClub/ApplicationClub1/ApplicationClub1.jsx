@@ -5,12 +5,7 @@ import { Svg } from '@/components/Atoms';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-export async function loader({ params }) {
-  const socialingId = params;
-  return { socialingId };
-}
-
-function ApplicationClub1() {
+export function ApplicationClub1() {
   const { socialingId } = useLoaderData();
 
   const [isAgreement, setIsAgreement] = useState(false);
@@ -81,5 +76,3 @@ function ApplicationClub1() {
     </>
   );
 }
-
-export default ApplicationClub1;

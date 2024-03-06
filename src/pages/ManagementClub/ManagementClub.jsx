@@ -5,11 +5,10 @@ import {
   NomalTitle,
   TextForm,
 } from '@/components/Atoms';
-import { DobbleButtonModal, GNB } from '@/components/Molecules';
+import { GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useRevalidator } from 'react-router-dom';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useRevalidator } from 'react-router-dom';
 
 export function ManagementClub() {
   const {
@@ -19,19 +18,6 @@ export function ManagementClub() {
     },
   } = useLoaderData();
 
-  console.log('socialing', socialing);
-  console.log('answer', answer);
-  console.log('applicant', applicant);
-  console.log('confirmUser', confirmUser);
-
-  // useEffect(() => {
-  //   pb.collection('socialing').subscribe(clubId, (e) => {
-  //     console.log(e.action, e.record);
-  //   });
-  //   return () => {
-  //     pb.collection('socialing').unsubscribe(clubId);
-  //   };
-  // }, [clubId]);
   const revalidator = useRevalidator();
 
   const handleApprove = (userId) => async (e) => {
@@ -123,7 +109,7 @@ export function ManagementClub() {
       </div>
 
       {/* 모임 관리 페이지 팝업 1 */}
-      <DobbleButtonModal
+      {/* <DobbleButtonModal
         title="바기 님의"
         primaryButtonText="네, 수락할게요"
         primaryButtonPath="/"
@@ -131,7 +117,7 @@ export function ManagementClub() {
         secondaryButtonPath="/"
       >
         소셜링 참여 신청을 수락하시겠어요?
-      </DobbleButtonModal>
+      </DobbleButtonModal> */}
 
       {/* 모임 관리 페이지 팝업 2 */}
       {/* <DobbleButtonModal

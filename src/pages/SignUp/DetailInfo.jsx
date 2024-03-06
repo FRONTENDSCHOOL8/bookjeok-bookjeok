@@ -17,7 +17,7 @@ import pb from '@/api/pocketbase';
 
 */
 
-export default function DetailInfo() {
+export function DetailInfo() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(state);

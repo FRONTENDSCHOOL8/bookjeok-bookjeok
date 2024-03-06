@@ -1,9 +1,10 @@
+import { createRandomId } from '@/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 const clubInfoStore = (set) => ({
   clubInfo: {
-    id: null,
+    id: createRandomId(),
     isOffline: false,
     location: '',
     genre: null,

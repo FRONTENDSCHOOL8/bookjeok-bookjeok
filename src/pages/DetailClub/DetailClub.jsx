@@ -1,12 +1,11 @@
-import pb from '@/api/pocketbase';
 import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { Avatar } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
+import { calcDay, getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 
-function DetailClub() {
+export function DetailClub() {
   const {
     title,
     photo,
@@ -86,15 +85,4 @@ function DetailClub() {
       </div>
     </>
   );
-}
-
-export default DetailClub;
-
-export async function loader({ params }) {
-  const { clubId } = params;
-  const club = await pb
-    .collection('socialing')
-    .getOne(clubId, { expand: 'genre, createUser, applicant' });
-  club.photo = getPbImgs(club);
-  return club;
 }

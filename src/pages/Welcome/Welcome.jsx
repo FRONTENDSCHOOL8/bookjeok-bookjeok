@@ -1,7 +1,7 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { OutlineButton } from '@/components/Atoms';
-function Welcome() {
+export function Welcome() {
   return (
     <>
       <Helmet>
@@ -32,11 +32,9 @@ function Welcome() {
           className="mb-14 h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
           to="/login"
         >
-         로그인 하기
+          로그인 하기
         </OutlineButton>
       </div>
     </>
   );
 }
-
-export default Welcome;

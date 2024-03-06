@@ -2,16 +2,15 @@ import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
-import { createNumberArray, createRandomId, getDocumentTitle } from '@/utils';
+import { createNumberArray, getDocumentTitle } from '@/utils';
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 export function CreateClub4() {
   // zustand store 안의 상태 및 메서드 호출
-  const { clubInfo, setId, setLimit, setQuery, setDateTime, resetClubInfo } =
+  const { clubInfo, setLimit, setQuery, setDateTime, resetClubInfo } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
-      setId: state.setId,
       setLimit: state.setLimit,
       setQuery: state.setQuery,
       setDateTime: state.setDateTime,
@@ -63,25 +62,15 @@ export function CreateClub4() {
   // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
-
     const user = await pb.collection('users').getOne(clubInfo.createUser);
-
-    // 명시적으로 id값을 pocketbase에 주입하기 위한 id 생성
-    const socialingId = createRandomId(); //ok 확인 15자 떨어짐
-    console.log('1', socialingId);
-    await setId(socialingId);
-    console.log('2', socialingId);
     const clubDataForUser = {
-      createSocialing: [...user.createSocialing, `${socialingId}`],
+      createSocialing: [...user.createSocialing, `${clubInfo.id}`],
     };
-
     await pb.collection('socialing').create(clubInfo);
     await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
-    console.log('3', socialingId);
     await resetClubInfo();
     setModalState(true);
   };
-  console.log(clubInfo);
   return (
     <>
       <Helmet>
@@ -185,8 +174,3 @@ export function CreateClub4() {
     </>
   );
 }
-
-// export const loader = (id) => async () => {
-//   const data = await pb.collection('users').getOne(id);
-//   return data;
-// };

@@ -1,39 +1,40 @@
 import AtomMaking from '@/AtomMaking';
 import { ProtectRoute } from '@/components/Common';
 import {
-  ChatRoomList,
-  CreateBookReview,
-  CreateClub1,
-  CreateClub2,
-  CreateClub3,
-  // CreateClub4,
-  DetailBookReview,
-  DetailClub,
-  Intro,
-  Login,
-  // ManagementClub,
-  MyClubList,
-  MyPage,
-  Welcome,
-} from '@/pages';
-import ApplicationClub1, {
+  ApplicationClub1,
   loader as ApplicationClub1Loader,
-} from '@/pages/ApplicationClub/ApplicationClub1/ApplicationClub1';
-import ApplicationClub2, {
+} from '@/pages/ApplicationClub/ApplicationClub1';
+import {
+  ApplicationClub2,
   loader as ApplicationClub2Loader,
-} from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
-import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
+} from '@/pages/ApplicationClub/ApplicationClub2';
+import { ChatRoomList } from '@/pages/Chatting/ChatRoomList';
+import { CreateBookReview } from '@/pages/CreateBookReview';
+import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
+import {
+  CreateClub2,
+  loader as genreLoader,
+} from '@/pages/CreateClub/CreateClub2';
+import { CreateClub3 } from '@/pages/CreateClub/CreateClub3';
 import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
-import { loader as detailBookReviewloader } from '@/pages/DetailBookReview/DetailBookReview';
-import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
-import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
-import MainBookReview, {
+import {
+  DetailBookReview,
+  loader as detailBookReviewloader,
+} from '@/pages/DetailBookReview';
+import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
+import { Filter, loader as filterListLoader } from '@/pages/Filter';
+import { Intro } from '@/pages/Intro';
+import { Login } from '@/pages/Login';
+import {
+  MainBookReview,
   loader as bookReviewListLoader,
-} from '@/pages/MainBookReview/MainBookReview';
-import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
+} from '@/pages/MainBookReview';
+import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
-import BasicInfo from '@/pages/SignUp/BasicInfo';
-import DetailInfo from '@/pages/SignUp/DetailInfo';
+import { MyClubList } from '@/pages/MyClubList';
+import { MyPage } from '@/pages/MyPage';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
+import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
   {
