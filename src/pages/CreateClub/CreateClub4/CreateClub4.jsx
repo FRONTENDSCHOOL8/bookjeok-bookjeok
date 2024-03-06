@@ -16,6 +16,7 @@ function CreateClub4() {
       setDateTime: state.setDateTime,
       resetClubInfo: state.resetClubInfo,
     }));
+  console.log(clubInfo);
 
   const dateTimeRef = useRef({
     date: null,
@@ -68,6 +69,7 @@ function CreateClub4() {
 
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
+    // await pb.collection('user').update();
     await pb.collection('socialing').create(clubInfo);
     await resetClubInfo();
     setModalState(true);

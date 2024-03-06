@@ -8,7 +8,7 @@ export { default as CreateClub2 } from '@/pages/CreateClub/CreateClub2/CreateClu
 export { default as CreateClub3 } from '@/pages/CreateClub/CreateClub3/CreateClub3';
 export { default as CreateClub4 } from '@/pages/CreateClub/CreateClub4/CreateClub4';
 export { default as MainBookReview } from '@/pages/MainBookReview/MainBookReview';
-export { default as ManagementClub } from '@/pages/ManagementClub/ManagementClub';
+// export { default as ManagementClub } from '@/pages/ManagementClub/ManagementClub';
 export { default as ChatRoom } from '@/pages/Chatting/ChatRoom/ChatRoom';
 export { default as MyClubList } from '@/pages/MyClubList/MyClubList';
 export { default as DetailClub } from '@/pages/DetailClub/DetailClub';

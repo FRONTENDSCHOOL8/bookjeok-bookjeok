@@ -11,7 +11,7 @@ import {
   DetailClub,
   Intro,
   Login,
-  ManagementClub,
+  // ManagementClub,
   MyClubList,
   MyPage,
   Welcome,
@@ -30,10 +30,10 @@ import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
-import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
+import { loader as answerLoader, ManagementClub } from '@/pages/ManagementClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
-
+console.log(ManagementClub);
 const routingPages = [
   {
     path: '/',
