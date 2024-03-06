@@ -1,14 +1,8 @@
-import pb from '@/api/pocketbase';
 import { CheckboxForm, MainButton, NomalTitle } from '@/components/Atoms';
 import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-
-export async function loader() {
-  const filters = await pb.collection('genres').getFullList();
-  return filters;
-}
 
 function FilterList() {
   const filterList = useLoaderData();
@@ -46,7 +40,7 @@ function FilterList() {
   });
 }
 
-function Filter() {
+export function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
   // const resetFilter = useFilterStore((state) => state.resetFilter);
@@ -92,5 +86,3 @@ function Filter() {
     </>
   );
 }
-
-export default Filter;

@@ -1,4 +1,3 @@
-import pb from '@/api/pocketbase';
 import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
@@ -6,15 +5,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 
-export async function loader() {
-  const bookReview = await pb.collection('bookReview').getFullList({
-    sort: '-created',
-    expand: 'writer',
-  });
-  return { bookReview };
-}
-
-function MainBookReview() {
+export function MainBookReview() {
   const data = useLoaderData();
   console.log(data);
 
@@ -130,5 +121,3 @@ function MainBookReview() {
     </>
   );
 }
-
-export default MainBookReview;

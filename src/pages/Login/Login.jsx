@@ -14,7 +14,7 @@ import { DobbleButtonModal } from '@/components/Molecules';
   - 성공 알림 모달-> 확인 버튼 클릭시 메인으로 이동 | 실패 모달 ?  
 */
 
-function Login() {
+export function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const { setUserInfo } = useUserInfoStore((state) => state);
@@ -99,5 +99,3 @@ function Login() {
     </>
   );
 }
-
-export default Login;

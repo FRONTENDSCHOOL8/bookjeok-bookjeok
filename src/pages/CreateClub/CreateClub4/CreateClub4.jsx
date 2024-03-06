@@ -2,12 +2,12 @@ import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
-import { getDocumentTitle } from '@/utils';
-import { useState } from 'react';
-import { useRef } from 'react';
+import { createNumberArray, getDocumentTitle } from '@/utils';
+import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-function CreateClub4() {
+export function CreateClub4() {
+  // zustand store 안의 상태 및 메서드 호출
   const { clubInfo, setLimit, setQuery, setDateTime, resetClubInfo } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
@@ -17,11 +17,12 @@ function CreateClub4() {
       resetClubInfo: state.resetClubInfo,
     }));
 
+  // 입력받은 date 및 time을 ref에 임시 저장
   const dateTimeRef = useRef({
     date: null,
     time: null,
   });
-
+  // ref에 저장된 date 및 time을 handler 함수에서 조합 및 전역 상태 업데이트
   const handleDate = ({ target }) => {
     dateTimeRef.current.date = target.value;
     if (
@@ -46,6 +47,8 @@ function CreateClub4() {
       setDateTime(dateTime);
     }
   };
+
+  // 인원 제한 및 질문 상태 업데이트
   const handleLimit = ({ target }) => {
     setLimit(target.value);
   };
@@ -53,26 +56,21 @@ function CreateClub4() {
     setQuery(target.value);
   };
 
-  const isValidate = !clubInfo.dateTime || !clubInfo.query;
-
-  function createNumberArray(start, end) {
-    const numbers = [];
-    for (let i = start; i <= end; i++) {
-      numbers.push(i);
-    }
-    return numbers;
-  }
-  const clubLimitNumber = createNumberArray(3, 15);
-
+  // 제출 후 모달표시를 위한 상태관리
   const [modalState, setModalState] = useState(false);
 
+  // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
+    const user = await pb.collection('users').getOne(clubInfo.createUser);
+    const clubDataForUser = {
+      createSocialing: [...user.createSocialing, `${clubInfo.id}`],
+    };
     await pb.collection('socialing').create(clubInfo);
+    await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
     await resetClubInfo();
     setModalState(true);
   };
-  console.log(clubInfo);
   return (
     <>
       <Helmet>
@@ -126,7 +124,7 @@ function CreateClub4() {
                   <option value="" disabled>
                     참여인원(3-15)
                   </option>
-                  {clubLimitNumber.map((i) => (
+                  {createNumberArray(3, 15).map((i) => (
                     <option key={i} value={i}>
                       {i}명
                     </option>
@@ -167,7 +165,7 @@ function CreateClub4() {
           <MainButton
             as="button"
             onClick={handleSubmitClubInfoForCreate}
-            disabled={isValidate}
+            disabled={!clubInfo.dateTime || !clubInfo.query}
           >
             다음
           </MainButton>
@@ -176,5 +174,3 @@ function CreateClub4() {
     </>
   );
 }
-
-export default CreateClub4;

@@ -1,8 +1,10 @@
+import { createRandomId } from '@/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 const clubInfoStore = (set) => ({
   clubInfo: {
+    id: createRandomId(),
     isOffline: false,
     location: '',
     genre: null,
@@ -14,6 +16,15 @@ const clubInfoStore = (set) => ({
     limitPerson: 3,
     query: null,
     createUser: null,
+  },
+  setId: (id) => {
+    set(
+      (state) => ({
+        clubInfo: { ...state.clubInfo, id },
+      }),
+      false,
+      'setId'
+    );
   },
   setUserId: (createUser) => {
     set(
@@ -27,7 +38,7 @@ const clubInfoStore = (set) => ({
   changeLocationType: (isOffline) => {
     set(
       (state) => ({
-        clubInfo: { ...state.clubInfo, isOffline, placeName: '' },
+        clubInfo: { ...state.clubInfo, isOffline, location: '' },
       }),
       false,
       'changeLocationType'

@@ -1,17 +1,17 @@
 import pb from '@/api/pocketbase';
-import { getDocumentTitle, getPbImgs } from '@/utils';
-import { Helmet } from 'react-helmet-async';
 import {
-  NomalTitle,
   MainButton,
+  NomalTitle,
   RoundImage,
+  Svg,
   Textarea,
 } from '@/components/Atoms';
-import { Svg } from '@/components/Atoms';
-import { useLoaderData } from 'react-router-dom';
-import { useState } from 'react';
-import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { getDocumentTitle } from '@/utils';
+import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useLoaderData } from 'react-router-dom';
 
 /*
 1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
@@ -22,20 +22,7 @@ import { DobbleButtonModal } from '@/components/Molecules';
 4. users, socialing DB에 적재 
 */
 
-export async function loader({ params }) {
-  const { clubId } = params;
-  const club = await pb
-    .collection('socialing')
-    .getOne(clubId, { expand: ' createUser' });
-  const profile = await pb.collection('users').getOne(club.createUser);
-  if (profile.img) {
-    const profilePhoto = getPbImgs(profile);
-    return { club, profilePhoto };
-  }
-  return { club };
-}
-
-function ApplicationClub2() {
+export function ApplicationClub2() {
   const { club, profilePhoto } = useLoaderData();
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
@@ -142,5 +129,3 @@ function ApplicationClub2() {
     </>
   );
 }
-
-export default ApplicationClub2;

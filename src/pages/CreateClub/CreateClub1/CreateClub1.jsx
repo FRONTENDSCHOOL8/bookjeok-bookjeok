@@ -10,7 +10,7 @@ import { getDocumentTitle } from '@/utils';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-function CreateClub1() {
+export function CreateClub1() {
   const { clubInfo, setUserID, changeLocationType, addPlaceName } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
@@ -95,5 +95,3 @@ function CreateClub1() {
     </>
   );
 }
-
-export default CreateClub1;

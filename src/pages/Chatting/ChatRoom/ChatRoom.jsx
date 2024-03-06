@@ -3,7 +3,7 @@ import { GNB } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 
-function ChatRoom() {
+export function ChatRoom() {
   return (
     <>
       <Helmet>
@@ -48,5 +48,3 @@ function ChatRoom() {
     </>
   );
 }
-
-export default ChatRoom;

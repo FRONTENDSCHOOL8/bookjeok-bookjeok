@@ -9,7 +9,7 @@ import useCreateClubStore from '@/store/useCreateClubStore';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 
-function CreateClub3() {
+export function CreateClub3() {
   const { clubInfo, setImage, removeImage, addTitle, addDetail } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
@@ -93,5 +93,3 @@ function CreateClub3() {
     </>
   );
 }
-
-export default CreateClub3;

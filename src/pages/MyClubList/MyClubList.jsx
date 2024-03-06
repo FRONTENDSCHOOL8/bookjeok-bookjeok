@@ -42,7 +42,7 @@ const style = {
   h2: 'pb-4 pl-4 pt-5 text-b-1-regular text-bjblack',
 };
 
-function MyClubList() {
+export function MyClubList() {
   const { userInfo } = useUserInfoStore();
   const [createdClub, setCreatedClub] = useState([]);
   const [confirmedClub, setConfirmedClub] = useState([]);
@@ -190,5 +190,3 @@ function MyClubList() {
     </>
   );
 }
-
-export default MyClubList;

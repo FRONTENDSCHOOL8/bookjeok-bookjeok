@@ -4,7 +4,7 @@ import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-function ChatRoomList() {
+export function ChatRoomList() {
   return (
     <>
       <Helmet>
@@ -55,5 +55,3 @@ function ChatRoomList() {
     </>
   );
 }
-
-export default ChatRoomList;

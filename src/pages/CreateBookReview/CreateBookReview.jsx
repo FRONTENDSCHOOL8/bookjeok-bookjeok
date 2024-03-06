@@ -32,7 +32,7 @@ const style = {
   span: 'px-2 text-b-2-regular text-bjgray-500',
 };
 
-function CreateBookReview() {
+export function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
   const INITIAL_DATA = {
     id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
@@ -155,5 +155,3 @@ function CreateBookReview() {
     </>
   );
 }
-
-export default CreateBookReview;

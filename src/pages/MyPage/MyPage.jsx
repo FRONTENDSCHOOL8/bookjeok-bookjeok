@@ -16,7 +16,7 @@ import pb from '@/api/pocketbase';
 3. 프로필 사진 수정 기능 구현
 
 */
-function MyPage() {
+export function MyPage() {
   const {
     userInfo: { createSocialing, participantSocialing },
   } = useUserInfoStore((state) => state);
@@ -77,5 +77,3 @@ function MyPage() {
     </>
   );
 }
-
-export default MyPage;

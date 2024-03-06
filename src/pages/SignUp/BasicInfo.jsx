@@ -22,7 +22,7 @@ const INITIAL_USER_INFO = {
   emailVisibility: true,
 };
 
-export default function BasicInfo() {
+export function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
   const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
   const [isValidateEmail, setIsValidateEmail] = useState(false);

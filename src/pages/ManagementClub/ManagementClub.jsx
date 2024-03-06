@@ -5,23 +5,34 @@ import {
   NomalTitle,
   TextForm,
 } from '@/components/Atoms';
-import { DobbleButtonModal, GNB } from '@/components/Molecules';
+import { GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useRevalidator } from 'react-router-dom';
 
-function ManagementClub() {
-  const { answer, socialing } = useLoaderData();
+export function ManagementClub() {
+  const {
+    socialing,
+    socialing: {
+      expand: { applicant, confirmUser, answer },
+    },
+  } = useLoaderData();
 
-  console.log(answer);
-  console.log(socialing);
+  const revalidator = useRevalidator();
 
-  const handleApprove = (userId) => (e) => {
-    console.log(userId);
-    console.log(e.target);
+  const handleApprove = (userId) => async (e) => {
     e.preventDefault();
-    const Data = { confirmUser: [...socialing.confirmUser, userId] };
-    pb.collection('socialing').update(socialing.id, Data);
+    if (socialing.limitPerson === socialing.confirmUser.length) {
+      return alert('이미 인원이 가득 찼습니다.');
+    }
+    const appData = socialing.applicant.filter((item) => item !== userId);
+    const Data = {
+      confirmUser: [...socialing.confirmUser, userId],
+      applicant: appData,
+    };
+    const res = await pb.collection('socialing').update(socialing.id, Data);
+    console.log(res);
+    revalidator.revalidate();
   };
   return (
     <>
@@ -46,54 +57,59 @@ function ManagementClub() {
           </TextForm>
           <Accordion
             smallText={
-              socialing.applicant.length - socialing.confirmUser.length === 0
+              applicant === undefined
                 ? '아직 신청자가 없습니다.'
                 : '신청 후 24시간이 지나면 자동으로 대기가 취소돼요.'
             }
             open
-            applicant={
-              socialing.applicant.length - socialing.confirmUser.length
-            }
+            applicant={applicant === undefined ? '0' : applicant.length}
           >
-            {answer
-              .filter(
-                (item) =>
-                  !item.expand.socialing.confirmUser.includes(item.answerUser)
-              )
-              .map((item) => {
-                console.log(item);
-                return (
-                  <AccordionChidren1
-                    key={item.id}
-                    // userId={item.answerUser}
-                    src={getPbImgs(item.expand.answerUser)}
-                    nickname={item.expand.answerUser.nickname}
-                    answer={item.answer}
-                    onClick={handleApprove(item.answerUser)}
-                  ></AccordionChidren1>
-                );
-              })}
+            {answer === undefined
+              ? ''
+              : answer
+                  .filter(
+                    (item) =>
+                      !item.expand.socialing.confirmUser.includes(
+                        item.answerUser
+                      )
+                  )
+                  .map((item) => {
+                    console.log(item);
+                    return (
+                      <AccordionChidren1
+                        key={item.id}
+                        // userId={item.answerUser}
+                        src={getPbImgs(item.expand.answerUser)}
+                        nickname={item.expand.answerUser.nickname}
+                        answer={item.answer}
+                        onClick={handleApprove(item.answerUser)}
+                      ></AccordionChidren1>
+                    );
+                  })}
           </Accordion>
           <Accordion
             open
             limitPerson={socialing.limitPerson}
             confirmUser={socialing.confirmUser.length}
+            smallText={confirmUser ? '' : '아직 승인한 신청자가 없습니다.'}
           >
-            {socialing.expand.confirmUser.map((item) => (
-              <AccordionChidren1
-                confirm
-                key={item.id}
-                src={getPbImgs(item)}
-                nickname={item.nickname}
-              ></AccordionChidren1>
-            ))}
+            {confirmUser === undefined
+              ? ''
+              : confirmUser.map((item) => (
+                  <AccordionChidren1
+                    confirm
+                    key={item.id}
+                    src={getPbImgs(item)}
+                    nickname={item.nickname}
+                  ></AccordionChidren1>
+                ))}
           </Accordion>
         </main>
         <GNB className="fixed" createClub />
       </div>
 
       {/* 모임 관리 페이지 팝업 1 */}
-      <DobbleButtonModal
+      {/* <DobbleButtonModal
         title="바기 님의"
         primaryButtonText="네, 수락할게요"
         primaryButtonPath="/"
@@ -101,7 +117,7 @@ function ManagementClub() {
         secondaryButtonPath="/"
       >
         소셜링 참여 신청을 수락하시겠어요?
-      </DobbleButtonModal>
+      </DobbleButtonModal> */}
 
       {/* 모임 관리 페이지 팝업 2 */}
       {/* <DobbleButtonModal
@@ -115,15 +131,3 @@ function ManagementClub() {
     </>
   );
 }
-export const loader = async ({ params }) => {
-  const answer = await pb.collection('socialingQueryAnswer').getFullList({
-    filter: `socialing ="${params.clubId}"`,
-    expand: 'socialing, answerUser',
-  });
-  const socialing = await pb
-    .collection('socialing')
-    .getOne(params.clubId, { expand: 'confirmUser' });
-  const data = { answer, socialing };
-  return data;
-};
-export default ManagementClub;
