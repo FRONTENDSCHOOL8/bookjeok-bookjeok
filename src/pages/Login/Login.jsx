@@ -91,7 +91,7 @@ function Login() {
           )}
         </div>
         <div className="mt-auto p-4">
-          <MainButton onClick={handleLogin} type="button">
+          <MainButton onClick={handleLogin} as="button">
             로그인
           </MainButton>
         </div>

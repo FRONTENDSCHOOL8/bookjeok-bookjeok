@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import pb from '@/api/pocketbase';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -7,11 +9,9 @@ import {
   TextForm,
   Textarea,
 } from '@/components/Atoms';
-import { DobbleButtonModal } from '@/components/Molecules';
-import useUserInfoStore from '@/store/useUserInfoStore';
-import { useState } from 'react';
 import { Form } from 'react-router-dom';
-import pb from '@/api/pocketbase';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { DobbleButtonModal } from '@/components/Molecules';
 
 /*
 1.pb api data 
@@ -66,6 +66,7 @@ function CreateBookReview() {
       setBookReviewForm({ ...bookReviewForm, img: null });
     },
   };
+  console.log(bookReviewForm.img == null);
   return (
     <>
       <Helmet>
@@ -119,19 +120,23 @@ function CreateBookReview() {
         </Form>
         <MainButton
           onClick={handleReviewForm.submit}
-          className="my-4"
           as="button"
           color={
-            bookReviewForm.bookTitle !== '' &&
-            bookReviewForm.title !== '' &&
-            bookReviewForm.detail !== ''
+            bookReviewForm.img &&
+            bookReviewForm.bookTitle &&
+            bookReviewForm.title &&
+            bookReviewForm.detail
               ? 'primary'
               : 'secondary'
           }
+          className={'my-4'}
           disabled={
-            bookReviewForm.bookTitle == '' &&
-            bookReviewForm.title == '' &&
-            bookReviewForm.detail == ''
+            !(
+              bookReviewForm.img &&
+              bookReviewForm.bookTitle &&
+              bookReviewForm.title &&
+              bookReviewForm.detail
+            )
           }
         >
           등록

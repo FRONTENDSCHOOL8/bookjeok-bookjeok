@@ -1,10 +1,9 @@
-import { getDocumentTitle } from '@/utils';
+import pb from '@/api/pocketbase';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
-import pb from '@/api/pocketbase';
-import { getPbImgs } from '@/utils';
 import { NomalTitle, Svg } from '@/components/Atoms';
-import { Avatar } from '@/components/Molecules';
+import { GNB, Avatar } from '@/components/Molecules';
+import { getPbImgs, getDocumentTitle } from '@/utils';
 
 function DetailBookReview() {
   const {
@@ -18,11 +17,10 @@ function DetailBookReview() {
       },
     },
   } = useLoaderData();
-
   return (
     <>
       <Helmet>
-        <title>{getDocumentTitle('독후감 제목이 들어가야합니다!')}</title>
+        <title>{getDocumentTitle(title)}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col">
         <NomalTitle backLink path="/mainBookReview">
@@ -30,7 +28,6 @@ function DetailBookReview() {
         </NomalTitle>
         <figure className="relative h-[274px] w-[430px] overflow-hidden">
           <img className="object-cover" src={img} alt={title} />
-          {/* <Badge className="absolute left-2 top-2">{'Qfqw'}</Badge> */}
         </figure>
         <Avatar nickName={nickname} text={title}></Avatar>
         <section className="bg-bjgray-50 flex h-full flex-col gap-4 px-4 pt-10">
@@ -44,6 +41,7 @@ function DetailBookReview() {
             {detail}
           </pre>
         </section>
+        <GNB createBookReview />
       </div>
     </>
   );
