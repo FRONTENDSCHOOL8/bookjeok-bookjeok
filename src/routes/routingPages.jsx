@@ -13,7 +13,6 @@ import {
   ManagementClub,
   MyPage,
   Welcome,
-  DetailBookReview,
   MyClubList,
 } from '@/pages';
 import ApplicationClub1, {
@@ -31,7 +30,11 @@ import DetailInfo from '@/pages/SignUp/DetailInfo';
 import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
+import DetailBookReview, {
+  loader as detailBookReviewloader,
+} from '@/pages/DetailBookReview/DetailBookReview';
 import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
+
 
 const routingPages = [
   {
@@ -75,20 +78,13 @@ const routingPages = [
     loader: bookReviewListLoader,
   },
   {
-    path: '/mainClub/:bookreviewId',
-    element: (
-      <ProtectRoute>
-        <DetailBookReview />
-      </ProtectRoute>
-    ),
-  },
-  {
     path: '/mainBookReview/:bookreviewId',
     element: (
       <ProtectRoute>
         <DetailBookReview />
       </ProtectRoute>
     ),
+    loader: detailBookReviewloader,
   },
   {
     path: '/login',
