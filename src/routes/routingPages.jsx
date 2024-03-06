@@ -6,7 +6,7 @@ import {
   CreateClub1,
   CreateClub2,
   CreateClub3,
-  CreateClub4,
+  // CreateClub4,
   DetailBookReview,
   DetailClub,
   Intro,
@@ -23,6 +23,7 @@ import ApplicationClub2, {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
 import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
+import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
 import { loader as detailBookReviewloader } from '@/pages/DetailBookReview/DetailBookReview';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
@@ -30,10 +31,10 @@ import MainBookReview, {
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview/MainBookReview';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
-import { loader as answerLoader, ManagementClub } from '@/pages/ManagementClub';
+import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
-console.log(ManagementClub);
+
 const routingPages = [
   {
     path: '/',
