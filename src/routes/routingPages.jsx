@@ -8,11 +8,12 @@ import {
   CreateClub4,
   DetailClub,
   Intro,
+  CreateBookReview,
   Login,
-  MainBookReview,
   ManagementClub,
   MyPage,
   Welcome,
+  DetailBookReview,
   MyClubList,
 } from '@/pages';
 import ApplicationClub1, {
@@ -27,6 +28,10 @@ import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
 import BasicInfo from '@/pages/SignUp/BasicInfo';
 import DetailInfo from '@/pages/SignUp/DetailInfo';
+import MainBookReview, {
+  loader as bookReviewListLoader,
+} from '@/pages/MainBookReview/MainBookReview';
+import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
 
 const routingPages = [
   {
@@ -65,6 +70,23 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <MainBookReview />
+      </ProtectRoute>
+    ),
+    loader: bookReviewListLoader,
+  },
+  {
+    path: '/mainClub/:bookreviewId',
+    element: (
+      <ProtectRoute>
+        <DetailBookReview />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/mainBookReview/:bookreviewId',
+    element: (
+      <ProtectRoute>
+        <DetailBookReview />
       </ProtectRoute>
     ),
   },
@@ -132,12 +154,13 @@ const routingPages = [
     loader: ApplicationClub2Loader,
   },
   {
-    path: '/managementClub',
+    path: '/managementClub/:clubId',
     element: (
       <ProtectRoute>
         <ManagementClub />
       </ProtectRoute>
     ),
+    loader: answerLoader,
   },
   {
     path: '/chatRoomList',
@@ -155,7 +178,14 @@ const routingPages = [
       </ProtectRoute>
     ),
   },
-
+  {
+    path: '/createBookReview',
+    element: (
+      <ProtectRoute>
+        <CreateBookReview />
+      </ProtectRoute>
+    ),
+  },
   {
     path: '/signup',
     element: <BasicInfo />,
@@ -166,11 +196,7 @@ const routingPages = [
   },
   {
     path: '/Welcome',
-    element: (
-      <ProtectRoute>
-        <Welcome />
-      </ProtectRoute>
-    ),
+    element: <Welcome />,
   },
 ];
 

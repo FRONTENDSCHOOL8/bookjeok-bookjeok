@@ -21,16 +21,16 @@ export default function AtomMaking() {
   return (
     <>
       <DobbleButtonModal
-        // open
+        open
         svgId="logo"
-        title="북적북적을 이용하시려면 로그인을 해주세요."
+        title="북적북적"
         closeButton
-        primaryButtonText="메인으로 이동하기"
+        primaryButtonText="확인"
         primaryButtonPath="/"
         secondaryButtonText="취소"
         secondaryButtonPath="/"
       >
-        소셜링 참여 신청을 수락하시겠어요?
+        북적북적
       </DobbleButtonModal>
 
       <div className="p-5">
@@ -155,7 +155,7 @@ export default function AtomMaking() {
               ImageForm
             </h3>
             <div className="flex flex-col gap-2">
-              <ImageForm src="/src/assets/temp.png" alt="" />
+              <ImageForm src="" alt="" />
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               RadioForm

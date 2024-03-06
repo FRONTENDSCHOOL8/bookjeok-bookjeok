@@ -22,6 +22,7 @@ function CreateClub3() {
   const handleInputImage = ({ target: { files } }) => {
     setImage(files[0]);
   };
+  console.log(clubInfo);
 
   const handleRemoveImage = (e) => {
     e.preventDefault();
@@ -51,7 +52,7 @@ function CreateClub3() {
           <ImageForm
             onChange={handleInputImage}
             onClick={handleRemoveImage}
-            src={clubInfo.image}
+            src={clubInfo.img}
             alt={clubInfo.alt}
           />
           <div className="flex flex-col gap-2">
@@ -82,7 +83,7 @@ function CreateClub3() {
         <div>
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!clubInfo.title || !clubInfo.detail || !clubInfo.image ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!clubInfo.title || !clubInfo.detail || !clubInfo.img ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
             to="/createClub4"
           >
             다음
