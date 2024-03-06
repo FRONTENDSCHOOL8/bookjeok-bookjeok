@@ -23,6 +23,7 @@ import ApplicationClub2, {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
 import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
+import { loader as detailBookReviewloader } from '@/pages/DetailBookReview/DetailBookReview';
 import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
 import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
 import MainBookReview, {
@@ -75,20 +76,13 @@ const routingPages = [
     loader: bookReviewListLoader,
   },
   {
-    path: '/mainClub/:bookreviewId',
-    element: (
-      <ProtectRoute>
-        <DetailBookReview />
-      </ProtectRoute>
-    ),
-  },
-  {
     path: '/mainBookReview/:bookreviewId',
     element: (
       <ProtectRoute>
         <DetailBookReview />
       </ProtectRoute>
     ),
+    loader: detailBookReviewloader,
   },
   {
     path: '/login',
