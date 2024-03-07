@@ -8,6 +8,7 @@ import {
   ApplicationClub2,
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2';
+import { ChatRoom } from '@/pages/Chatting/ChatRoom';
 import { ChatRoomList } from '@/pages/Chatting/ChatRoomList';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
@@ -157,6 +158,14 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: answerLoader,
+  },
+  {
+    path: '/chatRoom/:clubId',
+    element: (
+      <ProtectRoute>
+        <ChatRoom />
+      </ProtectRoute>
+    ),
   },
   {
     path: '/chatRoomList',
