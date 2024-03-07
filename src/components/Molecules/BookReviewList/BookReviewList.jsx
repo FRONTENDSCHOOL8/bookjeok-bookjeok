@@ -16,7 +16,7 @@ function BookReviewList({
   collectionId,
 }) {
   return (
-    <li key={id} className="py-4">
+    <li key={id} className="list-none py-4">
       <Link to={`/mainBookReview/${id}`} className="block">
         <div className="flex items-center gap-x-2">
           <RoundImage
