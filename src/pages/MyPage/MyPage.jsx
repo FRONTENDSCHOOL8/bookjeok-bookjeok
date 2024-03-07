@@ -1,10 +1,11 @@
 import { Accordion, NomalTitle } from '@/components/Atoms';
 import { Avatar, ClubList, GNB } from '@/components/Molecules';
-import { getDocumentTitle } from '@/utils';
+import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import pb from '@/api/pocketbase';
+
 /*
 1. userInfo에 있는 createSocialing, participantSocialing 
   배열에 있는 모임 id를 어떻게 가져올까...
@@ -18,13 +19,29 @@ import pb from '@/api/pocketbase';
 */
 export function MyPage() {
   const {
-    userInfo: { createSocialing, participantSocialing },
+    userInfo: { id, nickname, img },
+    clearUserInfo,
   } = useUserInfoStore((state) => state);
 
-  useEffect(() => {
-    pb.collection('socialing').getFullList('', { filter: '' });
-  }, [participantSocialing, createSocialing]);
+  const [clubData, setClubData] = useState(null);
+  const handleLogout = (e) => {
+    clearUserInfo();
+    pb.authStore.clear();
+  };
 
+  useEffect(() => {
+    pb.collection('users')
+      .getOne(`${id}`, {
+        expand: 'createSocialing, participantSocialing',
+      })
+      .then((data) => {
+        console.log(data);
+        setClubData(data.expand);
+        clubData.img = getPbImgs(data);
+      })
+      .catch((Error) => console.error(Error));
+  }, [id]);
+  console.log(clubData);
   return (
     <>
       <Helmet>
@@ -37,40 +54,47 @@ export function MyPage() {
         <main className="px-4">
           <div className="relative mb-5 mt-12">
             <Avatar
-              nickName="닉네임"
+              nickName={nickname}
               text="나의 활동"
               className="relative !top-0"
             ></Avatar>
           </div>
           <hr />
 
-          <Accordion open mainText="참여중인 모임" className="mb-4">
-            <ul className="flex flex-col gap-y-4">
-              <ClubList
-                id="efweews"
-                title="[2030 모임] 돈의 속성"
-                schedule="3.16(토) 오후 2:00"
-                img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
-              ></ClubList>
-              <ClubList
-                id="QWtgwqoijpr"
-                title="[2030 모임] 돈의 속성"
-                schedule="3.16(토) 오후 2:00"
-                img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
-              ></ClubList>
-            </ul>
-          </Accordion>
+          {clubData && (
+            <>
+              <Accordion open mainText="참여중인 모임" className="mb-4">
+                <ul className="flex flex-col gap-y-4">
+                  {clubData.participantSocialing.map((item) => (
+                    <ClubList
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      schedule="3.16(토) 오후 2:00"
+                      img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
+                    />
+                  ))}
+                </ul>
+              </Accordion>
 
-          <Accordion open mainText="주최중인 모임" className="mb-4">
-            <ul className="flex flex-col gap-y-4">
-              <ClubList
-                id="qwtoijrpo"
-                title="[2030 모임] 돈의 속성"
-                schedule="3.16(토) 오후 2:00"
-                img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
-              ></ClubList>
-            </ul>
-          </Accordion>
+              <Accordion open mainText="주최중인 모임" className="mb-4">
+                <ul className="flex flex-col gap-y-4">
+                  {clubData.createSocialing.map((item) => (
+                    <ClubList
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      schedule="3.16(토) 오후 2:00"
+                      img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
+                    />
+                  ))}
+                </ul>
+              </Accordion>
+            </>
+          )}
+          <button className="text-center" type="button" onClick={handleLogout}>
+            로그아웃
+          </button>
         </main>
         <GNB createClub className="mt-auto" />
       </div>
