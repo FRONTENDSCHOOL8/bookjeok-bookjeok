@@ -43,7 +43,7 @@ export function ChatRoom() {
             </ThinTextForm>
           </div>
         </div>
-        <GNB createClub />
+        <GNB className="fixed" />
       </div>
     </>
   );
