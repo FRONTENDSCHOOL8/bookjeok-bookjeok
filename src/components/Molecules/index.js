@@ -1,5 +1,5 @@
 export { default as DobbleButtonModal } from '@/components/Molecules/Modal/DobbleButtonModal/DobbleButtonModal';
-export { default as SingleButtonModal } from '@/components/Molecules/Modal/SingleButtonModal/SingleButtonModal';
+export { default as ButtonModalForManageMent } from '@/components/Molecules/Modal/ButtonModalForManageMent/ButtonModalForManageMent';
 export { default as ConfirmUserList } from '@/components/Molecules/ConfirmUserList/ConfirmUserList';
 export { default as BookReviewList } from '@/components/Molecules/BookReviewList/BookReviewList';
 export { default as MainKindToggle } from '@/components/Molecules/MainKindToggle/MainKindToggle';

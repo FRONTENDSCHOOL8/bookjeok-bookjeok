@@ -1,15 +1,10 @@
 import pb from '@/api/pocketbase';
 
 export const loader = async ({ params }) => {
-  // const answer = await pb.collection('socialingQueryAnswer').getFullList({
-  //   filter: `socialing ="${params.clubId}"`,
-  //   expand: 'socialing, answerUser',
-  // });
   const socialing = await pb.collection('socialing').getOne(params.clubId, {
     expand:
-      'confirmUser, answer, answer.socialing, answer.answerUser, applicant',
+      'confirmUser, answer, answer.socialing, answer.answerUser, applicant, chattingRoom',
   });
-  console.log(socialing);
   if (!('expand' in socialing)) {
     socialing.expand = {
       answer: undefined,
