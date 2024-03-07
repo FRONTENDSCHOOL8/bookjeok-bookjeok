@@ -29,12 +29,16 @@ export function DetailClub() {
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col ">
-        <NomalTitle backLink path="/mainClub">
+        <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col pb-[96px]">
-          <figure className="relative h-[274px] w-[430px] overflow-hidden">
-            <img className="object-cover" src={photo} alt={title} />
+          <figure className="relative overflow-hidden">
+            <img
+              className="h-[274px] w-[430px] object-cover"
+              src={photo}
+              alt={title}
+            />
             <Badge className="absolute left-2 top-2">
               {expand.genre.title}
             </Badge>

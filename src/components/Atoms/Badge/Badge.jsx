@@ -1,13 +1,12 @@
 import { string } from 'prop-types';
 
 function Badge({ className, children }) {
-  const badgeStyle = {
-    className:
-      'h-[24px] inline-block text-center rounded-xl px-2 opacity-90 py-0.5 text-b-2-medium text-bjblack bg-bjyellow-400',
-  };
-
   return (
-    <span className={`${badgeStyle.className} ${className}`}>{children}</span>
+    <span
+      className={`flex h-[24px] w-auto items-center text-nowrap rounded-xl bg-bjyellow-400 bg-opacity-85 px-2 py-0.5 text-center text-xs  font-semibold text-bjblack ${className}`}
+    >
+      {children}
+    </span>
   );
 }
 

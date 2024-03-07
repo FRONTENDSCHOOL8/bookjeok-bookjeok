@@ -10,10 +10,10 @@ export function ChatRoom() {
         <title>{getDocumentTitle('모임 이름이 들어가야합니다')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink path="/">
+        <NomalTitle backLink path="chatRoomList">
           채팅 페이지
         </NomalTitle>
-        <div className="flex flex-grow flex-col px-4 py-3">
+        <main className="flex flex-grow flex-col px-4 py-3">
           <div className="flex flex-grow flex-col justify-end">
             <MessageBubble
               src="/public/defaultProfile.webp"
@@ -42,7 +42,7 @@ export function ChatRoom() {
               채팅 메세지
             </ThinTextForm>
           </div>
-        </div>
+        </main>
         <GNB className="fixed" />
       </div>
     </>

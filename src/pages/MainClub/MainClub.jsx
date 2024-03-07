@@ -1,4 +1,4 @@
-import { Badge, MainButton, Svg } from '@/components/Atoms';
+import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
 import { calcDay, getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
@@ -20,26 +20,28 @@ function ClubCard() {
     }) => (
       <li key={id}>
         <Link to={`/mainClub/${id}`} className="mx-2 my-2 flex flex-wrap">
-          <div className="relative mx-auto">
-            <img className="h-[200px] rounded-5xl" src={photo} alt={title} />
-            <Badge className="absolute left-2 top-2">
+          <figcaption className="relative mx-auto">
+            <img
+              className="aspect-square w-[200px] rounded-5xl"
+              src={photo}
+              alt={title}
+            />
+            <Badge className="absolute left-2 top-2 w-[30%]">
               {expand.genre.title}
             </Badge>
-          </div>
+          </figcaption>
           <div className="flex w-full flex-col gap-1 p-4">
             <div className="flex justify-between">
-              <h4 className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-b-1-medium">
-                {title}
-              </h4>
+              <h3 className="max-w-full truncate text-b-1-medium">{title}</h3>
               <button>
                 <Svg id="heart" />
               </button>
             </div>
-            <span className="text-b-3-regular text-bjgray-500">
+            <span className="text-pretty text-b-3-regular text-bjgray-500">
               {calcDay(dateTime)}
             </span>
             <div className="flex justify-between">
-              <span className="flex items-center text-b-3-regular text-bjgray-500">
+              <span className="flex items-center text-pretty text-b-3-regular text-bjgray-500">
                 <Svg color="#9e9e9e" width={16} height={16} id="pin" />
                 {!isOffline ? '온라인' : location}
               </span>
@@ -62,9 +64,7 @@ export function MainClub() {
         <title>{getDocumentTitle('모임')}</title>
       </Helmet>
       <div className="relative flex w-full flex-col">
-        <header className="flex items-center justify-center py-4  text-center text-b-1-medium font-black ">
-          북적북적
-        </header>
+        <NomalTitle>북적북적</NomalTitle>
         <MainKindToggle />
         <section className="flex items-center justify-center gap-4 pt-2">
           <MainButton
