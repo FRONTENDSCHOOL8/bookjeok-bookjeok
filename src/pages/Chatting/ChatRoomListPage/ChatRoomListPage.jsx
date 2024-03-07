@@ -2,9 +2,12 @@ import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
 import { GNB } from '@/components/Molecules';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { useLoaderData } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-export function ChatRoomList() {
+export function ChatRoomListPage() {
+  const chattingRoom = useLoaderData();
+  console.log(chattingRoom);
   return (
     <>
       <Helmet>
