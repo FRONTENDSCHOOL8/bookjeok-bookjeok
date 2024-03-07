@@ -2,7 +2,7 @@ import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
-import { createNumberArray, getDocumentTitle } from '@/utils';
+import { createNumberArray, createRandomId, getDocumentTitle } from '@/utils';
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -60,17 +60,40 @@ export function CreateClub4() {
   const [modalState, setModalState] = useState(false);
 
   // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
+  // const handleSubmitClubInfoForCreate = async (e) => {
+  //   e.preventDefault();
+  //   const user = await pb.collection('users').getOne(clubInfo.createUser);
+  //   const clubDataForUser = {
+  //     createSocialing: [...user.createSocialing, `${clubInfo.id}`],
+  //   };
+  //   await pb.collection('socialing').create(clubInfo);
+  //   await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
+  //   await resetClubInfo();
+  //   setModalState(true);
+  // };
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
+    await pb.collection('socialing').create(clubInfo);
     const user = await pb.collection('users').getOne(clubInfo.createUser);
     const clubDataForUser = {
       createSocialing: [...user.createSocialing, `${clubInfo.id}`],
     };
-    await pb.collection('socialing').create(clubInfo);
+    const chattingRoomId = createRandomId();
     await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
-    await resetClubInfo();
+    const chattingRoomData = {
+      id: chattingRoomId,
+      socialingtitle: clubInfo.title,
+      socialingName: clubInfo.id,
+      user: clubInfo.createUser,
+    };
+    await pb.collection('chattingRoom').create(chattingRoomData);
+    await pb
+      .collection('socialing')
+      .update(clubInfo.id, { chattingRoom: chattingRoomId });
     setModalState(true);
+    await resetClubInfo();
   };
+  console.log(clubInfo);
   return (
     <>
       <Helmet>

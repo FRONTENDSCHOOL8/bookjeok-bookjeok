@@ -50,8 +50,8 @@ export function ChatRoomList() {
             </li>
           </ul>
         </div>
+        <GNB className="fixed" />
       </div>
-      <GNB createClub />
     </>
   );
 }
