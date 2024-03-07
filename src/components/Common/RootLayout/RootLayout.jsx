@@ -5,7 +5,7 @@ import Loading from '../Loading/Loading';
 function RootLayout() {
   const { state } = useNavigation();
   return (
-    <div className="mx-auto h-screen w-full max-w-[430px] bg-white">
+    <div className="mx-auto  w-full max-w-[430px] bg-white">
       {state === 'loading' ? <Loading /> : <Outlet />}
     </div>
   );

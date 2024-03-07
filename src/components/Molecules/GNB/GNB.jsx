@@ -1,8 +1,11 @@
 import { Svg } from '@/components/Atoms';
 import { Link } from 'react-router-dom';
 import { bool, string } from 'prop-types';
+import useUserInfoStore from '@/store/useUserInfoStore';
 
 function GNB({ createClub, createBookReview, className }) {
+  const { userInfo } = useUserInfoStore();
+  console.log(userInfo);
   let centerIconPath;
   if (createClub) {
     centerIconPath = '/createClub';
@@ -13,7 +16,7 @@ function GNB({ createClub, createBookReview, className }) {
 
   return (
     <ul
-      className={`bottom-0 flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
+      className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
     >
       <li>
         <Link to="/">
