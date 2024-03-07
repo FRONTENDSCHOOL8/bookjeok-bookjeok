@@ -24,7 +24,7 @@ export function MyPage() {
   } = useUserInfoStore((state) => state);
 
   const [clubData, setClubData] = useState(null);
-  const handleLogout = (e) => {
+  const handleLogout = () => {
     clearUserInfo();
     pb.authStore.clear();
   };
@@ -37,7 +37,6 @@ export function MyPage() {
       .then((data) => {
         console.log(data);
         setClubData(data.expand);
-        clubData.img = getPbImgs(data);
       })
       .catch((Error) => console.error(Error));
   }, [id]);
@@ -51,7 +50,7 @@ export function MyPage() {
         <NomalTitle backLink path="/">
           마이페이지
         </NomalTitle>
-        <main className="px-4">
+        <main className="flex flex-col px-4">
           <div className="relative mb-5 mt-12">
             <Avatar
               nickName={nickname}
@@ -65,34 +64,38 @@ export function MyPage() {
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.participantSocialing.map((item) => (
-                    <ClubList
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      schedule="3.16(토) 오후 2:00"
-                      img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
-                    />
-                  ))}
+                  {clubData.participantSocialing.map(
+                    ({ collectionId, id, title, img }) => (
+                      <ClubList
+                        key={id}
+                        id={id}
+                        title={title}
+                        schedule="3.16(토) 오후 2:00"
+                        img={getPbImgs({ collectionId, id, img })}
+                      />
+                    )
+                  )}
                 </ul>
               </Accordion>
 
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.createSocialing.map((item) => (
-                    <ClubList
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      schedule="3.16(토) 오후 2:00"
-                      img="https://shopping-phinf.pstatic.net/main_3244093/32440930635.20230516105639.jpg"
-                    />
-                  ))}
+                  {clubData.createSocialing.map(
+                    ({ collectionId, id, title, img }) => (
+                      <ClubList
+                        key={id}
+                        id={id}
+                        title={title}
+                        schedule="3.16(토) 오후 2:00"
+                        img={getPbImgs({ collectionId, id, img })}
+                      />
+                    )
+                  )}
                 </ul>
               </Accordion>
             </>
           )}
-          <button className="text-center" type="button" onClick={handleLogout}>
+          <button type="button" onClick={handleLogout}>
             로그아웃
           </button>
         </main>
