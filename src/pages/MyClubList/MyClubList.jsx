@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { getPbImgs, getDocumentTitle } from '@/utils';
 import { ClubList } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { NomalTitle, ThinTextForm } from '@/components/Atoms';
+import { NomalTitle, Svg, ThinTextForm } from '@/components/Atoms';
 import { useDebounce } from '@/hooks';
 /*
 1. socialing db에서 applicant가 사용자인 경우, 
@@ -56,7 +56,6 @@ export function MyClubList() {
   useEffect(() => {
     const fetchPb = async () => {
       try {
-        pb.autoCancellation(false);
         const data = (
           await pb.collection('socialing').getList(1, 10, {
             filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
@@ -148,8 +147,13 @@ export function MyClubList() {
                   ></ClubList>
                 ))}
           {confirmedClub.length > showQuantity.confirmedClub ? (
-            <button name="confirmedClub" onClick={handleMoreValue}>
+            <button
+              name="confirmedClub"
+              onClick={handleMoreValue}
+              className="flex items-center justify-center py-1"
+            >
               더 보기
+              <Svg id="plus" size={14} className="ml-1" />
             </button>
           ) : (
             ''
@@ -179,8 +183,13 @@ export function MyClubList() {
                   ></ClubList>
                 ))}
           {showQuantity.createdClub < createdClub.length ? (
-            <button name="createdClub" onClick={handleMoreValue}>
+            <button
+              name="createdClub"
+              onClick={handleMoreValue}
+              className="flex items-center justify-center py-1"
+            >
               더 보기
+              <Svg id="plus" size={14} className="ml-1" />
             </button>
           ) : (
             ''

@@ -1,6 +1,6 @@
 import { Svg } from '@/components/Atoms';
-import { Link } from 'react-router-dom';
 import { bool, string } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function GNB({ createClub, createBookReview, className }) {
   let centerIconPath;
@@ -13,7 +13,7 @@ function GNB({ createClub, createBookReview, className }) {
 
   return (
     <ul
-      className={`bottom-0 flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
+      className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
     >
       <li>
         <Link to="/">
