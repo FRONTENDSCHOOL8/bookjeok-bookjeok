@@ -1,11 +1,8 @@
 import { Svg } from '@/components/Atoms';
-import { Link } from 'react-router-dom';
 import { bool, string } from 'prop-types';
-import useUserInfoStore from '@/store/useUserInfoStore';
+import { Link } from 'react-router-dom';
 
 function GNB({ createClub, createBookReview, className }) {
-  const { userInfo } = useUserInfoStore();
-  console.log(userInfo);
   let centerIconPath;
   if (createClub) {
     centerIconPath = '/createClub';
