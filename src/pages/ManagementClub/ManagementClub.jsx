@@ -42,9 +42,13 @@ export function ManagementClub() {
       applicant,
     };
     await pb.collection('socialing').update(socialing.id, Data);
+    await pb
+      .collection('chattingRoom')
+      .update(chattingRoom.id, { user: [...chattingRoom.user, userId] });
     await revalidator.revalidate();
     setModalState({ ...modalState, approveModal: false });
   };
+
   const handleApproveButton = (user) => (e) => {
     e.preventDefault();
     setModalState({ ...modalState, approveModal: true });

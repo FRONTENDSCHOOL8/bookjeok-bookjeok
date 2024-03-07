@@ -61,8 +61,8 @@ export function MainClub() {
       <Helmet>
         <title>{getDocumentTitle('모임')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col">
-        <header className="flex items-center  justify-center  py-4 text-center text-b-1-medium ">
+      <div className="relative flex w-full flex-col">
+        <header className="flex items-center justify-center py-4  text-center text-b-1-medium font-black ">
           북적북적
         </header>
         <MainKindToggle />
