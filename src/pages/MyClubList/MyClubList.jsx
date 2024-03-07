@@ -56,7 +56,6 @@ export function MyClubList() {
   useEffect(() => {
     const fetchPb = async () => {
       try {
-        pb.autoCancellation(false);
         const data = (
           await pb.collection('socialing').getList(1, 10, {
             filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,

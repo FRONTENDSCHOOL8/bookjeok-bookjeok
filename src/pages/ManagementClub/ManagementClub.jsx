@@ -44,7 +44,7 @@ export function ManagementClub() {
     await pb.collection('socialing').update(socialing.id, Data);
     await pb
       .collection('chattingRoom')
-      .update(chattingRoom.id, { user: [...chattingRoom.user, userId] });
+      .update(chattingRoom.id, { user: [...chattingRoom.users, userId] });
     await revalidator.revalidate();
     setModalState({ ...modalState, approveModal: false });
   };
@@ -78,11 +78,12 @@ export function ManagementClub() {
       if (e.record.confirmUser.length === socialing.limitPerson) {
         setModalState({ ...modalState, completeModal: true });
       }
+      console.log(modalState);
     });
     return () => {
       pb.collection('socialing').unsubscribe(socialing.id);
     };
-  }, [modalState, socialing.confirmUser, socialing.limitPerson]);
+  }, [socialing.confirmUser]);
 
   return (
     <>

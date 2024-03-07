@@ -30,7 +30,7 @@ function BookReviewList({
           ></RoundImage>
           <span className="text-b-1-medium text-bjblack">{nickname}</span>
           <span className="ml-auto whitespace-nowrap text-b-2-regular text-bjgray-500">
-            {getCreatedHoursAgo(created)}시간 전
+            {getCreatedHoursAgo(created)}
           </span>
         </div>
         <div className="my-[7px] flex items-center gap-x-2">

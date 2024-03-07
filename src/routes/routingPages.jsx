@@ -9,10 +9,7 @@ import {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2';
 import { ChatRoom } from '@/pages/Chatting/ChatRoom';
-import {
-  ChatRoomListPage,
-  loader as ChatRoomLoader,
-} from '@/pages/Chatting/ChatRoomListPage';
+import { ChatRoomListPage } from '@/pages/Chatting/ChatRoomListPage';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
 import {
@@ -177,7 +174,6 @@ const routingPages = [
         <ChatRoomListPage />
       </ProtectRoute>
     ),
-    loader: ChatRoomLoader,
   },
   {
     path: '/myPage',
