@@ -72,6 +72,7 @@ export function MainClub() {
             size="sm"
             color="secondary"
             to="/mainClub/"
+            svgId="direction-vertical"
           >
             정렬
           </MainButton>
@@ -80,6 +81,7 @@ export function MainClub() {
             size="sm"
             color="secondary"
             to="/mainClub/filter"
+            svgId="filter"
           >
             필터
           </MainButton>
