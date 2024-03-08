@@ -1,7 +1,7 @@
 import pb from '@/api/pocketbase';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { getPbImgs, getDocumentTitle } from '@/utils';
+import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
 import { ClubList, GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { NomalTitle, Svg, ThinTextForm } from '@/components/Atoms';
@@ -39,7 +39,8 @@ const INITIAL_QUANTITY = {
 
 const style = {
   ul: 'flex flex-col gap-y-4 px-3 ',
-  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
+  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack ',
+  button: 'flex items-center justify-center py-1',
 };
 
 export function MyClubList() {
@@ -133,7 +134,7 @@ export function MyClubList() {
                   id={item.id}
                   key={item.id}
                   title={item.title}
-                  schedule={item.dateTime}
+                  schedule={calcDay(item.dateTime)}
                   img={getPbImgs(item)}
                 ></ClubList>
               ))
@@ -144,7 +145,7 @@ export function MyClubList() {
                     id={item.id}
                     key={item.id}
                     title={item.title}
-                    schedule={item.dateTime}
+                    schedule={calcDay(item.dateTime)}
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
@@ -152,7 +153,7 @@ export function MyClubList() {
             <button
               name="confirmedClub"
               onClick={handleMoreValue}
-              className="flex items-center justify-center py-1"
+              className={`${style['button']}`}
             >
               더 보기
               <Svg id="plus" size={14} className="ml-1" />
@@ -169,7 +170,7 @@ export function MyClubList() {
                   id={item.id}
                   key={item.id}
                   title={item.title}
-                  schedule={item.dateTime}
+                  schedule={calcDay(item.dateTime)}
                   img={getPbImgs(item)}
                 ></ClubList>
               ))
@@ -180,7 +181,7 @@ export function MyClubList() {
                     id={item.id}
                     key={item.id}
                     title={item.title}
-                    schedule={item.dateTime}
+                    schedule={calcDay(item.dateTime)}
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
@@ -188,7 +189,7 @@ export function MyClubList() {
             <button
               name="createdClub"
               onClick={handleMoreValue}
-              className="flex items-center justify-center py-1"
+              className={`${style['button']}`}
             >
               더 보기
               <Svg id="plus" size={14} className="ml-1" />
