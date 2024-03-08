@@ -1,27 +1,43 @@
+import pb from '@/api/pocketbase';
 import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
 import { GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { getCreatedHoursAgo, getDocumentTitle, getPbImgs } from '@/utils';
-import { useQuery } from '@tanstack/react-query';
-import { string } from 'prop-types';
+import { getDocumentTitle, getPbImgs, getCreatedHoursAgo } from '@/utils';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLoaderData, useParams } from 'react-router-dom';
-import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
+import { Link } from 'react-router-dom';
+import { string } from 'prop-types';
 
 export function ChatRoomListPage() {
-  const chattingRoom = useLoaderData();
   const { userInfo } = useUserInfoStore();
-  const { userId } = useParams();
 
-  const { data } = useQuery({
-    queryKey: ['chattingRoomList', userId],
-    queryFn: FetchChattingRoomList(userId),
-    initialData: chattingRoom,
-  });
+  const [chattingRoom, setChattingRoom] = useState([
+    {
+      expand: {
+        socialing: { title: '', id: '1' },
+        users: {},
+        message: ['', ''],
+      },
+    },
+  ]);
 
-  if (userInfo.id !== userId) {
-    return <div>잘못된 접근입니다.</div>;
-  }
+  useEffect(() => {
+    const fetchPB = async () => {
+      try {
+        const data = await pb.collection('chattingRoom').getFullList({
+          filter: `users ?~ "${userInfo.id}"`,
+          expand: 'socialing, users, message',
+          sort: '-updated',
+        });
+
+        await setChattingRoom(data);
+      } catch (error) {
+        console.error('채팅방 가져오기 오류');
+      }
+    };
+    fetchPB();
+  }, [userInfo]);
+
   return (
     <>
       <Helmet>
@@ -41,16 +57,18 @@ export function ChatRoomListPage() {
             검색
           </ThinTextForm>
           <ul>
-            {data.map(({ id, created, expand: { socialing, message } }) => (
-              <ChatList
-                title={socialing.title}
-                key={socialing.id}
-                id={id}
-                updated={message ? message[0].updated : created}
-                src={getPbImgs(socialing)}
-                message={message ? message[0].text : ''}
-              ></ChatList>
-            ))}
+            {chattingRoom.map(
+              ({ id, created, expand: { socialing, message } }) => (
+                <ChatList
+                  title={socialing.title}
+                  key={socialing.id}
+                  id={id}
+                  updated={message ? message[0].updated : created}
+                  src={getPbImgs(socialing)}
+                  message={message ? message[0].text : ''}
+                ></ChatList>
+              )
+            )}
           </ul>
         </main>
         <GNB createClub className="fixed" />

@@ -1,13 +1,13 @@
 import { queryClient } from '@/client/queryClient';
-import { FetchChattingRoomList } from './FetchChattingRoomList';
+import { FetchChatRoom } from './FetchChatRoom';
 
 export const loader =
   () =>
   async ({ params }) => {
-    const { userId } = params;
+    const { clubId } = params;
     return await queryClient.ensureQueryData({
-      queryKey: ['chattingRoomList', userId],
-      queryFn: () => FetchChattingRoomList(userId),
+      queryKey: ['chatRoom', clubId],
+      queryFn: () => FetchChatRoom(clubId),
       refetchInterval: 1000,
     });
   };
