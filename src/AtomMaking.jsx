@@ -21,7 +21,7 @@ export default function AtomMaking() {
   return (
     <>
       <DobbleButtonModal
-        open
+        // open
         svgId="logo"
         title="북적북적"
         closeButton
@@ -135,18 +135,28 @@ export default function AtomMaking() {
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <CheckboxForm name="name1" value="value" defaultChecked>
+                <CheckboxForm
+                  id="id1"
+                  name="name1"
+                  value="value"
+                  defaultChecked
+                >
                   체크박스 1
                 </CheckboxForm>
-                <CheckboxForm name="name1" value="value">
+                <CheckboxForm id="id2" name="name1" value="value">
                   체크박스 2
                 </CheckboxForm>
               </div>
               <div className="flex flex-col gap-10">
-                <CheckboxForm name="name2" value="value" defaultChecked>
+                <CheckboxForm
+                  id="id3"
+                  name="name2"
+                  value="value"
+                  defaultChecked
+                >
                   체크박스 1
                 </CheckboxForm>
-                <CheckboxForm name="name2" value="value">
+                <CheckboxForm id="id4" name="name2" value="value">
                   체크박스 2
                 </CheckboxForm>
               </div>
@@ -162,18 +172,18 @@ export default function AtomMaking() {
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <RadioForm name="name1" value="value" defaultChecked>
+                <RadioForm name="name3" value="value1">
                   라디오 1
                 </RadioForm>
-                <RadioForm name="name1" value="value">
+                <RadioForm name="name3" value="value2">
                   라디오 2
                 </RadioForm>
               </div>
               <div className="flex flex-col gap-10">
-                <RadioForm name="name2" value="value" defaultChecked>
+                <RadioForm name="name4" value="value3">
                   라디오 1
                 </RadioForm>
-                <RadioForm name="name2" value="value">
+                <RadioForm name="name4" value="value4">
                   라디오 2
                 </RadioForm>
               </div>
