@@ -1,46 +1,35 @@
 import { string } from 'prop-types';
 import RoundImage from '../RoundImage/RoundImage';
 
-function MessageBubble({
-  className,
-  align = 'left',
-  src,
-  alt,
-  nickname,
-  children,
-  time,
-}) {
+function MessageBubble({ align = 'left', src, alt, nickname, children, time }) {
   const messageBubbleStyle = {
-    className: '*:py-[9px]',
     left: 'group-left',
     right: 'group-right',
   };
 
   return (
     <>
-      <ul className={`${messageBubbleStyle.className} ${className}`}>
-        <li className={`${messageBubbleStyle[align]} group`}>
-          <div className="flex flex-row items-center gap-4 group-[.group-right]:flex-row-reverse group-[.group-right]:text-right">
-            <div className="self-start pt-3">
-              <RoundImage src={src} alt={alt} size="md"></RoundImage>
-            </div>
-            <div className="basis-4/5">
-              <p className="text-b-2-regular text-bjgray-500">{nickname}</p>
-              <div className="flex flex-row items-end gap-2 group-[.group-right]:flex-row-reverse">
-                <div className="flex min-h-9 min-w-24 items-center justify-start whitespace-break-spaces break-keep rounded-[10px] rounded-tl-none bg-bjyellow-400 px-4 py-2 text-b-2-medium group-[.group-right]:justify-end group-[.group-left]:rounded-tl-none group-[.group-right]:rounded-tl-[10px] group-[.group-right]:rounded-tr-none">
-                  {children}
-                </div>
-                <time
-                  className="whitespace-nowrap text-b-3-light text-bjgray-500"
-                  dateTime={time}
-                >
-                  {time}
-                </time>
+      <li className={`${messageBubbleStyle[align]}  group`}>
+        <div className="flex flex-row items-center gap-4 group-[.group-right]:flex-row-reverse group-[.group-right]:text-right">
+          <div className="self-start pt-3">
+            <RoundImage src={src} alt={alt} size="md"></RoundImage>
+          </div>
+          <div className="basis-4/5">
+            <p className="text-b-2-regular text-bjgray-500">{nickname}</p>
+            <div className="flex flex-row items-end gap-2 group-[.group-right]:flex-row-reverse">
+              <div className="flex min-h-9 min-w-24 items-center justify-start whitespace-break-spaces break-keep rounded-[10px] rounded-tl-none bg-bjyellow-400 px-4 py-2 text-b-2-medium group-[.group-right]:justify-end group-[.group-left]:rounded-tl-none group-[.group-right]:rounded-tl-[10px] group-[.group-right]:rounded-tr-none">
+                {children}
               </div>
+              <time
+                className="whitespace-nowrap text-b-3-light text-bjgray-500"
+                dateTime={time}
+              >
+                {time}
+              </time>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </li>
     </>
   );
 }
@@ -48,7 +37,6 @@ function MessageBubble({
 export default MessageBubble;
 
 MessageBubble.propTypes = {
-  className: string,
   align: string,
   src: string,
   alt: string,
