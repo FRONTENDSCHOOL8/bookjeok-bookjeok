@@ -28,6 +28,7 @@ function CheckboxForm({
         value={value}
         checked={checked}
         className={checkboxFormStyle.classNameInput}
+        aria-pressed={checked ? '동의함' : '동의하지 않음'}
         {...rest}
       />
     </div>
