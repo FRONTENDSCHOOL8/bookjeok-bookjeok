@@ -24,7 +24,7 @@ function TextForm({
   const textFormStyle = {
     className: 'flex flex-col',
     input:
-      'bg-transparent text-b-1-regular text-bjblack placeholder:text-b-1-regular  placeholder:text-bjgray-500 read-only:text-bjblack focus:outline-none disabled:text-bjgray-500',
+      'bg-transparent text-b-1-regular text-bjblack placeholder:text-b-1-regular placeholder:text-bjgray-500 read-only:text-bjblack read-only:pointer-events-none focus:outline-none disabled:text-bjgray-500',
   };
 
   let labelElement = (
@@ -44,7 +44,7 @@ function TextForm({
   return (
     <div className={`${textFormStyle.className} ${className}`}>
       <div
-        className={`flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500 focus-within:read-only:border-transparent has-[:disabled]:bg-bjgray-200 ${error ? 'border-bjred-400 focus-within:!border-bjred-400' : ''}`}
+        className={`flex h-[64px] flex-row items-center gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200 ${error ? 'border-bjred-400 focus-within:!border-bjred-400' : ''}`}
       >
         {svgId && (
           <div>
