@@ -31,9 +31,10 @@ import {
 } from '@/pages/MainBookReview';
 import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
+import { EditProfile } from '@/pages/EditProfile';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
-import { BasicInfo, DetailInfo } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
@@ -187,6 +188,14 @@ const routingPages = [
     element: (
       <ProtectRoute>
         <MyPage />
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: '/editProfile',
+    element: (
+      <ProtectRoute>
+        <EditProfile />
       </ProtectRoute>
     ),
   },
