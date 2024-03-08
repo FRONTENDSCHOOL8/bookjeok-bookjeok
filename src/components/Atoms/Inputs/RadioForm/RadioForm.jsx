@@ -10,7 +10,7 @@ function RadioForm({ className, name, value, checked, children, ...rest }) {
 
   return (
     <div className={`${radioFormStyle.className} ${className}`}>
-      <label htmlFor={name} className={radioFormStyle.classNameLabelText}>
+      <label htmlFor={value} className={radioFormStyle.classNameLabelText}>
         {children}
       </label>
       <input
