@@ -46,7 +46,7 @@ function BookReviewList({
             <img
               src={getPbImgs({ collectionId, id, img })}
               alt={title}
-              className="aspect-square w-[54px] rounded-4xl object-cover"
+              className="aspect-square w-[54px] rounded-4xl border-[1px] border-bjgray-300 object-cover"
             />
           </div>
         </div>
