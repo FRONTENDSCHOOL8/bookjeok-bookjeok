@@ -1,7 +1,7 @@
 import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { Avatar } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { calcDay, getDocumentTitle } from '@/utils';
+import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col ">
+      <div className="relative flex h-svh w-full flex-col ">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
@@ -44,7 +44,13 @@ export function DetailClub() {
             </Badge>
           </figure>
 
-          <Avatar nickName={expand.createUser.nickname} text={title}></Avatar>
+          <Avatar
+            nickName={expand.createUser.nickname}
+            src={
+              expand.createUser.img == '' ? null : getPbImgs(expand.createUser)
+            }
+            text={title}
+          ></Avatar>
 
           <section className="flex h-full flex-col gap-4 bg-bjgray-50 px-4 pt-10">
             <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
@@ -75,7 +81,7 @@ export function DetailClub() {
           ) : (
             <MainButton
               color="custom"
-              className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!applicant.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
+              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!applicant.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
               to={`/applicationClub/${id}`}
             >
               {applicant.includes(userInfo.id) ||

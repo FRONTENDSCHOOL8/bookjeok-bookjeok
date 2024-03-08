@@ -1,3 +1,4 @@
+export { default as getCreatedHoursAgo } from '@/utils/getCreatedHoursAgo';
 export { default as createNumberArray } from '@/utils/createNumberArray';
 export { default as getDocumentTitle } from '@/utils/getDocumentTitle';
 export { default as fetchReadDataAPI } from '@/utils/fetchReadDataAPI';
