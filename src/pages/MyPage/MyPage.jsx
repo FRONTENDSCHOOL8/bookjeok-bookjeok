@@ -22,6 +22,7 @@ export function MyPage() {
     userInfo: { id, nickname, img },
     clearUserInfo,
   } = useUserInfoStore((state) => state);
+  console.log(img);
 
   const [clubData, setClubData] = useState(null);
   const handleLogout = () => {
@@ -47,7 +48,7 @@ export function MyPage() {
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink path="/">
+        <NomalTitle backLink path="mainClub">
           마이페이지
         </NomalTitle>
         <main className="flex flex-col px-4">

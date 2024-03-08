@@ -45,10 +45,10 @@ export function ChatRoomListPage() {
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink path="/">
+        <NomalTitle backLink path="mainClub">
           채팅리스트
         </NomalTitle>
-        <div className="px-4">
+        <main className="px-4">
           <ThinTextForm
             type="search"
             searchIcon
@@ -58,19 +58,21 @@ export function ChatRoomListPage() {
             검색
           </ThinTextForm>
           <ul>
-            {chattingRoom.map(({ id, expand: { socialing, message } }) => (
-              <ChatList
-                title={socialing.title}
-                key={socialing.id}
-                id={id}
-                updated={message ? message[0].updated : ''}
-                src={getPbImgs(socialing)}
-                message={message ? message[0].text : ''}
-              ></ChatList>
-            ))}
+            {chattingRoom.map(
+              ({ id, created, expand: { socialing, message } }) => (
+                <ChatList
+                  title={socialing.title}
+                  key={socialing.id}
+                  id={id}
+                  updated={message ? message[0].updated : created}
+                  src={getPbImgs(socialing)}
+                  message={message ? message[0].text : ''}
+                ></ChatList>
+              )
+            )}
           </ul>
-        </div>
-        <GNB className="fixed" />
+        </main>
+        <GNB createClub className="fixed" />
       </div>
     </>
   );

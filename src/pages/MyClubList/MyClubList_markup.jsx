@@ -12,7 +12,7 @@ function MyClubList() {
       </Helmet>
 
       <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink path="/">
+        <NomalTitle backLink path="mainClub">
           모임 리스트
         </NomalTitle>
         <main className="px-4">

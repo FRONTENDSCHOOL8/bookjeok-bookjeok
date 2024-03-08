@@ -70,7 +70,7 @@ export function Filter() {
             );
           }}
         >
-          <NomalTitle backLink textButton path="/mainClub">
+          <NomalTitle backLink textButton path="mainClub">
             필터
           </NomalTitle>
           <ul className="mx-4">
