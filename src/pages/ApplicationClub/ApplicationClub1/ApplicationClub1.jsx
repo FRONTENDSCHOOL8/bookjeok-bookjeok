@@ -53,14 +53,16 @@ export function ApplicationClub1() {
             </li>
           </ul>
           <CheckboxForm
-            className="py-4 text-b-1-regular"
+            className="py-4 "
             name="agreement"
             onChange={handleChecked}
             checked={isAgreement}
           >
-            소셜링 이용규칙을 지키겠습니다!
+            <span className="text-b-1-regular">
+              소셜링 이용규칙을 지키겠습니다!
+            </span>
           </CheckboxForm>
-          <div className="mt-auto p-4">
+          <div className="my-4 mt-auto ">
             <MainButton
               color={isAgreement ? 'primary' : 'secondary'}
               to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : ''}

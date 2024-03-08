@@ -112,7 +112,7 @@ export function ApplicationClub2() {
           ''
         )}
 
-        <div className="mt-auto ">
+        <div className="my-4 mt-auto ">
           <MainButton
             className={
               answerForm.length > 10
