@@ -2,7 +2,7 @@ import pb from '@/api/pocketbase';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { getPbImgs, getDocumentTitle } from '@/utils';
-import { ClubList } from '@/components/Molecules';
+import { ClubList, GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { NomalTitle, Svg, ThinTextForm } from '@/components/Atoms';
 import { useDebounce } from '@/hooks';
@@ -38,8 +38,8 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 px-3',
-  h2: 'pb-4 pl-4 pt-5 text-b-1-regular text-bjblack',
+  ul: 'flex flex-col gap-y-4 px-3 ',
+  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
 };
 
 export function MyClubList() {
@@ -114,7 +114,7 @@ export function MyClubList() {
       <Helmet>
         <title>{getDocumentTitle('나의 모임 리스트')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col">
+      <div className="relative flex w-full flex-col">
         <NomalTitle backLink path="mainClub">
           모임 리스트
         </NomalTitle>
@@ -123,7 +123,7 @@ export function MyClubList() {
           type="search"
           searchIcon
           placeholder="search"
-          className="my-2"
+          className="px-4 py-2 "
         />
         <ul className={`${style['ul']}`}>
           <h2 className={`${style['h2']}`}>참여중인 모임</h2>
@@ -161,7 +161,7 @@ export function MyClubList() {
             ''
           )}
         </ul>
-        <ul className={`${style['ul']}`}>
+        <ul className={`${style['ul']} mb-[90px]`}>
           <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
           {isSearchState
             ? searchResult['createdClub'].map((item) => (
@@ -197,6 +197,7 @@ export function MyClubList() {
             ''
           )}
         </ul>
+        <GNB createClub className="fixed"></GNB>
       </div>
     </>
   );
