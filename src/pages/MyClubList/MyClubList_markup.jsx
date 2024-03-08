@@ -11,7 +11,7 @@ function MyClubList() {
         <title>{getDocumentTitle('나의 모임 리스트')}</title>
       </Helmet>
 
-      <div className="relative flex h-screen w-full flex-col">
+      <div className="relative flex h-svh w-full flex-col">
         <NomalTitle backLink path="mainClub">
           모임 리스트
         </NomalTitle>

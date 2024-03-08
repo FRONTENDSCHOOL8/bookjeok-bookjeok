@@ -13,12 +13,11 @@ function GNB({ createClub, createBookReview, className }) {
   }
 
   const { userInfo } = useUserInfoStore();
-
   const menu = [
     { id: 'logo', to: '/mainClub', title: '홈' },
     { id: 'calendar', to: '/myClubList', title: '나의 모임 리스트' },
     { id: 'plus', to: centerIconPath, title: '생성하기' },
-    { id: 'chat', to: '/chatRoomList', title: '채팅리스트' },
+    { id: 'chat', to: `/chatRoomList/${userInfo.id}`, title: '채팅리스트' },
     { id: 'user', to: '/myPage', title: '마이페이지' },
   ];
   if (!userInfo) {

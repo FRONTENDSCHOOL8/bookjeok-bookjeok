@@ -70,7 +70,7 @@ export function BasicInfo() {
 
   return (
     <>
-      <div className="flex h-dvh h-screen flex-col">
+      <div className="flex h-dvh h-svh flex-col">
         <NomalTitle backLink subText="1 of 2">
           회원가입
         </NomalTitle>

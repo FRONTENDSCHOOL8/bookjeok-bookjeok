@@ -1,6 +1,5 @@
 import { RoundImage } from '@/components/Atoms';
-import { getPbImgs } from '@/utils';
-import getCreatedHoursAgo from '@/utils/getCreatedHoursAgo';
+import { getCreatedHoursAgo, getPbImgs } from '@/utils';
 import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
 function BookReviewList({

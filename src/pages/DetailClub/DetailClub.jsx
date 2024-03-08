@@ -28,7 +28,7 @@ export function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col ">
+      <div className="relative flex h-svh w-full flex-col ">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
@@ -75,7 +75,7 @@ export function DetailClub() {
           ) : (
             <MainButton
               color="custom"
-              className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!applicant.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
+              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!applicant.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
               to={`/applicationClub/${id}`}
             >
               {applicant.includes(userInfo.id) ||
