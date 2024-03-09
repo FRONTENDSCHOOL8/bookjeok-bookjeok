@@ -2,6 +2,7 @@ export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButt
 export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm';
+export { default as ChatTextarea } from '@/components/Atoms/Inputs/ChatTextarea/ChatTextarea';
 export { default as SmallButton } from '@/components/Atoms/Buttons/SmallButton/SmallButton';
 export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/MainButton';
 export { default as MessageBubble } from '@/components/Atoms/MessageBubble/MessageBubble';
