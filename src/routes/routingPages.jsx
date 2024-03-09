@@ -1,10 +1,7 @@
 import AtomMaking from '@/AtomMaking';
 import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
-import {
-  ApplicationClub1,
-  loader as ApplicationClub1Loader,
-} from '@/pages/ApplicationClub/ApplicationClub1';
+import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
 import {
   ApplicationClub2,
   loader as ApplicationClub2Loader,
@@ -139,7 +136,6 @@ const routingPages = [
         <ApplicationClub1 />
       </ProtectRoute>
     ),
-    loader: ApplicationClub1Loader,
   },
   {
     path: '/applicationClub2/:clubId',

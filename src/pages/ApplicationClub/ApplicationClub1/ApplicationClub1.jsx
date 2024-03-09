@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { NomalTitle, CheckboxForm, MainButton } from '@/components/Atoms';
 import { Svg } from '@/components/Atoms';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export function ApplicationClub1() {
-  const { socialingId } = useLoaderData();
-
+  const { clubId } = useParams();
+  console.log(clubId);
   const [isAgreement, setIsAgreement] = useState(false);
 
   const handleChecked = () => {
@@ -65,7 +65,7 @@ export function ApplicationClub1() {
           <div className="my-4 mt-auto ">
             <MainButton
               color={isAgreement ? 'primary' : 'secondary'}
-              to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : ''}
+              to={isAgreement ? `/applicationClub2/${clubId}` : ''}
               className={
                 isAgreement ? `pointer-events-auto` : `pointer-events-none`
               }
