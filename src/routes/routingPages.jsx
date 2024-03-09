@@ -160,12 +160,7 @@ const routingPages = [
     loader: answerLoader,
   },
   {
-    path: '/chatRoom/:clubId',
-    // element: (
-    //   <ProtectRoute>
-    //     <ChatRoom />
-    //   </ProtectRoute>
-    // ),
+    path: '/chatRoom/:chattingRoomId',
     async lazy() {
       const { loader, ChatRoom } = await import('@/pages/Chatting/ChatRoom');
       return { loader: loader(queryClient), Component: ChatRoom };

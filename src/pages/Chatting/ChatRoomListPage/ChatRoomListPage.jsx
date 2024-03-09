@@ -15,7 +15,7 @@ export function ChatRoomListPage() {
 
   const { data } = useQuery({
     queryKey: ['chattingRoomList', userId],
-    queryFn: FetchChattingRoomList(userId),
+    queryFn: () => FetchChattingRoomList(userId),
     initialData: chattingRoom,
   });
 

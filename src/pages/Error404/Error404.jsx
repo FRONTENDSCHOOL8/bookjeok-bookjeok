@@ -2,13 +2,13 @@ import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-function Erro404() {
+function Error404() {
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('404 error')}</title>
       </Helmet>
-      <div className="flex h-svh flex-col items-center pb-5 pt-[56px]">
+      <div className="flex h-svh flex-col items-center bg-white pb-5 pt-[56px]">
         <h1 className="flex-grow text-h-1-light text-bjblack">북적북적</h1>
         <main className="flex flex-grow flex-col items-center gap-2">
           <svg
@@ -66,4 +66,4 @@ function Erro404() {
   );
 }
 
-export default Erro404;
+export default Error404;
