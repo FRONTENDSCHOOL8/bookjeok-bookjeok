@@ -13,6 +13,7 @@ import {
   TextForm,
   Textarea,
   ThinTextForm,
+  ChatTextarea,
 } from './components/Atoms';
 import Svg from './components/Atoms/Svg/Svg';
 import { DobbleButtonModal } from './components/Molecules';
@@ -216,6 +217,16 @@ export default function AtomMaking() {
               <Textarea label="label" id="textarea2" disabled length="200" />
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
+              ChatTextarea
+            </h3>
+            <div className="flex flex-col gap-10">
+              <ChatTextarea
+                label="메세지 입력창"
+                id="id"
+                placeholder="메세지를 입력하세요."
+              />
+            </div>
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               TextForm
             </h3>
             <div className="flex flex-col gap-4">
@@ -283,13 +294,13 @@ export default function AtomMaking() {
               <ThinTextForm type="search" backLink>
                 검색
               </ThinTextForm>
-              <ThinTextForm
+              {/* <ThinTextForm
                 type="text"
                 placeholder="메세지를 입력하세요."
                 sendButton
               >
                 채팅 메세지
-              </ThinTextForm>
+              </ThinTextForm> */}
             </div>
           </div>
         </details>
