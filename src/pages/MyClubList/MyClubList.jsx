@@ -39,8 +39,7 @@ const INITIAL_QUANTITY = {
 
 const style = {
   ul: 'flex flex-col gap-y-4 px-3 ',
-  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack ',
-  button: 'flex items-center justify-center py-1',
+  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
 };
 
 export function MyClubList() {
@@ -115,7 +114,7 @@ export function MyClubList() {
       <Helmet>
         <title>{getDocumentTitle('나의 모임 리스트')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
+      <div className="relative flex w-full flex-col">
         <NomalTitle backLink path="mainClub">
           모임 리스트
         </NomalTitle>
@@ -153,7 +152,7 @@ export function MyClubList() {
             <button
               name="confirmedClub"
               onClick={handleMoreValue}
-              className={`${style['button']}`}
+              className="flex items-center justify-center py-1"
             >
               더 보기
               <Svg id="plus" size={14} className="ml-1" />
@@ -189,7 +188,7 @@ export function MyClubList() {
             <button
               name="createdClub"
               onClick={handleMoreValue}
-              className={`${style['button']}`}
+              className="flex items-center justify-center py-1"
             >
               더 보기
               <Svg id="plus" size={14} className="ml-1" />
