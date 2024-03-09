@@ -1,6 +1,6 @@
-import { Accordion, NomalTitle } from '@/components/Atoms';
+import { Accordion, NomalTitle, MainButton } from '@/components/Atoms';
 import { Avatar, ClubList, GNB } from '@/components/Molecules';
-import { getDocumentTitle, getPbImgs } from '@/utils';
+import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 3. 프로필 사진 수정 기능 구현
 4. GNB 고정
 5. 독후감 
-
+6. 로그아웃 버튼 클릭시 ->모달) 진짜?? 진짜 로그아웃할거야?? -> 웅 -> 로그아웃
 
 
 */
@@ -66,6 +66,23 @@ export function MyPage() {
               src={getPbImgs(userInfo)}
               className="relative !top-0"
             ></Avatar>
+            <div className="flex gap-4">
+              <MainButton
+                to={`/editProfile/${userInfo.id}`}
+                size="sm"
+                color="secondary"
+              >
+                정보 수정
+              </MainButton>
+              <MainButton
+                size="sm"
+                color="secondary"
+                type="button"
+                onClick={handleLogout}
+              >
+                로그아웃
+              </MainButton>
+            </div>
           </div>
 
           {clubData && (
@@ -77,8 +94,8 @@ export function MyPage() {
                       key={item.id}
                       id={item.id}
                       title={item.title}
-                      schedule="3.16(토) 오후 2:00"
-                      src={getPbImgs(item)}
+                      schedule={calcDay(item.created)}
+                      img={getPbImgs(item)}
                     />
                   ))}
                 </ul>
@@ -91,7 +108,7 @@ export function MyPage() {
                       key={item.id}
                       id={item.id}
                       title={item.title}
-                      schedule="3.16(토) 오후 2:00"
+                      schedule={calcDay(item.created)}
                       img={getPbImgs(item)}
                     />
                   ))}
@@ -129,9 +146,6 @@ export function MyPage() {
               </Accordion>
             </>
           )}
-          <button type="button" onClick={handleLogout}>
-            로그아웃
-          </button>
         </main>
         <GNB createClub className="mt-auto" />
       </div>
