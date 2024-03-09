@@ -192,7 +192,7 @@ const routingPages = [
     ),
   },
   {
-    path: '/editProfile',
+    path: '/editProfile/:userId',
     element: (
       <ProtectRoute>
         <EditProfile />
