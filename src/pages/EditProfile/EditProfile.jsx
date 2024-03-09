@@ -6,8 +6,12 @@ import {
   TextForm,
   MainButton,
 } from '@/components/Atoms';
-import { Form } from 'react-router-dom';
+import { Form, useActionData } from 'react-router-dom';
+
 export function EditProfile() {
+  const res = useActionData();
+  console.log(res);
+
   return (
     <>
       <Helmet>
