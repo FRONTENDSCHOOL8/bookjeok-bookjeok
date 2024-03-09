@@ -17,14 +17,17 @@ function ImageForm({
 
   return (
     <div className={`${imageFormStyle.className} ${className}`}>
-      <div className="relative box-content block h-16 w-16 rounded-[8px] border-[1px] border-bjgray-500 bg-white hover:bg-gray-50">
+      <div className="relative box-content block h-16 w-16 rounded-[8px] border-[1px] border-bjgray-500 bg-white hover:bg-bjgray-200">
         <label htmlFor={id}>
           <span className="sr-only">사진 업로드</span>
           <Svg
             id="camera"
             color="9E9E9E"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-1/2 top-1/2 -mt-1 -translate-x-1/2 -translate-y-1/2"
           />
+          <span className="absolute left-1/2 top-1/2 mt-4 -translate-x-1/2 -translate-y-1/2 text-b-3-regular text-bjgray-500">
+            (필수)
+          </span>
         </label>
         <input
           type="file"
@@ -46,10 +49,10 @@ function ImageForm({
           <button
             type="button"
             onClick={onClick}
-            className="absolute right-1 top-1 rounded-full opacity-50"
+            className="absolute right-1 top-1 rounded-full bg-white opacity-90"
           >
             <span className="sr-only">삭제</span>
-            <Svg id="clear" color="Ffffff" size={18} />
+            <Svg id="clear" color="#212121" size={20} />
           </button>
         </div>
       ) : (

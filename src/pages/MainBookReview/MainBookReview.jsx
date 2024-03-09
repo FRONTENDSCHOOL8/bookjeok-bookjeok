@@ -37,85 +37,87 @@ export function MainBookReview() {
       </Helmet>
       <div className="relative flex h-svh w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
-        <MainKindToggle />
-        <div className="px-4 pb-16">
-          <ThinTextForm
-            onChange={handleSearch}
-            type="search"
-            searchIcon
-            placeholder="search"
-            className="py-2"
-          >
-            검색
-          </ThinTextForm>
-          <ul className="py-2">
-            {isSearchState
-              ? searchResult.resultArray.map(
-                  ({
-                    id,
-                    title,
-                    expand: {
-                      writer: {
-                        nickname,
-                        collectionId: writerCollectionId,
-                        id: writerID,
-                        img: writerImg,
+        <main>
+          <MainKindToggle />
+          <div className="mb-16 px-4">
+            <ThinTextForm
+              onChange={handleSearch}
+              type="search"
+              searchIcon
+              placeholder="search"
+              className="py-2"
+            >
+              검색
+            </ThinTextForm>
+            <ul className="py-2">
+              {isSearchState
+                ? searchResult.resultArray.map(
+                    ({
+                      id,
+                      title,
+                      expand: {
+                        writer: {
+                          nickname,
+                          collectionId: writerCollectionId,
+                          id: writerID,
+                          img: writerImg,
+                        },
                       },
-                    },
-                    detail,
-                    img,
-                    created,
-                    collectionId,
-                  }) => (
-                    <BookReviewList
-                      id={id}
-                      key={id}
-                      title={title}
-                      nickname={nickname}
-                      writerCollectionId={writerCollectionId}
-                      writerID={writerID}
-                      writerImg={writerImg}
-                      detail={detail}
-                      img={img}
-                      created={created}
-                      collectionId={collectionId}
-                    />
+                      detail,
+                      img,
+                      created,
+                      collectionId,
+                    }) => (
+                      <BookReviewList
+                        id={id}
+                        key={id}
+                        title={title}
+                        nickname={nickname}
+                        writerCollectionId={writerCollectionId}
+                        writerID={writerID}
+                        writerImg={writerImg}
+                        detail={detail}
+                        img={img}
+                        created={created}
+                        collectionId={collectionId}
+                      />
+                    )
                   )
-                )
-              : data.bookReview.map(
-                  ({
-                    id,
-                    title,
-                    expand: {
-                      writer: {
-                        nickname,
-                        collectionId: writerCollectionId,
-                        id: writerID,
-                        img: writerImg,
+                : data.bookReview.map(
+                    ({
+                      id,
+                      title,
+                      expand: {
+                        writer: {
+                          nickname,
+                          collectionId: writerCollectionId,
+                          id: writerID,
+                          img: writerImg,
+                        },
                       },
-                    },
-                    detail,
-                    img,
-                    created,
-                    collectionId,
-                  }) => (
-                    <BookReviewList
-                      id={id}
-                      key={id}
-                      title={title}
-                      nickname={nickname}
-                      writerCollectionId={writerCollectionId}
-                      writerID={writerID}
-                      writerImg={writerImg}
-                      detail={detail}
-                      img={img}
-                      created={created}
-                      collectionId={collectionId}
-                    />
-                  )
-                )}
-          </ul>
-        </div>
+                      detail,
+                      img,
+                      created,
+                      collectionId,
+                    }) => (
+                      <BookReviewList
+                        id={id}
+                        key={id}
+                        title={title}
+                        nickname={nickname}
+                        writerCollectionId={writerCollectionId}
+                        writerID={writerID}
+                        writerImg={writerImg}
+                        detail={detail}
+                        img={img}
+                        created={created}
+                        collectionId={collectionId}
+                      />
+                    )
+                  )}
+            </ul>
+          </div>
+        </main>
         <GNB createBookReview className="fixed" />
       </div>
     </>
