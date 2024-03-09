@@ -13,7 +13,7 @@ function App() {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <ReactQueryDevtools position="top-right" />
+        <ReactQueryDevtools buttonPosition="top-right" />
       </QueryClientProvider>
     </HelmetProvider>
   );

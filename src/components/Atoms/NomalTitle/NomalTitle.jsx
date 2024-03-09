@@ -12,7 +12,7 @@ function NomalTitle({
 }) {
   const nomalTitleStyle = {
     className:
-      'h-[56px] flex flex-row justify-center items-center shrink-0 bg-white',
+      'h-[56px] flex z-10  flex-row justify-center items-center shrink-0 bg-white shadow-md',
   };
   const navigate = useNavigate();
   const goBack = () => {
