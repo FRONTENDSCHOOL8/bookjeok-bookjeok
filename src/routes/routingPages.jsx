@@ -185,7 +185,7 @@ const routingPages = [
   {
     path: '/editProfile/:userId',
     element: (
-      <ProtectRoute>
+      <ProtectRoute client={queryClient}>
         <EditProfile />
       </ProtectRoute>
     ),

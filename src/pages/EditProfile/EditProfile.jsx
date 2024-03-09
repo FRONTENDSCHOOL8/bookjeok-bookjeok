@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useState } from 'react';
 import { getDocumentTitle } from '@/utils';
 import {
   NomalTitle,
@@ -6,12 +7,44 @@ import {
   TextForm,
   MainButton,
 } from '@/components/Atoms';
-import { Form, useActionData } from 'react-router-dom';
+import { Form, useParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import pb from '@/api/pocketbase';
+import useUserInfoStore from '@/store/useUserInfoStore';
+
+const test = {
+  nickname: '하이로로',
+  password: 'qwert123!',
+  passwordConfirm: 'qwert123!',
+  oldPassword: 'qwert123!',
+};
 
 export function EditProfile() {
-  const res = useActionData();
-  console.log(res);
+  const { userId } = useParams();
+  const { setUserInfo } = useUserInfoStore((state) => state);
+  const [editUserInfo, setEditUserInfo] = useState({});
 
+
+
+  
+  const { mutateAsync: updateUsers } = useMutation({
+    mutationFn: async () => {
+      await pb
+        .collection('users')
+        .update(`${userId}`, editUserInfo)
+        .then((res) => setUserInfo(res));
+    },
+  });
+
+  const handleEditForm = (e) => {
+    const target = e.target.closest('input');
+    if (!target) return;
+    if (target.name === 'img') {
+      setEditUserInfo({ ...editUserInfo, img: target.files[0] });
+    } else {
+      setEditUserInfo({ ...editUserInfo, [target.name]: target.value });
+    }
+  };
   return (
     <>
       <Helmet>
@@ -21,9 +54,9 @@ export function EditProfile() {
         <NomalTitle backLink path="/myPage">
           프로필 수정
         </NomalTitle>
-        <Form className="flex flex-col gap-4 px-4" method="post">
+        <Form className="flex flex-col gap-4 px-4" onChange={handleEditForm}>
           <span>프로필 사진</span>
-          <ImageForm id="img" name="img" />
+          <ImageForm id="img" name="img" src={editUserInfo?.img} />
           <TextForm type="text" id="nickname" name="nickname">
             닉네임
           </TextForm>
@@ -50,8 +83,13 @@ export function EditProfile() {
             autoComplete="off"
           >
             비밀번호 확인
-          </TextForm>{' '}
-          <MainButton as="button" type="submit">
+          </TextForm>
+          <MainButton
+            as="button"
+            onClick={async () => {
+              await updateUsers();
+            }}
+          >
             저장
           </MainButton>
         </Form>
