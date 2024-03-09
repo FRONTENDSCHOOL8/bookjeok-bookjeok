@@ -52,22 +52,27 @@ export function DetailClub() {
             text={title}
           ></Avatar>
 
-          <section className="flex h-full flex-col gap-4 bg-bjgray-50 px-4 pt-10">
+          <section className="bg-bjgray-50 flex h-full flex-col gap-4 px-4 pt-10">
             <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="pin" />
+                <Svg color="#9e9e9e" size={12} id="pin" className="mr-[2px]" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="calendar" />
+                <Svg
+                  color="#9e9e9e"
+                  size={12}
+                  id="calendar"
+                  className="mr-[2px]"
+                />
                 {calcDay(dateTime)}
               </span>
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="user" />
+                <Svg color="#9e9e9e" size={12} id="user" className="mr-[2px]" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
-            <pre className=" whitespace-pre-wrap p-4 text-b-3-light text-bjblack">
+            <pre className="whitespace-pre-wrap p-4 text-b-3-light text-bjblack">
               {detail}
             </pre>
           </section>
