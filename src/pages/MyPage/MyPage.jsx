@@ -1,6 +1,6 @@
 import { Accordion, NomalTitle } from '@/components/Atoms';
 import { Avatar, ClubList, GNB } from '@/components/Molecules';
-import { getDocumentTitle, getPbImgs } from '@/utils';
+import { getDocumentTitle, getPbImgs, calcDay } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useEffect, useState } from 'react';
@@ -66,12 +66,12 @@ export function MyPage() {
               <Accordion open mainText="참여중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
                   {clubData.participantSocialing.map(
-                    ({ collectionId, id, title, img }) => (
+                    ({ collectionId, id, title, img, created }) => (
                       <ClubList
                         key={id}
                         id={id}
                         title={title}
-                        schedule="3.16(토) 오후 2:00"
+                        schedule={calcDay(created)}
                         img={getPbImgs({ collectionId, id, img })}
                       />
                     )
@@ -82,12 +82,12 @@ export function MyPage() {
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
                   {clubData.createSocialing.map(
-                    ({ collectionId, id, title, img }) => (
+                    ({ collectionId, id, title, img, created }) => (
                       <ClubList
                         key={id}
                         id={id}
                         title={title}
-                        schedule="3.16(토) 오후 2:00"
+                        schedule={calcDay(created)}
                         img={getPbImgs({ collectionId, id, img })}
                       />
                     )
