@@ -1,8 +1,13 @@
-import pb from '@/api/pocketbase';
+import { queryClient } from '@/client/queryClient';
+import { FetchChattingRoomList } from './FetchChattingRoomList';
 
-export async function loader() {
-  const data = await pb
-    .collection('chattingRoom')
-    .getFullList({ expand: 'user', filter: '' });
-  return data;
-}
+export const loader =
+  () =>
+  async ({ params }) => {
+    const { userId } = params;
+    return await queryClient.ensureQueryData({
+      queryKey: ['chattingRoomList', userId],
+      queryFn: () => FetchChattingRoomList(userId),
+      refetchInterval: 1000,
+    });
+  };

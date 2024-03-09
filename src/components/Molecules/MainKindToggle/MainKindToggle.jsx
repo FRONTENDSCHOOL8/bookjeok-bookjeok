@@ -22,7 +22,7 @@ function MainKindToggle() {
     'text-b-1-medium flex justify-center items-center w-[30%] py-4';
 
   return (
-    <div className="flex justify-evenly gap-4 border-b">
+    <div className="flex justify-evenly gap-4 border-b shadow-sm">
       {navLinks.map((navLink) => {
         return (
           <NavLink
@@ -33,7 +33,7 @@ function MainKindToggle() {
               ' border-b-2 border-b-black'
             )}
           >
-            {navLink.text}
+            <h2>{navLink.text}</h2>
           </NavLink>
         );
       })}

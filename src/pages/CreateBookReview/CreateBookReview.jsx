@@ -74,7 +74,9 @@ export function CreateBookReview() {
       </Helmet>
       <main className="flex h-svh flex-col justify-between px-4">
         <Form className="flex flex-col gap-6">
-          <NomalTitle backLink>독후감 작성하기</NomalTitle>
+          <NomalTitle backLink path="mainBookReview">
+            독후감 작성하기
+          </NomalTitle>
           <h2 className="p-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
           <ImageForm
             id="img"

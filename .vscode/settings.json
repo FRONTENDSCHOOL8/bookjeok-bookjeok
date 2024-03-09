@@ -1,6 +1,6 @@
 {
   // "tailwindCSS.experimental.configFile": "./tailwind.config.js",
-  "tailwindCSS.experimental.classRegex": ["className\\:.*?['\"]([^'\"]*)['\"]"], // 동적으로 tailwindcss className 전달하게 해주는 코드
+  "tailwindCSS.experimental.classRegex": ["className\\:.*?['\"]([^'\"]*)['\"]"], // 동적으로 tailwindcss className 전달하기위해 객체에도 테일윈드를 추천 해주는 코드
   "errorLens.enabled": true,
   "javascript.format.enable": false,
   "javascript.validate.enable": false,

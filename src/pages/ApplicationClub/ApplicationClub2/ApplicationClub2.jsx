@@ -67,7 +67,7 @@ export function ApplicationClub2() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div className="flex h-dvh h-screen flex-col p-4 ">
+      <div className="flex h-dvh h-svh flex-col p-4 ">
         <NomalTitle backLink subText="2 of 2">
           모임신청
         </NomalTitle>
@@ -112,7 +112,7 @@ export function ApplicationClub2() {
           ''
         )}
 
-        <div className="mt-auto ">
+        <div className="my-4 mt-auto ">
           <MainButton
             className={
               answerForm.length > 10

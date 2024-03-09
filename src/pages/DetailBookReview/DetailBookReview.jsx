@@ -21,8 +21,8 @@ export function DetailBookReview() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink path="/mainBookReview">
+      <div className="relative flex h-svh w-full flex-col">
+        <NomalTitle backLink path="mainBookReview">
           독후감 상세보기
         </NomalTitle>
         <figure className="relative h-[274px] w-[430px] overflow-hidden">

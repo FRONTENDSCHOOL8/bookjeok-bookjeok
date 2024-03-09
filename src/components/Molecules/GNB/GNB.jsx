@@ -1,6 +1,7 @@
 import { Svg } from '@/components/Atoms';
+import useUserInfoStore from '@/store/useUserInfoStore';
 import { bool, string } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function GNB({ createClub, createBookReview, className }) {
   let centerIconPath;
@@ -11,35 +12,40 @@ function GNB({ createClub, createBookReview, className }) {
     centerIconPath = '/createBookReview';
   }
 
+  const { userInfo } = useUserInfoStore();
+  const menu = [
+    { id: 'logo', to: '/mainClub', title: '홈' },
+    { id: 'calendar', to: '/myClubList', title: '나의 모임 리스트' },
+    { id: 'plus', to: centerIconPath, title: '생성하기' },
+    { id: 'chat', to: `/chatRoomList/${userInfo.id}`, title: '채팅리스트' },
+    { id: 'user', to: '/myPage', title: '마이페이지' },
+  ];
+  if (!userInfo) {
+    menu[0].to = '/';
+  }
+
+  const assignActiveClassNames =
+    (classNames, activeClassName) =>
+    ({ isActive }) => {
+      return classNames + (isActive ? ` ${activeClassName}` : '');
+    };
+  const classNames = 'flex flex-col p-1 items-center';
+  const activeClaseNames = 'border-b-2 border-bjyellow-500 ';
   return (
     <ul
-      className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 ${className}`}
+      className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 shadow-inner ${className}`}
     >
-      <li>
-        <Link to="/">
-          <Svg width={32} height={32} id="logo" />
-        </Link>
-      </li>
-      <li>
-        <Link to="/myClubList">
-          <Svg width={32} height={32} id="calendar" />
-        </Link>
-      </li>
-      <li>
-        <Link to={centerIconPath}>
-          <Svg width={32} height={32} id="plus" />
-        </Link>
-      </li>
-      <li>
-        <Link to="/chatRoomList">
-          <Svg width={32} height={32} id="chat" />
-        </Link>
-      </li>
-      <li>
-        <Link to="/myPage">
-          <Svg width={32} height={32} id="user" />
-        </Link>
-      </li>
+      {menu.map(({ id, to, title }) => (
+        <li key={id}>
+          <NavLink
+            to={to}
+            className={assignActiveClassNames(classNames, activeClaseNames)}
+            aria-label={title}
+          >
+            <Svg size={32} id={id} />
+          </NavLink>
+        </li>
+      ))}
     </ul>
   );
 }

@@ -1,5 +1,6 @@
-import { bool, string } from 'prop-types';
 import { Svg } from '@/components/Atoms';
+import { bool, string } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 function NomalTitle({
   className,
@@ -13,21 +14,26 @@ function NomalTitle({
     className:
       'h-[56px] flex flex-row justify-center items-center shrink-0 bg-white',
   };
-
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
+  const goPath = (path) => () => {
+    navigate(`/${path}`, { replace: true });
+  };
   let backLinkElement = null;
 
   if (backLink) {
     backLinkElement = (
-      <a
-        onClick={path ? () => {} : () => window.history.back()}
-        href={path ? path : ''}
+      <button
+        onClick={path ? goPath(path) : goBack}
         title="뒤로 가기"
         aria-label="뒤로 가기"
         className="cursor-pointer p-4"
         tabIndex={1}
       >
         <Svg id="arrow-left" />
-      </a>
+      </button>
     );
   }
 
@@ -42,7 +48,7 @@ function NomalTitle({
   }
 
   return (
-    <div className={`${nomalTitleStyle.className} ${className}`}>
+    <header className={`${nomalTitleStyle.className} ${className}`}>
       <div className="flex flex-1 items-center justify-start">
         {backLinkElement}
       </div>
@@ -53,7 +59,7 @@ function NomalTitle({
       <div className="flex flex-1 items-center justify-end">
         {resetButtonElement}
       </div>
-    </div>
+    </header>
   );
 }
 

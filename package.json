@@ -11,7 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.22.2",
+    "@tanstack/react-query": "^5.25.0",
     "pocketbase": "^0.21.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,6 +20,7 @@
     "zustand": "^4.5.1"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.20.1",
     "@tanstack/react-query-devtools": "^5.24.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",

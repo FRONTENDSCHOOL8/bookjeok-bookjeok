@@ -1,4 +1,5 @@
 import AtomMaking from '@/AtomMaking';
+import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
 import {
   ApplicationClub1,
@@ -8,8 +9,6 @@ import {
   ApplicationClub2,
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2';
-import { ChatRoom } from '@/pages/Chatting/ChatRoom';
-import { ChatRoomListPage } from '@/pages/Chatting/ChatRoomListPage';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
 import {
@@ -160,20 +159,23 @@ const routingPages = [
     loader: answerLoader,
   },
   {
-    path: '/chatRoom/:clubId',
-    element: (
-      <ProtectRoute>
-        <ChatRoom />
-      </ProtectRoute>
-    ),
+    path: '/chatRoom/:chattingRoomId',
+    async lazy() {
+      const { loader, ChatRoom } = await import('@/pages/Chatting/ChatRoom');
+      return { loader: loader(queryClient), Component: ChatRoom };
+    },
   },
   {
-    path: '/chatRoomList',
-    element: (
-      <ProtectRoute>
-        <ChatRoomListPage />
-      </ProtectRoute>
-    ),
+    path: '/chatRoomList/:userId',
+    async lazy() {
+      const { loader, ChatRoomListPage } = await import(
+        '@/pages/Chatting/ChatRoomListPage'
+      );
+      return {
+        loader: loader(queryClient),
+        Component: ChatRoomListPage,
+      };
+    },
   },
   {
     path: '/myPage',

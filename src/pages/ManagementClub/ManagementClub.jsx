@@ -91,10 +91,8 @@ export function ManagementClub() {
         <title>{getDocumentTitle(`${socialing.title} 모임관리`)}</title>
       </Helmet>
 
-      <div className="relative flex min-h-screen w-full flex-col bg-white">
-        <NomalTitle backLink path="/">
-          소셜링 멤버 관리
-        </NomalTitle>
+      <div className="relative flex min-h-svh w-full flex-col bg-white">
+        <NomalTitle backLink>소셜링 멤버 관리</NomalTitle>
         <main className="mb-[65px] px-4">
           <h2 className="py-4 text-h-2-semibold text-bjblack">질문</h2>
           <TextForm

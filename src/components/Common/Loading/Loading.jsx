@@ -2,7 +2,7 @@ import { string } from 'prop-types';
 
 function Loading({ children = '로딩중', className, ...restProps }) {
   const classNames =
-    `flex flex-col h-full justify-center items-center ${className}`.trim();
+    `flex flex-col h-svh justify-center items-center ${className}`.trim();
   return (
     <figure
       role="alert"
