@@ -1,5 +1,5 @@
-import { string, bool, number } from 'prop-types';
-import Svg from '../../Svg/Svg';
+import { string, bool, number, func } from 'prop-types';
+import { Svg } from '@/components/Atoms';
 import { Link } from 'react-router-dom';
 
 function ThinTextForm({
@@ -14,6 +14,8 @@ function ThinTextForm({
   minLength,
   maxLength,
   children,
+  handleInput,
+  onSubmit,
   path,
   searchIcon = false,
   backLink = false,
@@ -27,7 +29,10 @@ function ThinTextForm({
   };
 
   return (
-    <div className={`${thinTextFormStyle.className} ${className}`}>
+    <form
+      onSubmit={onSubmit}
+      className={`${thinTextFormStyle.className} ${className ?? ''}`}
+    >
       <div className="peer flex h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 has-[:disabled]:bg-bjgray-200">
         <div className="order-1 flex flex-grow flex-col">
           <label htmlFor={id} className="sr-only">
@@ -35,6 +40,7 @@ function ThinTextForm({
           </label>
           <input
             type={type}
+            onChange={handleInput}
             id={id}
             name={name}
             value={value}
@@ -64,7 +70,7 @@ function ThinTextForm({
           </button>
         )}
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -86,4 +92,6 @@ ThinTextForm.propTypes = {
   searchIcon: bool,
   backLink: bool,
   sendButton: bool,
+  onSubmit: func,
+  handleInput: func,
 };

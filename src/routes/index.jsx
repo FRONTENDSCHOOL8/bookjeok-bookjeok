@@ -1,4 +1,4 @@
-import Erro404 from '@/pages/Error404/Erro404';
+import Error404 from '@/pages/Error404/Error404';
 import { createBrowserRouter } from 'react-router-dom';
 import { RootLayout } from '@/components/Common/index';
 import routingPages from './routingPages';
@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <Erro404 />,
+    errorElement: <Error404 />,
     children: routingPages,
   },
 ];
