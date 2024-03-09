@@ -32,7 +32,7 @@ import {
 import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
 import { BasicInfo, DetailInfo } from '@/pages/SignUp';
-import { EditProfile } from '@/pages/EditProfile';
+import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
 import { Welcome } from '@/pages/Welcome';
@@ -193,6 +193,7 @@ const routingPages = [
         <EditProfile />
       </ProtectRoute>
     ),
+    action: editProfileAction,
   },
   {
     path: '/createBookReview',
