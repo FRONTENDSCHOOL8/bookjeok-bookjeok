@@ -88,92 +88,98 @@ export function CreateClub4() {
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between px-4">
-        <div className="flex flex-col gap-6">
+      <main className="flex h-svh flex-col justify-between">
+        <div>
           <NomalTitle backLink subText="4 of 4">
             모임 만들기
           </NomalTitle>
-          <h2 className="p-4 text-h-2-semibold">모임을 소개해주세요.</h2>
-          <div className="flex flex-col gap-7 px-4">
-            <div className="flex flex-col gap-3 border-b">
-              <label htmlFor="clubDate" className="text-b-1-regular">
-                언제 만날까요?
-              </label>
-              <input
-                id="clubDate"
-                type="date"
-                data-placeholder="날짜를 선택해주세요."
-                required
-                onChange={handleDate}
-              />
-            </div>
-            <div className="flex flex-col gap-3 border-b">
-              <label htmlFor="clubTime"></label>
-              <input
-                id="clubTime"
-                type="time"
-                data-placeholder="시간을 선택해주세요."
-                required
-                onChange={handleTime}
-              />
-            </div>
-            <div className="flex flex-col gap-3 border-b">
-              <label htmlFor="clubLimit" className="text-b-1-regular">
-                몇명을 모을까요?
-              </label>
-              <div className="flex items-center justify-between text-b-2-regular">
-                <div className="flex items-center gap-2">
-                  <Svg id="user" size={16} />
-                  참여인원 (3-15)
+          <div className="flex flex-col gap-6">
+            <h2 className="p-4 text-h-2-semibold">모임을 소개해주세요.</h2>
+            <div className="flex flex-col gap-7 px-4">
+              <div>
+                <div className="flex flex-col gap-3 border-b">
+                  <label htmlFor="clubDate" className="text-b-1-medium">
+                    언제 만날까요?
+                  </label>
+                  <input
+                    id="clubDate"
+                    type="date"
+                    data-placeholder="날짜를 선택해주세요."
+                    required
+                    onChange={handleDate}
+                    className="h-12"
+                  />
                 </div>
-                <select
-                  id="clubLimit"
-                  name="clubLimit"
-                  className="mx-1 w-14 text-b-2-regular"
-                  required
-                  onChange={handleLimit}
-                >
-                  <option value="" disabled>
-                    참여인원(3-15)
-                  </option>
-                  {createNumberArray(3, 15).map((i) => (
-                    <option key={i} value={i}>
-                      {i}명
+                <div className="flex flex-col gap-3 border-b">
+                  <label htmlFor="clubTime"></label>
+                  <input
+                    id="clubTime"
+                    type="time"
+                    data-placeholder="시간을 선택해주세요."
+                    required
+                    onChange={handleTime}
+                    className="h-12"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-3 border-b">
+                <label htmlFor="clubLimit" className="text-b-1-medium">
+                  몇명을 모을까요?
+                </label>
+                <div className="flex items-center justify-between text-b-2-regular">
+                  <div className="flex items-center gap-3">
+                    <Svg id="user" size={16} />
+                    참여인원 (3-15)
+                  </div>
+                  <select
+                    id="clubLimit"
+                    name="clubLimit"
+                    className="mx-1 h-12 w-14 text-b-2-regular"
+                    required
+                    onChange={handleLimit}
+                  >
+                    <option value="" disabled>
+                      참여인원(3-15)
                     </option>
-                  ))}
-                </select>
+                    {createNumberArray(3, 15).map((i) => (
+                      <option key={i} value={i}>
+                        {i}명
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="flex flex-col gap-3 border-b">
+                <label htmlFor="clubQuery" className="text-b-1-medium">
+                  모임을 신청할 때 답변할 질문을 작성해주세요.
+                </label>
+                <input
+                  id="clubQuery"
+                  name="clubQuery"
+                  required
+                  type="text"
+                  className="h-12 w-full px-4 text-b-2-regular"
+                  placeholder="예시) 어떤 관심사를 가지고 계신가요?"
+                  onChange={handleQuery}
+                ></input>
               </div>
             </div>
-            <div className="flex flex-col gap-3 border-b">
-              <label htmlFor="clubQuery" className="text-b-1-regular">
-                모임을 신청할 때 답변할 질문을 작성해주세요.
-              </label>
-              <input
-                id="clubQuery"
-                name="clubQuery"
-                required
-                type="text"
-                className="w-full text-b-2-regular"
-                placeholder="예시) 어떤 관심사를 가지고 계신가요?"
-                onChange={handleQuery}
-              ></input>
-            </div>
+            {modalState ? (
+              <DobbleButtonModal
+                open
+                svgId="logo"
+                title="모임을 개설했습니다."
+                primaryButtonText="홈으로"
+                primaryButtonPath="/mainClub"
+              >
+                참가자들의 신청을 기다려볼까요?
+              </DobbleButtonModal>
+            ) : (
+              ''
+            )}
           </div>
-          {modalState ? (
-            <DobbleButtonModal
-              open
-              svgId="logo"
-              title="모임을 개설했습니다."
-              primaryButtonText="홈으로"
-              primaryButtonPath="/mainClub"
-            >
-              참가자들의 신청을 기다려볼까요?
-            </DobbleButtonModal>
-          ) : (
-            ''
-          )}
         </div>
-        <div className="py-4">
+        <div className="p-4">
           <MainButton
             as="button"
             onClick={handleSubmitClubInfoForCreate}

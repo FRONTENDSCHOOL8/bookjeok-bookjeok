@@ -31,7 +31,9 @@ const theme = {
       500: '#4caf50',
     },
   },
-  fontFamily: { sans: 'Pretendard-Regular' },
+  fontFamily: {
+    sans: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
+  },
   fontSize: {
     'h-0-light': ['48px', { fontWeight: '300' }],
     'h-0-regular': ['48px', { fontWeight: '400' }],
