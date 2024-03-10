@@ -35,6 +35,7 @@ export function Login() {
     pb.collection('users')
       .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
       .then(({ record, token }) => {
+        console.log(record, token);
         setUserInfo({
           ...record,
           token,

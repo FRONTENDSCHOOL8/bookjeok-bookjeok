@@ -24,7 +24,14 @@ export function EditProfile() {
   const { setUserInfo } = useUserInfoStore((state) => state);
   const [editUserInfo, setEditUserInfo] = useState({});
   const debouncedData = useDebounce(editUserInfo, 700);
-  console.log('debounced:', debouncedData);
+
+  //이미지 지우는법
+  const handleReviewImage = {
+    remove: (e) => {
+      e.preventDefault();
+      setEditUserInfo({ ...setEditUserInfo, img: null });
+    },
+  };
 
   //중복 닉네임 확인
   const { data: hasDuplicatedNickname } = useQuery({
@@ -38,8 +45,6 @@ export function EditProfile() {
     //최초실행 방지
     enabled: !!debouncedData.nickname,
   });
-
-  console.log(hasDuplicatedNickname?.length);
 
   // 수정 실행하는 mutation 함수
   const { mutateAsync: updateUsers } = useMutation({
@@ -73,16 +78,17 @@ export function EditProfile() {
       <Helmet>
         <title>{getDocumentTitle('프로필 수정')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col p-4">
+      <div className="relative flex h-svh w-full flex-col ">
         <NomalTitle backLink path="/myPage">
           프로필 수정
         </NomalTitle>
-        <Form className="flex flex-col gap-4 " onChange={handleEditForm}>
+        <Form className="flex flex-col gap-4 p-4" onChange={handleEditForm}>
           <span>프로필 사진</span>
           <ImageForm
             required={false}
             id="img"
             name="img"
+            onClick={handleReviewImage.remove}
             src={editUserInfo?.img}
           />
           <TextForm
@@ -97,14 +103,13 @@ export function EditProfile() {
           >
             닉네임
           </TextForm>
-
           <TextForm
             type="password"
             id="oldPassword"
             name="oldPassword"
             autoComplete="off"
           >
-            이전 비밀번호
+            현재 비밀번호
           </TextForm>
           <TextForm
             type="password"
@@ -112,7 +117,7 @@ export function EditProfile() {
             name="password"
             autoComplete="off"
           >
-            비밀번호
+            변경할 비밀번호
           </TextForm>
           <TextForm
             id="passwordConfirm"
@@ -123,15 +128,17 @@ export function EditProfile() {
             비밀번호 확인
           </TextForm>
         </Form>
-        <MainButton
-          className="mt-auto"
-          as="button"
-          onClick={async () => {
-            await updateUsers();
-          }}
-        >
-          저장
-        </MainButton>
+        <div className="mt-auto p-4">
+          <MainButton
+            className="mt-auto"
+            as="button"
+            onClick={async () => {
+              await updateUsers();
+            }}
+          >
+            저장
+          </MainButton>
+        </div>
       </div>
     </>
   );
