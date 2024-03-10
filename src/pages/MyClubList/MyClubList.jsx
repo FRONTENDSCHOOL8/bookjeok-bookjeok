@@ -197,8 +197,8 @@ export function MyClubList() {
             ''
           )}
         </ul>
-        <GNB createClub className="fixed"></GNB>
       </div>
+      <GNB createClub className="fixed"></GNB>
     </>
   );
 }

@@ -6,7 +6,7 @@ import {
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
-import { Link, redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -164,8 +164,9 @@ export function MyPage() {
             </>
           )}
         </main>
-        <GNB createClub className="mt-auto" />
       </div>
+
+      <GNB createClub className="fixed"></GNB>
     </>
   );
 }
