@@ -1,54 +1,55 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
-
-/*
-1. useRef로 email, password -> useRef 상태관리x 
-2. 버튼을 눌렀을때 이메일과 패스워드가 맞는지 확인 => 완료  
-3. 어떻게 로그인 성공 / 실패를 알려야될까.. 고민중. . .
-  - 시각적 에니메이션 -> 어떻게 스크린리더사용자에게 전달할수 있을까?
-  - 성공 알림 모달-> 확인 버튼 클릭시 메인으로 이동 | 실패 모달 ?  
-*/
+import { useQuery } from '@tanstack/react-query';
 
 export function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const { setUserInfo } = useUserInfoStore((state) => state);
   const emailRef = useRef('');
   const passwordRef = useRef('');
+  const [isClicked, setIsClicked] = useState(false);
+
   const handleLoginForm = (e) => {
-    const target = e.target.closest('input');
-    if (!target) return;
-    if (target) {
-      e.target.name === 'email'
-        ? (emailRef.current = e.target.value)
-        : (passwordRef.current = e.target.value);
+    const { name, value } = e.target;
+    if (name === 'email') {
+      emailRef.current = value;
+    } else if (name === 'password') {
+      passwordRef.current = value;
     }
   };
 
-  // 로그인 이벤트 함수 (로그인 성공/실패 결과 표시 필요 ! )
-  const handleLogin = () => {
-    pb.collection('users')
-      .authWithPassword(`${emailRef.current}`, `${passwordRef.current}`)
-      .then(({ record, token }) => {
-        console.log(record, token);
-        setUserInfo({
-          ...record,
-          token,
-        });
+  const handleLogin = useCallback(() => {
+    setIsClicked(true);
+  }, []);
+
+  const { isSuccess } = useQuery({
+    queryKey: ['login'],
+    queryFn: async () => {
+      try {
+        if (emailRef.current && passwordRef.current) {
+          const { record, token } = await pb
+            .collection('users')
+            .authWithPassword(emailRef.current, passwordRef.current);
+          setUserInfo({
+            ...record,
+            token,
+          });
+          setIsModalOpen(true);
+          return { record, token };
+        }
+      } catch (error) {
         setIsModalOpen(true);
-        setIsLoginSuccess(true);
-      })
-      .catch((Error) => {
-        setIsLoginSuccess(false);
-        setIsModalOpen(true);
-        console.error(Error);
-      });
-  };
+        throw error;
+      }
+    },
+    enabled: isClicked,
+    retry: 1,
+  });
 
   return (
     <>
@@ -69,27 +70,17 @@ export function Login() {
               비밀번호
             </TextForm>
           </div>
-          {isLoginSuccess ? (
-            <DobbleButtonModal
-              open={isModalOpen}
-              svgId="logo"
-              closeButton
-              title="로그인 성공"
-              onClick={() => setIsModalOpen(false)}
-              primaryButtonText="홈으로 이동"
-              primaryButtonPath="/MainClub"
-            ></DobbleButtonModal>
-          ) : (
-            <DobbleButtonModal
-              open={isModalOpen}
-              closeButton
-              title="로그인 실패"
-              svgId="logo"
-              onClick={() => setIsModalOpen(false)}
-            >
-              계정 정보를 확인해주세요
-            </DobbleButtonModal>
-          )}
+          <DobbleButtonModal
+            open={isModalOpen}
+            closeButton
+            svgId="logo"
+            title={isSuccess ? '로그인 성공' : '로그인 실패'}
+            onClick={() => setIsModalOpen(false)}
+            primaryButtonText="홈으로 이동"
+            primaryButtonPath={isSuccess ? '/MainClub' : undefined}
+          >
+            {isSuccess ? null : '계정 정보를 확인해주세요'}
+          </DobbleButtonModal>
         </div>
         <div className="mt-auto p-4">
           <MainButton onClick={handleLogin} as="button">
