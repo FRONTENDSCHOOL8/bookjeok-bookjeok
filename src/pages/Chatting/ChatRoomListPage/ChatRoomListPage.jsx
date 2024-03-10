@@ -13,7 +13,7 @@ export function ChatRoomListPage() {
   const { userInfo } = useUserInfoStore();
   const { userId } = useParams();
 
-  const { data } = useQuery({
+  const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoomList', userId],
     queryFn: () => FetchChattingRoomList(userId),
     initialData: chattingRoom,
@@ -41,16 +41,20 @@ export function ChatRoomListPage() {
             검색
           </ThinTextForm>
           <ul>
-            {data.map(({ id, created, expand: { socialing, message } }) => (
-              <ChatList
-                title={socialing.title}
-                key={socialing.id}
-                id={id}
-                updated={message ? message[0].updated : created}
-                src={getPbImgs(socialing)}
-                message={message ? message[0].text : ''}
-              ></ChatList>
-            ))}
+            {chattingRoomData?.map(
+              ({ id, created, expand: { socialing, message } }) => (
+                <ChatList
+                  title={socialing.title}
+                  key={socialing.id}
+                  id={id}
+                  updated={
+                    message ? message[message.length - 1].updated : created
+                  }
+                  src={getPbImgs(socialing)}
+                  message={message ? message[message.length - 1].text : ''}
+                ></ChatList>
+              )
+            )}
           </ul>
         </main>
         <GNB createClub className="fixed" />
@@ -69,7 +73,9 @@ const ChatList = ({ id, src, title, updated, message }) => {
             <span className="line-clamp-1 text-b-1-regular text-bjblack">
               {title}
             </span>
-            <p className="text-b-2-regular text-bjgray-500">{message}</p>
+            <p className="max-w-[290px] truncate  text-b-2-regular text-bjgray-500">
+              {message}
+            </p>
           </div>
           <span className="text-b-3-light text-bjgray-400">
             {getCreatedHoursAgo(updated)}
