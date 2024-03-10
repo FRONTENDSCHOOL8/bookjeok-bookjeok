@@ -1,20 +1,12 @@
 import { NomalTitle, Svg } from '@/components/Atoms';
 import { Avatar, GNB } from '@/components/Molecules';
-import { getDocumentTitle } from '@/utils';
+import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 
 export function DetailBookReview() {
   const {
-    reviewInfo: {
-      bookTitle,
-      img,
-      title,
-      detail,
-      expand: {
-        writer: { nickname },
-      },
-    },
+    reviewInfo: { bookTitle, img, title, detail, expand },
   } = useLoaderData();
   return (
     <>
@@ -28,7 +20,11 @@ export function DetailBookReview() {
         <figure className="relative h-[274px] w-[430px] overflow-hidden">
           <img className="object-cover" src={img} alt={title} />
         </figure>
-        <Avatar nickName={nickname} text={title}></Avatar>
+        <Avatar
+          nickName={expand.writer.nickname}
+          src={expand.writer.img == '' ? null : getPbImgs(expand.writer)}
+          text={title}
+        ></Avatar>
         <section className="flex h-full flex-col gap-4 bg-bjgray-50 px-4 pt-10">
           <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
             <span className="flex items-center">
