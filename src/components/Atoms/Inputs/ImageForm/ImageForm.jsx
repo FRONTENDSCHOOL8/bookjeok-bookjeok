@@ -10,6 +10,7 @@ function ImageForm({
   src,
   alt,
   required = true,
+  srOnly = '사진업로드',
   ...rest
 }) {
   const imageFormStyle = {
@@ -20,7 +21,7 @@ function ImageForm({
     <div className={`${imageFormStyle.className} ${className}`}>
       <div className="relative box-content block h-16 w-16 rounded-[8px] border-[1px] border-bjgray-500 bg-white hover:bg-bjgray-200">
         <label htmlFor={id}>
-          <span className="sr-only">사진 업로드</span>
+          <span className="sr-only">{srOnly}</span>
           <Svg
             id="camera"
             color="9E9E9E"
@@ -74,4 +75,5 @@ ImageForm.propTypes = {
   id: string,
   name: string,
   required: bool,
+  srOnly: string,
 };
