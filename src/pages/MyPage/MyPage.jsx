@@ -1,11 +1,17 @@
-import { Accordion, NomalTitle, MainButton } from '@/components/Atoms';
-import { Avatar, ClubList, GNB } from '@/components/Molecules';
+import {
+  Accordion,
+  NomalTitle,
+  MainButton,
+  RoundImage,
+} from '@/components/Atoms';
+import { ClubList, GNB } from '@/components/Molecules';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useEffect, useState } from 'react';
 import pb from '@/api/pocketbase';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 /*
 1. userInfo에 있는 createSocialing, participantSocialing 
   배열에 있는 모임 id를 어떻게 가져올까...
@@ -24,7 +30,7 @@ import { Link } from 'react-router-dom';
 export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
   const [clubData, setClubData] = useState(null);
-  const [bookReviewData, setBookReviewData] = useState();
+  // const [bookReviewData, setBookReviewData] = useState();
   const handleLogout = () => {
     clearUserInfo();
     pb.authStore.clear();
@@ -42,13 +48,23 @@ export function MyPage() {
       .catch((Error) => console.error(Error));
   }, [userInfo.id]);
 
-  useEffect(() => {
-    pb.collection('bookReview')
-      .getFullList({
+  // useEffect(() => {
+  //   pb.collection('bookReview')
+  //     .getFullList({
+  //       filter: `writer ="${userInfo.id}"`,
+  //     })
+  //     .then((data) => setBookReviewData(data));
+  // }, [userInfo.id]);
+
+  const { data: bookReviewData } = useQuery({
+    queryFn: async () => {
+      const fetchBookReview = await pb.collection('bookReview').getFullList({
         filter: `writer ="${userInfo.id}"`,
-      })
-      .then((data) => setBookReviewData(data));
-  }, [userInfo.id]);
+      });
+      return fetchBookReview;
+    },
+    queryKey: ['bookReview', userInfo.id],
+  });
 
   return (
     <>
@@ -60,31 +76,27 @@ export function MyPage() {
           마이페이지
         </NomalTitle>
         <main className="flex flex-col bg-white px-4">
-          <div className="relative mb-5 mt-12">
-            <Avatar
-              nickName={userInfo.nickname}
-              src={getPbImgs(userInfo)}
-              className="relative !top-0"
-            ></Avatar>
-            <div className="flex gap-4">
-              <MainButton
-                to={`/editProfile/${userInfo.id}`}
-                size="sm"
-                color="secondary"
-              >
-                정보 수정
-              </MainButton>
-              <MainButton
-                size="sm"
-                color="secondary"
-                type="button"
-                onClick={handleLogout}
-              >
-                로그아웃
-              </MainButton>
-            </div>
+          <div className="mb-5 mt-12 flex flex-col items-center gap-2">
+            <RoundImage size="xlg" src={getPbImgs(userInfo)}></RoundImage>
+            <p>{userInfo.nickname}</p>
           </div>
-
+          <div className="flex gap-4">
+            <MainButton
+              to={`/editProfile/${userInfo.id}`}
+              size="sm"
+              color="secondary"
+            >
+              정보 수정
+            </MainButton>
+            <MainButton
+              size="sm"
+              color="secondary"
+              type="button"
+              onClick={handleLogout}
+            >
+              로그아웃
+            </MainButton>
+          </div>
           {clubData && (
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4">
@@ -100,7 +112,6 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <hr />
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
                   {clubData.createSocialing.map((item) => (
@@ -114,10 +125,9 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <hr />
               <Accordion open mainText="내가 쓴 독후감">
                 <ul className="flex flex-col gap-5 px-1">
-                  {bookReviewData.map((item) => (
+                  {bookReviewData?.map((item) => (
                     <Link
                       className="boreder-b-1"
                       key={item.id}

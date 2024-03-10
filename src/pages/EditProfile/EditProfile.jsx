@@ -27,7 +27,7 @@ export function EditProfile() {
   console.log('debounced:', debouncedData);
 
   //중복 닉네임 확인
-  const { data: hasDuplicatedNickname, isSuccess } = useQuery({
+  const { data: hasDuplicatedNickname } = useQuery({
     queryFn: async () => {
       const fetchedData = await pb
         .collection('users')
