@@ -7,11 +7,13 @@ import {
   TextForm,
   MainButton,
 } from '@/components/Atoms';
+import { DobbleButtonModal } from '@/components/Molecules';
 import { Form, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useDebounce } from '@/hooks';
+
 /*
 1. duplicated 닉네임일 경우 하단에 에러메시지
 2. 이미지 / 닉네임만 변경하고자 하면 이전비밀번호,비밀번호,비밀번호 확인 안해도 되는데 
@@ -22,9 +24,9 @@ import { useDebounce } from '@/hooks';
 export function EditProfile() {
   const { userId } = useParams();
   const { setUserInfo } = useUserInfoStore((state) => state);
-  const [editUserInfo, setEditUserInfo] = useState({});
+  const [editUserInfo, setEditUserInfo] = useState();
   const debouncedData = useDebounce(editUserInfo, 700);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //이미지 지우는법
   const handleReviewImage = {
     remove: (e) => {
@@ -56,6 +58,7 @@ export function EditProfile() {
     },
     onSuccess: (userData) => {
       setUserInfo(userData);
+      setIsModalOpen(true);
     },
     onError: (error) => {
       console.log(error.data.data.passwordConfirm.message);
@@ -83,13 +86,13 @@ export function EditProfile() {
           프로필 수정
         </NomalTitle>
         <Form className="flex flex-col gap-4 p-4" onChange={handleEditForm}>
-          <span>프로필 사진</span>
           <ImageForm
             required={false}
             id="img"
             name="img"
             onClick={handleReviewImage.remove}
             src={editUserInfo?.img}
+            srOnly="프로필 사진 변경"
           />
           <TextForm
             type="text"
@@ -97,7 +100,7 @@ export function EditProfile() {
             name="nickname"
             description={
               hasDuplicatedNickname?.length > 0
-                ? '다른 닉네임을 이용해 주세요 !'
+                ? '이미 사용 중인 닉네임 주소입니다.'
                 : ''
             }
           >
@@ -132,6 +135,7 @@ export function EditProfile() {
           <MainButton
             className="mt-auto"
             as="button"
+            disabled={!editUserInfo || hasDuplicatedNickname?.length > 0}
             onClick={async () => {
               await updateUsers();
             }}
@@ -140,6 +144,19 @@ export function EditProfile() {
           </MainButton>
         </div>
       </div>
+      {
+        <DobbleButtonModal
+          svgId="logo"
+          title="변경성공 ! "
+          open={isModalOpen}
+          closeButton
+          onClick={() => setIsModalOpen(false)}
+          primaryButtonText="홈으로 이동하기"
+          primaryButtonPath={'/mainClub'}
+          secondaryButtonText="마이페이지로 이동하기"
+          secondaryButtonPath={'/myPage'}
+        ></DobbleButtonModal>
+      }
     </>
   );
 }
