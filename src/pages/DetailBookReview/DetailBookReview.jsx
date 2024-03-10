@@ -18,7 +18,11 @@ export function DetailBookReview() {
           독후감 상세보기
         </NomalTitle>
         <figure className="relative h-[274px] w-[430px] overflow-hidden">
-          <img className="object-cover" src={img} alt={title} />
+          <img
+            className="h-[274px] w-[430px] object-cover"
+            src={img}
+            alt={title}
+          />
         </figure>
         <Avatar
           nickName={expand.writer.nickname}
