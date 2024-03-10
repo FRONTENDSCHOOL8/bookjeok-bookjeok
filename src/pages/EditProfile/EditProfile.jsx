@@ -14,9 +14,9 @@ import useUserInfoStore from '@/store/useUserInfoStore';
 import { useDebounce } from '@/hooks';
 /*
 1. duplicated 닉네임일 경우 하단에 에러메시지
-2. 
-
-
+2. 이미지 / 닉네임만 변경하고자 하면 이전비밀번호,비밀번호,비밀번호 확인 안해도 되는데 
+  비밀번호를 변경하고자 하면 저 세가지 항목들을 다 해야됨 ! 
+  => 이미지/닉네임 변경시 그냥 
 
 */
 export function EditProfile() {
@@ -25,14 +25,14 @@ export function EditProfile() {
   const [editUserInfo, setEditUserInfo] = useState({});
   const debouncedData = useDebounce(editUserInfo, 700);
   console.log('debounced:', debouncedData);
-  const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
+
   //중복 닉네임 확인
   const { data: hasDuplicatedNickname, isSuccess } = useQuery({
     queryFn: async () => {
       const fetchedData = await pb
         .collection('users')
         .getList(1, 1, { filter: `nickname = "${debouncedData.nickname}"` });
-      return fetchedData.items; // 데이터 반환
+      return fetchedData.items;
     },
     queryKey: ['nickname', debouncedData.nickname],
     //최초실행 방지
@@ -52,6 +52,10 @@ export function EditProfile() {
     onSuccess: (userData) => {
       setUserInfo(userData);
     },
+    onError: (error) => {
+      console.log(error.data.data.passwordConfirm.message);
+      console.log(error.data.data.password.message);
+    },
   });
 
   const handleEditForm = (e) => {
@@ -69,19 +73,26 @@ export function EditProfile() {
       <Helmet>
         <title>{getDocumentTitle('프로필 수정')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col  ">
+      <div className="relative flex h-svh w-full flex-col p-4">
         <NomalTitle backLink path="/myPage">
           프로필 수정
         </NomalTitle>
-        <Form className="flex flex-col gap-4 px-4" onChange={handleEditForm}>
+        <Form className="flex flex-col gap-4 " onChange={handleEditForm}>
           <span>프로필 사진</span>
-          <ImageForm id="img" name="img" src={editUserInfo?.img} />
+          <ImageForm
+            required={false}
+            id="img"
+            name="img"
+            src={editUserInfo?.img}
+          />
           <TextForm
             type="text"
             id="nickname"
             name="nickname"
             description={
-              hasDuplicatedNickname?.length > 0 ? '중복된 닉네임임' : ''
+              hasDuplicatedNickname?.length > 0
+                ? '다른 닉네임을 이용해 주세요 !'
+                : ''
             }
           >
             닉네임
@@ -111,15 +122,16 @@ export function EditProfile() {
           >
             비밀번호 확인
           </TextForm>
-          <MainButton
-            as="button"
-            onClick={async () => {
-              await updateUsers();
-            }}
-          >
-            저장
-          </MainButton>
         </Form>
+        <MainButton
+          className="mt-auto"
+          as="button"
+          onClick={async () => {
+            await updateUsers();
+          }}
+        >
+          저장
+        </MainButton>
       </div>
     </>
   );
