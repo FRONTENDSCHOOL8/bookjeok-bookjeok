@@ -120,8 +120,8 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <Accordion open mainText="내가 쓴 독후감">
-                <ul className="flex flex-col gap-5 px-1">
+              <Accordion className="mb-[100px]" open mainText="내가 쓴 독후감">
+                <ul className=" flex flex-col gap-5 px-1">
                   {bookReviewData?.map((item) => (
                     <Link
                       className="boreder-b-1"
@@ -149,21 +149,21 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <ButtonModalForManageMent
-                svgId="logo"
-                title="로그아웃 하시겠습니까?"
-                open={isModalOpen}
-                closeButton
-                onClick={() => setIsModalOpen(false)}
-                primaryButtonText="로그아웃하기"
-                primaryAs="button"
-                primaryOnClick={handleLogout}
-              >
-                북적북적을 이용하려면 로그인이 필요합니다.
-              </ButtonModalForManageMent>
             </>
           )}
         </main>
+        <ButtonModalForManageMent
+          svgId="logo"
+          title="로그아웃 하시겠습니까?"
+          open={isModalOpen}
+          closeButton
+          onClick={() => setIsModalOpen(false)}
+          primaryButtonText="로그아웃하기"
+          primaryAs="button"
+          primaryOnClick={handleLogout}
+        >
+          북적북적을 이용하려면 로그인이 필요합니다.
+        </ButtonModalForManageMent>
       </div>
 
       <GNB createClub className="fixed"></GNB>
