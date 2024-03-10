@@ -1,4 +1,4 @@
-import { string, func, object } from 'prop-types';
+import { string, func, object, bool } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
 function ImageForm({
@@ -9,6 +9,7 @@ function ImageForm({
   name,
   src,
   alt,
+  required = true,
   ...rest
 }) {
   const imageFormStyle = {
@@ -26,7 +27,7 @@ function ImageForm({
             className="absolute left-1/2 top-1/2 -mt-1 -translate-x-1/2 -translate-y-1/2"
           />
           <span className="absolute left-1/2 top-1/2 mt-4 -translate-x-1/2 -translate-y-1/2 text-b-3-regular text-bjgray-500">
-            (필수)
+            {required ? '(필수)' : '(선택)'}
           </span>
         </label>
         <input
@@ -72,4 +73,5 @@ ImageForm.propTypes = {
   onClick: func,
   id: string,
   name: string,
+  required: bool,
 };
