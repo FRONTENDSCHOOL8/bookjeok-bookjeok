@@ -8,7 +8,7 @@ import {
   MainButton,
 } from '@/components/Atoms';
 import { Form, useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 
@@ -24,15 +24,21 @@ export function EditProfile() {
   const { setUserInfo } = useUserInfoStore((state) => state);
   const [editUserInfo, setEditUserInfo] = useState({});
 
+  // const { data } = useQuery({
+  //   queryFn: async (nickname) => {
+  //     await pb
+  //       .collection('users')
+  //       .getList(1, 1, { filter: `nickname = "${nickname}"` });
+  //   },
+  //   queryKey: ['nickname'],
+  // });
 
-
-  
   const { mutateAsync: updateUsers } = useMutation({
     mutationFn: async () => {
-      await pb
+      const userData = await pb
         .collection('users')
-        .update(`${userId}`, editUserInfo)
-        .then((res) => setUserInfo(res));
+        .update(`${userId}`, editUserInfo);
+      setUserInfo(userData);
     },
   });
 
@@ -45,6 +51,7 @@ export function EditProfile() {
       setEditUserInfo({ ...editUserInfo, [target.name]: target.value });
     }
   };
+
   return (
     <>
       <Helmet>
