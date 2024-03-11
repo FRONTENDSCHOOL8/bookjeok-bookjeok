@@ -67,64 +67,68 @@ export function ApplicationClub2() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div className="flex min-h-svh flex-col p-4 ">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink subText="2 of 2">
           모임신청
         </NomalTitle>
-        <div className="flex gap-4 ">
-          <RoundImage size="md" src={profilePhoto} />
-          <div>
-            <p className="text-b-1-regular">{club.query}</p>
-            <span className="text-b-2-regular text-bjgray-500">
-              작성한 답변은 호스트와 스태프에게만 공개돼요.
-            </span>
+        <main className="flex flex-grow flex-col px-4 pt-4">
+          <div className="flex-grow">
+            <div className="flex gap-4">
+              <RoundImage size="md" src={profilePhoto} />
+              <div>
+                <p className="text-b-1-regular">{club.query}</p>
+                <span className="text-b-2-regular text-bjgray-500">
+                  작성한 답변은 호스트와 스태프에게만 공개돼요.
+                </span>
+              </div>
+            </div>
+            <Textarea
+              onChange={handleAnswerForm}
+              placeholder={'내용을 입력해 주세요. (10자 이상)'}
+              maxLength={200}
+              length={answerForm.length}
+              className="py-3"
+            ></Textarea>
+            <div className="flex items-center justify-center gap-4 text-bjred-400">
+              <Svg
+                size={24}
+                id="subsctract"
+                color="bjred-400"
+                className="shrink-0"
+              />
+              <p className="m-[13.5px] text-b-1-regular text-bjred-400">
+                전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인
+                정보를 요구하는 경우 가이드 위반 모임이므로 고객센터에
+                신고해주세요.
+              </p>
+            </div>
           </div>
-        </div>
-        <Textarea
-          onChange={handleAnswerForm}
-          placeholder={'내용을 입력해 주세요. (10자 이상)'}
-          maxLength={200}
-          length={answerForm.length}
-          className="py-3"
-        ></Textarea>
-        <div className="flex items-center justify-center gap-4 text-bjred-400">
-          <Svg
-            size={24}
-            id="subsctract"
-            color="bjred-400"
-            className="shrink-0"
-          />
-          <p className="m-[13.5px] text-b-1-regular text-bjred-400">
-            전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인 정보를
-            요구하는 경우 가이드 위반 모임이므로 고객센터에 신고해주세요.
-          </p>
-        </div>
-        {isSuccess ? (
-          <DobbleButtonModal
-            open={isOpenModal}
-            title="모임 신청이 완료되었습니다."
-            primaryButtonText="홈으로"
-            primaryButtonPath="/mainClub"
-          >
-            호스트의 수락을 기다려주세요
-          </DobbleButtonModal>
-        ) : (
-          ''
-        )}
-
-        <div className="my-4 mt-auto ">
-          <MainButton
-            className={
-              answerForm.length > 10
-                ? `pointer-events-auto`
-                : `pointer-events-none`
-            }
-            onClick={handleSubmit}
-            color={answerForm.length > 10 ? 'primary' : 'secondary'}
-          >
-            모임 신청하기
-          </MainButton>
-        </div>
+          {isSuccess ? (
+            <DobbleButtonModal
+              open={isOpenModal}
+              title="모임 신청이 완료되었습니다."
+              primaryButtonText="홈으로"
+              primaryButtonPath="/mainClub"
+            >
+              호스트의 수락을 기다려주세요
+            </DobbleButtonModal>
+          ) : (
+            ''
+          )}
+          <div className="my-4 mt-auto">
+            <MainButton
+              className={
+                answerForm.length > 10
+                  ? `pointer-events-auto`
+                  : `pointer-events-none`
+              }
+              onClick={handleSubmit}
+              color={answerForm.length > 10 ? 'primary' : 'secondary'}
+            >
+              모임 신청하기
+            </MainButton>
+          </div>
+        </main>
       </div>
     </>
   );
