@@ -9,7 +9,7 @@ export function Welcome() {
       </Helmet>
 
       <div className="box-border flex h-svh flex-grow flex-col items-center justify-center gap-3 bg-bjyellow-300 px-4">
-        <div className="justify-centere flex flex-grow flex-col items-center justify-center">
+        <div className="flex flex-grow flex-col items-center justify-center justify-center">
           <svg
             width="120"
             height="120"
