@@ -1,4 +1,4 @@
-import { oneOfType, string, elementType, bool } from 'prop-types';
+import { oneOfType, string, elementType } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Svg from '../../Svg/Svg';
 
