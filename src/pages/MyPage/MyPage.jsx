@@ -3,6 +3,7 @@ import {
   NomalTitle,
   MainButton,
   RoundImage,
+  BlankContents,
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
@@ -13,6 +14,7 @@ import {
   ClubList,
   GNB,
   ButtonModalForManageMent,
+  BookReviewList,
 } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
@@ -34,14 +36,14 @@ export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: clubData } = useQuery({
+  const { data: fetchAllUserInfo } = useQuery({
     queryFn: async () => {
-      const fetchAllClubInfo = await pb
+      const fetchAllUserInfo = await pb
         .collection('users')
         .getOne(`${userInfo.id}`, {
           expand: 'createSocialing, participantSocialing',
         });
-      return fetchAllClubInfo.expand;
+      return fetchAllUserInfo;
     },
     queryKey: ['clubInfo', userInfo.id],
   });
@@ -72,7 +74,10 @@ export function MyPage() {
         </NomalTitle>
         <main className="flex flex-col bg-white px-4">
           <div className="mb-5 mt-12 flex flex-col items-center gap-2">
-            <RoundImage size="xlg" src={getPbImgs(userInfo)}></RoundImage>
+            <RoundImage
+              size="xlg"
+              src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
+            ></RoundImage>
             <p>{userInfo.nickname}</p>
           </div>
           <div className="flex gap-4">
@@ -92,24 +97,26 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {clubData && (
+          {fetchAllUserInfo?.expand || BookReviewList ? (
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.participantSocialing?.map((item) => (
-                    <ClubList
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      schedule={calcDay(item.created)}
-                      img={getPbImgs(item)}
-                    />
-                  ))}
+                  {fetchAllUserInfo?.expand?.participantSocialing.map(
+                    (item) => (
+                      <ClubList
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        schedule={calcDay(item.created)}
+                        img={getPbImgs(item)}
+                      />
+                    )
+                  )}
                 </ul>
               </Accordion>
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.createSocialing?.map((item) => (
+                  {fetchAllUserInfo?.expand?.createSocialing.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}
@@ -150,6 +157,12 @@ export function MyPage() {
                 </ul>
               </Accordion>
             </>
+          ) : (
+            <BlankContents
+              title="아무런 활동이 없으시네요..."
+              description="북적북적에서 독후감을 기록하고,
+            다른 사람과 함께 생각을 공유해보세요 !"
+            ></BlankContents>
           )}
         </main>
         <ButtonModalForManageMent
