@@ -3,6 +3,7 @@ import {
   NomalTitle,
   MainButton,
   RoundImage,
+  BlankContents,
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
@@ -13,6 +14,7 @@ import {
   ClubList,
   GNB,
   ButtonModalForManageMent,
+  BookReviewList,
 } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
@@ -95,7 +97,7 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {fetchAllUserInfo?.expand && (
+          {fetchAllUserInfo?.expand || BookReviewList ? (
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
@@ -155,6 +157,12 @@ export function MyPage() {
                 </ul>
               </Accordion>
             </>
+          ) : (
+            <BlankContents
+              title="아무런 활동이 없으시네요..."
+              description="북적북적에서 독후감을 기록하고,
+            다른 사람과 함께 생각을 공유해보세요 !"
+            ></BlankContents>
           )}
         </main>
         <ButtonModalForManageMent
