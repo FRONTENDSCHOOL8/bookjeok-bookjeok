@@ -61,7 +61,7 @@ export function ApplicationClub2() {
         .catch((Error) => console.error(Error));
     }
   };
-  console.log(isSuccess);
+
   return (
     <>
       <Helmet>

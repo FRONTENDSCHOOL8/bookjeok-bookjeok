@@ -35,7 +35,7 @@ export function MainBookReview() {
       <Helmet>
         <title>{getDocumentTitle('독후감')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
+      <div className="relative flex  w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
         <main>
           <MainKindToggle />

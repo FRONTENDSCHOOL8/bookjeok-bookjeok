@@ -1,4 +1,4 @@
-import { bool, string, array, number, oneOfType } from 'prop-types';
+import { bool, string, array, number, node, oneOfType } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
 function Accordion({
@@ -62,7 +62,7 @@ Accordion.propTypes = {
   limitPerson: number,
   className: string,
   open: bool,
-  children: oneOfType([array, string]),
+  children: oneOfType([array, string, node]),
   mainText: oneOfType([array, string]),
   smallText: string,
   src: string,
