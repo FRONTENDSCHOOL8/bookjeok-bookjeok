@@ -72,7 +72,7 @@ export function CreateBookReview() {
       <Helmet>
         <title>{getDocumentTitle('독후감 쓰기')}</title>
       </Helmet>
-      <div className="flex h-svh flex-col">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink path="mainBookReview">
           독후감 작성하기
         </NomalTitle>

@@ -43,7 +43,7 @@ export function CreateClub3() {
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between">
+      <main className="flex min-h-svh flex-col justify-between">
         <form>
           <NomalTitle backLink subText="3 of 4">
             모임 만들기

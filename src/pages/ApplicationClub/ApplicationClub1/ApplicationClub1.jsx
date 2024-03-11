@@ -19,7 +19,7 @@ export function ApplicationClub1() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div className='px-4" flex  h-full h-svh flex-col'>
+      <div className="flex min-h-svh flex-col px-4">
         <NomalTitle backLink subText="1 of 2">
           모임신청
         </NomalTitle>
