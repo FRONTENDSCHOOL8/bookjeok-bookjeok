@@ -4,8 +4,15 @@ import { Helmet } from 'react-helmet-async';
 import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
 import { ClubList, GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { NomalTitle, Svg, ThinTextForm } from '@/components/Atoms';
+import {
+  NomalTitle,
+  Svg,
+  ThinTextForm,
+  BlankContents,
+} from '@/components/Atoms';
 import { useDebounce } from '@/hooks';
+import { useQuery } from '@tanstack/react-query';
+
 /*
 1. socialing db에서 applicant가 사용자인 경우, 
   creator가 나인 경우를 분리하여 렌더링
@@ -44,50 +51,53 @@ const style = {
 
 export function MyClubList() {
   const { userInfo } = useUserInfoStore();
-  const [createdClub, setCreatedClub] = useState([]);
-  const [confirmedClub, setConfirmedClub] = useState([]);
   const [showQuantity, setShowQuantity] = useState(INITIAL_QUANTITY);
+  const [clubData, setClubData] = useState({});
 
   const [isSearchState, setIsSearchState] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState();
   const [searchResult, setSearchResult] = useState();
   const debouncedKeyword = useDebounce(searchKeyword, 500);
-  // 데이터 불러오는 이펙트 함수
+
+  const { data: fetchAllClubData, isSuccess } = useQuery({
+    queryFn: async () => {
+      const fetchData = (
+        await pb.collection('socialing').getList(1, 10, {
+          filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
+        })
+      ).items;
+      return fetchData;
+    },
+    queryKey: ['allClubData', userInfo.id],
+  });
+
   useEffect(() => {
-    const fetchPb = async () => {
-      try {
-        const data = (
-          await pb.collection('socialing').getList(1, 10, {
-            filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
-          })
-        ).items;
-        const created = [];
-        const confirmed = [];
-        data.forEach((item) => {
-          if (item.createUser === userInfo.id) {
-            created.push(item);
-          } else {
-            confirmed.push(item);
-          }
-        });
-        setCreatedClub(created);
-        setConfirmedClub(confirmed);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchPb();
-  }, [userInfo]);
+    if (isSuccess) {
+      const created = [];
+      const confirmed = [];
+      fetchAllClubData.forEach((item) => {
+        if (item.createUser === userInfo.id) {
+          created.push(item);
+        } else {
+          confirmed.push(item);
+        }
+      });
+      setClubData({ createdClub: created, confirmedClub: confirmed });
+    }
+  }, [isSuccess, fetchAllClubData, userInfo.id]);
 
   // 더보기 버튼 클릭시 작동하는 함수
   const handleMoreValue = (e) => {
     if (e.target.name == 'createdClub') {
-      setShowQuantity({ ...showQuantity, [e.target.name]: createdClub.length });
+      setShowQuantity({
+        ...showQuantity,
+        [e.target.name]: clubData.createdClub.length,
+      });
     }
     if (e.target.name == 'confirmedClub') {
       setShowQuantity({
         ...showQuantity,
-        [e.target.name]: confirmedClub.length,
+        [e.target.name]: clubData.confirmedClub.length,
       });
     }
   };
@@ -100,10 +110,10 @@ export function MyClubList() {
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    const confirmValue = confirmedClub.filter((item) =>
+    const confirmValue = clubData.confirmedClub?.filter((item) =>
       item['title'].includes(debouncedKeyword)
     );
-    const createValue = createdClub.filter((item) =>
+    const createValue = clubData.createdClub?.filter((item) =>
       item['title'].includes(debouncedKeyword)
     );
     setSearchResult({ confirmedClub: confirmValue, createdClub: createValue });
@@ -114,7 +124,7 @@ export function MyClubList() {
       <Helmet>
         <title>{getDocumentTitle('나의 모임')}</title>
       </Helmet>
-      <div className="relative flex w-full flex-col">
+      <div className="relative flex min-h-svh w-full flex-grow flex-col">
         <NomalTitle>나의 모임</NomalTitle>
         <ThinTextForm
           onChange={handleSearch}
@@ -123,7 +133,8 @@ export function MyClubList() {
           placeholder="search"
           className="px-4 py-2 "
         />
-        <div className="">
+
+        <>
           <ul className={`${style['ul']}`}>
             <h2 className={`${style['h2']}`}>참여중인 모임</h2>
             {isSearchState
@@ -136,8 +147,8 @@ export function MyClubList() {
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))
-              : confirmedClub
-                  .slice(0, showQuantity.confirmedClub)
+              : clubData.confirmedClub
+                  ?.slice(0, showQuantity.confirmedClub)
                   ?.map((item) => (
                     <ClubList
                       id={item.id}
@@ -147,7 +158,9 @@ export function MyClubList() {
                       img={getPbImgs(item)}
                     ></ClubList>
                   ))}
-            {confirmedClub.length > showQuantity.confirmedClub ? (
+            {/*더보기버튼*/}
+            {!isSearchState &&
+            clubData.confirmedClub?.length > showQuantity.confirmedClub ? (
               <button
                 name="confirmedClub"
                 onClick={handleMoreValue}
@@ -172,8 +185,8 @@ export function MyClubList() {
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))
-              : createdClub
-                  .slice(0, showQuantity.createdClub)
+              : clubData.createdClub
+                  ?.slice(0, showQuantity.createdClub)
                   ?.map((item) => (
                     <ClubList
                       id={item.id}
@@ -183,7 +196,8 @@ export function MyClubList() {
                       img={getPbImgs(item)}
                     ></ClubList>
                   ))}
-            {showQuantity.createdClub < createdClub.length ? (
+            {!isSearchState &&
+            showQuantity.createdClub < clubData.createdClub?.length ? (
               <button
                 name="createdClub"
                 onClick={handleMoreValue}
@@ -196,7 +210,7 @@ export function MyClubList() {
               ''
             )}
           </ul>
-        </div>
+        </>
       </div>
       <GNB createClub className="fixed"></GNB>
     </>
