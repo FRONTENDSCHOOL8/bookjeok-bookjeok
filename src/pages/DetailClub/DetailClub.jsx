@@ -28,51 +28,57 @@ export function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex min-h-svh w-full flex-col ">
+      <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col pb-[96px]">
-          <figure className="relative overflow-hidden">
-            <img
-              className="h-[274px] w-[430px] object-cover"
-              src={photo}
-              alt={title}
-            />
-            <Badge className="absolute left-2 top-2">
-              {expand.genre.title}
-            </Badge>
-          </figure>
+          <div className="relative">
+            <figure className="relative overflow-hidden">
+              <img
+                className="aspect-[5/3] w-full object-cover"
+                src={photo}
+                alt={title}
+              />
+              <Badge className="absolute left-2 top-2">
+                {expand.genre.title}
+              </Badge>
+            </figure>
+            <div className="relative bottom-0">
+              <Avatar
+                nickName={expand.createUser.nickname}
+                src={
+                  expand.createUser.img == ''
+                    ? null
+                    : getPbImgs(expand.createUser)
+                }
+                text={title}
+                className="!top-[50%] !-translate-y-1/2"
+              ></Avatar>
+            </div>
+          </div>
 
-          <Avatar
-            nickName={expand.createUser.nickname}
-            src={
-              expand.createUser.img == '' ? null : getPbImgs(expand.createUser)
-            }
-            text={title}
-          ></Avatar>
-
-          <section className="bg-bjgray-50 flex h-full flex-col gap-4 px-4 pt-10">
-            <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
+          <section className="bg-bjgray-50 flex h-full flex-grow flex-col gap-4 px-4 pt-5">
+            <div className="flex justify-center gap-2 pt-[63px] text-b-2-medium text-bjgray-500">
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="pin" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={14} id="pin" className="mr-[2px]" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center">
                 <Svg
                   color="#9e9e9e"
-                  size={12}
+                  size={14}
                   id="calendar"
                   className="mr-[2px]"
                 />
                 {calcDay(dateTime)}
               </span>
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="user" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={14} id="user" className="mr-[2px]" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap p-4 text-b-3-light text-bjblack">
+            <pre className="whitespace-pre-wrap p-4 text-b-2-regular text-bjblack">
               {detail}
             </pre>
           </section>
