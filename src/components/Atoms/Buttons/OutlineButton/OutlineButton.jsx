@@ -8,7 +8,7 @@ function OutlineButton({
   ...rest
 }) {
   const buttonStyle = {
-    className: `flex justify-center items-center w-full h-[64px] rounded-5xl text-b-1-medium  border-2 focus:outline-none focus-visible:ring focus-visible:ring-bjblack/30`,
+    className: `flex justify-center items-center w-full h-[64px] rounded-5xl text-b-1-medium  border-2`,
   };
 
   return (

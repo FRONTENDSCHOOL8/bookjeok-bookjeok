@@ -137,7 +137,7 @@ export function ChatRoom() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="min-h-svh pt-14">
+      <div className="min-min-h-svh pt-14">
         <NomalTitle
           className="fixed left-[50%] top-0 w-full max-w-[430px] translate-x-[-50%]"
           backLink

@@ -31,7 +31,7 @@ export function CreateClub2() {
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between">
+      <main className="flex min-h-svh flex-col justify-between">
         <div>
           <NomalTitle backLink subText="2 of 4">
             모임 만들기
@@ -53,7 +53,7 @@ export function CreateClub2() {
         <div className="px-4">
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${clubInfo.genre === null ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium ${clubInfo.genre === null ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
             to="/createClub3"
           >
             다음

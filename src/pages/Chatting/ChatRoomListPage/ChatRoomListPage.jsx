@@ -27,8 +27,10 @@ export function ChatRoomListPage() {
       <Helmet>
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
-        <NomalTitle>나의 채팅</NomalTitle>
+      <div className="relative flex min-h-svh w-full flex-col">
+        <NomalTitle backLink path="mainClub">
+          채팅리스트
+        </NomalTitle>
         <main className="px-4">
           <ThinTextForm
             type="search"

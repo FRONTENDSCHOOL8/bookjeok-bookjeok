@@ -67,7 +67,7 @@ export function MyPage() {
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col  bg-white">
-        <NomalTitle backLink path="/">
+        <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
         <main className="flex flex-col bg-white px-4">
@@ -96,7 +96,7 @@ export function MyPage() {
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.participantSocialing.map((item) => (
+                  {clubData.participantSocialing?.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}
@@ -109,7 +109,7 @@ export function MyPage() {
               </Accordion>
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.createSocialing.map((item) => (
+                  {clubData.createSocialing?.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}
