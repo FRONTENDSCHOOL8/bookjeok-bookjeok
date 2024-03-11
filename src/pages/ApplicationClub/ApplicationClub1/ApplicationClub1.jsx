@@ -57,6 +57,7 @@ export function ApplicationClub1() {
             name="agreement"
             onChange={handleChecked}
             checked={isAgreement}
+            id="agree"
           >
             <span className="text-b-1-regular">
               소셜링 이용규칙을 지키겠습니다!
