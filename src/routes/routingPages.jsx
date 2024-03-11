@@ -1,10 +1,7 @@
 import AtomMaking from '@/AtomMaking';
 import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
-import {
-  ApplicationClub1,
-  loader as ApplicationClub1Loader,
-} from '@/pages/ApplicationClub/ApplicationClub1';
+import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
 import {
   ApplicationClub2,
   loader as ApplicationClub2Loader,
@@ -31,9 +28,10 @@ import {
 } from '@/pages/MainBookReview';
 import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
+import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
-import { BasicInfo, DetailInfo } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
@@ -138,7 +136,6 @@ const routingPages = [
         <ApplicationClub1 />
       </ProtectRoute>
     ),
-    loader: ApplicationClub1Loader,
   },
   {
     path: '/applicationClub2/:clubId',
@@ -184,6 +181,15 @@ const routingPages = [
         <MyPage />
       </ProtectRoute>
     ),
+  },
+  {
+    path: '/editProfile/:userId',
+    element: (
+      <ProtectRoute client={queryClient}>
+        <EditProfile />
+      </ProtectRoute>
+    ),
+    action: editProfileAction,
   },
   {
     path: '/createBookReview',
