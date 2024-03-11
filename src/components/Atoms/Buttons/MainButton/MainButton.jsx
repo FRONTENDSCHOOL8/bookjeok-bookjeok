@@ -1,4 +1,4 @@
-import { oneOfType, string, elementType, bool } from 'prop-types';
+import { oneOfType, string, elementType } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Svg from '../../Svg/Svg';
 
@@ -13,9 +13,9 @@ function MainButton({
 }) {
   const buttonStyle = {
     primary:
-      'bg-bjyellow-400 focus:outline-none focus-visible:ring focus-visible:ring-bjblack/30 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
+      'bg-bjyellow-400 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
     secondary:
-      'bg-bjgray-100 focus:outline-none focus-visible:ring focus-visible:ring-bjblack/30 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
+      'bg-bjgray-100 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
   };
   const buttonSize = {
     lg: 'h-16',
@@ -41,5 +41,5 @@ MainButton.propTypes = {
   size: string,
   children: string,
   className: string,
-  svgId: bool,
+  svgId: string,
 };

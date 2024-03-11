@@ -81,7 +81,7 @@ export function EditProfile() {
       <Helmet>
         <title>{getDocumentTitle('프로필 수정')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col ">
+      <div className="relative flex min-h-svh w-full flex-col ">
         <NomalTitle backLink path="/myPage">
           프로필 수정
         </NomalTitle>

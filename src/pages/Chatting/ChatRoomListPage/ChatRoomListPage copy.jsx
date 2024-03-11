@@ -43,7 +43,7 @@ export function ChatRoomListPage() {
       <Helmet>
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
+      <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle backLink path="mainClub">
           채팅리스트
         </NomalTitle>

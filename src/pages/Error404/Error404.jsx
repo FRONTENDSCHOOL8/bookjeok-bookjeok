@@ -8,7 +8,7 @@ function Error404() {
       <Helmet>
         <title>{getDocumentTitle('404 error')}</title>
       </Helmet>
-      <div className="flex h-svh flex-col items-center bg-white pb-5 pt-[56px]">
+      <div className="flex min-h-svh flex-col items-center bg-white pb-5 pt-[56px]">
         <h1 className="flex-grow text-h-1-light text-bjblack">북적북적</h1>
         <main className="flex flex-grow flex-col items-center gap-2">
           <svg

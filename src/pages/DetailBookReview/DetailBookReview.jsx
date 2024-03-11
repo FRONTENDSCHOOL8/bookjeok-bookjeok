@@ -13,7 +13,7 @@ export function DetailBookReview() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
+      <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle backLink path="mainBookReview">
           독후감 상세보기
         </NomalTitle>
@@ -29,7 +29,7 @@ export function DetailBookReview() {
           src={expand.writer.img == '' ? null : getPbImgs(expand.writer)}
           text={title}
         ></Avatar>
-        <section className="flex h-full flex-col gap-4 bg-bjgray-50 px-4 pt-10">
+        <section className="bg-bjgray-50 flex h-full flex-col gap-4 px-4 pt-10">
           <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
             <span className="flex items-center">
               <Svg color="#9e9e9e" size={12} id="book" />
