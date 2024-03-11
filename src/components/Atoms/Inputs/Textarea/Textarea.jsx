@@ -43,7 +43,7 @@ function Textarea({
         {...rest}
       />
       <p className="m-0 text-right text-b-2-regular text-bjgray-500">
-        <span className="text-bjblack">{length}</span>/200
+        <span className="text-bjblack">{length}</span>/{maxLength}
       </p>
     </div>
   );

@@ -1,9 +1,11 @@
 import { Svg } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { bool, string } from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 function GNB({ createClub, createBookReview, className }) {
+  const { pathname } = useLocation();
   let centerIconPath;
   if (createClub) {
     centerIconPath = '/createClub';
@@ -17,7 +19,7 @@ function GNB({ createClub, createBookReview, className }) {
     { id: 'logo', to: '/mainClub', title: '홈' },
     { id: 'calendar', to: '/myClubList', title: '나의 모임 리스트' },
     { id: 'plus', to: centerIconPath, title: '생성하기' },
-    { id: 'chat', to: `/chatRoomList/${userInfo.id}`, title: '채팅리스트' },
+    { id: 'chat', to: `/chatRoomList/${userInfo?.id}`, title: '채팅리스트' },
     { id: 'user', to: '/myPage', title: '마이페이지' },
   ];
   if (!userInfo) {
@@ -25,8 +27,13 @@ function GNB({ createClub, createBookReview, className }) {
   }
 
   const assignActiveClassNames =
-    (classNames, activeClassName) =>
+    (classNames, activeClassName, index) =>
     ({ isActive }) => {
+      if (index === 0) {
+        if (pathname === '/mainClub' || pathname === '/mainBookReview') {
+          isActive = true;
+        }
+      }
       return classNames + (isActive ? ` ${activeClassName}` : '');
     };
   const classNames = 'flex flex-col p-1 items-center';
@@ -35,17 +42,23 @@ function GNB({ createClub, createBookReview, className }) {
     <ul
       className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 shadow-inner ${className}`}
     >
-      {menu.map(({ id, to, title }) => (
-        <li key={id}>
-          <NavLink
-            to={to}
-            className={assignActiveClassNames(classNames, activeClaseNames)}
-            aria-label={title}
-          >
-            <Svg size={32} id={id} />
-          </NavLink>
-        </li>
-      ))}
+      {menu.map(({ id, to, title }, index) => {
+        return (
+          <li key={id}>
+            <NavLink
+              to={to}
+              className={assignActiveClassNames(
+                classNames,
+                activeClaseNames,
+                index
+              )}
+              aria-label={title}
+            >
+              <Svg size={32} id={id} />
+            </NavLink>
+          </li>
+        );
+      })}
     </ul>
   );
 }

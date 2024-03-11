@@ -46,7 +46,7 @@ function ChatTextarea({
           {...rest}
         />
       </div>
-      <button type="button" title="보내기" aria-label="보내기">
+      <button type="submit" title="보내기" aria-label="보내기">
         <Svg id="send" />
       </button>
     </div>
