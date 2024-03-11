@@ -1,11 +1,6 @@
 import pb from '@/api/pocketbase';
 import { queryClient } from '@/client/queryClient';
-import {
-  ChatTextarea,
-  MessageBubble,
-  NomalTitle,
-  ThinTextForm,
-} from '@/components/Atoms';
+import { ChatTextarea, MessageBubble, NomalTitle } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -63,6 +58,7 @@ export function ChatRoom() {
   useLayoutEffect(() => {
     if (chattingListRef.current) {
       chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
+      console.log('실행');
     }
   }, [message.length]);
 
@@ -141,7 +137,7 @@ export function ChatRoom() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="min-h-svh pt-14">
+      <div className="min-min-h-svh pt-14">
         <NomalTitle
           className="fixed left-[50%] top-0 w-full max-w-[430px] translate-x-[-50%]"
           backLink
@@ -151,7 +147,7 @@ export function ChatRoom() {
         </NomalTitle>
         <main className="flex h-[calc(100svh-56px)] flex-col">
           <div className="flex min-h-full flex-col">
-            <div className="bg-bjgray-50 flex flex-1 flex-col overflow-y-auto px-4">
+            <div className="flex flex-1 flex-col overflow-y-auto bg-bjgray-50 px-4">
               <ul ref={chattingListRef} className="mt-auto *:py-[9px]">
                 {expand.message?.map(
                   ({ id, text, created, expand: { sendUser } }) => (
@@ -169,7 +165,7 @@ export function ChatRoom() {
                 )}
               </ul>
             </div>
-            <div className="mt-auto px-4 py-3">
+            <form onSubmit={handleSendMessage} className="mt-auto px-4 py-3">
               {/* <ThinTextForm
                   className=""
                   onSubmit={handleSendMessage}
@@ -183,10 +179,11 @@ export function ChatRoom() {
                 </ThinTextForm> */}
               <ChatTextarea
                 label="메세지 입력창"
-                id="id"
+                id="text"
+                name="text"
                 placeholder="메세지를 입력하세요."
               />
-            </div>
+            </form>
           </div>
         </main>
       </div>

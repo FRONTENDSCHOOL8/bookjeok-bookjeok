@@ -7,6 +7,9 @@ import { string } from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLoaderData, useParams } from 'react-router-dom';
 import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useDebounce } from '@/hooks';
 
 export function ChatRoomListPage() {
   const chattingRoom = useLoaderData();
@@ -19,6 +22,24 @@ export function ChatRoomListPage() {
     initialData: chattingRoom,
   });
 
+  const [searchKey, setSearchKey] = useState();
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchResult, setSearchResult] = useState();
+
+  const debouncedKey = useDebounce(searchKey, 500);
+
+  const handleSearch = ({ target }) => {
+    setSearchKey(target.value);
+    setIsSearch(target.value !== '');
+  };
+  useEffect(() => {
+    setSearchResult(
+      chattingRoomData?.filter((item) => {
+        return item['title'].includes(debouncedKey);
+      })
+    );
+  }, [debouncedKey, chattingRoomData]);
+
   if (userInfo.id !== userId) {
     return <div>잘못된 접근입니다.</div>;
   }
@@ -27,34 +48,48 @@ export function ChatRoomListPage() {
       <Helmet>
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col">
-        <NomalTitle backLink path="mainClub">
-          채팅리스트
-        </NomalTitle>
+      <div className="relative flex min-h-svh w-full flex-col">
+        <NomalTitle path="mainClub">나의 채팅</NomalTitle>
         <main className="px-4">
           <ThinTextForm
+            onChange={handleSearch}
             type="search"
             searchIcon
-            placeholder="search"
+            placeholder="모임을 입력해주세요."
             className="py-2"
           >
             검색
           </ThinTextForm>
           <ul>
-            {chattingRoomData?.map(
-              ({ id, created, expand: { socialing, message } }) => (
-                <ChatList
-                  title={socialing.title}
-                  key={socialing.id}
-                  id={id}
-                  updated={
-                    message ? message[message.length - 1].updated : created
-                  }
-                  src={getPbImgs(socialing)}
-                  message={message ? message[message.length - 1].text : ''}
-                ></ChatList>
-              )
-            )}
+            {isSearch
+              ? searchResult.map(
+                  ({ id, created, expand: { socialing, message } }) => (
+                    <ChatList
+                      title={socialing.title}
+                      key={socialing.id}
+                      id={id}
+                      updated={
+                        message ? message[message.length - 1].updated : created
+                      }
+                      src={getPbImgs(socialing)}
+                      message={message ? message[message.length - 1].text : ''}
+                    ></ChatList>
+                  )
+                )
+              : chattingRoomData.map(
+                  ({ id, created, expand: { socialing, message } }) => (
+                    <ChatList
+                      title={socialing.title}
+                      key={socialing.id}
+                      id={id}
+                      updated={
+                        message ? message[message.length - 1].updated : created
+                      }
+                      src={getPbImgs(socialing)}
+                      message={message ? message[message.length - 1].text : ''}
+                    ></ChatList>
+                  )
+                )}
           </ul>
         </main>
         <GNB createClub className="fixed" />

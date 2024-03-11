@@ -14,5 +14,6 @@ export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';
 export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle';
 export { default as Accordion } from '@/components/Atoms/Accordion/Accordion';
+export { default as TextBox } from '@/components/Atoms/TextBox/TextBox';
 export { default as Badge } from '@/components/Atoms/Badge/Badge';
 export { default as Svg } from '@/components/Atoms/Svg/Svg';

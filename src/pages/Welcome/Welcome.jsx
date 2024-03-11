@@ -7,7 +7,6 @@ export function Welcome() {
       <Helmet>
         <title>{getDocumentTitle('가입 완료 ! ')}</title>
       </Helmet>
-
       <div className="box-border flex h-svh flex-grow flex-col items-center justify-center gap-3 bg-bjyellow-300 px-4">
         <div className="flex flex-grow flex-col items-center justify-center justify-center">
           <svg

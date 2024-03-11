@@ -35,7 +35,6 @@ export function CreateClub3() {
 
   const handleDetail = ({ target }) => {
     addDetail(target.value);
-    // console.log(clubInfo.detail.length);
   };
 
   return (
@@ -43,7 +42,7 @@ export function CreateClub3() {
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between">
+      <main className="flex min-h-svh flex-col justify-between">
         <form>
           <NomalTitle backLink subText="3 of 4">
             모임 만들기
@@ -75,17 +74,18 @@ export function CreateClub3() {
               id="clubDetail"
               name="clubDetail"
               required
+              maxLength={500}
+              length={clubInfo['detail'] ? clubInfo['detail'].length : 0}
               placeholder="내용을 입력해 주세요. (필수)"
               label="모임 상세내용"
               onChange={handleDetail}
-              // length={clubInfo.detail.length} useEffect를 사용해야할 것 같은데... 어쩌지
             />
           </div>
         </form>
         <div className="px-4">
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!clubInfo.title || !clubInfo.detail || !clubInfo.img ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium ${!clubInfo.title || !clubInfo.detail || !clubInfo.img ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
             to="/createClub4"
           >
             다음

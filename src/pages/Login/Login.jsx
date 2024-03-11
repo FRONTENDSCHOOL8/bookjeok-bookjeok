@@ -53,7 +53,7 @@ export function Login() {
 
   return (
     <>
-      <div className="flex h-dvh h-svh flex-col">
+      <div className="flex min-h-svh flex-col">
         <Helmet>
           <title>{getDocumentTitle('로그인')}</title>
         </Helmet>
