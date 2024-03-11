@@ -72,78 +72,82 @@ export function CreateBookReview() {
       <Helmet>
         <title>{getDocumentTitle('독후감 쓰기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between px-4">
-        <Form className="flex flex-col gap-6">
-          <NomalTitle backLink path="mainBookReview">
-            독후감 작성하기
-          </NomalTitle>
-          <h2 className="p-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
-          <ImageForm
-            id="img"
-            onChange={handleReviewImage.set}
-            onClick={handleReviewImage.remove}
-            src={bookReviewForm.img}
-          />
-          <div className={`${style['div']}`}>
-            <TextForm
-              id="bookTitle"
-              placeholder="책 제목을 입력해주세요(필수)"
-              hiddenLabel
+      <div className="flex h-svh flex-col">
+        <NomalTitle backLink path="mainBookReview">
+          독후감 작성하기
+        </NomalTitle>
+        <main className="flex flex-grow flex-col justify-between px-4">
+          <Form className="flex flex-col gap-6">
+            <h2 className="py-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
+            <ImageForm
+              id="img"
+              onChange={handleReviewImage.set}
+              onClick={handleReviewImage.remove}
+              src={bookReviewForm.img}
+            />
+            <div className={`${style['div']}`}>
+              <TextForm
+                id="bookTitle"
+                placeholder="책 제목을 입력해주세요(필수)"
+                hiddenLabel
+                onChange={handleReviewForm.set}
+              >
+                읽은 책 제목
+              </TextForm>
+              <span className={`${style['span']}`}>
+                예시) 까라마조프 가의 형제들
+              </span>
+            </div>
+            <div className={`${style['div']}`}>
+              <TextForm
+                required
+                placeholder="제목을 입력해 주세요. (필수)"
+                hiddenLabel
+                id="title"
+                onChange={handleReviewForm.set}
+              >
+                독후감 제목
+              </TextForm>
+              <span className={`${style['span']}`}>
+                독후감에 걸맞는 멋진 제목을 지어주세요 !
+              </span>
+            </div>
+            <Textarea
+              placeholder="내용을 입력해 주세요. (필수)"
+              label="독후감 상세내용"
+              id="detail"
+              length={bookReviewForm['detail'].length || ''.length}
               onChange={handleReviewForm.set}
+              maxLength={200}
+            />
+          </Form>
+          <div>
+            <MainButton
+              onClick={handleReviewForm.submit}
+              as="button"
+              color={
+                bookReviewForm.img &&
+                bookReviewForm.bookTitle &&
+                bookReviewForm.title &&
+                bookReviewForm.detail
+                  ? 'primary'
+                  : 'secondary'
+              }
+              className={'my-4'}
+              disabled={
+                !(
+                  bookReviewForm.img &&
+                  bookReviewForm.bookTitle &&
+                  bookReviewForm.title &&
+                  bookReviewForm.detail
+                )
+              }
             >
-              읽은 책 제목
-            </TextForm>
-            <span className={`${style['span']}`}>
-              예시) 까라마조프 가의 형제들
-            </span>
+              등록
+            </MainButton>
           </div>
-          <div className={`${style['div']}`}>
-            <TextForm
-              required
-              placeholder="제목을 입력해 주세요. (필수)"
-              hiddenLabel
-              id="title"
-              onChange={handleReviewForm.set}
-            >
-              독후감 제목
-            </TextForm>
-            <span className={`${style['span']}`}>
-              독후감에 걸맞는 멋진 제목을 지어주세요 !
-            </span>
-          </div>
-          <Textarea
-            placeholder="내용을 입력해 주세요. (필수)"
-            label="독후감 상세내용"
-            id="detail"
-            length={bookReviewForm['detail'].length || ''.length}
-            onChange={handleReviewForm.set}
-            maxLength={200}
-          />
-        </Form>
-        <MainButton
-          onClick={handleReviewForm.submit}
-          as="button"
-          color={
-            bookReviewForm.img &&
-            bookReviewForm.bookTitle &&
-            bookReviewForm.title &&
-            bookReviewForm.detail
-              ? 'primary'
-              : 'secondary'
-          }
-          className={'my-4'}
-          disabled={
-            !(
-              bookReviewForm.img &&
-              bookReviewForm.bookTitle &&
-              bookReviewForm.title &&
-              bookReviewForm.detail
-            )
-          }
-        >
-          등록
-        </MainButton>
-      </main>
+        </main>
+      </div>
       <DobbleButtonModal
         open={isModalState}
         title="독후감 작성 완료! "
