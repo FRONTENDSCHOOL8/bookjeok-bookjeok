@@ -69,9 +69,7 @@ export function CreateClub4() {
         createSocialing: [...user.createSocialing, `${clubInfo.id}`],
       };
       await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
-      // const chattingRoomId = createRandomId();
       const chattingRoomData = {
-        // id: chattingRoomId,
         title: clubInfo.title,
         socialing: clubInfo.id,
         users: clubInfo.createUser,
@@ -198,7 +196,7 @@ export function CreateClub4() {
             onClick={handleSubmitClubInfoForCreate}
             disabled={!clubInfo.dateTime || !clubInfo.query}
           >
-            다음
+            모임만들기
           </MainButton>
         </div>
       </main>
