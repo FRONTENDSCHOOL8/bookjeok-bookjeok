@@ -28,7 +28,7 @@ export function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col ">
+      <div className="relative flex min-h-svh w-full flex-col ">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
