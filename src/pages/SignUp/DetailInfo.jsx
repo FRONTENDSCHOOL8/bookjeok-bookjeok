@@ -73,7 +73,7 @@ export function DetailInfo() {
 
   if (state) {
     return (
-      <div className="flex h-dvh h-svh flex-col">
+      <div className="flex h-svh flex-col">
         <NomalTitle backLink subText="2 of 2">
           회원가입
         </NomalTitle>
