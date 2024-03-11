@@ -1,19 +1,31 @@
+import { createRandomId } from '@/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-
+const DEFALUT_CLUB_INFO = {
+  id: createRandomId(),
+  chattingRoom: null,
+  isOffline: false,
+  location: '',
+  genre: null,
+  img: null,
+  alt: null,
+  title: null,
+  detail: null,
+  dateTime: null,
+  limitPerson: 3,
+  query: null,
+  createUser: null,
+};
 const clubInfoStore = (set) => ({
-  clubInfo: {
-    isOffline: false,
-    location: '',
-    genre: null,
-    img: null,
-    alt: null,
-    title: null,
-    detail: null,
-    dateTime: null,
-    limitPerson: 3,
-    query: null,
-    createUser: null,
+  clubInfo: DEFALUT_CLUB_INFO,
+  setId: (id) => {
+    set(
+      (state) => ({
+        clubInfo: { ...state.clubInfo, id },
+      }),
+      false,
+      'setId'
+    );
   },
   setUserId: (createUser) => {
     set(
@@ -27,7 +39,7 @@ const clubInfoStore = (set) => ({
   changeLocationType: (isOffline) => {
     set(
       (state) => ({
-        clubInfo: { ...state.clubInfo, isOffline, placeName: '' },
+        clubInfo: { ...state.clubInfo, isOffline, location: '' },
       }),
       false,
       'changeLocationType'
@@ -155,19 +167,7 @@ const clubInfoStore = (set) => ({
   resetClubInfo: () => {
     set(
       () => ({
-        clubInfo: {
-          isOffline: false,
-          location: '',
-          genre: null,
-          img: null,
-          alt: null,
-          title: null,
-          detail: null,
-          dateTime: null,
-          limitPerson: 3,
-          query: null,
-          createUser: null,
-        },
+        clubInfo: DEFALUT_CLUB_INFO,
       }),
       false,
       'resetClubInfo'

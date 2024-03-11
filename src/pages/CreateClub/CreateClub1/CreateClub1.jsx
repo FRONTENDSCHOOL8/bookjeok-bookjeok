@@ -10,7 +10,7 @@ import { getDocumentTitle } from '@/utils';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-function CreateClub1() {
+export function CreateClub1() {
   const { clubInfo, setUserID, changeLocationType, addPlaceName } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
@@ -46,7 +46,7 @@ function CreateClub1() {
       </Helmet>
       <main className="flex h-svh flex-col justify-between">
         <div>
-          <NomalTitle backLink subText="1 of 4">
+          <NomalTitle backLink path="mainClub" subText="1 of 4">
             모임 만들기
           </NomalTitle>
           <h2 className="p-4 text-h-2-semibold">어디서 만날까요?</h2>
@@ -95,5 +95,3 @@ function CreateClub1() {
     </>
   );
 }
-
-export default CreateClub1;

@@ -1,10 +1,10 @@
 import pb from '@/api/pocketbase';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { getPbImgs, getDocumentTitle } from '@/utils';
-import { ClubList } from '@/components/Molecules';
+import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
+import { ClubList, GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { NomalTitle, ThinTextForm } from '@/components/Atoms';
+import { NomalTitle, Svg, ThinTextForm } from '@/components/Atoms';
 import { useDebounce } from '@/hooks';
 /*
 1. socialing db에서 applicant가 사용자인 경우, 
@@ -38,11 +38,11 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 px-3',
-  h2: 'pb-4 pl-4 pt-5 text-b-1-regular text-bjblack',
+  ul: 'flex flex-col gap-y-4 px-3 ',
+  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
 };
 
-function MyClubList() {
+export function MyClubList() {
   const { userInfo } = useUserInfoStore();
   const [createdClub, setCreatedClub] = useState([]);
   const [confirmedClub, setConfirmedClub] = useState([]);
@@ -56,7 +56,6 @@ function MyClubList() {
   useEffect(() => {
     const fetchPb = async () => {
       try {
-        pb.autoCancellation(false);
         const data = (
           await pb.collection('socialing').getList(1, 10, {
             filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
@@ -115,14 +114,16 @@ function MyClubList() {
       <Helmet>
         <title>{getDocumentTitle('나의 모임 리스트')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col">
-        <NomalTitle backLink>모임 리스트</NomalTitle>
+      <div className="relative flex w-full flex-col">
+        <NomalTitle backLink path="mainClub">
+          모임 리스트
+        </NomalTitle>
         <ThinTextForm
           onChange={handleSearch}
           type="search"
           searchIcon
           placeholder="search"
-          className="my-2"
+          className="px-4 py-2 "
         />
         <ul className={`${style['ul']}`}>
           <h2 className={`${style['h2']}`}>참여중인 모임</h2>
@@ -132,7 +133,7 @@ function MyClubList() {
                   id={item.id}
                   key={item.id}
                   title={item.title}
-                  schedule={item.dateTime}
+                  schedule={calcDay(item.dateTime)}
                   img={getPbImgs(item)}
                 ></ClubList>
               ))
@@ -143,19 +144,24 @@ function MyClubList() {
                     id={item.id}
                     key={item.id}
                     title={item.title}
-                    schedule={item.dateTime}
+                    schedule={calcDay(item.dateTime)}
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
           {confirmedClub.length > showQuantity.confirmedClub ? (
-            <button name="confirmedClub" onClick={handleMoreValue}>
+            <button
+              name="confirmedClub"
+              onClick={handleMoreValue}
+              className="flex items-center justify-center py-1"
+            >
               더 보기
+              <Svg id="plus" size={14} className="ml-1" />
             </button>
           ) : (
             ''
           )}
         </ul>
-        <ul className={`${style['ul']}`}>
+        <ul className={`${style['ul']} mb-[90px]`}>
           <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
           {isSearchState
             ? searchResult['createdClub'].map((item) => (
@@ -163,7 +169,7 @@ function MyClubList() {
                   id={item.id}
                   key={item.id}
                   title={item.title}
-                  schedule={item.dateTime}
+                  schedule={calcDay(item.dateTime)}
                   img={getPbImgs(item)}
                 ></ClubList>
               ))
@@ -174,21 +180,25 @@ function MyClubList() {
                     id={item.id}
                     key={item.id}
                     title={item.title}
-                    schedule={item.dateTime}
+                    schedule={calcDay(item.dateTime)}
                     img={getPbImgs(item)}
                   ></ClubList>
                 ))}
           {showQuantity.createdClub < createdClub.length ? (
-            <button name="createdClub" onClick={handleMoreValue}>
+            <button
+              name="createdClub"
+              onClick={handleMoreValue}
+              className="flex items-center justify-center py-1"
+            >
               더 보기
+              <Svg id="plus" size={14} className="ml-1" />
             </button>
           ) : (
             ''
           )}
         </ul>
       </div>
+      <GNB createClub className="fixed"></GNB>
     </>
   );
 }
-
-export default MyClubList;

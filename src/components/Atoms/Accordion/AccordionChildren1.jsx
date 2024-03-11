@@ -1,6 +1,6 @@
 import { RoundImage, SmallButton, TextForm } from '@/components/Atoms';
 import { string, func, bool } from 'prop-types';
-function AccordionChildren1({ confirm, src, nickname, answer, onClick }) {
+function AccordionChildren1({ confirmed, src, nickname, answer, onClick }) {
   return (
     <div>
       <dl className="flex flex-col">
@@ -9,17 +9,21 @@ function AccordionChildren1({ confirm, src, nickname, answer, onClick }) {
             <RoundImage src={src} alt="" size="md"></RoundImage>
             <p>{nickname}</p>
           </div>
-          {confirm ? (
-            ''
+          {confirmed ? (
+            <div>
+              <SmallButton as="button" onClick={onClick} type="button">
+                취소
+              </SmallButton>
+            </div>
           ) : (
             <div>
               <SmallButton as="button" onClick={onClick} type="button">
-                수락
+                승인
               </SmallButton>
             </div>
           )}
         </dt>
-        {confirm ? (
+        {confirmed ? (
           ''
         ) : (
           <dd className="py-2">
@@ -39,7 +43,7 @@ function AccordionChildren1({ confirm, src, nickname, answer, onClick }) {
 export default AccordionChildren1;
 AccordionChildren1.propTypes = {
   src: string,
-  confirm: bool,
+  confirmed: bool,
   photo: string,
   nickname: string,
   answer: string,

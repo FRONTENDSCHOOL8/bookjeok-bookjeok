@@ -13,6 +13,7 @@ import {
   TextForm,
   Textarea,
   ThinTextForm,
+  ChatTextarea,
 } from './components/Atoms';
 import Svg from './components/Atoms/Svg/Svg';
 import { DobbleButtonModal } from './components/Molecules';
@@ -21,7 +22,7 @@ export default function AtomMaking() {
   return (
     <>
       <DobbleButtonModal
-        open
+        // open
         svgId="logo"
         title="북적북적"
         closeButton
@@ -135,18 +136,28 @@ export default function AtomMaking() {
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <CheckboxForm name="name1" value="value" defaultChecked>
+                <CheckboxForm
+                  id="id1"
+                  name="name1"
+                  value="value"
+                  defaultChecked
+                >
                   체크박스 1
                 </CheckboxForm>
-                <CheckboxForm name="name1" value="value">
+                <CheckboxForm id="id2" name="name1" value="value">
                   체크박스 2
                 </CheckboxForm>
               </div>
               <div className="flex flex-col gap-10">
-                <CheckboxForm name="name2" value="value" defaultChecked>
+                <CheckboxForm
+                  id="id3"
+                  name="name2"
+                  value="value"
+                  defaultChecked
+                >
                   체크박스 1
                 </CheckboxForm>
-                <CheckboxForm name="name2" value="value">
+                <CheckboxForm id="id4" name="name2" value="value">
                   체크박스 2
                 </CheckboxForm>
               </div>
@@ -162,18 +173,18 @@ export default function AtomMaking() {
             </h3>
             <div className="flex flex-col gap-2">
               <div className="inline-flex justify-evenly gap-4">
-                <RadioForm name="name1" value="value" defaultChecked>
+                <RadioForm name="name3" value="value1">
                   라디오 1
                 </RadioForm>
-                <RadioForm name="name1" value="value">
+                <RadioForm name="name3" value="value2">
                   라디오 2
                 </RadioForm>
               </div>
               <div className="flex flex-col gap-10">
-                <RadioForm name="name2" value="value" defaultChecked>
+                <RadioForm name="name4" value="value3">
                   라디오 1
                 </RadioForm>
-                <RadioForm name="name2" value="value">
+                <RadioForm name="name4" value="value4">
                   라디오 2
                 </RadioForm>
               </div>
@@ -204,6 +215,16 @@ export default function AtomMaking() {
                 length="200"
               />
               <Textarea label="label" id="textarea2" disabled length="200" />
+            </div>
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
+              ChatTextarea
+            </h3>
+            <div className="flex flex-col gap-10">
+              <ChatTextarea
+                label="메세지 입력창"
+                id="id"
+                placeholder="메세지를 입력하세요."
+              />
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               TextForm
@@ -273,13 +294,13 @@ export default function AtomMaking() {
               <ThinTextForm type="search" backLink>
                 검색
               </ThinTextForm>
-              <ThinTextForm
+              {/* <ThinTextForm
                 type="text"
                 placeholder="메세지를 입력하세요."
                 sendButton
               >
                 채팅 메세지
-              </ThinTextForm>
+              </ThinTextForm> */}
             </div>
           </div>
         </details>
@@ -287,23 +308,25 @@ export default function AtomMaking() {
         <details open>
           <summary>MessageBubble</summary>
           <div className="pb-5">
-            <MessageBubble
-              src="/src/assets/avatar.svg"
-              alt="작성자"
-              nickname="작성자"
-              time="오후 2:00"
-            >
-              모임에 참석하기 전에 책을 읽어오셔야 돼요 !
-            </MessageBubble>
-            <MessageBubble
-              align="right"
-              src="/src/assets/avatar.svg"
-              alt="작성자"
-              nickname="작성자"
-              time="오후 2:00"
-            >
-              내용
-            </MessageBubble>
+            <ul className="*:py-[9px]">
+              <MessageBubble
+                src="/src/assets/avatar.svg"
+                alt="작성자"
+                nickname="작성자"
+                time="오후 2:00"
+              >
+                모임에 참석하기 전에 책을 읽어오셔야 돼요 !
+              </MessageBubble>
+              <MessageBubble
+                align="right"
+                src="/src/assets/avatar.svg"
+                alt="작성자"
+                nickname="작성자"
+                time="오후 2:00"
+              >
+                내용
+              </MessageBubble>
+            </ul>
           </div>
         </details>
 

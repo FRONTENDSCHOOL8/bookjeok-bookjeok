@@ -1,37 +1,38 @@
 import AtomMaking from '@/AtomMaking';
+import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
+import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
 import {
-  ChatRoomList,
-  CreateClub1,
-  CreateClub2,
-  CreateClub3,
-  CreateClub4,
-  DetailClub,
-  Intro,
-  CreateBookReview,
-  Login,
-  ManagementClub,
-  MyPage,
-  Welcome,
-  DetailBookReview,
-  MyClubList,
-} from '@/pages';
-import ApplicationClub1, {
-  loader as ApplicationClub1Loader,
-} from '@/pages/ApplicationClub/ApplicationClub1/ApplicationClub1';
-import ApplicationClub2, {
+  ApplicationClub2,
   loader as ApplicationClub2Loader,
-} from '@/pages/ApplicationClub/ApplicationClub2/ApplicationClub2';
-import { loader as genreLoader } from '@/pages/CreateClub/CreateClub2/CreateClub2';
-import { loader as clubDetailLoader } from '@/pages/DetailClub/DetailClub';
-import Filter, { loader as filterListLoader } from '@/pages/Filter/Filter';
-import MainClub, { loader as clubListLoader } from '@/pages/MainClub/MainClub';
-import BasicInfo from '@/pages/SignUp/BasicInfo';
-import DetailInfo from '@/pages/SignUp/DetailInfo';
-import MainBookReview, {
+} from '@/pages/ApplicationClub/ApplicationClub2';
+import { CreateBookReview } from '@/pages/CreateBookReview';
+import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
+import {
+  CreateClub2,
+  loader as genreLoader,
+} from '@/pages/CreateClub/CreateClub2';
+import { CreateClub3 } from '@/pages/CreateClub/CreateClub3';
+import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
+import {
+  DetailBookReview,
+  loader as detailBookReviewloader,
+} from '@/pages/DetailBookReview';
+import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
+import { Filter, loader as filterListLoader } from '@/pages/Filter';
+import { Intro } from '@/pages/Intro';
+import { Login } from '@/pages/Login';
+import {
+  MainBookReview,
   loader as bookReviewListLoader,
-} from '@/pages/MainBookReview/MainBookReview';
-import { loader as answerLoader } from '@/pages/ManagementClub/ManagementClub';
+} from '@/pages/MainBookReview';
+import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
+import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
+import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
+import { MyClubList } from '@/pages/MyClubList';
+import { MyPage } from '@/pages/MyPage';
+import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
   {
@@ -75,20 +76,13 @@ const routingPages = [
     loader: bookReviewListLoader,
   },
   {
-    path: '/mainClub/:bookreviewId',
-    element: (
-      <ProtectRoute>
-        <DetailBookReview />
-      </ProtectRoute>
-    ),
-  },
-  {
     path: '/mainBookReview/:bookreviewId',
     element: (
       <ProtectRoute>
         <DetailBookReview />
       </ProtectRoute>
     ),
+    loader: detailBookReviewloader,
   },
   {
     path: '/login',
@@ -142,7 +136,6 @@ const routingPages = [
         <ApplicationClub1 />
       </ProtectRoute>
     ),
-    loader: ApplicationClub1Loader,
   },
   {
     path: '/applicationClub2/:clubId',
@@ -163,12 +156,23 @@ const routingPages = [
     loader: answerLoader,
   },
   {
-    path: '/chatRoomList',
-    element: (
-      <ProtectRoute>
-        <ChatRoomList />
-      </ProtectRoute>
-    ),
+    path: '/chatRoom/:chattingRoomId',
+    async lazy() {
+      const { loader, ChatRoom } = await import('@/pages/Chatting/ChatRoom');
+      return { loader: loader(queryClient), Component: ChatRoom };
+    },
+  },
+  {
+    path: '/chatRoomList/:userId',
+    async lazy() {
+      const { loader, ChatRoomListPage } = await import(
+        '@/pages/Chatting/ChatRoomListPage'
+      );
+      return {
+        loader: loader(queryClient),
+        Component: ChatRoomListPage,
+      };
+    },
   },
   {
     path: '/myPage',
@@ -177,6 +181,15 @@ const routingPages = [
         <MyPage />
       </ProtectRoute>
     ),
+  },
+  {
+    path: '/editProfile/:userId',
+    element: (
+      <ProtectRoute client={queryClient}>
+        <EditProfile />
+      </ProtectRoute>
+    ),
+    action: editProfileAction,
   },
   {
     path: '/createBookReview',

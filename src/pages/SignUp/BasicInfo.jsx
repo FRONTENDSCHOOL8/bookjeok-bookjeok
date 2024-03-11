@@ -22,7 +22,7 @@ const INITIAL_USER_INFO = {
   emailVisibility: true,
 };
 
-export default function BasicInfo() {
+export function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
   const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
@@ -70,7 +70,7 @@ export default function BasicInfo() {
 
   return (
     <>
-      <div className="flex h-dvh h-screen flex-col">
+      <div className="flex h-dvh h-svh flex-col">
         <NomalTitle backLink subText="1 of 2">
           회원가입
         </NomalTitle>

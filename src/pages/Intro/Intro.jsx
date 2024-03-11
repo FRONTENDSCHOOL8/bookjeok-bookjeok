@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { bool } from 'prop-types';
 import useUserInfoStore from '@/store/useUserInfoStore';
 
-function Intro() {
+export function Intro() {
   const { userInfo } = useUserInfoStore((state) => ({
     userInfo: state.userInfo,
   }));
@@ -17,7 +17,7 @@ function Intro() {
       <Helmet>
         <title>북적북적</title>
       </Helmet>
-      <div className="flex h-screen w-full justify-center bg-bjyellow-400">
+      <div className="flex h-svh w-full justify-center bg-bjyellow-400">
         <div className="absolute top-[30%] flex flex-col items-center gap-2">
           <Svg width={60} height={60} id="logo" />
           <h1 className="text-h-1-semibold">북적북적</h1>
@@ -36,8 +36,6 @@ function Intro() {
     </>
   );
 }
-
-export default Intro;
 
 Intro.propTypes = {
   isAllowed: bool,

@@ -1,14 +1,14 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { OutlineButton } from '@/components/Atoms';
-function Welcome() {
+export function Welcome() {
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('가입 완료 ! ')}</title>
       </Helmet>
 
-      <div className="box-border flex h-screen flex-grow flex-col items-center justify-center gap-3 bg-bjyellow-300 px-4">
+      <div className="box-border flex h-svh flex-grow flex-col items-center justify-center gap-3 bg-bjyellow-300 px-4">
         <div className="justify-centere flex flex-grow flex-col items-center justify-center">
           <svg
             width="120"
@@ -32,11 +32,9 @@ function Welcome() {
           className="mb-14 h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
           to="/login"
         >
-         로그인 하기
+          로그인 하기
         </OutlineButton>
       </div>
     </>
   );
 }
-
-export default Welcome;

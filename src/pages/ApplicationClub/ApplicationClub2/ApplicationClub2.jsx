@@ -1,17 +1,17 @@
 import pb from '@/api/pocketbase';
-import { getDocumentTitle, getPbImgs } from '@/utils';
-import { Helmet } from 'react-helmet-async';
 import {
-  NomalTitle,
   MainButton,
+  NomalTitle,
   RoundImage,
+  Svg,
   Textarea,
 } from '@/components/Atoms';
-import { Svg } from '@/components/Atoms';
-import { useLoaderData } from 'react-router-dom';
-import { useState } from 'react';
-import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { getDocumentTitle } from '@/utils';
+import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useLoaderData } from 'react-router-dom';
 
 /*
 1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
@@ -22,20 +22,7 @@ import { DobbleButtonModal } from '@/components/Molecules';
 4. users, socialing DB에 적재 
 */
 
-export async function loader({ params }) {
-  const { clubId } = params;
-  const club = await pb
-    .collection('socialing')
-    .getOne(clubId, { expand: ' createUser' });
-  const profile = await pb.collection('users').getOne(club.createUser);
-  if (profile.img) {
-    const profilePhoto = getPbImgs(profile);
-    return { club, profilePhoto };
-  }
-  return { club };
-}
-
-function ApplicationClub2() {
+export function ApplicationClub2() {
   const { club, profilePhoto } = useLoaderData();
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
@@ -51,6 +38,7 @@ function ApplicationClub2() {
     e.preventDefault();
     if (answerForm) {
       const answerData = {
+        id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
         socialing: club.id,
         answerUser: userInfo.id,
         answer: answerForm,
@@ -63,10 +51,9 @@ function ApplicationClub2() {
         })
         .then(() => {
           const updateData = {
+            answer: [...club.answer, `${answerData.id}`],
             applicant: [...club.applicant, `${userInfo.id}`],
           };
-          console.log(...club.applicant);
-          pb.collection('socialing').update(club.id, updateData);
           pb.collection('socialing').update(club.id, updateData);
           setIsSuccess(true);
           setIsOpenModal(true);
@@ -74,13 +61,13 @@ function ApplicationClub2() {
         .catch((Error) => console.error(Error));
     }
   };
-  console.log(isSuccess);
+
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div className="flex h-dvh h-screen flex-col p-4 ">
+      <div className="flex h-dvh h-svh flex-col p-4 ">
         <NomalTitle backLink subText="2 of 2">
           모임신청
         </NomalTitle>
@@ -125,7 +112,7 @@ function ApplicationClub2() {
           ''
         )}
 
-        <div className="mt-auto ">
+        <div className="my-4 mt-auto ">
           <MainButton
             className={
               answerForm.length > 10
@@ -142,5 +129,3 @@ function ApplicationClub2() {
     </>
   );
 }
-
-export default ApplicationClub2;

@@ -3,16 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { NomalTitle, CheckboxForm, MainButton } from '@/components/Atoms';
 import { Svg } from '@/components/Atoms';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-export async function loader({ params }) {
-  const socialingId = params;
-  return { socialingId };
-}
-
-function ApplicationClub1() {
-  const { socialingId } = useLoaderData();
-
+export function ApplicationClub1() {
+  const { clubId } = useParams();
+  console.log(clubId);
   const [isAgreement, setIsAgreement] = useState(false);
 
   const handleChecked = () => {
@@ -24,7 +19,7 @@ function ApplicationClub1() {
       <Helmet>
         <title>{getDocumentTitle('모임 신청하기')}</title>
       </Helmet>
-      <div className='px-4" flex  h-full h-screen flex-col'>
+      <div className='px-4" flex  h-full h-svh flex-col'>
         <NomalTitle backLink subText="1 of 2">
           모임신청
         </NomalTitle>
@@ -58,17 +53,19 @@ function ApplicationClub1() {
             </li>
           </ul>
           <CheckboxForm
-            className="py-4 text-b-1-regular"
+            className="py-4 "
             name="agreement"
             onChange={handleChecked}
             checked={isAgreement}
           >
-            소셜링 이용규칙을 지키겠습니다!
+            <span className="text-b-1-regular">
+              소셜링 이용규칙을 지키겠습니다!
+            </span>
           </CheckboxForm>
-          <div className="mt-auto p-4">
+          <div className="my-4 mt-auto ">
             <MainButton
               color={isAgreement ? 'primary' : 'secondary'}
-              to={isAgreement ? `/applicationClub2/${socialingId.clubId}` : ''}
+              to={isAgreement ? `/applicationClub2/${clubId}` : ''}
               className={
                 isAgreement ? `pointer-events-auto` : `pointer-events-none`
               }
@@ -81,5 +78,3 @@ function ApplicationClub1() {
     </>
   );
 }
-
-export default ApplicationClub1;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Search() {
   return (
     <>
-      <div className="relative flex h-screen w-full flex-col px-4">
+      <div className="relative flex h-svh w-full flex-col px-4">
         <ThinTextForm type="search" backLink className="mb-6 py-2">
           검색
         </ThinTextForm>

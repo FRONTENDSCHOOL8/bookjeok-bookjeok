@@ -11,7 +11,11 @@ const useUserInfoStore = create(
           userInfo,
         });
       },
-      updateUserInfo: () => {},
+      clearUserInfo: () => {
+        set({
+          userInfo: null,
+        });
+      },
     }),
     {
       name: 'pb/auth',
