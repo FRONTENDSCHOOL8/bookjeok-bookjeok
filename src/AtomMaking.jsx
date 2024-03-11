@@ -1,6 +1,7 @@
 import {
   Accordion,
   Badge,
+  ChatTextarea,
   CheckboxForm,
   ImageForm,
   MainButton,
@@ -10,12 +11,12 @@ import {
   RadioForm,
   RoundImage,
   SmallButton,
+  Svg,
+  TextBox,
   TextForm,
   Textarea,
   ThinTextForm,
-  ChatTextarea,
 } from './components/Atoms';
-import Svg from './components/Atoms/Svg/Svg';
 import { DobbleButtonModal } from './components/Molecules';
 
 export default function AtomMaking() {
@@ -166,7 +167,7 @@ export default function AtomMaking() {
               ImageForm
             </h3>
             <div className="flex flex-col gap-2">
-              <ImageForm src="" alt="" />
+              <ImageForm alt="" />
             </div>
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               RadioForm
@@ -302,6 +303,13 @@ export default function AtomMaking() {
                 채팅 메세지
               </ThinTextForm> */}
             </div>
+          </div>
+        </details>
+
+        <details open>
+          <summary>TextBox</summary>
+          <div className="pb-5">
+            <TextBox>모임에 참석하기 전에 책을 읽어오셔야 돼요 !</TextBox>
           </div>
         </details>
 
