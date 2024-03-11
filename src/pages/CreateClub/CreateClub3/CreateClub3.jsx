@@ -35,7 +35,6 @@ export function CreateClub3() {
 
   const handleDetail = ({ target }) => {
     addDetail(target.value);
-    // console.log(clubInfo.detail.length);
   };
 
   return (
@@ -75,10 +74,11 @@ export function CreateClub3() {
               id="clubDetail"
               name="clubDetail"
               required
+              maxLength={500}
+              length={clubInfo['detail'].length || ''.length}
               placeholder="내용을 입력해 주세요. (필수)"
               label="모임 상세내용"
               onChange={handleDetail}
-              // length={clubInfo.detail.length} useEffect를 사용해야할 것 같은데... 어쩌지
             />
           </div>
         </form>
