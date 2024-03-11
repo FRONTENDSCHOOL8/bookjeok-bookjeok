@@ -7,7 +7,7 @@ const theme = {
       200: '#eeeeee',
       300: '#e0e0e0',
       400: '#bdbdbd',
-      500: '#9e9e9e',
+      500: '#767676',
     },
     bjyellow: {
       100: '#fff8cf',
