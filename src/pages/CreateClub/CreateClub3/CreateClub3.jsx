@@ -75,7 +75,7 @@ export function CreateClub3() {
               name="clubDetail"
               required
               maxLength={500}
-              length={clubInfo['detail'].length || ''.length}
+              length={clubInfo['detail'] ? clubInfo['detail'].length : 0}
               placeholder="내용을 입력해 주세요. (필수)"
               label="모임 상세내용"
               onChange={handleDetail}
