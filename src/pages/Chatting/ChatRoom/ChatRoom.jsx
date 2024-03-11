@@ -58,6 +58,7 @@ export function ChatRoom() {
   useLayoutEffect(() => {
     if (chattingListRef.current) {
       chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
+      console.log('실행');
     }
   }, [message.length]);
 
