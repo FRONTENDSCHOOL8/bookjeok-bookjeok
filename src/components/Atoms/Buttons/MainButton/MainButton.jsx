@@ -41,5 +41,5 @@ MainButton.propTypes = {
   size: string,
   children: string,
   className: string,
-  svgId: bool,
+  svgId: string,
 };
