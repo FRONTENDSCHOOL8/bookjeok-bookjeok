@@ -46,7 +46,12 @@ export function ApplicationClub2() {
       pb.collection('socialingQueryAnswer')
         .create(answerData)
         .then(() => {
-          const updateData = { participantSocialing: [`${club.id}`] };
+          const updateData = {
+            participantSocialing: [
+              ...userInfo.participantSocialing,
+              `${club.id}`,
+            ],
+          };
           pb.collection('users').update(userInfo.id, updateData);
         })
         .then(() => {
