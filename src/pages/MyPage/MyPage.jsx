@@ -34,14 +34,14 @@ export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: clubData } = useQuery({
+  const { data: fetchAllUserInfo } = useQuery({
     queryFn: async () => {
-      const fetchAllClubInfo = await pb
+      const fetchAllUserInfo = await pb
         .collection('users')
         .getOne(`${userInfo.id}`, {
           expand: 'createSocialing, participantSocialing',
         });
-      return fetchAllClubInfo.expand;
+      return fetchAllUserInfo;
     },
     queryKey: ['clubInfo', userInfo.id],
   });
@@ -72,7 +72,10 @@ export function MyPage() {
         </NomalTitle>
         <main className="flex flex-col bg-white px-4">
           <div className="mb-5 mt-12 flex flex-col items-center gap-2">
-            <RoundImage size="xlg" src={getPbImgs(userInfo)}></RoundImage>
+            <RoundImage
+              size="xlg"
+              src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
+            ></RoundImage>
             <p>{userInfo.nickname}</p>
           </div>
           <div className="flex gap-4">
@@ -92,24 +95,26 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {clubData && (
+          {fetchAllUserInfo?.expand && (
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.participantSocialing?.map((item) => (
-                    <ClubList
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      schedule={calcDay(item.created)}
-                      img={getPbImgs(item)}
-                    />
-                  ))}
+                  {fetchAllUserInfo?.expand?.participantSocialing.map(
+                    (item) => (
+                      <ClubList
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        schedule={calcDay(item.created)}
+                        img={getPbImgs(item)}
+                      />
+                    )
+                  )}
                 </ul>
               </Accordion>
               <Accordion open mainText="주최중인 모임" className="mb-4">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.createSocialing?.map((item) => (
+                  {fetchAllUserInfo?.expand?.createSocialing.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}
