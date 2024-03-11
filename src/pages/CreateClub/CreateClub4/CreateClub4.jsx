@@ -3,6 +3,7 @@ import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
 import { createNumberArray, createRandomId, getDocumentTitle } from '@/utils';
+import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -59,6 +60,8 @@ export function CreateClub4() {
   // 제출 후 모달표시를 위한 상태관리
   const [modalState, setModalState] = useState(false);
 
+  const a = useMutation({});
+  console.log(a);
   // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
