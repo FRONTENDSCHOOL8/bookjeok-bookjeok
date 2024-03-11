@@ -4,8 +4,9 @@ export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm';
 export { default as ChatTextarea } from '@/components/Atoms/Inputs/ChatTextarea/ChatTextarea';
 export { default as SmallButton } from '@/components/Atoms/Buttons/SmallButton/SmallButton';
-export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/MainButton';
 export { default as MessageBubble } from '@/components/Atoms/MessageBubble/MessageBubble';
+export { default as BlankContents } from '@/components/Atoms/BlankContents/BlankContents';
+export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/MainButton';
 export { default as ImageForm } from '@/components/Atoms/Inputs/ImageForm/ImageForm';
 export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioForm';
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea';
