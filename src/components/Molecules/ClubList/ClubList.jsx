@@ -5,7 +5,7 @@ function ClubList({ id, title, img, schedule }) {
   return (
     <li>
       <Link
-        className="bg-bjgray-50 flex h-[100px] w-full flex-row overflow-hidden rounded-5xl border-[1px] border-bjgray-200"
+        className="flex h-[100px] w-full flex-row overflow-hidden rounded-5xl border-[1px] border-bjgray-200 bg-bjgray-50"
         to={`/mainClub/${id}`}
         aria-label={`${title} 모임 자세히 보기`}
       >

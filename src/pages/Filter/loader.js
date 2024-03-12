@@ -1,6 +1,9 @@
-import pb from '@/api/pocketbase';
+import { queryClient } from '@/client/queryClient';
+import { fetchFilter } from './fetchFilter';
 
-export async function loader() {
-  const filters = await pb.collection('genres').getFullList();
-  return filters;
-}
+export const loader = () => async () => {
+  return await queryClient.ensureQueryData({
+    queryKey: ['filter'],
+    queryFn: fetchFilter(),
+  });
+};
