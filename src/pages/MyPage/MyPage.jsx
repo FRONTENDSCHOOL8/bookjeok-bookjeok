@@ -100,7 +100,7 @@ export function MyPage() {
           </div>
           {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
+              <Accordion open mainText="참여중인 모임" className="mb-4 mt-8">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
@@ -115,7 +115,8 @@ export function MyPage() {
                   )}
                 </ul>
               </Accordion>
-              <Accordion open mainText="주최중인 모임" className="mb-4">
+              <hr />
+              <Accordion open mainText="주최중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.createSocialing.map((item) => (
                     <ClubList
@@ -128,7 +129,12 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <Accordion className="mb-[100px]" open mainText="내가 쓴 독후감">
+              <hr />
+              <Accordion
+                className="mb-[100px] mt-4"
+                open
+                mainText="내가 쓴 독후감"
+              >
                 <ul className=" flex flex-col gap-5 px-1">
                   {bookReviewData?.map((item) => (
                     <Link

@@ -45,8 +45,8 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 px-3 ',
-  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
+  ul: 'flex flex-col gap-y-4 mb-4',
+  h2: 'pl-1 py-2 text-b-0-medium text-bjblack',
 };
 
 export function MyClubList() {
@@ -131,7 +131,7 @@ export function MyClubList() {
           type="search"
           searchIcon
           placeholder="search"
-          className="px-4 py-2 "
+          className="px-4 py-4"
         />
 
         <>
