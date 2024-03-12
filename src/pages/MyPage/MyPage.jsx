@@ -69,12 +69,12 @@ export function MyPage() {
       <Helmet>
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col  bg-white">
+      <div className="relative flex h-screen w-full flex-col bg-white">
         <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
-        <main className="flex flex-col bg-white px-4">
-          <div className="mb-5 mt-12 flex flex-col items-center gap-2">
+        <main className="flex flex-grow flex-col justify-center bg-white px-4">
+          <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
               src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
