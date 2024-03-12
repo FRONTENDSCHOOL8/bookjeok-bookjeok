@@ -46,7 +46,7 @@ const routingPages = [
     path: '/mainClub',
     async lazy() {
       const { loader, MainClub } = await import('@/pages/MainClub');
-      return { loader: loader(queryClient), Component: MainClub };
+      return { Component: MainClub, loader: loader(queryClient) };
     },
   },
   {

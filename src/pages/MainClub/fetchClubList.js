@@ -1,7 +1,7 @@
 import pb from '@/api/pocketbase';
 import { getPbImgs } from '@/utils';
 
-export const fetchClubList = (filters) => async () => {
+export const fetchClubList = (filters, perPage) => async (pageInfo) => {
   let filterQuery = null;
   if (filters) {
     if (filters.includes(',')) {
@@ -13,17 +13,23 @@ export const fetchClubList = (filters) => async () => {
       filterQuery = `genre.title~"${filters}"`;
     }
   }
-  const clubs = await pb.collection('socialing').getFullList({
-    fields:
-      'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
-    expand: 'genre',
-    filter: filterQuery,
-    sort: '-created',
-  });
-  const clubItems = clubs.map((club) => {
+
+  const clubs = await pb
+    .collection('socialing')
+    .getList(pageInfo.pageParam, perPage, {
+      fields:
+        'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
+      expand: 'genre',
+      filter: filterQuery,
+      sort: '-created',
+    });
+
+  const clubItems = clubs.items.map((club) => {
     const photoURL = getPbImgs(club);
     club.photo = photoURL;
     return club;
   });
-  return clubItems;
+  clubs.items = clubItems;
+
+  return clubs.items;
 };

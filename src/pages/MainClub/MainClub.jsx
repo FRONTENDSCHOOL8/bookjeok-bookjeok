@@ -1,30 +1,36 @@
 import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
-import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
-import { useQuery } from '@tanstack/react-query';
+import { calcDay, getDocumentTitle } from '@/utils';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 import { Link, useLoaderData } from 'react-router-dom';
 import { fetchClubList } from './fetchClubList';
-getPbImgs;
+
+const ININTIAL_PAGE = 1;
+const PER_PAGE = 10;
+
 function ClubCard() {
   const getClubList = useLoaderData();
+
   const { state } = useLocation();
+  const filters = state?.filters ?? '';
 
-  const { filters } = state ?? {};
-  // const getClubData = useInfiniteQuery({
-  //   queryKey:[]
-  // });
-
-  const { data: clubListData } = useQuery({
-    queryKey: ['mainClub'],
-    queryFn: fetchClubList(filters),
+  const {
+    data: { pages: infiniteDate },
+  } = useInfiniteQuery({
+    queryKey: ['mainClub', filters],
+    queryFn: fetchClubList(filters, PER_PAGE),
+    initialPageParam: ININTIAL_PAGE,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.page < lastPage.totalPages ? allPages.length + 1 : null;
+    },
   });
+  console.log('infiniteDate', infiniteDate);
+  console.log('getClubList', getClubList.pages);
 
-  console.log(clubListData);
-
-  return getClubList.map(
+  return infiniteDate[0].map(
     ({
       id,
       photo,
@@ -79,7 +85,7 @@ function ClubCard() {
                   id="user"
                   className="mr-[2px]"
                 />
-                {confirmUser.length}/{limitPerson}
+                {confirmUser.length ? confirmUser.length : 0}/{limitPerson}
               </span>
             </div>
           </div>

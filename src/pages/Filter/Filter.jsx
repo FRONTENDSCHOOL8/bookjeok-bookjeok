@@ -14,7 +14,7 @@ function FilterList() {
       filterListState: state.filterList,
     })
   );
-  console.log(filterListState);
+
   const handleFilterCheckbox = (e) => {
     const { name, checked } = e.target;
     if (checked) {
@@ -32,6 +32,7 @@ function FilterList() {
           className="h-[64px]"
           id={id}
           onChange={handleFilterCheckbox}
+          checked={filterListState.includes(title)}
         >
           {title}
         </CheckboxForm>
@@ -43,7 +44,7 @@ function FilterList() {
 export function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
-  // const resetFilter = useFilterStore((state) => state.resetFilter);
+  const resetFilter = useFilterStore((state) => state.resetFilter);
 
   // useLayoutEffect(() => {
   //   resetFilter();
@@ -56,6 +57,10 @@ export function Filter() {
       <main>
         <form
           method="get"
+          onReset={(e) => {
+            e.preventDefault();
+            resetFilter();
+          }}
           onSubmit={(e) => {
             e.preventDefault();
             navigate(
@@ -70,7 +75,7 @@ export function Filter() {
             );
           }}
         >
-          <NomalTitle backLink textButton path="mainClub">
+          <NomalTitle backLink resetButton textButton path="mainClub">
             필터
           </NomalTitle>
           <ul className="mx-4">
