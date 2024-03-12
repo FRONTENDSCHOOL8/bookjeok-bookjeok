@@ -27,13 +27,13 @@ export function ChatRoom() {
     pb.collection('chattingRoom').subscribe(
       chattingRoomId,
       function (e) {
-        console.log(e.action);
+        // console.log(e.action);
         if (
           e.record.expand.message[e.record.expand.message.length - 1]
             .sendUser !== userInfo.id
         ) {
           setObserver(true);
-          console.log('조건처리로 업데이트 된', observer);
+          // console.log('조건처리로 업데이트 된', observer);
         }
       },
       { expand: 'message' }
@@ -42,9 +42,9 @@ export function ChatRoom() {
     return () => {
       pb.collection('chattingRoom').unsubscribe(chattingRoomId);
       setObserver(false);
-      console.log('클린업 함수로 업데이트 된', observer);
+      // console.log('클린업 함수로 업데이트 된', observer);
     };
-  });
+  }, [chattingRoomId, observer, userInfo.id]);
 
   const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoom', chattingRoomId, observer],
@@ -54,13 +54,14 @@ export function ChatRoom() {
   const { expand, title, message } = chattingRoomData || {};
 
   const chattingListRef = useRef(null);
+  console.log(chattingListRef.current);
 
   useLayoutEffect(() => {
     if (chattingListRef.current) {
       chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
       console.log('실행');
     }
-  }, [message.length]);
+  }, [message.length, observer, chattingRoomData]);
 
   const mutateMessage = useMutation({
     mutationFn: async (newMessage) => {
@@ -75,7 +76,9 @@ export function ChatRoom() {
         message: [...chattingRoomData.message, addedMessage.id],
         expand: {
           ...chattingRoomData.expand,
-          message: [...chattingRoomData.expand.message, addedMessage],
+          message: chattingRoomData.expand?.message
+            ? [...chattingRoomData.expand.message, addedMessage]
+            : [],
         },
       };
 
@@ -95,7 +98,9 @@ export function ChatRoom() {
         message: [...chattingRoomData.message, newMessage.id],
         expand: {
           ...chattingRoomData.expand,
-          message: [...chattingRoomData.expand.message, newMessage],
+          message: chattingRoomData.expand?.message
+            ? [...chattingRoomData.expand.message, newMessage]
+            : [],
         },
       };
 
@@ -104,7 +109,6 @@ export function ChatRoom() {
       return { previousChattingRoom };
     },
     onError: (error, updateData, context) => {
-      console.log(error, updateData, context);
       queryClient.setQueryData(
         ['chattingRoom', chattingRoomId],
         context.previousChattingRoom
@@ -118,6 +122,7 @@ export function ChatRoom() {
     },
   });
 
+  const textareaRef = useRef('');
   const handleSendMessage = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -181,6 +186,7 @@ export function ChatRoom() {
                   채팅 메세지
                 </ThinTextForm> */}
               <ChatTextarea
+                ref={textareaRef}
                 label="메세지 입력창"
                 id="text"
                 name="text"
