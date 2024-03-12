@@ -38,8 +38,8 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 px-3 ',
-  h2: 'pl-4 pt-5 text-b-1-regular text-bjblack',
+  ul: 'flex flex-col gap-y-4 mb-4',
+  h2: 'pl-1 py-2 text-b-0-medium text-bjblack',
 };
 
 export function MyClubList() {
@@ -121,11 +121,11 @@ export function MyClubList() {
           type="search"
           searchIcon
           placeholder="search"
-          className="px-4 py-2 "
+          className="px-4 py-4"
         />
-        <div className="">
+        <div className="px-4">
+          <h2 className={`${style['h2']}`}>참여중인 모임</h2>
           <ul className={`${style['ul']}`}>
-            <h2 className={`${style['h2']}`}>참여중인 모임</h2>
             {isSearchState
               ? searchResult['confirmedClub']?.map((item) => (
                   <ClubList
@@ -160,8 +160,9 @@ export function MyClubList() {
               ''
             )}
           </ul>
+          <hr className="mb-4 border-t-[1px] border-bjgray-200" />
+          <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
           <ul className={`${style['ul']} mb-[90px]`}>
-            <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
             {isSearchState
               ? searchResult['createdClub']?.map((item) => (
                   <ClubList
@@ -189,8 +190,7 @@ export function MyClubList() {
                 onClick={handleMoreValue}
                 className="flex items-center justify-center py-1"
               >
-                더 보기
-                <Svg id="plus" size={14} className="ml-1" />
+                <Svg id="plus" size={14} className="ml-1" />더 보기
               </button>
             ) : (
               ''

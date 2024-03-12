@@ -78,7 +78,7 @@ export function ApplicationClub2() {
         </NomalTitle>
         <main className="flex flex-grow flex-col px-4 pt-4">
           <div className="flex-grow">
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-2">
               <RoundImage size="md" src={profilePhoto} />
               <div>
                 <p className="text-b-1-regular">{club.query}</p>
@@ -101,7 +101,7 @@ export function ApplicationClub2() {
                 color="bjred-400"
                 className="shrink-0"
               />
-              <p className="m-[13.5px] text-b-1-regular text-bjred-400">
+              <p className="break-keep text-b-1-regular text-bjred-400">
                 전화번호, 카카오톡 아이디, 신청폼 작성 요구 등 과도한 개인
                 정보를 요구하는 경우 가이드 위반 모임이므로 고객센터에
                 신고해주세요.

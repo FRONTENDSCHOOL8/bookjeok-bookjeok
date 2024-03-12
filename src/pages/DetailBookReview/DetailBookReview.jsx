@@ -20,7 +20,7 @@ export function DetailBookReview() {
         <main className="flex flex-1 flex-col">
           <figure>
             <img
-              className="aspect-[5/3] w-full object-cover"
+              className="aspect-[5/3] w-full object-cover brightness-75"
               src={img}
               alt={title}
             />
@@ -30,15 +30,15 @@ export function DetailBookReview() {
               nickName={expand.writer.nickname}
               src={expand.writer.img == '' ? null : getPbImgs(expand.writer)}
               text={title}
-              className="-mt-14 shadow"
+              className="relative -mt-[58px]"
             ></Avatar>
             <div className="flex justify-center gap-2 text-b-2-medium text-bjgray-500">
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={14} id="book" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={15} id="book" className="mr-1" />
                 {bookTitle}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap p-4 text-b-2-regular text-bjblack">
+            <pre className="whitespace-pre-wrap p-4 px-6 text-b-1-light text-bjblack">
               {detail}
             </pre>
           </section>
