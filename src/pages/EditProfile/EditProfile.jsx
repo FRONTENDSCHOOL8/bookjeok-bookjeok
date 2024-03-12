@@ -167,29 +167,29 @@ export function EditProfile() {
             }}
           >
             저장
-          </MainButton>
+          </MainButton>{' '}
+          {isSuccess ? (
+            <DobbleButtonModal
+              svgId="logo"
+              title="변경성공 ! "
+              open={isModalOpen}
+              closeButton
+              onClick={() => setIsModalOpen(false)}
+              primaryButtonText="홈으로 이동하기"
+              primaryButtonPath={'/mainClub'}
+              secondaryButtonText="마이페이지로 이동하기"
+              secondaryButtonPath={'/myPage'}
+            ></DobbleButtonModal>
+          ) : (
+            <DobbleButtonModal
+              svgId="alert"
+              open={isModalOpen}
+              closeButton
+              onClick={() => setIsModalOpen(false)}
+              title={error[`${errorContents.title}`]}
+            ></DobbleButtonModal>
+          )}
         </div>
-        {isSuccess ? (
-          <DobbleButtonModal
-            svgId="logo"
-            title="변경성공 ! "
-            open={isModalOpen}
-            closeButton
-            onClick={() => setIsModalOpen(false)}
-            primaryButtonText="홈으로 이동하기"
-            primaryButtonPath={'/mainClub'}
-            secondaryButtonText="마이페이지로 이동하기"
-            secondaryButtonPath={'/myPage'}
-          ></DobbleButtonModal>
-        ) : (
-          <DobbleButtonModal
-            svgId="alert"
-            open={isModalOpen}
-            closeButton
-            onClick={() => setIsModalOpen(false)}
-            title={error[`${errorContents.title}`]}
-          ></DobbleButtonModal>
-        )}
       </div>
     </>
   );
