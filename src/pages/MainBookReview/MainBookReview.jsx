@@ -35,7 +35,7 @@ export function MainBookReview() {
       <Helmet>
         <title>{getDocumentTitle('독후감')}</title>
       </Helmet>
-      <div className="relative flex  w-full flex-col">
+      <div className="relative flex w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
         <main>
           <MainKindToggle />
@@ -45,7 +45,7 @@ export function MainBookReview() {
               type="search"
               searchIcon
               placeholder="search"
-              className="py-2"
+              className="py-4"
             >
               검색
             </ThinTextForm>
