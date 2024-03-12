@@ -1,30 +1,20 @@
 import { getDocumentTitle, validateEmail } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
+import { useCloseModal } from '@/hooks';
 import pb from '@/api/pocketbase';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { useQuery } from '@tanstack/react-query';
 
-/*
-1. enter로 로그인 버튼 접근
-2. 모달 에서 esc -> 닫기 enter -> 링크이동이나 / 버튼이동 
-
-*/
 export function Login() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  const { setUserInfo } = useUserInfoStore((state) => state);
   const emailRef = useRef('');
   const passwordRef = useRef('');
-
-  useEffect(() => {
-    if (isModalOpen && event.keyCode === 27) {
-      console.log('hey~');
-      setIsModalOpen(false);
-    }
-  }, [isModalOpen]);
+  const [isClicked, setIsClicked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setUserInfo } = useUserInfoStore((state) => state);
+  useCloseModal(isModalOpen, () => setIsModalOpen(false));
 
   const handleLoginForm = (e) => {
     const { name, value } = e.target;
@@ -57,7 +47,6 @@ export function Login() {
             token,
           });
           setIsModalOpen(true);
-          console.log('false');
           setIsClicked(false);
           return { record, token };
         }
@@ -79,6 +68,7 @@ export function Login() {
         </Helmet>
         <NomalTitle backLink>로그인</NomalTitle>
         <form
+          onSubmit={handleLogin}
           className="flex flex-grow flex-col gap-y-4 px-4 py-2"
           onChange={handleLoginForm}
         >
@@ -89,12 +79,7 @@ export function Login() {
             비밀번호
           </TextForm>
           <div className="mt-auto p-4">
-            <MainButton
-              className="mt-auto p-4"
-              onClick={handleLogin}
-              as="button"
-              type="submit"
-            >
+            <MainButton className="mt-auto p-4" as="button" type="submit">
               로그인
             </MainButton>
           </div>
