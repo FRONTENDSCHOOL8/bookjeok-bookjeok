@@ -8,10 +8,6 @@ import {
 } from '@/pages/ApplicationClub/ApplicationClub2';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
-import {
-  CreateClub2,
-  loader as genreLoader,
-} from '@/pages/CreateClub/CreateClub2';
 import { CreateClub3 } from '@/pages/CreateClub/CreateClub3';
 import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
 import {
@@ -104,12 +100,11 @@ const routingPages = [
   },
   {
     path: '/createClub2',
-    element: (
-      <ProtectRoute>
-        <CreateClub2 />
-      </ProtectRoute>
-    ),
-    loader: genreLoader,
+    async lazy() {
+      const { loader } = await import('@/pages/Filter');
+      const { CreateClub2 } = await import('@/pages/CreateClub/CreateClub2');
+      return { Component: CreateClub2, loader: loader(queryClient) };
+    },
   },
   {
     path: '/createClub3',
