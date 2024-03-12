@@ -1,11 +1,29 @@
 import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { GNB, MainKindToggle } from '@/components/Molecules';
-import { calcDay, getDocumentTitle } from '@/utils';
+import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
+import { Link, useLoaderData } from 'react-router-dom';
+import { fetchClubList } from './fetchClubList';
+getPbImgs;
 function ClubCard() {
   const getClubList = useLoaderData();
+  const { state } = useLocation();
+
+  const { filters } = state ?? {};
+  // const getClubData = useInfiniteQuery({
+  //   queryKey:[]
+  // });
+
+  const { data: clubListData } = useQuery({
+    queryKey: ['mainClub'],
+    queryFn: fetchClubList(filters),
+  });
+
+  console.log(clubListData);
+
   return getClubList.map(
     ({
       id,

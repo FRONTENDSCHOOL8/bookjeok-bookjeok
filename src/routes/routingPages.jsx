@@ -19,6 +19,7 @@ import {
   loader as detailBookReviewloader,
 } from '@/pages/DetailBookReview';
 import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
+import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
 import { Filter, loader as filterListLoader } from '@/pages/Filter';
 import { Intro } from '@/pages/Intro';
 import { Login } from '@/pages/Login';
@@ -26,12 +27,10 @@ import {
   MainBookReview,
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview';
-import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
-import { BasicInfo, DetailInfo } from '@/pages/SignUp';
-import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
@@ -45,8 +44,10 @@ const routingPages = [
   },
   {
     path: '/mainClub',
-    element: <MainClub />,
-    loader: clubListLoader,
+    async lazy() {
+      const { loader, MainClub } = await import('@/pages/MainClub');
+      return { loader: loader(queryClient), Component: MainClub };
+    },
   },
   {
     path: '/mainClub/filter',
