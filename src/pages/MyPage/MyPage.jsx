@@ -73,7 +73,7 @@ export function MyPage() {
         <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
-        <main className="flex flex-grow flex-col justify-center bg-white px-4">
+        <main className="flex flex-grow flex-col bg-white px-4">
           <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
@@ -135,31 +135,33 @@ export function MyPage() {
                 open
                 mainText="내가 쓴 독후감"
               >
-                <ul className=" flex flex-col gap-5 px-1">
+                <ul className=" flex flex-col gap-2 px-1">
                   {bookReviewData?.map((item) => (
-                    <Link
-                      className="boreder-b-1"
-                      key={item.id}
-                      to={`/mainBookReview/${item.id}`}
-                    >
-                      <div className="my-[7px] flex items-center gap-x-2">
-                        <div>
-                          <p className="line-clamp-1 text-b-0-regular text-bjblack">
-                            {item.title}
-                          </p>
-                          <p className="line-clamp-2 text-b-2-regular text-bjgray-500">
-                            {item.detail}
-                          </p>
+                    <li className="border-t-[1px] border-bjgray-200 pt-2 first:border-0">
+                      <Link
+                        className="boreder-b-1"
+                        key={item.id}
+                        to={`/mainBookReview/${item.id}`}
+                      >
+                        <div className="my-[7px] flex items-center gap-x-4">
+                          <div>
+                            <p className="line-clamp-1 text-b-0-regular text-bjblack">
+                              {item.title}
+                            </p>
+                            <p className="mt-1 line-clamp-2 text-b-2-regular text-bjgray-500">
+                              {item.detail}
+                            </p>
+                          </div>
+                          <div className="ml-auto shrink-0">
+                            <img
+                              src={getPbImgs(item)}
+                              alt={item.title}
+                              className="aspect-square w-[70px] rounded-4xl border-[1px] border-bjgray-200 object-cover"
+                            />
+                          </div>
                         </div>
-                        <div className="ml-auto shrink-0">
-                          <img
-                            src={getPbImgs(item)}
-                            alt={item.title}
-                            className="aspect-square w-[54px] rounded-4xl object-cover"
-                          />
-                        </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </Accordion>

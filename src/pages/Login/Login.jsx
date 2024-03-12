@@ -69,7 +69,7 @@ export function Login() {
         <NomalTitle backLink>로그인</NomalTitle>
         <form
           onSubmit={handleLogin}
-          className="flex flex-grow flex-col gap-y-4 px-4 py-2"
+          className="flex flex-grow flex-col gap-y-4 p-4"
           onChange={handleLoginForm}
         >
           <TextForm type="email" placeholder="email@email.com" name="email">
@@ -78,7 +78,7 @@ export function Login() {
           <TextForm type="password" placeholder="" name="password">
             비밀번호
           </TextForm>
-          <div className="mt-auto p-4">
+          <div className="mt-auto">
             <MainButton className="mt-auto p-4" as="button" type="submit">
               로그인
             </MainButton>

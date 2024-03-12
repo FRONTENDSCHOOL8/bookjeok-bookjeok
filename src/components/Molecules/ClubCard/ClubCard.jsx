@@ -1,7 +1,7 @@
-import { Badge, Svg } from '@/components/Atoms';
+import { Badge, LikeButton, Svg } from '@/components/Atoms';
 import { calcDay } from '@/utils';
+import { array, bool, number, object, string } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { string, bool, number, object, array } from 'prop-types';
 
 ClubCard.propTypes = {
   clubInfo: object,
@@ -31,8 +31,8 @@ function ClubCard({
 }) {
   return (
     <li key={id}>
-      <Link to={`/mainClub/${id}`} className="flex flex-wrap">
-        <figure className="relative mx-auto w-full">
+      <figure className="relative mx-auto w-full">
+        <Link to={`/mainClub/${id}`} aria-label={`${title}`}>
           <img
             className="aspect-square w-full rounded-5xl border-[1px] border-bjgray-200 object-cover"
             src={photo}
@@ -41,35 +41,43 @@ function ClubCard({
           <Badge className="absolute left-2 top-2 w-[30%]">
             {expand.genre.title}
           </Badge>
-        </figure>
-        <div className="flex w-full flex-col gap-1 px-2 py-4 pt-3">
+        </Link>
+        <LikeButton active />
+      </figure>
+      <Link to={`/mainClub/${id}`} aria-label={`${title}`}>
+        <div className="flex w-full flex-col gap-y-1 px-1 py-4 pt-3">
           <div className="flex justify-between">
-            <h3 className="max-w-full truncate text-b-1-medium">{title}</h3>
-            <button>
-              <Svg id="heart" />
-            </button>
+            <h3 className="line-clamp-2 h-12 max-w-full text-b-1-regular">
+              {title}
+            </h3>
           </div>
-          <span className="text-pretty text-b-3-regular text-bjgray-500">
-            {calcDay(dateTime)}
+          <span className="text-pretty text-b-3-medium text-bjgray-500">
+            <Svg
+              color="#9e9e9e"
+              size={14}
+              id="calendar"
+              className="mr-[2px] inline-block align-middle"
+            />
+            <span className="align-middle">{calcDay(dateTime)}</span>
           </span>
           <div className="flex justify-between">
-            <span className="flex items-center text-pretty text-b-3-regular text-bjgray-500">
+            <span className="flex items-center text-pretty text-b-3-medium text-bjgray-500">
               <Svg
                 color="#9e9e9e"
-                width={16}
-                height={16}
+                width={14}
+                height={14}
                 id="pin"
-                className="mr-[2px] flex-shrink-0"
+                className="mr-[2px] flex-shrink-0 align-middle"
               />
               <span className="line-clamp-1">
                 {!isOffline ? '온라인' : location}
               </span>
             </span>
-            <span className="flex items-center text-b-3-regular text-bjgray-500">
+            <span className="flex items-center text-b-3-medium text-bjgray-500">
               <Svg
                 color="#9e9e9e"
-                width={16}
-                height={16}
+                width={14}
+                height={14}
                 id="user"
                 className="mr-[2px]"
               />
