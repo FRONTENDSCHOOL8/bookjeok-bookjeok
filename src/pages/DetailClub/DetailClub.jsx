@@ -28,57 +28,47 @@ export function DetailClub() {
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
-      <div className="relative flex min-h-svh w-full flex-col">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col pb-[96px]">
-          <div className="relative">
-            <figure className="relative overflow-hidden">
-              <img
-                className="aspect-[5/3] w-full object-cover"
-                src={photo}
-                alt={title}
-              />
-              <Badge className="absolute left-2 top-2">
-                {expand.genre.title}
-              </Badge>
-            </figure>
-            <div className="relative bottom-0">
-              <Avatar
-                nickName={expand.createUser.nickname}
-                src={
-                  expand.createUser.img == ''
-                    ? null
-                    : getPbImgs(expand.createUser)
-                }
-                text={title}
-                className="!top-[50%] !-translate-y-1/2"
-              ></Avatar>
-            </div>
-          </div>
-
-          <section className="bg-bjgray-50 flex h-full flex-grow flex-col gap-4 px-4 pt-5">
-            <div className="flex justify-center gap-2 pt-[63px] text-b-2-medium text-bjgray-500">
+          <figure className="relative">
+            <img
+              className="aspect-[5/3] w-full object-cover brightness-75"
+              src={photo}
+              alt={title}
+            />
+            <Badge className="absolute left-2 top-2">
+              {expand.genre.title}
+            </Badge>
+          </figure>
+          <section className="bg-bjgray-50 flex flex-1 flex-col gap-4 px-4 pb-4 shadow-inner">
+            <Avatar
+              nickName={expand.createUser.nickname}
+              src={
+                expand.createUser.img == ''
+                  ? null
+                  : getPbImgs(expand.createUser)
+              }
+              text={title}
+              className="relative -mt-[58px]"
+            ></Avatar>
+            <div className="flex justify-center gap-2 text-b-2-medium text-bjgray-500">
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={14} id="pin" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={15} id="pin" className="mr-1" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center">
-                <Svg
-                  color="#9e9e9e"
-                  size={14}
-                  id="calendar"
-                  className="mr-[2px]"
-                />
+                <Svg color="#9e9e9e" size={15} id="calendar" className="mr-1" />
                 {calcDay(dateTime)}
               </span>
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={14} id="user" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={15} id="user" className="mr-1" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap p-4 text-b-2-regular text-bjblack">
+            <pre className="whitespace-pre-wrap p-4 px-6 text-b-1-light text-bjblack">
               {detail}
             </pre>
           </section>

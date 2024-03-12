@@ -15,7 +15,10 @@ function BookReviewList({
   collectionId,
 }) {
   return (
-    <li key={id} className="py-4">
+    <li
+      key={id}
+      className="border-t-[1px] border-bjgray-200 py-4 first:border-0"
+    >
       <Link to={`/mainBookReview/${id}`} className="block">
         <div className="flex items-center gap-x-2">
           <RoundImage
@@ -32,12 +35,12 @@ function BookReviewList({
             {getCreatedHoursAgo(created)}
           </span>
         </div>
-        <div className="my-[7px] flex items-center gap-x-2">
+        <div className="my-[7px] flex items-start gap-x-4">
           <div>
             <p className="line-clamp-1 text-b-0-regular text-bjblack">
               {title}
             </p>
-            <p className="line-clamp-2 text-b-2-regular text-bjgray-500">
+            <p className="mt-[2px] line-clamp-2 text-b-2-regular text-bjgray-500">
               {detail}
             </p>
           </div>
@@ -45,7 +48,7 @@ function BookReviewList({
             <img
               src={getPbImgs({ collectionId, id, img })}
               alt={title}
-              className="aspect-square w-[54px] rounded-4xl border-[1px] border-bjgray-200 object-cover"
+              className="aspect-square w-[70px] rounded-4xl border-[1px] border-bjgray-200 object-cover"
             />
           </div>
         </div>
