@@ -135,81 +135,92 @@ export function MyClubList() {
         />
 
         <>
-          <ul className={`${style['ul']}`}>
-            <h2 className={`${style['h2']}`}>참여중인 모임</h2>
-            {isSearchState
-              ? searchResult['confirmedClub']?.map((item) => (
-                  <ClubList
-                    id={item.id}
-                    key={item.id}
-                    title={item.title}
-                    schedule={calcDay(item.dateTime)}
-                    img={getPbImgs(item)}
-                  ></ClubList>
-                ))
-              : clubData.confirmedClub
-                  ?.slice(0, showQuantity.confirmedClub)
-                  ?.map((item) => (
-                    <ClubList
-                      id={item.id}
-                      key={item.id}
-                      title={item.title}
-                      schedule={calcDay(item.dateTime)}
-                      img={getPbImgs(item)}
-                    ></ClubList>
-                  ))}
-            {/*더보기버튼*/}
-            {!isSearchState &&
-            clubData.confirmedClub?.length > showQuantity.confirmedClub ? (
-              <button
-                name="confirmedClub"
-                onClick={handleMoreValue}
-                className="flex items-center justify-center py-1"
-              >
-                더 보기
-                <Svg id="plus" size={14} className="ml-1" />
-              </button>
-            ) : (
-              ''
-            )}
-          </ul>
-          <ul className={`${style['ul']} mb-[90px]`}>
-            <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
-            {isSearchState
-              ? searchResult['createdClub']?.map((item) => (
-                  <ClubList
-                    id={item.id}
-                    key={item.id}
-                    title={item.title}
-                    schedule={calcDay(item.dateTime)}
-                    img={getPbImgs(item)}
-                  ></ClubList>
-                ))
-              : clubData.createdClub
-                  ?.slice(0, showQuantity.createdClub)
-                  ?.map((item) => (
-                    <ClubList
-                      id={item.id}
-                      key={item.id}
-                      title={item.title}
-                      schedule={calcDay(item.dateTime)}
-                      img={getPbImgs(item)}
-                    ></ClubList>
-                  ))}
-            {!isSearchState &&
-            showQuantity.createdClub < clubData.createdClub?.length ? (
-              <button
-                name="createdClub"
-                onClick={handleMoreValue}
-                className="flex items-center justify-center py-1"
-              >
-                더 보기
-                <Svg id="plus" size={14} className="ml-1" />
-              </button>
-            ) : (
-              ''
-            )}
-          </ul>
+          {(clubData.createdClub?.length == 0) &
+          (clubData.confirmedClub?.length === 0) ? (
+            <BlankContents
+              title="아무런 활동이 없으시네요..."
+              description="북적북적에서 독후감을 기록하고,
+          다른 사람과 함께 생각을 공유해보세요 !"
+            />
+          ) : (
+            <>
+              <ul className={`${style['ul']}`}>
+                <h2 className={`${style['h2']}`}>참여중인 모임</h2>
+                {isSearchState
+                  ? searchResult['confirmedClub']?.map((item) => (
+                      <ClubList
+                        id={item.id}
+                        key={item.id}
+                        title={item.title}
+                        schedule={calcDay(item.dateTime)}
+                        img={getPbImgs(item)}
+                      ></ClubList>
+                    ))
+                  : clubData.confirmedClub
+                      ?.slice(0, showQuantity.confirmedClub)
+                      ?.map((item) => (
+                        <ClubList
+                          id={item.id}
+                          key={item.id}
+                          title={item.title}
+                          schedule={calcDay(item.dateTime)}
+                          img={getPbImgs(item)}
+                        ></ClubList>
+                      ))}
+                {/*더보기버튼*/}
+                {!isSearchState &&
+                clubData.confirmedClub?.length > showQuantity.confirmedClub ? (
+                  <button
+                    name="confirmedClub"
+                    onClick={handleMoreValue}
+                    className="flex items-center justify-center py-1"
+                  >
+                    더 보기
+                    <Svg id="plus" size={14} className="ml-1" />
+                  </button>
+                ) : (
+                  ''
+                )}
+              </ul>
+              <ul className={`${style['ul']} mb-[90px]`}>
+                <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
+                {isSearchState
+                  ? searchResult['createdClub']?.map((item) => (
+                      <ClubList
+                        id={item.id}
+                        key={item.id}
+                        title={item.title}
+                        schedule={calcDay(item.dateTime)}
+                        img={getPbImgs(item)}
+                      ></ClubList>
+                    ))
+                  : clubData.createdClub
+                      ?.slice(0, showQuantity.createdClub)
+                      ?.map((item) => (
+                        <ClubList
+                          id={item.id}
+                          key={item.id}
+                          title={item.title}
+                          schedule={calcDay(item.dateTime)}
+                          img={getPbImgs(item)}
+                        ></ClubList>
+                      ))}
+                {!isSearchState &&
+                showQuantity.createdClub < clubData.createdClub?.length ? (
+                  <button
+                    name="createdClub"
+                    onClick={handleMoreValue}
+                    className="flex items-center justify-center py-1"
+                  >
+                    더 보기
+                    <Svg id="plus" size={14} className="ml-1" />
+                  </button>
+                ) : (
+                  ''
+                )}
+              </ul>
+            </>
+          )}
         </>
       </div>
       <GNB createClub className="fixed"></GNB>

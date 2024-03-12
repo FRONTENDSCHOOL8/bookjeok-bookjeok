@@ -63,6 +63,7 @@ export function MyPage() {
     pb.authStore.clear();
   };
 
+  console.log(fetchAllUserInfo);
   return (
     <>
       <Helmet>
@@ -97,11 +98,11 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {fetchAllUserInfo?.expand || BookReviewList ? (
+          {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
               <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
-                  {fetchAllUserInfo?.expand?.participantSocialing.map(
+                  {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
                       <ClubList
                         key={item.id}
@@ -162,7 +163,7 @@ export function MyPage() {
               title="아무런 활동이 없으시네요..."
               description="북적북적에서 독후감을 기록하고,
             다른 사람과 함께 생각을 공유해보세요 !"
-            ></BlankContents>
+            />
           )}
         </main>
         <ButtonModalForManageMent
