@@ -29,8 +29,20 @@ function ClubCard() {
             <Badge className="absolute left-2 top-2 w-[30%]">
               {expand.genre.title}
             </Badge>
-            <button className="absolute bottom-2 right-3">
-              <Svg id="heart-filled" color="#ffd60a" size={30} />
+
+            <button className="absolute bottom-3 right-3">
+              <Svg
+                id="heart-filled"
+                color="#feeb70"
+                size={30}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 blur-sm"
+              />
+              <Svg
+                id="heart-filled"
+                color="#fee440"
+                size={30}
+                className="relative"
+              />
             </button>
           </figure>
           <div className="flex w-full flex-col gap-y-1 px-1 py-4 pt-3">
