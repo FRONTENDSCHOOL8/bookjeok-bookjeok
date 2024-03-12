@@ -1,4 +1,3 @@
-import pb from '@/api/pocketbase';
 import {
   MainButton,
   NomalTitle,
@@ -6,12 +5,14 @@ import {
   Svg,
   Textarea,
 } from '@/components/Atoms';
-import { DobbleButtonModal } from '@/components/Molecules';
-import useUserInfoStore from '@/store/useUserInfoStore';
-import { getDocumentTitle } from '@/utils';
 import { useState } from 'react';
+import pb from '@/api/pocketbase';
+import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { getDocumentTitle, createRandomId } from '@/utils';
+import { DobbleButtonModal } from '@/components/Molecules';
 
 /*
 1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
@@ -28,6 +29,9 @@ export function ApplicationClub2() {
   const [answerForm, setAnswerForm] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  useCloseModal(isOpenModal, () => {
+    setIsOpenModal(close);
+  });
   // 답변 폼
   const handleAnswerForm = (e) => {
     setAnswerForm(e.target.value);
@@ -36,9 +40,9 @@ export function ApplicationClub2() {
   //제출 버튼
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (answerForm) {
+    if (!isOpenModal && answerForm) {
       const answerData = {
-        id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
+        id: createRandomId(),
         socialing: club.id,
         answerUser: userInfo.id,
         answer: answerForm,

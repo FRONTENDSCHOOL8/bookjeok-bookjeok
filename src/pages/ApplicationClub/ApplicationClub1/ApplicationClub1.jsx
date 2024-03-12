@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 export function ApplicationClub1() {
   const { clubId } = useParams();
-  console.log(clubId);
   const [isAgreement, setIsAgreement] = useState(false);
 
   const handleChecked = () => {
