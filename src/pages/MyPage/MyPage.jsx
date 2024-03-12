@@ -73,7 +73,7 @@ export function MyPage() {
         <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
-        <main className="flex flex-grow flex-col justify-center bg-white px-4">
+        <main className="flex flex-grow flex-col bg-white px-4">
           <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
