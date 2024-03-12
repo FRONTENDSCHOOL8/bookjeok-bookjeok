@@ -1,4 +1,4 @@
-import { string, bool } from 'prop-types';
+import { string, bool, oneOfType, node } from 'prop-types';
 
 function CheckboxForm({
   className,
@@ -43,5 +43,5 @@ CheckboxForm.propTypes = {
   name: string,
   value: string,
   checked: bool,
-  children: string,
+  children: oneOfType([string, node]),
 };
