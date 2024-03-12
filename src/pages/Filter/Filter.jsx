@@ -1,54 +1,25 @@
-import { CheckboxForm, MainButton, NomalTitle } from '@/components/Atoms';
+import { MainButton, NomalTitle } from '@/components/Atoms';
+import FilterList from '@/components/Molecules/FilterList/FilterList';
 import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
 import { getDocumentTitle } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-
-function FilterList() {
-  const filterList = useLoaderData();
-
-  const { addFilter, removeFilter, filterListState } = useFilterStore(
-    (state) => ({
-      addFilter: state.addFilter,
-      removeFilter: state.removeFilter,
-      filterListState: state.filterList,
-    })
-  );
-
-  const handleFilterCheckbox = (e) => {
-    const { name, checked } = e.target;
-    if (checked) {
-      addFilter(name);
-    } else {
-      removeFilter(name);
-    }
-  };
-
-  return filterList.map(({ id, title }) => {
-    return (
-      <li key={id}>
-        <CheckboxForm
-          name={title}
-          className="h-[64px]"
-          id={id}
-          onChange={handleFilterCheckbox}
-          checked={filterListState.includes(title)}
-        >
-          {title}
-        </CheckboxForm>
-      </li>
-    );
-  });
-}
+import { fetchFilter } from './fetchFilter';
 
 export function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
   const resetFilter = useFilterStore((state) => state.resetFilter);
 
-  // useLayoutEffect(() => {
-  //   resetFilter();
-  // }, [resetFilter]);
+  const loadedfilterList = useLoaderData();
+
+  const { data: cachedFilterList } = useQuery({
+    queryKey: ['filter'],
+    queryFn: fetchFilter(),
+    initialData: loadedfilterList,
+  });
+
   return (
     <>
       <Helmet>
@@ -78,8 +49,11 @@ export function Filter() {
           <NomalTitle backLink resetButton textButton path="mainClub">
             필터
           </NomalTitle>
+
           <ul className="mx-4">
-            <FilterList />
+            {cachedFilterList.map((filterInfo) => {
+              return <FilterList key={filterInfo.id} filterInfo={filterInfo} />;
+            })}
           </ul>
           <div className="p-4">
             <MainButton as="button" type="submit">

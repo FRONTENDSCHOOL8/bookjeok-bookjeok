@@ -20,7 +20,6 @@ import {
 } from '@/pages/DetailBookReview';
 import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
 import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
-import { Filter, loader as filterListLoader } from '@/pages/Filter';
 import { Intro } from '@/pages/Intro';
 import { Login } from '@/pages/Login';
 import {
@@ -51,12 +50,10 @@ const routingPages = [
   },
   {
     path: '/mainClub/filter',
-    element: (
-      <ProtectRoute>
-        <Filter />
-      </ProtectRoute>
-    ),
-    loader: filterListLoader,
+    async lazy() {
+      const { loader, Filter } = await import('@/pages/Filter');
+      return { Component: Filter, loader: loader(queryClient) };
+    },
   },
   {
     path: '/mainClub/:clubId',
