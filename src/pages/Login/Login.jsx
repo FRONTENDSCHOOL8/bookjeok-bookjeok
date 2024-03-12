@@ -1,12 +1,12 @@
-import { getDocumentTitle, validateEmail } from '@/utils';
-import { Helmet } from 'react-helmet-async';
-import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
-import { useRef, useState, useCallback } from 'react';
-import { useCloseModal } from '@/hooks';
 import pb from '@/api/pocketbase';
-import useUserInfoStore from '@/store/useUserInfoStore';
-import { DobbleButtonModal } from '@/components/Molecules';
+import { useCloseModal } from '@/hooks';
+import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
+import { useRef, useState, useCallback } from 'react';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { getDocumentTitle, validateEmail } from '@/utils';
+import { DobbleButtonModal } from '@/components/Molecules';
+import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
 
 export function Login() {
   const emailRef = useRef('');
