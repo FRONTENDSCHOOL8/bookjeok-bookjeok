@@ -1,5 +1,4 @@
-// import { queryClient } from '@/client/queryClient';
-import { fetchClubList } from './fetchClubList';
+import { getClubListQueryOption } from './queryOption';
 
 export const loader =
   (queryClient) =>
@@ -7,23 +6,16 @@ export const loader =
     const url = new URL(request.url);
     const filters = url.searchParams.get('filters') ?? '';
 
+    const queryOptions = getClubListQueryOption(10, filters);
+
     let clubData = null;
-    const cachedClubData = queryClient.getQueryData(['mainClub', filters]);
-    const ININTIAL_PAGE = 1;
-    const PER_PAGE = 10;
+
+    const cachedClubData = queryClient.getQueryData(queryOptions);
+
     if (cachedClubData) {
       clubData = cachedClubData;
     } else {
-      clubData = await queryClient.fetchInfiniteQuery({
-        queryKey: ['mainClub', filters],
-        queryFn: fetchClubList(filters, PER_PAGE),
-        initialPageParam: ININTIAL_PAGE,
-        getNextPageParam: (lastPage, allPages) => {
-          return lastPage.page < lastPage.totalPages
-            ? allPages.length + 1
-            : null;
-        },
-      });
+      clubData = await queryClient.fetchInfiniteQuery(queryOptions);
     }
     return clubData;
   };

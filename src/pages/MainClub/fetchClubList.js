@@ -3,6 +3,7 @@ import { getPbImgs } from '@/utils';
 
 export const fetchClubList = (filters, perPage) => async (pageInfo) => {
   let filterQuery = null;
+
   if (filters) {
     if (filters.includes(',')) {
       filterQuery = filters
@@ -31,5 +32,5 @@ export const fetchClubList = (filters, perPage) => async (pageInfo) => {
   });
   clubs.items = clubItems;
 
-  return clubs.items;
+  return clubs;
 };

@@ -18,7 +18,7 @@ function ClubList({ id, title, img, schedule }) {
         </figcaption>
         <figure className="shrink-0 basis-20">
           <img
-            className="h-[100px] w-[86px] w-full object-cover"
+            className="h-[100px] w-full object-cover"
             src={img}
             alt={`${title}`}
           />

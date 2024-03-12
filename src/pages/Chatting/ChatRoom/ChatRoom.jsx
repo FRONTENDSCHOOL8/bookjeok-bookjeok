@@ -86,7 +86,8 @@ export function ChatRoom() {
     onMutate: async (newMessage) => {
       const querykey = ['chattingRoom', chattingRoomId, observer];
       await queryClient.cancelQueries({ querykey });
-      const perviousChattingRoom = queryClient.getQueryData(querykey);
+      const previousChattingRoom = queryClient.getQueryData(querykey);
+      console.log(previousChattingRoom);
       newMessage.created = new Date().toISOString();
 
       const nextChattingRoom = {
@@ -100,12 +101,13 @@ export function ChatRoom() {
 
       queryClient.setQueryData(querykey, nextChattingRoom);
       document.getElementById('text').value = '';
-      return { perviousChattingRoom };
+      return { previousChattingRoom };
     },
     onError: (error, updateData, context) => {
+      console.log(error, updateData, context);
       queryClient.setQueryData(
         ['chattingRoom', chattingRoomId],
-        context.perviousChattingRoom
+        context.previousChattingRoom
       );
     },
     onSettled: () => {
@@ -120,6 +122,7 @@ export function ChatRoom() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const newMessage = Object.fromEntries(formData.entries());
+
     // const messageId = createRandomId();
     // data.id = messageId;
     newMessage.sendUser = userInfo.id;
