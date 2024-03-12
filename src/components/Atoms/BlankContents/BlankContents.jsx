@@ -42,7 +42,7 @@ function BlankContents({ title, description, children }) {
       </svg>
       <div className="flex flex-col items-center gap-2">
         <p className="text-h-2-semibold">{title}</p>
-        <p className="w-[75%] break-all text-center text-b-1-regular">
+        <p className="w-[75%] break-keep text-center text-b-1-regular">
           {description}
         </p>
         <p>{children}</p>

@@ -13,12 +13,12 @@ function ClubList({ id, title, img, schedule }) {
           <p className="text-b-1-medium leading-7 text-bjblack">
             <span className="line-clamp-2">{title}</span>
           </p>
-          <span className="text-b-2-regular text-bjgray-500">
+          <span className="text-b-2-medium text-bjgray-500">
             <Svg
               color="#9e9e9e"
-              size={14}
+              size={15}
               id="calendar"
-              className="mr-1 inline-block align-middle"
+              className="mr-1 inline-block"
             />
             <span className="align-middle">{schedule}</span>
           </span>
