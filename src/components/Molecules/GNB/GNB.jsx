@@ -37,7 +37,7 @@ function GNB({ createClub, createBookReview, className }) {
       return classNames + (isActive ? ` ${activeClassName}` : '');
     };
   const classNames = 'flex flex-col p-1 items-center';
-  const activeClaseNames = 'border-b-2 border-bjyellow-500 ';
+  const activeClaseNames = 'border-b-4 border-bjyellow-500';
   return (
     <ul
       className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 shadow-inner ${className}`}

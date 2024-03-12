@@ -42,7 +42,7 @@ export function MainClub() {
       <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
         <MainKindToggle />
-        <section className="flex items-center justify-center gap-4 px-4 py-2">
+        <section className="flex items-center justify-center gap-4 px-4 py-4">
           <MainButton
             size="sm"
             color="secondary"

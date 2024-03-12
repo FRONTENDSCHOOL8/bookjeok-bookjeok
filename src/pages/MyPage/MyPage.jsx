@@ -63,17 +63,18 @@ export function MyPage() {
     pb.authStore.clear();
   };
 
+  console.log(fetchAllUserInfo);
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col  bg-white">
+      <div className="relative flex h-screen w-full flex-col bg-white">
         <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
-        <main className="flex flex-col bg-white px-4">
-          <div className="mb-5 mt-12 flex flex-col items-center gap-2">
+        <main className="flex flex-grow flex-col justify-center bg-white px-4">
+          <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
               src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
@@ -97,9 +98,9 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {fetchAllUserInfo?.expand || BookReviewList ? (
+          {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
+              <Accordion open mainText="참여중인 모임" className="mb-4 mt-8">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
@@ -114,7 +115,8 @@ export function MyPage() {
                   )}
                 </ul>
               </Accordion>
-              <Accordion open mainText="주최중인 모임" className="mb-4">
+              <hr />
+              <Accordion open mainText="주최중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList
@@ -127,7 +129,12 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <Accordion className="mb-[100px]" open mainText="내가 쓴 독후감">
+              <hr />
+              <Accordion
+                className="mb-[100px] mt-4"
+                open
+                mainText="내가 쓴 독후감"
+              >
                 <ul className=" flex flex-col gap-5 px-1">
                   {bookReviewData?.map((item) => (
                     <Link
@@ -162,7 +169,7 @@ export function MyPage() {
               title="아무런 활동이 없으시네요..."
               description="북적북적에서 독후감을 기록하고,
             다른 사람과 함께 생각을 공유해보세요 !"
-            ></BlankContents>
+            />
           )}
         </main>
         <ButtonModalForManageMent

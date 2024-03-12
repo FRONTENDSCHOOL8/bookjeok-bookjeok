@@ -56,7 +56,7 @@ export function ChatRoomListPage() {
             type="search"
             searchIcon
             placeholder="모임을 입력해주세요."
-            className="py-2"
+            className="py-4"
           >
             검색
           </ThinTextForm>
@@ -103,16 +103,16 @@ const ChatList = ({ id, src, title, updated, message }) => {
     <li>
       <Link to={`/chatRoom/${id}`} className="flex h-16 items-center gap-x-4">
         <RoundImage src={src} alt="alt" size="md"></RoundImage>
-        <div className="flex w-full justify-between">
+        <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <span className="line-clamp-1 text-b-1-regular text-bjblack">
               {title}
             </span>
-            <p className="max-w-[290px] truncate  text-b-2-regular text-bjgray-500">
+            <p className="max-w-[290px] truncate text-b-2-regular text-bjgray-500">
               {message}
             </p>
           </div>
-          <span className="text-b-3-light text-bjgray-400">
+          <span className="whitespace-nowrap pl-2 text-b-3-light text-bjgray-400">
             {getCreatedHoursAgo(updated)}
           </span>
         </div>
