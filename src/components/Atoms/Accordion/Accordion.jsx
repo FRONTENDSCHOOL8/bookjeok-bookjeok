@@ -18,30 +18,30 @@ function Accordion({
   return (
     <details className={`${accordionStyle.className} ${className}`} open={open}>
       <summary className="flex h-[64px] flex-row items-center">
-        <div className="flex flex-1 flex-col">
+        <span className="flex flex-1 flex-col">
           {applicant ? (
-            <p className="text-h-2-semibold text-bjblack">
+            <span className="text-h-2-semibold text-bjblack">
               참여 대기 멤버 <span className="text-bjred-400">{applicant}</span>
               명
-            </p>
+            </span>
           ) : (
             ''
           )}
           {confirmUser ? (
-            <p className="text-h-2-semibold text-bjblack">
+            <span className="text-h-2-semibold text-bjblack">
               참여 확정 멤버 {limitPerson}명 중{' '}
               <span className="text-bjgray-500">{confirmUser}</span>명
-            </p>
+            </span>
           ) : (
             ''
           )}
           {mainText ? (
-            <p className="text-h-2-semibold text-bjblack">{mainText}</p>
+            <span className="text-h-2-semibold text-bjblack">{mainText}</span>
           ) : (
             ''
           )}
-          <p className="text-b-2-regular text-bjgray-500">{smallText}</p>
-        </div>
+          <span className="text-b-2-regular text-bjgray-500">{smallText}</span>
+        </span>
         <div className="block group-open/item:hidden">
           <Svg id="chevron-down" />
         </div>
