@@ -6,4 +6,5 @@ export { default as validatePassword } from '@/utils/validatePassword';
 export { default as createRandomId } from '@/utils/createRandomId';
 export { default as validateEmail } from '@/utils/validateEmail';
 export { default as getPbImgs } from '@/utils/getPbImgs';
-export { getDay, calcDay } from '@/utils/getDay';
+export { default as calcDay } from '@/utils/calcDay';
+export { default as getDay } from '@/utils/getDay';

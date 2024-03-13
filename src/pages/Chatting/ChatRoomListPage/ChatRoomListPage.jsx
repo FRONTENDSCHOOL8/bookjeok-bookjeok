@@ -1,5 +1,10 @@
 import pb from '@/api/pocketbase';
-import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
+import {
+  BlankContents,
+  NomalTitle,
+  RoundImage,
+  ThinTextForm,
+} from '@/components/Atoms';
 import { DobbleButtonModal, GNB } from '@/components/Molecules';
 import { useDebounce } from '@/hooks';
 import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
@@ -78,6 +83,8 @@ export function ChatRoomListPage() {
       </DobbleButtonModal>
     );
   }
+
+  const content = isSearch ? searchResult : chattingRoomData;
   return (
     <>
       <Helmet>
@@ -96,35 +103,25 @@ export function ChatRoomListPage() {
             검색
           </ThinTextForm>
           <ul>
-            {isSearch
-              ? searchResult.map(
-                  ({ id, created, expand: { socialing, message } }) => (
-                    <ChatList
-                      title={socialing.title}
-                      key={socialing.id}
-                      id={id}
-                      updated={
-                        message ? message[message.length - 1].updated : created
-                      }
-                      src={getPbImgs(socialing)}
-                      message={message ? message[message.length - 1].text : ''}
-                    ></ChatList>
-                  )
-                )
-              : chattingRoomData.map(
-                  ({ id, created, expand: { socialing, message } }) => (
-                    <ChatList
-                      title={socialing.title}
-                      key={socialing.id}
-                      id={id}
-                      updated={
-                        message ? message[message.length - 1].updated : created
-                      }
-                      src={getPbImgs(socialing)}
-                      message={message ? message[message.length - 1].text : ''}
-                    ></ChatList>
-                  )
-                )}
+            {content && content.length > 1 ? (
+              content.map(({ id, created, expand: { socialing, message } }) => (
+                <ChatList
+                  title={socialing.title}
+                  key={socialing.id}
+                  id={id}
+                  updated={
+                    message ? message[message.length - 1].updated : created
+                  }
+                  src={getPbImgs(socialing)}
+                  message={message ? message[message.length - 1].text : ''}
+                ></ChatList>
+              ))
+            ) : (
+              <BlankContents
+                title="아직 참여한 채팅이 없어요."
+                description="북적북적 모임에 참여하시고, 다양한 사람들과 대화를 나눠보세요!"
+              />
+            )}
           </ul>
         </main>
         <GNB createClub className="fixed" />
