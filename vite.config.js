@@ -6,8 +6,9 @@ import viteImagemin from '@vheemstra/vite-plugin-imagemin';
 import imageminGifSicle from 'imagemin-gifsicle';
 import imageminMozjpeg from 'imagemin-mozjpeg';
 import imageminPngQuant from 'imagemin-pngquant';
-// import imageminSvgo from 'imagemin-svgo';
+import imageminSvgo from 'imagemin-svgo';
 import imageminWebp from 'imagemin-webp';
+import VitePluginAssetsCopy from './plugins/vite-plugin-assets-copy';
 
 export default defineConfig({
   plugins: [
@@ -22,7 +23,7 @@ export default defineConfig({
         jpg: imageminMozjpeg(),
         png: imageminPngQuant(),
         gif: imageminGifSicle(),
-        // svg: imageminSvgo(),
+        svg: imageminSvgo(),
       },
       makeWebp: {
         plugins: {
@@ -30,6 +31,15 @@ export default defineConfig({
           png: imageminWebp(),
         },
       },
+    }),
+    VitePluginAssetsCopy({
+      // [입력 파일]
+      // 복사할 정적 파일 설정
+      input: './public/icons/sprite.svg',
+      // [출력 파일]
+      // 출력할 파일 경로 및 이름 설정
+      // 출력 위치는 `viteConfig.bulid.outDir` 내부
+      output: './icons/sprite.svg',
     }),
   ],
   server: {
@@ -51,6 +61,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'dist',
     cssCodeSplit: true,
     rollupOptions: {
       output: {
