@@ -12,7 +12,7 @@ function NomalTitle({
 }) {
   const nomalTitleStyle = {
     className:
-      'h-[56px] flex z-10 flex-row justify-center items-center shrink-0 bg-white shadow-md',
+      'z-10 flex h-[56px] items-center justify-between bg-white shadow-md',
   };
   const navigate = useNavigate();
   const goBack = () => {
@@ -49,15 +49,15 @@ function NomalTitle({
 
   return (
     <header className={`${nomalTitleStyle.className} ${className}`}>
-      <div className="flex flex-1 items-center justify-start">
-        {backLinkElement}
-      </div>
-      <div className="flex flex-1 flex-grow flex-col items-center justify-center whitespace-nowrap">
-        <h1 className="text-b-0-medium text-bjblack">{children}</h1>
+      <div className="basis-[56px]">{backLinkElement}</div>
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-b-0-medium text-bjblack">
+          <span className="line-clamp-1">{children}</span>
+        </h1>
         <span className="text-b-3-medium text-bjgray-500">{subText}</span>
       </div>
-      <div className="flex flex-1 items-center justify-end">
-        {resetButtonElement}
+      <div className="basis-[56px]">
+        <span className="whitespace-nowrap">{resetButtonElement}</span>
       </div>
     </header>
   );
