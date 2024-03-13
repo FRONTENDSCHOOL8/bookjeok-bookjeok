@@ -84,7 +84,7 @@ function ClubCard({
         </Link>
         <LikeButton
           // onClick={handleLike(id)}
-          active={like.includes(userInfo.id)}
+          active={userInfo?.id ? like.includes(userInfo?.id) : false}
         />
       </figure>
       <Link to={`/mainClub/${id}`} aria-label={`${title}`}>

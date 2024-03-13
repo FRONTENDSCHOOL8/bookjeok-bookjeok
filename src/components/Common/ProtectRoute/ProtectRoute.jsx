@@ -11,7 +11,6 @@ function isEmpty(obj) {
 function ProtectRoute({ redirectPath = '/', children }) {
   const { userInfo } = useUserInfoStore();
 
-  // 로그인 없이 편하게 사용하려면 아래의 세줄을 주석처리 할 것, 다만 commit시 오류나 나므로 주석을 풀고 커밋
   if (isEmpty(userInfo)) {
     return (
       <DobbleButtonModal
