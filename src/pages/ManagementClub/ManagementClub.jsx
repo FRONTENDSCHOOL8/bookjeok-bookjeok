@@ -3,7 +3,7 @@ import {
   Accordion,
   AccordionChidren1,
   NomalTitle,
-  TextForm,
+  TextBox,
 } from '@/components/Atoms';
 import { ButtonModalForManageMent, GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
@@ -93,15 +93,7 @@ export function ManagementClub() {
         <NomalTitle backLink>소셜링 멤버 관리</NomalTitle>
         <main className="mb-[65px] px-4">
           <h2 className="py-4 text-h-2-semibold text-bjblack">질문</h2>
-          <TextForm
-            type="text"
-            hiddenLabel
-            value={socialing.query}
-            readOnly
-            className="mb-4 mt-2"
-          >
-            질문 내용
-          </TextForm>
+          <TextBox>{socialing.query}</TextBox>
           <Accordion
             smallText={
               applicant === undefined

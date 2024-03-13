@@ -1,5 +1,5 @@
-import { RoundImage, SmallButton, TextForm } from '@/components/Atoms';
-import { string, func, bool } from 'prop-types';
+import { RoundImage, SmallButton, TextBox } from '@/components/Atoms';
+import { bool, func, string } from 'prop-types';
 function AccordionChildren1({ confirmed, src, nickname, answer, onClick }) {
   return (
     <div>
@@ -27,12 +27,7 @@ function AccordionChildren1({ confirmed, src, nickname, answer, onClick }) {
           ''
         ) : (
           <dd className="py-2">
-            <TextForm
-              type="text"
-              hiddenLabel
-              value={answer}
-              readOnly
-            ></TextForm>
+            <TextBox>{answer}</TextBox>
           </dd>
         )}
       </dl>
