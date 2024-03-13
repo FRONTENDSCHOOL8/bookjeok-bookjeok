@@ -3,6 +3,7 @@ import { Avatar } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 
 export function DetailClub() {
@@ -22,20 +23,29 @@ export function DetailClub() {
     id,
   } = useLoaderData();
   const { userInfo } = useUserInfoStore();
+  const { pathname } = useLocation();
+  const ogURL = `https://bookjeok-bookjeok.vercel.app/${pathname}`;
 
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
+        <meta name="description" content={detail} />
+        <meta property="og:site_name" content={getDocumentTitle(title)} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={detail} />
+        <meta property="og:image" content={photo} />
+        <meta property="og:url" content={ogURL} />
+        <meta property="og:type" content="website" />
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col ">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink path="mainClub">
           모임 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col pb-[96px]">
-          <figure className="relative overflow-hidden">
+          <figure className="relative">
             <img
-              className="h-[274px] w-[430px] object-cover"
+              className="aspect-[5/3] w-full object-cover brightness-75"
               src={photo}
               alt={title}
             />
@@ -43,36 +53,32 @@ export function DetailClub() {
               {expand.genre.title}
             </Badge>
           </figure>
-
-          <Avatar
-            nickName={expand.createUser.nickname}
-            src={
-              expand.createUser.img == '' ? null : getPbImgs(expand.createUser)
-            }
-            text={title}
-          ></Avatar>
-
-          <section className="bg-bjgray-50 flex h-full flex-col gap-4 px-4 pt-10">
-            <div className="flex justify-center gap-2 pt-[63px] text-b-3-light text-bjgray-500">
+          <section className="flex flex-1 flex-col gap-4 bg-bjgray-50 px-4 pb-4 shadow-inner">
+            <Avatar
+              nickName={expand.createUser.nickname}
+              src={
+                expand.createUser.img == ''
+                  ? null
+                  : getPbImgs(expand.createUser)
+              }
+              text={title}
+              className="relative -mt-[58px]"
+            ></Avatar>
+            <div className="flex flex-wrap justify-center gap-2 text-b-2-medium text-bjgray-500">
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="pin" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={15} id="pin" className="mr-1" />
                 {!isOffline ? '온라인' : location}
               </span>
               <span className="flex items-center">
-                <Svg
-                  color="#9e9e9e"
-                  size={12}
-                  id="calendar"
-                  className="mr-[2px]"
-                />
+                <Svg color="#9e9e9e" size={15} id="calendar" className="mr-1" />
                 {calcDay(dateTime)}
               </span>
               <span className="flex items-center">
-                <Svg color="#9e9e9e" size={12} id="user" className="mr-[2px]" />
+                <Svg color="#9e9e9e" size={15} id="user" className="mr-1" />
                 {confirmUser.length}/{limitPerson}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap p-4 text-b-3-light text-bjblack">
+            <pre className="whitespace-pre-wrap p-4 px-6 text-b-1-light text-bjblack">
               {detail}
             </pre>
           </section>
@@ -86,7 +92,7 @@ export function DetailClub() {
           ) : (
             <MainButton
               color="custom"
-              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium focus:outline-none focus-visible:ring focus-visible:ring-bjblack/10 ${!applicant.includes(userInfo.id) && !confirmUser.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
+              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium ${!applicant.includes(userInfo.id) && !confirmUser.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
               to={`/applicationClub/${id}`}
             >
               {applicant.includes(userInfo.id) ||

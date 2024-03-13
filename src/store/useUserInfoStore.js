@@ -6,7 +6,6 @@ const useUserInfoStore = create(
     (set) => ({
       userInfo: null,
       setUserInfo: (userInfo) => {
-        console.log(userInfo);
         set({
           userInfo,
         });

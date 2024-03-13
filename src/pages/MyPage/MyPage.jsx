@@ -3,6 +3,7 @@ import {
   NomalTitle,
   MainButton,
   RoundImage,
+  BlankContents,
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
@@ -13,6 +14,7 @@ import {
   ClubList,
   GNB,
   ButtonModalForManageMent,
+  BookReviewList,
 } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
@@ -34,14 +36,14 @@ export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: clubData } = useQuery({
+  const { data: fetchAllUserInfo } = useQuery({
     queryFn: async () => {
-      const fetchAllClubInfo = await pb
+      const fetchAllUserInfo = await pb
         .collection('users')
         .getOne(`${userInfo.id}`, {
           expand: 'createSocialing, participantSocialing',
         });
-      return fetchAllClubInfo.expand;
+      return fetchAllUserInfo;
     },
     queryKey: ['clubInfo', userInfo.id],
   });
@@ -66,13 +68,16 @@ export function MyPage() {
       <Helmet>
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
-      <div className="relative flex h-screen w-full flex-col  bg-white">
-        <NomalTitle backLink path="/">
+      <div className="relative flex h-screen w-full flex-col bg-white">
+        <NomalTitle backLink path="/mainClub">
           마이페이지
         </NomalTitle>
-        <main className="flex flex-col bg-white px-4">
-          <div className="mb-5 mt-12 flex flex-col items-center gap-2">
-            <RoundImage size="xlg" src={getPbImgs(userInfo)}></RoundImage>
+        <main className="flex flex-grow flex-col bg-white px-4">
+          <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
+            <RoundImage
+              size="xlg"
+              src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
+            ></RoundImage>
             <p>{userInfo.nickname}</p>
           </div>
           <div className="flex gap-4">
@@ -92,11 +97,27 @@ export function MyPage() {
               로그아웃
             </MainButton>
           </div>
-          {clubData && (
+          {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="참여중인 모임" className="mb-4 mt-4">
+              <Accordion open mainText="참여중인 모임" className="mb-4 mt-8">
                 <ul className="flex flex-col gap-y-4">
-                  {clubData.participantSocialing.map((item) => (
+                  {fetchAllUserInfo?.expand?.participantSocialing?.map(
+                    (item) => (
+                      <ClubList
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        schedule={calcDay(item.created)}
+                        img={getPbImgs(item)}
+                      />
+                    )
+                  )}
+                </ul>
+              </Accordion>
+              <hr />
+              <Accordion open mainText="주최중인 모임" className="mb-4 mt-4">
+                <ul className="flex flex-col gap-y-4">
+                  {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}
@@ -107,49 +128,51 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <Accordion open mainText="주최중인 모임" className="mb-4">
-                <ul className="flex flex-col gap-y-4">
-                  {clubData.createSocialing.map((item) => (
-                    <ClubList
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      schedule={calcDay(item.created)}
-                      img={getPbImgs(item)}
-                    />
-                  ))}
-                </ul>
-              </Accordion>
-              <Accordion className="mb-[100px]" open mainText="내가 쓴 독후감">
-                <ul className=" flex flex-col gap-5 px-1">
+              <hr />
+              <Accordion
+                className="mb-[100px] mt-4"
+                open
+                mainText="내가 쓴 독후감"
+              >
+                <ul className=" flex flex-col gap-2 px-1">
                   {bookReviewData?.map((item) => (
-                    <Link
-                      className="boreder-b-1"
+                    <li
                       key={item.id}
-                      to={`/mainBookReview/${item.id}`}
+                      className="border-t-[1px] border-bjgray-200 pt-2 first:border-0"
                     >
-                      <div className="my-[7px] flex items-center gap-x-2">
-                        <div>
-                          <p className="line-clamp-1 text-b-0-regular text-bjblack">
-                            {item.title}
-                          </p>
-                          <p className="line-clamp-2 text-b-2-regular text-bjgray-500">
-                            {item.detail}
-                          </p>
+                      <Link
+                        className="boreder-b-1"
+                        to={`/mainBookReview/${item.id}`}
+                      >
+                        <div className="my-[7px] flex items-center gap-x-4">
+                          <div>
+                            <p className="line-clamp-1 text-b-0-regular text-bjblack">
+                              {item.title}
+                            </p>
+                            <p className="mt-1 line-clamp-2 text-b-2-regular text-bjgray-500">
+                              {item.detail}
+                            </p>
+                          </div>
+                          <div className="ml-auto shrink-0">
+                            <img
+                              src={getPbImgs(item)}
+                              alt={item.title}
+                              className="aspect-square w-[70px] rounded-4xl border-[1px] border-bjgray-200 object-cover"
+                            />
+                          </div>
                         </div>
-                        <div className="ml-auto shrink-0">
-                          <img
-                            src={getPbImgs(item)}
-                            alt={item.title}
-                            className="aspect-square w-[54px] rounded-4xl object-cover"
-                          />
-                        </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </Accordion>
             </>
+          ) : (
+            <BlankContents
+              title="아무런 활동이 없으시네요..."
+              description="북적북적에서 독후감을 기록하고,
+            다른 사람과 함께 생각을 공유해보세요 !"
+            />
           )}
         </main>
         <ButtonModalForManageMent

@@ -1,18 +1,18 @@
-import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
-import { getDocumentTitle } from '@/utils';
 import {
   NomalTitle,
   ImageForm,
   TextForm,
   MainButton,
 } from '@/components/Atoms';
-import { DobbleButtonModal } from '@/components/Molecules';
-import { Form, useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import pb from '@/api/pocketbase';
+import { getDocumentTitle } from '@/utils';
+import { Helmet } from 'react-helmet-async';
+import { Form, useParams } from 'react-router-dom';
+import { useDebounce, useCloseModal } from '@/hooks';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { useDebounce } from '@/hooks';
+import { DobbleButtonModal } from '@/components/Molecules';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 /*
 1. duplicated 닉네임일 경우 하단에 에러메시지
@@ -21,12 +21,28 @@ import { useDebounce } from '@/hooks';
   => 이미지/닉네임 변경시 그냥 
 
 */
+
+const error = {
+  'Missing or invalid old password.': '기존 비밀번호를 확인해주세요.',
+  'The length must be between 8 and 72.':
+    '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요',
+  'Cannot be blank.': '비밀번호에 해당하는 입력창은 모두 입력해주세요.',
+  "Values don't match.": '비밀번호가 일치하지 않습니다.',
+  validation_file_size_limit: '지원하지 않는 이미지 사이즈 입니다.',
+};
+
 export function EditProfile() {
   const { userId } = useParams();
-  const { setUserInfo } = useUserInfoStore((state) => state);
-  const [editUserInfo, setEditUserInfo] = useState();
-  const debouncedData = useDebounce(editUserInfo, 700);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorContents, setErrorContents] = useState({});
+  const [editUserInfo, setEditUserInfo] = useState(null);
+  const debouncedData = useDebounce(editUserInfo, 700);
+  const { setUserInfo } = useUserInfoStore((state) => state);
+
+  useCloseModal(isModalOpen, () => {
+    setIsModalOpen(false);
+  });
+
   //이미지 지우는법
   const handleReviewImage = {
     remove: (e) => {
@@ -49,7 +65,7 @@ export function EditProfile() {
   });
 
   // 수정 실행하는 mutation 함수
-  const { mutateAsync: updateUsers } = useMutation({
+  const { mutateAsync: updateUsers, isSuccess } = useMutation({
     mutationFn: async () => {
       const userData = await pb
         .collection('users')
@@ -61,8 +77,12 @@ export function EditProfile() {
       setIsModalOpen(true);
     },
     onError: (error) => {
-      console.log(error.data.data.passwordConfirm.message);
-      console.log(error.data.data.password.message);
+      if (Object.keys(error.data.data)[0] === 'img') {
+        setErrorContents({ title: Object.values(error.data.data)[0].code });
+      } else {
+        setErrorContents({ title: Object.values(error.data.data)[0].message });
+      }
+      setIsModalOpen(true);
     },
   });
 
@@ -81,10 +101,11 @@ export function EditProfile() {
       <Helmet>
         <title>{getDocumentTitle('프로필 수정')}</title>
       </Helmet>
-      <div className="relative flex h-svh w-full flex-col ">
+      <div className="relative flex min-h-svh w-full flex-col ">
         <NomalTitle backLink path="/myPage">
           프로필 수정
         </NomalTitle>
+
         <Form className="flex flex-col gap-4 p-4" onChange={handleEditForm}>
           <ImageForm
             required={false}
@@ -100,7 +121,7 @@ export function EditProfile() {
             name="nickname"
             description={
               hasDuplicatedNickname?.length > 0
-                ? '이미 사용 중인 닉네임 주소입니다.'
+                ? '이미 사용 중인 닉네임입니다.'
                 : ''
             }
           >
@@ -135,28 +156,41 @@ export function EditProfile() {
           <MainButton
             className="mt-auto"
             as="button"
+            color={
+              editUserInfo && hasDuplicatedNickname?.length == 0
+                ? 'primary'
+                : 'secondary'
+            }
             disabled={!editUserInfo || hasDuplicatedNickname?.length > 0}
             onClick={async () => {
               await updateUsers();
             }}
           >
             저장
-          </MainButton>
+          </MainButton>{' '}
+          {isSuccess ? (
+            <DobbleButtonModal
+              svgId="logo"
+              title="변경성공 ! "
+              open={isModalOpen}
+              closeButton
+              onClick={() => setIsModalOpen(false)}
+              primaryButtonText="홈으로"
+              primaryButtonPath={'/mainClub'}
+              secondaryButtonText="마이페이지로"
+              secondaryButtonPath={'/myPage'}
+            ></DobbleButtonModal>
+          ) : (
+            <DobbleButtonModal
+              svgId="alert"
+              open={isModalOpen}
+              closeButton
+              onClick={() => setIsModalOpen(false)}
+              title={error[`${errorContents.title}`]}
+            ></DobbleButtonModal>
+          )}
         </div>
       </div>
-      {
-        <DobbleButtonModal
-          svgId="logo"
-          title="변경성공 ! "
-          open={isModalOpen}
-          closeButton
-          onClick={() => setIsModalOpen(false)}
-          primaryButtonText="홈으로 이동하기"
-          primaryButtonPath={'/mainClub'}
-          secondaryButtonText="마이페이지로 이동하기"
-          secondaryButtonPath={'/myPage'}
-        ></DobbleButtonModal>
-      }
     </>
   );
 }

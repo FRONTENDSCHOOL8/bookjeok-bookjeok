@@ -17,7 +17,7 @@ export function Intro() {
       <Helmet>
         <title>북적북적</title>
       </Helmet>
-      <div className="flex h-svh w-full justify-center bg-bjyellow-400">
+      <div className="flex min-h-svh w-full justify-center bg-bjyellow-400">
         <div className="absolute top-[30%] flex flex-col items-center gap-2">
           <Svg width={60} height={60} id="logo" />
           <h1 className="text-h-1-semibold">북적북적</h1>
@@ -28,10 +28,6 @@ export function Intro() {
             <Link to="/login">로그인</Link> | <Link to="/signup">회원가입</Link>
           </div>
         </div>
-
-        <Link className="absolute bottom-0 left-0" to="/atomMaking">
-          atoms로 이동
-        </Link>
       </div>
     </>
   );

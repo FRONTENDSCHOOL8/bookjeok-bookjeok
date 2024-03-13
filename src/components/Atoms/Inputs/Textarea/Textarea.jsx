@@ -19,7 +19,7 @@ function Textarea({
 }) {
   const textareaStyle = {
     textarea:
-      'w-full p-4 rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus:border-bjgray-400 focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:bg-bjgray-200 disabled:text-bjgray-500',
+      'resize-none w-full p-4 rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus:border-bjgray-400 focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:bg-bjgray-200 disabled:text-bjgray-500',
   };
 
   return (
@@ -43,7 +43,7 @@ function Textarea({
         {...rest}
       />
       <p className="m-0 text-right text-b-2-regular text-bjgray-500">
-        <span className="text-bjblack">{length}</span>/200
+        <span className="text-bjblack">{length}</span>/{maxLength}
       </p>
     </div>
   );

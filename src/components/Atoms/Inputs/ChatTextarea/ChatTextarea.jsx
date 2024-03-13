@@ -1,8 +1,9 @@
-import { bool, number, string } from 'prop-types';
-import Svg from '../../Svg/Svg';
+import { bool, number, string, element, oneOfType, object } from 'prop-types';
+import { Svg } from '@/components/Atoms';
 
 function ChatTextarea({
   className,
+  forwardRef = null,
   label,
   id,
   name,
@@ -31,6 +32,7 @@ function ChatTextarea({
           {label}
         </label>
         <textarea
+          ref={forwardRef}
           id={id}
           name={name}
           value={value}
@@ -46,7 +48,7 @@ function ChatTextarea({
           {...rest}
         />
       </div>
-      <button type="button" title="보내기" aria-label="보내기">
+      <button type="submit" title="보내기" aria-label="보내기">
         <Svg id="send" />
       </button>
     </div>
@@ -57,6 +59,7 @@ export default ChatTextarea;
 
 ChatTextarea.propTypes = {
   className: string,
+  forwardRef: oneOfType([element, object]),
   label: string,
   id: string,
   name: string,

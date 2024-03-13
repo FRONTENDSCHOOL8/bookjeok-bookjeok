@@ -1,53 +1,18 @@
-import { CheckboxForm, MainButton, NomalTitle } from '@/components/Atoms';
+import { MainButton, NomalTitle } from '@/components/Atoms';
+import FilterList from '@/components/Molecules/FilterList/FilterList';
 import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-
-function FilterList() {
-  const filterList = useLoaderData();
-
-  const { addFilter, removeFilter, filterListState } = useFilterStore(
-    (state) => ({
-      addFilter: state.addFilter,
-      removeFilter: state.removeFilter,
-      filterListState: state.filterList,
-    })
-  );
-  console.log(filterListState);
-  const handleFilterCheckbox = (e) => {
-    const { name, checked } = e.target;
-    if (checked) {
-      addFilter(name);
-    } else {
-      removeFilter(name);
-    }
-  };
-
-  return filterList.map(({ id, title }) => {
-    return (
-      <li key={id}>
-        <CheckboxForm
-          name={title}
-          className="h-[64px]"
-          id={id}
-          onChange={handleFilterCheckbox}
-        >
-          {title}
-        </CheckboxForm>
-      </li>
-    );
-  });
-}
+import { useNavigate } from 'react-router-dom';
+import useGetFilter from './useGetFilter';
 
 export function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
-  // const resetFilter = useFilterStore((state) => state.resetFilter);
+  const resetFilter = useFilterStore((state) => state.resetFilter);
 
-  // useLayoutEffect(() => {
-  //   resetFilter();
-  // }, [resetFilter]);
+  const cachedFilterList = useGetFilter();
+
   return (
     <>
       <Helmet>
@@ -56,6 +21,10 @@ export function Filter() {
       <main>
         <form
           method="get"
+          onReset={(e) => {
+            e.preventDefault();
+            resetFilter();
+          }}
           onSubmit={(e) => {
             e.preventDefault();
             navigate(
@@ -70,11 +39,14 @@ export function Filter() {
             );
           }}
         >
-          <NomalTitle backLink textButton path="mainClub">
+          <NomalTitle backLink resetButton textButton path="mainClub">
             필터
           </NomalTitle>
+
           <ul className="mx-4">
-            <FilterList />
+            {cachedFilterList.map((filterInfo) => {
+              return <FilterList key={filterInfo.id} filterInfo={filterInfo} />;
+            })}
           </ul>
           <div className="p-4">
             <MainButton as="button" type="submit">

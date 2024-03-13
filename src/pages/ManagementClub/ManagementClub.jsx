@@ -44,7 +44,7 @@ export function ManagementClub() {
     await pb.collection('socialing').update(socialing.id, Data);
     await pb
       .collection('chattingRoom')
-      .update(chattingRoom.id, { user: [...chattingRoom.users, userId] });
+      .update(chattingRoom.id, { users: [...chattingRoom.users, userId] });
     await revalidator.revalidate();
     setModalState({ ...modalState, approveModal: false });
   };
@@ -74,11 +74,9 @@ export function ManagementClub() {
   // 작동이 안됌 ㅜㅠ
   useLayoutEffect(() => {
     pb.collection('socialing').subscribe(socialing.id, (e) => {
-      // console.log(e.record.confirmUser.length === socialing.limitPerson);
       if (e.record.confirmUser.length === socialing.limitPerson) {
         setModalState({ ...modalState, completeModal: true });
       }
-      console.log(modalState);
     });
     return () => {
       pb.collection('socialing').unsubscribe(socialing.id);
@@ -113,26 +111,22 @@ export function ManagementClub() {
             open
             applicant={applicant === undefined ? '0' : applicant.length}
           >
-            {answer === undefined
-              ? ''
-              : answer
-                  .filter(
-                    (item) =>
-                      !item.expand.socialing.confirmUser.includes(
-                        item.answerUser
-                      )
-                  )
-                  .map((item) => {
-                    return (
-                      <AccordionChidren1
-                        key={item.id}
-                        src={getPbImgs(item.expand.answerUser)}
-                        nickname={item.expand.answerUser.nickname}
-                        answer="안녕하세요"
-                        onClick={handleApproveButton(item)}
-                      ></AccordionChidren1>
-                    );
-                  })}
+            {answer
+              ?.filter(
+                (item) =>
+                  !item.expand.socialing.confirmUser.includes(item.answerUser)
+              )
+              .map((item) => {
+                return (
+                  <AccordionChidren1
+                    key={item.id}
+                    src={getPbImgs(item.expand.answerUser)}
+                    nickname={item.expand.answerUser.nickname}
+                    answer={item.answer}
+                    onClick={handleApproveButton(item)}
+                  ></AccordionChidren1>
+                );
+              })}
           </Accordion>
           <Accordion
             open
@@ -140,17 +134,15 @@ export function ManagementClub() {
             confirmUser={socialing.confirmUser.length}
             smallText={confirmUser ? '' : '아직 승인한 신청자가 없습니다.'}
           >
-            {confirmUser === undefined
-              ? ''
-              : confirmUser.map((item) => (
-                  <AccordionChidren1
-                    key={item.id}
-                    src={getPbImgs(item)}
-                    nickname={item.nickname}
-                    onClick={handelCancelButton(item)}
-                    confirmed
-                  ></AccordionChidren1>
-                ))}
+            {confirmUser?.map((item) => (
+              <AccordionChidren1
+                key={item.id}
+                src={getPbImgs(item)}
+                nickname={item.nickname}
+                onClick={handelCancelButton(item)}
+                confirmed
+              ></AccordionChidren1>
+            ))}
           </Accordion>
         </main>
         <GNB className="fixed" createClub />

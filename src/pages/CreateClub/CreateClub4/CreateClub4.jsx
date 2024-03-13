@@ -1,8 +1,10 @@
 import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle, Svg } from '@/components/Atoms';
+import { Loading } from '@/components/Common';
 import { DobbleButtonModal } from '@/components/Molecules';
 import useCreateClubStore from '@/store/useCreateClubStore';
-import { createNumberArray, createRandomId, getDocumentTitle } from '@/utils';
+import { createNumberArray, getDocumentTitle } from '@/utils';
+import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -59,36 +61,45 @@ export function CreateClub4() {
   // 제출 후 모달표시를 위한 상태관리
   const [modalState, setModalState] = useState(false);
 
+  const createNewClub = useMutation({
+    mutationFn: async () => {
+      await pb.collection('socialing').create(clubInfo);
+      const user = await pb.collection('users').getOne(clubInfo.createUser);
+      const clubDataForUser = {
+        createSocialing: [...user.createSocialing, `${clubInfo.id}`],
+      };
+      await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
+      const chattingRoomData = {
+        title: clubInfo.title,
+        socialing: clubInfo.id,
+        users: clubInfo.createUser,
+      };
+      const newChattingRoom = await pb
+        .collection('chattingRoom')
+        .create(chattingRoomData);
+
+      await pb
+        .collection('socialing')
+        .update(clubInfo.id, { chattingRoom: newChattingRoom.id });
+    },
+  });
+
   // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
   const handleSubmitClubInfoForCreate = async (e) => {
     e.preventDefault();
-    await pb.collection('socialing').create(clubInfo);
-    const user = await pb.collection('users').getOne(clubInfo.createUser);
-    const clubDataForUser = {
-      createSocialing: [...user.createSocialing, `${clubInfo.id}`],
-    };
-    await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
-    const chattingRoomId = createRandomId();
-    const chattingRoomData = {
-      id: chattingRoomId,
-      title: clubInfo.title,
-      socialing: clubInfo.id,
-      users: clubInfo.createUser,
-    };
-    await pb.collection('chattingRoom').create(chattingRoomData);
-    await pb
-      .collection('socialing')
-      .update(clubInfo.id, { chattingRoom: chattingRoomId });
+    await createNewClub.mutateAsync();
     setModalState(true);
     await resetClubInfo();
   };
-
+  if (createNewClub.isPending) {
+    return <Loading />;
+  }
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('모임 만들기')}</title>
       </Helmet>
-      <main className="flex h-svh flex-col justify-between">
+      <main className="flex min-h-svh flex-col justify-between">
         <div>
           <NomalTitle backLink subText="4 of 4">
             모임 만들기
@@ -185,7 +196,7 @@ export function CreateClub4() {
             onClick={handleSubmitClubInfoForCreate}
             disabled={!clubInfo.dateTime || !clubInfo.query}
           >
-            다음
+            모임만들기
           </MainButton>
         </div>
       </main>

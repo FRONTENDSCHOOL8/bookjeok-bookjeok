@@ -8,10 +8,6 @@ import {
 } from '@/pages/ApplicationClub/ApplicationClub2';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
-import {
-  CreateClub2,
-  loader as genreLoader,
-} from '@/pages/CreateClub/CreateClub2';
 import { CreateClub3 } from '@/pages/CreateClub/CreateClub3';
 import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
 import {
@@ -19,19 +15,17 @@ import {
   loader as detailBookReviewloader,
 } from '@/pages/DetailBookReview';
 import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
-import { Filter, loader as filterListLoader } from '@/pages/Filter';
+import { EditProfile } from '@/pages/EditProfile';
 import { Intro } from '@/pages/Intro';
 import { Login } from '@/pages/Login';
 import {
   MainBookReview,
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview';
-import { MainClub, loader as clubListLoader } from '@/pages/MainClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
-import { BasicInfo, DetailInfo } from '@/pages/SignUp';
-import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
+import { BasicInfo, DetailInfo } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
@@ -45,17 +39,17 @@ const routingPages = [
   },
   {
     path: '/mainClub',
-    element: <MainClub />,
-    loader: clubListLoader,
+    async lazy() {
+      const { loader, MainClub } = await import('@/pages/MainClub');
+      return { Component: MainClub, loader: loader(queryClient) };
+    },
   },
   {
     path: '/mainClub/filter',
-    element: (
-      <ProtectRoute>
-        <Filter />
-      </ProtectRoute>
-    ),
-    loader: filterListLoader,
+    async lazy() {
+      const { loader, Filter } = await import('@/pages/Filter');
+      return { Component: Filter, loader: loader(queryClient) };
+    },
   },
   {
     path: '/mainClub/:clubId',
@@ -106,12 +100,11 @@ const routingPages = [
   },
   {
     path: '/createClub2',
-    element: (
-      <ProtectRoute>
-        <CreateClub2 />
-      </ProtectRoute>
-    ),
-    loader: genreLoader,
+    async lazy() {
+      const { loader } = await import('@/pages/Filter');
+      const { CreateClub2 } = await import('@/pages/CreateClub/CreateClub2');
+      return { Component: CreateClub2, loader: loader(queryClient) };
+    },
   },
   {
     path: '/createClub3',
@@ -189,7 +182,6 @@ const routingPages = [
         <EditProfile />
       </ProtectRoute>
     ),
-    action: editProfileAction,
   },
   {
     path: '/createBookReview',

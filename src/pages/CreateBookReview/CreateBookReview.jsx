@@ -1,7 +1,3 @@
-import { useState } from 'react';
-import pb from '@/api/pocketbase';
-import { getDocumentTitle } from '@/utils';
-import { Helmet } from 'react-helmet-async';
 import {
   ImageForm,
   MainButton,
@@ -9,10 +5,14 @@ import {
   TextForm,
   Textarea,
 } from '@/components/Atoms';
+import { useState } from 'react';
+import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
+import { useCloseModal } from '@/hooks';
+import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
-
+import { getDocumentTitle, createRandomId } from '@/utils';
 /*
 1.pb api data 
   const data = {
@@ -35,13 +35,16 @@ const style = {
 export function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
   const INITIAL_DATA = {
-    id: crypto.randomUUID().replaceAll('-', '').slice(0, 15),
+    id: createRandomId(),
     writer: userInfo.id,
     detail: '',
     title: '',
   };
   const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
   const [isModalState, setIsModalState] = useState(false);
+  useCloseModal(isModalState, () => {
+    setIsModalState(false);
+  });
 
   const handleReviewForm = {
     set: ({ target }) => {
@@ -66,13 +69,12 @@ export function CreateBookReview() {
       setBookReviewForm({ ...bookReviewForm, img: null });
     },
   };
-  console.log(bookReviewForm.img == null);
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('독후감 쓰기')}</title>
       </Helmet>
-      <div className="flex h-svh flex-col">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink path="mainBookReview">
           독후감 작성하기
         </NomalTitle>
@@ -94,9 +96,7 @@ export function CreateBookReview() {
               >
                 읽은 책 제목
               </TextForm>
-              <span className={`${style['span']}`}>
-                예시) 까라마조프 가의 형제들
-              </span>
+              <span className={`${style['span']}`}>예시) 동물농장</span>
             </div>
             <div className={`${style['div']}`}>
               <TextForm
@@ -151,7 +151,7 @@ export function CreateBookReview() {
       <DobbleButtonModal
         open={isModalState}
         title="독후감 작성 완료! "
-        primaryButtonText="홈에서 확인하기"
+        primaryButtonText="홈으로"
         primaryButtonPath="/mainBookReview"
         secondaryButtonText="내가 쓴 독후감 보기"
         secondaryButtonPath={`/mainBookReview/${bookReviewForm.id}`}

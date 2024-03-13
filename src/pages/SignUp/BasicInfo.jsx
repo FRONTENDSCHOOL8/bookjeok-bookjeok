@@ -50,7 +50,7 @@ export function BasicInfo() {
         .then((data) => {
           setIsRegisteredEmail(data.items.length !== 0);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.error(error));
     }
   }, [debouncedUserInfo.email, isValidateEmail]);
 
@@ -70,7 +70,7 @@ export function BasicInfo() {
 
   return (
     <>
-      <div className="flex h-dvh h-svh flex-col">
+      <div className="flex min-h-svh flex-col">
         <NomalTitle backLink subText="1 of 2">
           회원가입
         </NomalTitle>
