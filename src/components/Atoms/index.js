@@ -9,6 +9,7 @@ export { default as BlankContents } from '@/components/Atoms/BlankContents/Blank
 export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/MainButton';
 export { default as ImageForm } from '@/components/Atoms/Inputs/ImageForm/ImageForm';
 export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioForm';
+export { default as GenreButton } from '@/components/Atoms/GenreButton/GenreButton';
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea';
 export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm';
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';

@@ -2,23 +2,16 @@ import { MainButton, NomalTitle } from '@/components/Atoms';
 import FilterList from '@/components/Molecules/FilterList/FilterList';
 import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
 import { getDocumentTitle } from '@/utils';
-import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import { fetchFilter } from './fetchFilter';
+import { useNavigate } from 'react-router-dom';
+import useGetFilter from './useGetFilter';
 
 export function Filter() {
   const navigate = useNavigate();
   const filterStrings = useFilterStore(getFilterStrings);
   const resetFilter = useFilterStore((state) => state.resetFilter);
 
-  const loadedfilterList = useLoaderData();
-
-  const { data: cachedFilterList } = useQuery({
-    queryKey: ['filter'],
-    queryFn: fetchFilter(),
-    initialData: loadedfilterList,
-  });
+  const cachedFilterList = useGetFilter();
 
   return (
     <>

@@ -10,14 +10,40 @@ import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDebounce } from '@/hooks';
+import pb from '@/api/pocketbase';
 
 export function ChatRoomListPage() {
   const chattingRoom = useLoaderData();
   const { userInfo } = useUserInfoStore();
   const { userId } = useParams();
 
+  const [observer, setObserver] = useState(false);
+
+  useEffect(() => {
+    pb.collection('chattingRoom').subscribe(
+      '*',
+      function (e) {
+        // console.log(e.action);
+        if (
+          e.record.expand.message[e.record.expand.message.length - 1]
+            .sendUser !== userInfo.id
+        ) {
+          setObserver(true);
+          // console.log('조건처리로 업데이트 된', observer);
+        }
+      },
+      { expand: 'message' }
+    );
+
+    return () => {
+      pb.collection('chattingRoom').unsubscribe();
+      setObserver(false);
+      console.log('클린업 함수로 업데이트 된', observer);
+    };
+  }, [observer, userInfo.id]);
+
   const { data: chattingRoomData } = useQuery({
-    queryKey: ['chattingRoomList', userId],
+    queryKey: ['chattingRoomList', userId, observer],
     queryFn: () => FetchChattingRoomList(userId),
     initialData: chattingRoom,
   });
