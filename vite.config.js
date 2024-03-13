@@ -6,7 +6,7 @@ import viteImagemin from '@vheemstra/vite-plugin-imagemin';
 import imageminGifSicle from 'imagemin-gifsicle';
 import imageminMozjpeg from 'imagemin-mozjpeg';
 import imageminPngQuant from 'imagemin-pngquant';
-import imageminSvgo from 'imagemin-svgo';
+// import imageminSvgo from 'imagemin-svgo';
 import imageminWebp from 'imagemin-webp';
 
 export default defineConfig({
@@ -22,7 +22,7 @@ export default defineConfig({
         jpg: imageminMozjpeg(),
         png: imageminPngQuant(),
         gif: imageminGifSicle(),
-        svg: imageminSvgo(),
+        // svg: imageminSvgo(),
       },
       makeWebp: {
         plugins: {
