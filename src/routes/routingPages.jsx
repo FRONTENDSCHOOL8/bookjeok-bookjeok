@@ -19,7 +19,7 @@ import {
   loader as detailBookReviewloader,
 } from '@/pages/DetailBookReview';
 import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
-import { EditProfile, action as editProfileAction } from '@/pages/EditProfile';
+import { EditProfile } from '@/pages/EditProfile';
 import { Intro } from '@/pages/Intro';
 import { Login } from '@/pages/Login';
 import {
@@ -187,7 +187,6 @@ const routingPages = [
         <EditProfile />
       </ProtectRoute>
     ),
-    action: editProfileAction,
   },
   {
     path: '/createBookReview',
