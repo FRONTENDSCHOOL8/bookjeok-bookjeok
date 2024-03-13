@@ -1,16 +1,15 @@
+import pb from '@/api/pocketbase';
 import { NomalTitle, RoundImage, ThinTextForm } from '@/components/Atoms';
-import { GNB } from '@/components/Molecules';
+import { DobbleButtonModal, GNB } from '@/components/Molecules';
+import { useDebounce } from '@/hooks';
+import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getCreatedHoursAgo, getDocumentTitle, getPbImgs } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
 import { string } from 'prop-types';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLoaderData, useParams } from 'react-router-dom';
-import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useDebounce } from '@/hooks';
-import pb from '@/api/pocketbase';
 
 export function ChatRoomListPage() {
   const chattingRoom = useLoaderData();
@@ -40,7 +39,7 @@ export function ChatRoomListPage() {
       setObserver(false);
       console.log('클린업 함수로 업데이트 된', observer);
     };
-  }, [observer, userInfo.id]);
+  }, [observer, userInfo?.id]);
 
   const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoomList', userId, observer],
@@ -66,8 +65,18 @@ export function ChatRoomListPage() {
     );
   }, [debouncedKey, chattingRoomData]);
 
-  if (userInfo.id !== userId) {
-    return <div>잘못된 접근입니다.</div>;
+  if (userInfo?.id !== userId) {
+    return (
+      <DobbleButtonModal
+        open
+        svgId="logo"
+        primaryButtonPath="/"
+        primaryButtonText="로그인 하러가기"
+        title="회원이 아니신가요?"
+      >
+        북적북적을 이용하려면 로그인이 필요합니다.
+      </DobbleButtonModal>
+    );
   }
   return (
     <>

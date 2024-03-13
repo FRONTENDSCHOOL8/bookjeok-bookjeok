@@ -62,11 +62,7 @@ const routingPages = [
   },
   {
     path: '/mainBookReview',
-    element: (
-      <ProtectRoute>
-        <MainBookReview />
-      </ProtectRoute>
-    ),
+    element: <MainBookReview />,
     loader: bookReviewListLoader,
   },
   {
