@@ -131,7 +131,9 @@ export function MyClubList() {
           searchIcon
           placeholder="모임명을 입력해주세요."
           className="px-4 py-4"
-        />
+        >
+          검색
+        </ThinTextForm>
 
         <>
           {(clubData.createdClub?.length == 0) &
