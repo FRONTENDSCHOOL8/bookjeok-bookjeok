@@ -42,12 +42,12 @@ function Accordion({
           )}
           <span className="text-b-2-regular text-bjgray-500">{smallText}</span>
         </span>
-        <div className="block group-open/item:hidden">
+        <span className="block group-open/item:hidden">
           <Svg id="chevron-down" />
-        </div>
-        <div className="hidden group-open/item:block">
+        </span>
+        <span className="hidden group-open/item:block">
           <Svg id="chevron-right" />
-        </div>
+        </span>
       </summary>
       {children}
     </details>
