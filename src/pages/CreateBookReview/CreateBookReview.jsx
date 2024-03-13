@@ -151,7 +151,7 @@ export function CreateBookReview() {
       <DobbleButtonModal
         open={isModalState}
         title="독후감 작성 완료! "
-        primaryButtonText="홈에서 확인하기"
+        primaryButtonText="홈으로"
         primaryButtonPath="/mainBookReview"
         secondaryButtonText="내가 쓴 독후감 보기"
         secondaryButtonPath={`/mainBookReview/${bookReviewForm.id}`}
