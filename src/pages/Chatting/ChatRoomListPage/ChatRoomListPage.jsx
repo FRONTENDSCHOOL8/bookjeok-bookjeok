@@ -76,7 +76,7 @@ export function ChatRoomListPage() {
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle path="mainClub">나의 채팅</NomalTitle>
-        <main className="px-4">
+        <main className="px-4 pb-20">
           <ThinTextForm
             onChange={handleSearch}
             type="search"
