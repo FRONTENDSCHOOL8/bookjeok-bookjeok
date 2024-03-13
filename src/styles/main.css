@@ -23,3 +23,12 @@ input[type='radio']:focus-visible {
 pre {
   font-family: 'Pretendard Variable';
 }
+
+summary::-webkit-details-marker {
+  /* Safari 브라우저용 사용자 정의 스타일 */
+  display: none;
+}
+summary {
+  /* 그 외의 브라우저용 사용자 정의 스타일 */
+  list-style-type: none;
+}
