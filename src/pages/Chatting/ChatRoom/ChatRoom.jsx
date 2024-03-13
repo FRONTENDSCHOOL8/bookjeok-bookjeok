@@ -90,7 +90,6 @@ export function ChatRoom() {
       const querykey = ['chattingRoom', chattingRoomId, observer];
       await queryClient.cancelQueries({ querykey });
       const previousChattingRoom = queryClient.getQueryData(querykey);
-      console.log(previousChattingRoom);
       newMessage.created = new Date().toISOString();
 
       const nextChattingRoom = {
@@ -133,11 +132,16 @@ export function ChatRoom() {
       const isPressedShiftKey = e.shiftKey;
 
       if (isPressedShiftKey && isPressedEnterKey) {
-        console.log('Shift + Enter 눌렀을 때 ');
+        // console.log('Shift + Enter 눌렀을 때 ');
+        textareaRef.current.value += '\n';
       }
-      if (!isPressedShiftKey && isPressedEnterKey) {
+      if (isPressedEnterKey && !isPressedShiftKey) {
+        // console.log('Enter만 눌렀을 때');
+        e.preventDefault();
+        if (!textareaRef.current.value) {
+          return;
+        }
         handleSendMessage(e);
-        console.log('Enter만 눌렀을 때');
       }
     };
     if (textarea) {

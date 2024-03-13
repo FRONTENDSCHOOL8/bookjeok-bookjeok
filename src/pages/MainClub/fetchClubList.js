@@ -19,8 +19,8 @@ export const fetchClubList = (filters, perPage) => async (pageInfo) => {
     .collection('socialing')
     .getList(pageInfo.pageParam, perPage, {
       fields:
-        'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
-      expand: 'genre',
+        'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title,like, expand.like',
+      expand: 'genre,like',
       filter: filterQuery,
       sort: '-created',
     });
