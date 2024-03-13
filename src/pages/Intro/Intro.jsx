@@ -28,10 +28,6 @@ export function Intro() {
             <Link to="/login">로그인</Link> | <Link to="/signup">회원가입</Link>
           </div>
         </div>
-
-        <Link className="absolute bottom-0 left-0" to="/atomMaking">
-          atoms로 이동
-        </Link>
       </div>
     </>
   );
