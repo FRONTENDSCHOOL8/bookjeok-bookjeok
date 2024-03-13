@@ -3,6 +3,7 @@ import { Avatar } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 
 export function DetailClub() {
@@ -22,11 +23,20 @@ export function DetailClub() {
     id,
   } = useLoaderData();
   const { userInfo } = useUserInfoStore();
+  const { pathname } = useLocation();
+  const ogURL = `https://bookjeok-bookjeok.vercel.app/${pathname}`;
 
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle(title)}</title>
+        <meta name="description" content={detail} />
+        <meta property="og:site_name" content={getDocumentTitle(title)} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={detail} />
+        <meta property="og:image" content={photo} />
+        <meta property="og:url" content={ogURL} />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className="flex min-h-svh flex-col">
         <NomalTitle backLink path="mainClub">
@@ -43,7 +53,7 @@ export function DetailClub() {
               {expand.genre.title}
             </Badge>
           </figure>
-          <section className="bg-bjgray-50 flex flex-1 flex-col gap-4 px-4 pb-4 shadow-inner">
+          <section className="flex flex-1 flex-col gap-4 bg-bjgray-50 px-4 pb-4 shadow-inner">
             <Avatar
               nickName={expand.createUser.nickname}
               src={

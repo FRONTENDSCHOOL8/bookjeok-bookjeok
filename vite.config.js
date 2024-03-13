@@ -2,6 +2,12 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import ViteSvgSpriteWrapper from 'vite-svg-sprite-wrapper';
+import viteImagemin from '@vheemstra/vite-plugin-imagemin';
+import imageminGifSicle from 'imagemin-gifsicle';
+import imageminMozjpeg from 'imagemin-mozjpeg';
+import imageminPngQuant from 'imagemin-pngquant';
+import imageminSvgo from 'imagemin-svgo';
+import imageminWebp from 'imagemin-webp';
 
 export default defineConfig({
   plugins: [
@@ -10,6 +16,20 @@ export default defineConfig({
       icons: './src/assets/icons/*.svg',
       outputDir: './public/icons',
       sprite: {},
+    }),
+    viteImagemin({
+      plugins: {
+        jpg: imageminMozjpeg(),
+        png: imageminPngQuant(),
+        gif: imageminGifSicle(),
+        svg: imageminSvgo(),
+      },
+      makeWebp: {
+        plugins: {
+          jpg: imageminWebp(),
+          png: imageminWebp(),
+        },
+      },
     }),
   ],
   server: {
