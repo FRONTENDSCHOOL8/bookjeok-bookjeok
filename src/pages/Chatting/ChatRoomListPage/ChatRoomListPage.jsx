@@ -92,7 +92,7 @@ export function ChatRoomListPage() {
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle path="mainClub">나의 채팅</NomalTitle>
-        <main className="px-4 pb-20">
+        <main className="flex flex-1 flex-col px-4 pb-20">
           <ThinTextForm
             onChange={handleSearch}
             type="search"
@@ -102,7 +102,7 @@ export function ChatRoomListPage() {
           >
             검색
           </ThinTextForm>
-          <ul>
+          <ul className="flex flex-1 flex-col">
             {content && content.length > 1 ? (
               content.map(({ id, created, expand: { socialing, message } }) => (
                 <ChatList
@@ -117,10 +117,12 @@ export function ChatRoomListPage() {
                 ></ChatList>
               ))
             ) : (
-              <BlankContents
-                title="아직 참여한 채팅이 없어요."
-                description="북적북적 모임에 참여하시고, 다양한 사람들과 대화를 나눠보세요!"
-              />
+              <li className="flex flex-1">
+                <BlankContents
+                  title="아직 참여한 채팅이 없어요."
+                  description="북적북적 모임에 참여하시고, 다양한 사람들과 대화를 나눠보세요!"
+                />
+              </li>
             )}
           </ul>
         </main>

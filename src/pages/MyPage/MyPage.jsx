@@ -99,7 +99,7 @@ export function MyPage() {
           </div>
           {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="참여중인 모임" className="mb-4 mt-8">
+              <Accordion open mainText="내가 신청했던 모임" className="mb-4 mt-8">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
@@ -115,7 +115,7 @@ export function MyPage() {
                 </ul>
               </Accordion>
               <hr />
-              <Accordion open mainText="주최중인 모임" className="mb-4 mt-4">
+              <Accordion open mainText="내가 만든 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
                   {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList

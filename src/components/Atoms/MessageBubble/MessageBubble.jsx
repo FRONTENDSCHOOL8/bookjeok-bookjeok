@@ -17,7 +17,7 @@ function MessageBubble({ align = 'left', src, alt, nickname, children, time }) {
           <div className="basis-4/5">
             <p className="text-b-2-regular text-bjgray-500">{nickname}</p>
             <div className="flex flex-row items-end gap-2 group-[.group-right]:flex-row-reverse">
-              <div className="flex min-h-9 items-center justify-start whitespace-pre-line break-keep rounded-[10px] rounded-tl-none bg-bjgray-200 px-4 py-2 text-b-2-medium group-[.group-right]:justify-end group-[.group-left]:rounded-tl-none group-[.group-right]:rounded-tl-[10px] group-[.group-right]:rounded-tr-none group-[.group-right]:bg-bjyellow-400 group-[.group-right]:text-left">
+              <div className="flex min-h-9 items-center justify-start whitespace-pre-wrap rounded-[10px] rounded-tl-none bg-bjgray-200 px-4 py-2 text-b-2-medium group-[.group-right]:justify-end group-[.group-left]:rounded-tl-none group-[.group-right]:rounded-tl-[10px] group-[.group-right]:rounded-tr-none group-[.group-right]:bg-bjyellow-400 group-[.group-right]:text-left">
                 {children}
               </div>
               <time
