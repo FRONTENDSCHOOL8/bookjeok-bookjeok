@@ -1,6 +1,6 @@
 import { string } from 'prop-types';
 
-function RoundImage({ className, size, src, alt, ...rest }) {
+function RoundImage({ className, size, src, alt = '', ...rest }) {
   const roundImageStyle = {
     sm: 'w-[24px] h-[24px]',
     md: 'w-[36px] h-[36px]',

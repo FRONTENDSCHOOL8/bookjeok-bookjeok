@@ -53,6 +53,7 @@ export function CreateClub3() {
               onClick={handleRemoveImage}
               src={clubInfo.img}
               alt={clubInfo.alt}
+              id="img"
             />
             <div className="flex flex-col gap-2">
               <TextForm

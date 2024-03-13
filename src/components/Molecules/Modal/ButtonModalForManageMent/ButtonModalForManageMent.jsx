@@ -27,7 +27,6 @@ function ButtonModalForManageMent({
     <dialog
       className={`${modalStyle.className} ${className}`}
       open={open}
-      role="dialog"
       aria-labelledby="modal-title"
       aria-describedby="modal-text"
       {...rest}

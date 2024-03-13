@@ -9,7 +9,7 @@ function ClubList({ id, title, img, schedule }) {
         to={`/mainClub/${id}`}
         aria-label={`${title} 모임 자세히 보기`}
       >
-        <figcaption className="flex flex-grow flex-col justify-between p-3">
+        <div className="flex flex-grow flex-col justify-between p-3">
           <p className="text-b-1-medium leading-7 text-bjblack">
             <span className="line-clamp-2">{title}</span>
           </p>
@@ -22,7 +22,7 @@ function ClubList({ id, title, img, schedule }) {
             />
             <span className="align-middle">{schedule}</span>
           </span>
-        </figcaption>
+        </div>
         <figure className="shrink-0 basis-[100px]">
           <img
             className="aspect-square w-full object-cover"

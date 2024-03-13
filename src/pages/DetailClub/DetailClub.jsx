@@ -64,7 +64,7 @@ export function DetailClub() {
               text={title}
               className="relative -mt-[58px]"
             ></Avatar>
-            <div className="flex justify-center gap-2 text-b-2-medium text-bjgray-500">
+            <div className="flex flex-wrap justify-center gap-2 text-b-2-medium text-bjgray-500">
               <span className="flex items-center">
                 <Svg color="#9e9e9e" size={15} id="pin" className="mr-1" />
                 {!isOffline ? '온라인' : location}

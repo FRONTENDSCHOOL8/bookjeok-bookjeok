@@ -76,7 +76,7 @@ export function ChatRoomListPage() {
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle path="mainClub">나의 채팅</NomalTitle>
-        <main className="px-4">
+        <main className="px-4 pb-20">
           <ThinTextForm
             onChange={handleSearch}
             type="search"
@@ -128,7 +128,7 @@ const ChatList = ({ id, src, title, updated, message }) => {
   return (
     <li>
       <Link to={`/chatRoom/${id}`} className="flex h-16 items-center gap-x-4">
-        <RoundImage src={src} alt="alt" size="md"></RoundImage>
+        <RoundImage src={src} alt="" size="md"></RoundImage>
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <span className="line-clamp-1 text-b-1-regular text-bjblack">
