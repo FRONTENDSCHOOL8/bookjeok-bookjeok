@@ -1,18 +1,17 @@
-import pb from '@/api/pocketbase';
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
-import { ClubList, GNB } from '@/components/Molecules';
-import useUserInfoStore from '@/store/useUserInfoStore';
 import {
   NomalTitle,
   Svg,
   ThinTextForm,
   BlankContents,
 } from '@/components/Atoms';
+import pb from '@/api/pocketbase';
 import { useDebounce } from '@/hooks';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
-
+import { ClubList, GNB } from '@/components/Molecules';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
 /*
 1. socialing db에서 applicant가 사용자인 경우, 
   creator가 나인 경우를 분리하여 렌더링
@@ -130,7 +129,7 @@ export function MyClubList() {
           onChange={handleSearch}
           type="search"
           searchIcon
-          placeholder="search"
+          placeholder="모임명을 입력해주세요."
           className="px-4 py-4"
         />
 
