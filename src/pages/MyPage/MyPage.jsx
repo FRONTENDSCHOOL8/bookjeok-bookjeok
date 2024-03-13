@@ -118,7 +118,7 @@ export function MyPage() {
               <hr />
               <Accordion open mainText="주최중인 모임" className="mb-4 mt-4">
                 <ul className="flex flex-col gap-y-4">
-                  {fetchAllUserInfo?.expand?.createSocialing.map((item) => (
+                  {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList
                       key={item.id}
                       id={item.id}

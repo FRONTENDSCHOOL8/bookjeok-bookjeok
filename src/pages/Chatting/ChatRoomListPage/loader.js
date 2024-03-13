@@ -8,6 +8,5 @@ export const loader =
     return await queryClient.ensureQueryData({
       queryKey: ['chattingRoomList', userId],
       queryFn: () => FetchChattingRoomList(userId),
-      refetchInterval: 1000,
     });
   };

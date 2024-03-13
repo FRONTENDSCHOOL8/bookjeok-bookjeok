@@ -1,35 +1,21 @@
-import pb from '@/api/pocketbase';
-import { getPbImgs } from '@/utils';
+import { getClubListQueryOption } from './queryOption';
 
-export async function loader({ request }) {
-  const url = new URL(request.url);
-  const filters = url.searchParams.get('filters');
+export const loader =
+  (queryClient) =>
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const filters = url.searchParams.get('filters') ?? '';
 
-  let filterQuery = null;
+    const queryOptions = getClubListQueryOption(10, filters);
 
-  if (filters) {
-    if (filters.includes(',')) {
-      filterQuery = filters
-        .split(',')
-        .map((filter) => `genre.title~"${filter}"`)
-        .join('||');
+    let clubData = null;
+
+    const cachedClubData = queryClient.getQueryData(queryOptions);
+
+    if (cachedClubData) {
+      clubData = cachedClubData;
     } else {
-      filterQuery = `genre.title~"${filters}"`;
+      clubData = await queryClient.fetchInfiniteQuery(queryOptions);
     }
-  }
-
-  const clubs = await pb.collection('socialing').getFullList({
-    fields:
-      'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title',
-    expand: 'genre',
-    filter: filterQuery,
-    sort: '-created',
-  });
-
-  const clubItems = clubs.map((club) => {
-    const photoURL = getPbImgs(club);
-    club.photo = photoURL;
-    return club;
-  });
-  return clubItems;
-}
+    return clubData;
+  };
