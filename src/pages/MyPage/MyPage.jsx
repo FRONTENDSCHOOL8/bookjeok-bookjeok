@@ -63,7 +63,6 @@ export function MyPage() {
     pb.authStore.clear();
   };
 
-
   return (
     <>
       <Helmet>
@@ -137,10 +136,12 @@ export function MyPage() {
               >
                 <ul className=" flex flex-col gap-2 px-1">
                   {bookReviewData?.map((item) => (
-                    <li className="border-t-[1px] border-bjgray-200 pt-2 first:border-0">
+                    <li
+                      key={item.id}
+                      className="border-t-[1px] border-bjgray-200 pt-2 first:border-0"
+                    >
                       <Link
                         className="boreder-b-1"
-                        key={item.id}
                         to={`/mainBookReview/${item.id}`}
                       >
                         <div className="my-[7px] flex items-center gap-x-4">
