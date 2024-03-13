@@ -61,7 +61,7 @@ export function MainClub() {
           </MainButton>
         </section>
         <main className="px-4 py-2">
-          <ul className="mb-[65px] grid grid-cols-2 gap-4">
+          <ul className="mb-[65px] grid grid-cols-2 gap-x-4 gap-y-5">
             {clubList.map((clubInfo) => {
               return <ClubCard key={clubInfo.id} clubInfo={clubInfo} />;
             })}
