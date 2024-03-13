@@ -50,7 +50,7 @@ export function BasicInfo() {
         .then((data) => {
           setIsRegisteredEmail(data.items.length !== 0);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.error(error));
     }
   }, [debouncedUserInfo.email, isValidateEmail]);
 

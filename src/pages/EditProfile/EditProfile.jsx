@@ -175,9 +175,9 @@ export function EditProfile() {
               open={isModalOpen}
               closeButton
               onClick={() => setIsModalOpen(false)}
-              primaryButtonText="홈으로 이동하기"
+              primaryButtonText="홈으로"
               primaryButtonPath={'/mainClub'}
-              secondaryButtonText="마이페이지로 이동하기"
+              secondaryButtonText="마이페이지로"
               secondaryButtonPath={'/myPage'}
             ></DobbleButtonModal>
           ) : (

@@ -22,7 +22,6 @@ export function CreateClub3() {
   const handleInputImage = ({ target: { files } }) => {
     setImage(files[0]);
   };
-  console.log(clubInfo);
 
   const handleRemoveImage = (e) => {
     e.preventDefault();

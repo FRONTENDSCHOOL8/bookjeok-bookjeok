@@ -59,7 +59,7 @@ function Error404() {
           className="mx-4 h-[64px] w-[90%] rounded-5xl bg-bjyellow-400 text-center text-b-1-medium leading-[64px] text-black"
           to="/"
         >
-          홈으로 돌아가기
+          홈으로
         </Link>
       </div>
     </>

@@ -74,11 +74,9 @@ export function ManagementClub() {
   // 작동이 안됌 ㅜㅠ
   useLayoutEffect(() => {
     pb.collection('socialing').subscribe(socialing.id, (e) => {
-      // console.log(e.record.confirmUser.length === socialing.limitPerson);
       if (e.record.confirmUser.length === socialing.limitPerson) {
         setModalState({ ...modalState, completeModal: true });
       }
-      console.log(modalState);
     });
     return () => {
       pb.collection('socialing').unsubscribe(socialing.id);
