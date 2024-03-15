@@ -72,10 +72,20 @@ export function Login() {
           className="flex flex-grow flex-col gap-y-4 p-4"
           onChange={handleLoginForm}
         >
-          <TextForm type="email" placeholder="email@email.com" name="email">
+          <TextForm
+            type="email"
+            id="email"
+            placeholder="email@email.com"
+            name="email"
+          >
             이메일
           </TextForm>
-          <TextForm type="password" placeholder="" name="password">
+          <TextForm
+            type="password"
+            id="password"
+            placeholder=""
+            name="password"
+          >
             비밀번호
           </TextForm>
           <div className="mt-auto">
