@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import { validateEmail, validatePassword } from '@/utils';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
-import pb from '@/api/pocketbase';
+import { useQuery } from '@tanstack/react-query';
 /*
 
 1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
@@ -22,12 +23,23 @@ const INITIAL_USER_INFO = {
   emailVisibility: true,
 };
 
+const INITIAL_VALIDATE_STATE = {
+  isNotRegisteredEmail: false,
+  isValidateEmail: false,
+  isValidatePassword: false,
+  isConfirmPassword: false,
+};
+
 export function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
   const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isconfirmPassword, setIsConfirmPassword] = useState(false);
+  const [isValidateState, setIsValidateState] = useState(
+    INITIAL_VALIDATE_STATE
+  );
+
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
   const handleUserInfo = (e) => {
@@ -37,7 +49,10 @@ export function BasicInfo() {
 
   // 이메일 유효성검사
   useEffect(() => {
-    setIsValidateEmail(validateEmail(debouncedUserInfo.email));
+    setIsValidateState({
+      ...isValidateState,
+      ['isValidateEmail']: validateEmail(debouncedUserInfo.email),
+    });
   }, [debouncedUserInfo.email]);
 
   //이메일 중복검사
@@ -54,6 +69,21 @@ export function BasicInfo() {
     }
   }, [debouncedUserInfo.email, isValidateEmail]);
 
+  const { data } = useQuery({
+    queryKey: ['emailDuplicate', isValidateState],
+    queryFn: async () => {
+      const fetchData = await pb.collection('users').getList(1, 1, {
+        filter: `email="${debouncedUserInfo.email}"`,
+      });
+
+      return setIsValidateState({
+        ...isValidateState,
+        ['isNotRegisteredEmail']: fetchData.items.length == 0,
+      });
+    },
+    enabled: isValidateState.isValidateEmail,
+  });
+  console.log(isValidateState);
   //비밀번호 유효성 검사
   useEffect(() => {
     setIsValidatePassword(validatePassword(debouncedUserInfo.password));
