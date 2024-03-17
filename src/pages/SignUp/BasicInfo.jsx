@@ -55,22 +55,12 @@ export function BasicInfo() {
     });
   }, [debouncedUserInfo.email]);
 
-  //이메일 중복검사
-  useEffect(() => {
-    if (isValidateEmail) {
-      pb.collection('users')
-        .getList(1, 1, {
-          filter: `email="${debouncedUserInfo.email}"`,
-        })
-        .then((data) => {
-          setIsRegisteredEmail(data.items.length !== 0);
-        })
-        .catch((error) => console.error(error));
-    }
-  }, [debouncedUserInfo.email, isValidateEmail]);
-
-  const { data } = useQuery({
-    queryKey: ['emailDuplicate', isValidateState],
+  useQuery({
+    queryKey: [
+      'emailDuplicate',
+      debouncedUserInfo.email,
+      isValidateState.isValidateEmail,
+    ],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
@@ -83,20 +73,27 @@ export function BasicInfo() {
     },
     enabled: isValidateState.isValidateEmail,
   });
-  console.log(isValidateState);
+
   //비밀번호 유효성 검사
   useEffect(() => {
-    setIsValidatePassword(validatePassword(debouncedUserInfo.password));
+    setIsValidateState({
+      ...isValidateState,
+      ['isValidatePassword']: validatePassword(debouncedUserInfo.password),
+    });
   }, [debouncedUserInfo.password]);
 
   //비밀번호 확인
   useEffect(() => {
     if ('passwordConfirm' in userInfo) {
-      setIsConfirmPassword(
-        debouncedUserInfo.password === debouncedUserInfo.passwordConfirm
-      );
+      setIsValidateState({
+        ...isValidateState,
+        ['isConfirmPassword']:
+          debouncedUserInfo.password === debouncedUserInfo.passwordConfirm,
+      });
     }
   }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
+
+  console.log(isValidateState);
 
   return (
     <>
@@ -156,19 +153,7 @@ export function BasicInfo() {
           </Form>
         </div>
         <div className="mt-auto p-4">
-          <MainButton
-            state={userInfo}
-            to={
-              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-                ? '#'
-                : '/signup/detail'
-            }
-            color={
-              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-                ? 'secondary'
-                : 'primary'
-            }
-          >
+          <MainButton state={userInfo} to={'/signup/detail'}>
             다음
           </MainButton>
         </div>
