@@ -2,17 +2,10 @@ import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
+import { useQuery } from '@tanstack/react-query';
 import { validateEmail, validatePassword } from '@/utils';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
-import { useQuery } from '@tanstack/react-query';
-/*
 
-1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
-2. 이메일 중복 검사 => validateEmail true 이면 이펙트 함수 실행 setDuplicatedEmail 상태값 false 
-3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
-4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
-5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
-*/
 const INITIAL_USER_INFO = {
   email: '',
   password: '',
@@ -32,14 +25,9 @@ const INITIAL_VALIDATE_STATE = {
 
 export function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
-  const [isValidateEmail, setIsValidateEmail] = useState(false);
-  const [isValidatePassword, setIsValidatePassword] = useState(false);
-  const [isconfirmPassword, setIsConfirmPassword] = useState(false);
   const [isValidateState, setIsValidateState] = useState(
     INITIAL_VALIDATE_STATE
   );
-
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
   const handleUserInfo = (e) => {
@@ -55,12 +43,9 @@ export function BasicInfo() {
     });
   }, [debouncedUserInfo.email]);
 
+  //중복 이메일 체크
   useQuery({
-    queryKey: [
-      'emailDuplicate',
-      debouncedUserInfo.email,
-      isValidateState.isValidateEmail,
-    ],
+    queryKey: ['emailDuplicate', debouncedUserInfo.email, isValidateState],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
@@ -111,12 +96,15 @@ export function BasicInfo() {
               onChange={handleUserInfo}
               autoComplete="off"
               description={
-                (userInfo.email == '' || isValidateEmail
-                  ? ''
-                  : '이메일 형식이 올바르지 않습니다.',
-                userInfo.email && isValidateEmail && isRegisteredEmail
-                  ? '이미 사용 중인 이메일 주소입니다.'
-                  : '')
+                // (userInfo.email == '' || isValidateState.isValidateEmail
+                //   ? ''
+                //   : '이메일 형식이 올바르지 않습니다.',
+                // userInfo.email &&
+                // isValidateState.isValidateEmail &&
+                // isValidateState.isRegisteredEmail
+                //   ? '이미 사용 중인 이메일 주소입니다.'
+                //   : '')
+                getDescriptionEmail(debouncedUserInfo.email, isValidateState)
               }
             >
               이메일
@@ -129,7 +117,7 @@ export function BasicInfo() {
               onChange={handleUserInfo}
               autoComplete="off"
               description={
-                userInfo.password == '' || isValidatePassword
+                userInfo.password == '' || isValidateState.isValidatePassword
                   ? ''
                   : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
               }
@@ -143,7 +131,7 @@ export function BasicInfo() {
               onChange={handleUserInfo}
               autoComplete="off"
               description={
-                userInfo.password == '' || isconfirmPassword
+                userInfo.password == '' || isValidateState.isconfirmPassword
                   ? ''
                   : '동일한 비밀번호를 입력해주세요.'
               }
@@ -161,3 +149,26 @@ export function BasicInfo() {
     </>
   );
 }
+
+const getDescriptionEmail = (email, state) => {
+  if (email == '') return;
+  if (!validateEmail(email)) {
+    return '이메일 형식이 올바르지 않습니다.';
+  }
+  if (!state.isNotRegisteredEmail) {
+    return '이미 사용 중인 이메일 주소 입니다.';
+  }
+};
+const getDescriptionPassword = (password, state) => {
+  if (password == '') return;
+  if (!state.isValidatePassword) {
+    ('비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요');
+  }
+};
+
+const getDescriptionConfirmPassword = (confirmPassword) => {
+  if (confirmPassword == '') return;
+  if (confirmPassword.password !== confirmPassword.passwordConfirm) {
+    return '동일한 비밀번호를 입력해주세요.';
+  }
+};
