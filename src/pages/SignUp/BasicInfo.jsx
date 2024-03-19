@@ -136,7 +136,25 @@ export function BasicInfo() {
           </Form>
         </div>
         <div className="mt-auto p-4">
-          <MainButton state={userInfo} to={'/signup/detail'}>
+          <MainButton
+            state={userInfo}
+            to={
+              isValidateState.isConfirmPassword &&
+              isValidateState.isValidateEmail &&
+              isValidateState.isNotRegisteredEmail &&
+              isValidateState.isValidatePassword
+                ? '/signup/detail'
+                : null
+            }
+            color={
+              isValidateState.isConfirmPassword &&
+              isValidateState.isValidateEmail &&
+              isValidateState.isNotRegisteredEmail &&
+              isValidateState.isValidatePassword
+                ? 'primary'
+                : 'secondary'
+            }
+          >
             다음
           </MainButton>
         </div>
