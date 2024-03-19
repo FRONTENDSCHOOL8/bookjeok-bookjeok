@@ -8,3 +8,8 @@ export { default as validateEmail } from '@/utils/validateEmail';
 export { default as getPbImgs } from '@/utils/getPbImgs';
 export { default as calcDay } from '@/utils/calcDay';
 export { default as getDay } from '@/utils/getDay';
+export {
+  getDescriptionEmail,
+  getDescriptionPassword,
+  getDescriptionConfirmPassword,
+} from '@/utils/signUp';
