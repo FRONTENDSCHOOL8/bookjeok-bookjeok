@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Form } from 'react-router-dom';
-import { useDebounce } from '@/hooks/index';
-import { validateEmail, validatePassword } from '@/utils';
-import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 import pb from '@/api/pocketbase';
-/*
+import { Form } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDebounce } from '@/hooks/index';
+import { useQuery } from '@tanstack/react-query';
+import {
+  validateEmail,
+  validatePassword,
+  getDescriptionEmail,
+  getDescriptionPassword,
+  getDescriptionConfirmPassword,
+} from '@/utils';
+import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
-1. 이메일 유효성 검사 => validateEmail 유틸함수 사용 setIsValidateEmail 상태값 true
-2. 이메일 중복 검사 => validateEmail true 이면 이펙트 함수 실행 setDuplicatedEmail 상태값 false 
-3. 비밀번호 유효성 검사 => validatePassword 유틸함수 사용 setIsValidatePassword 상태값 true
-4. 비밀번호 확인: 이전에 입력한 비밀번호와 같은지 검사 => setIsConfirmPassword 상태값 true
-5. 전체 confirmPassword, isValidatePassword, isValidateEmail 셋다 true , duplicatedEmail false 여야 다음 버튼 활성화
-*/
 const INITIAL_USER_INFO = {
   email: '',
   password: '',
@@ -22,12 +22,18 @@ const INITIAL_USER_INFO = {
   emailVisibility: true,
 };
 
+const INITIAL_VALIDATE_STATE = {
+  isNotRegisteredEmail: false,
+  isValidateEmail: false,
+  isValidatePassword: false,
+  isConfirmPassword: false,
+};
+
 export function BasicInfo() {
   const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
-  const [isRegisteredEmail, setIsRegisteredEmail] = useState(true);
-  const [isValidateEmail, setIsValidateEmail] = useState(false);
-  const [isValidatePassword, setIsValidatePassword] = useState(false);
-  const [isconfirmPassword, setIsConfirmPassword] = useState(false);
+  const [isValidateState, setIsValidateState] = useState(
+    INITIAL_VALIDATE_STATE
+  );
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
   const handleUserInfo = (e) => {
@@ -37,34 +43,44 @@ export function BasicInfo() {
 
   // 이메일 유효성검사
   useEffect(() => {
-    setIsValidateEmail(validateEmail(debouncedUserInfo.email));
+    setIsValidateState({
+      ...isValidateState,
+      ['isValidateEmail']: validateEmail(debouncedUserInfo.email),
+    });
   }, [debouncedUserInfo.email]);
 
-  //이메일 중복검사
-  useEffect(() => {
-    if (isValidateEmail) {
-      pb.collection('users')
-        .getList(1, 1, {
-          filter: `email="${debouncedUserInfo.email}"`,
-        })
-        .then((data) => {
-          setIsRegisteredEmail(data.items.length !== 0);
-        })
-        .catch((error) => console.error(error));
-    }
-  }, [debouncedUserInfo.email, isValidateEmail]);
+  //중복 이메일 체크
+  useQuery({
+    queryKey: ['emailDuplicate'],
+    queryFn: async () => {
+      const fetchData = await pb.collection('users').getList(1, 1, {
+        filter: `email="${debouncedUserInfo.email}"`,
+      });
+
+      return setIsValidateState({
+        ...isValidateState,
+        ['isNotRegisteredEmail']: fetchData.items.length == 0,
+      });
+    },
+    enabled: isValidateState.isValidateEmail,
+  });
 
   //비밀번호 유효성 검사
   useEffect(() => {
-    setIsValidatePassword(validatePassword(debouncedUserInfo.password));
+    setIsValidateState({
+      ...isValidateState,
+      ['isValidatePassword']: validatePassword(debouncedUserInfo.password),
+    });
   }, [debouncedUserInfo.password]);
 
   //비밀번호 확인
   useEffect(() => {
     if ('passwordConfirm' in userInfo) {
-      setIsConfirmPassword(
-        debouncedUserInfo.password === debouncedUserInfo.passwordConfirm
-      );
+      setIsValidateState({
+        ...isValidateState,
+        ['isConfirmPassword']:
+          debouncedUserInfo.password === debouncedUserInfo.passwordConfirm,
+      });
     }
   }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
 
@@ -83,14 +99,10 @@ export function BasicInfo() {
               id="email"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                (userInfo.email == '' || isValidateEmail
-                  ? ''
-                  : '이메일 형식이 올바르지 않습니다.',
-                userInfo.email && isValidateEmail && isRegisteredEmail
-                  ? '이미 사용 중인 이메일 주소입니다.'
-                  : '')
-              }
+              description={getDescriptionEmail(
+                debouncedUserInfo.email,
+                isValidateState
+              )}
             >
               이메일
             </TextForm>
@@ -101,11 +113,10 @@ export function BasicInfo() {
               name="password"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                userInfo.password == '' || isValidatePassword
-                  ? ''
-                  : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
-              }
+              description={getDescriptionPassword(
+                debouncedUserInfo.password,
+                isValidateState
+              )}
             >
               비밀번호
             </TextForm>
@@ -115,11 +126,10 @@ export function BasicInfo() {
               name="passwordConfirm"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                userInfo.password == '' || isconfirmPassword
-                  ? ''
-                  : '동일한 비밀번호를 입력해주세요.'
-              }
+              description={getDescriptionConfirmPassword(
+                debouncedUserInfo.passwordConfirm,
+                isValidateState
+              )}
             >
               비밀번호 확인
             </TextForm>
@@ -129,14 +139,20 @@ export function BasicInfo() {
           <MainButton
             state={userInfo}
             to={
-              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-                ? '#'
-                : '/signup/detail'
+              isValidateState.isConfirmPassword &&
+              isValidateState.isValidateEmail &&
+              isValidateState.isNotRegisteredEmail &&
+              isValidateState.isValidatePassword
+                ? '/signup/detail'
+                : null
             }
             color={
-              !(isValidatePassword && isconfirmPassword && !isRegisteredEmail)
-                ? 'secondary'
-                : 'primary'
+              isValidateState.isConfirmPassword &&
+              isValidateState.isValidateEmail &&
+              isValidateState.isNotRegisteredEmail &&
+              isValidateState.isValidatePassword
+                ? 'primary'
+                : 'secondary'
             }
           >
             다음
