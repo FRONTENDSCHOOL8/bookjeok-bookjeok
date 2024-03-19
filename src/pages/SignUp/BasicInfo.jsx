@@ -3,7 +3,13 @@ import { Form } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import { useQuery } from '@tanstack/react-query';
-import { validateEmail, validatePassword } from '@/utils';
+import {
+  validateEmail,
+  validatePassword,
+  getDescriptionEmail,
+  getDescriptionPassword,
+  getDescriptionConfirmPassword,
+} from '@/utils';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_USER_INFO = {
@@ -45,7 +51,7 @@ export function BasicInfo() {
 
   //중복 이메일 체크
   useQuery({
-    queryKey: ['emailDuplicate', debouncedUserInfo.email, isValidateState],
+    queryKey: ['emailDuplicate'],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
@@ -78,8 +84,6 @@ export function BasicInfo() {
     }
   }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
 
-  console.log(isValidateState);
-
   return (
     <>
       <div className="flex min-h-svh flex-col">
@@ -95,17 +99,10 @@ export function BasicInfo() {
               id="email"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                // (userInfo.email == '' || isValidateState.isValidateEmail
-                //   ? ''
-                //   : '이메일 형식이 올바르지 않습니다.',
-                // userInfo.email &&
-                // isValidateState.isValidateEmail &&
-                // isValidateState.isRegisteredEmail
-                //   ? '이미 사용 중인 이메일 주소입니다.'
-                //   : '')
-                getDescriptionEmail(debouncedUserInfo.email, isValidateState)
-              }
+              description={getDescriptionEmail(
+                debouncedUserInfo.email,
+                isValidateState
+              )}
             >
               이메일
             </TextForm>
@@ -116,11 +113,10 @@ export function BasicInfo() {
               name="password"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                userInfo.password == '' || isValidateState.isValidatePassword
-                  ? ''
-                  : '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요'
-              }
+              description={getDescriptionPassword(
+                debouncedUserInfo.password,
+                isValidateState
+              )}
             >
               비밀번호
             </TextForm>
@@ -130,11 +126,10 @@ export function BasicInfo() {
               name="passwordConfirm"
               onChange={handleUserInfo}
               autoComplete="off"
-              description={
-                userInfo.password == '' || isValidateState.isconfirmPassword
-                  ? ''
-                  : '동일한 비밀번호를 입력해주세요.'
-              }
+              description={getDescriptionConfirmPassword(
+                debouncedUserInfo.passwordConfirm,
+                isValidateState
+              )}
             >
               비밀번호 확인
             </TextForm>
@@ -149,26 +144,3 @@ export function BasicInfo() {
     </>
   );
 }
-
-const getDescriptionEmail = (email, state) => {
-  if (email == '') return;
-  if (!validateEmail(email)) {
-    return '이메일 형식이 올바르지 않습니다.';
-  }
-  if (!state.isNotRegisteredEmail) {
-    return '이미 사용 중인 이메일 주소 입니다.';
-  }
-};
-const getDescriptionPassword = (password, state) => {
-  if (password == '') return;
-  if (!state.isValidatePassword) {
-    ('비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요');
-  }
-};
-
-const getDescriptionConfirmPassword = (confirmPassword) => {
-  if (confirmPassword == '') return;
-  if (confirmPassword.password !== confirmPassword.passwordConfirm) {
-    return '동일한 비밀번호를 입력해주세요.';
-  }
-};
