@@ -1,8 +1,3 @@
-import pb from '@/api/pocketbase';
-import { Form } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useDebounce } from '@/hooks/index';
-import { useQuery } from '@tanstack/react-query';
 import {
   validateEmail,
   validatePassword,
@@ -10,6 +5,11 @@ import {
   getDescriptionPassword,
   getDescriptionConfirmPassword,
 } from '@/utils';
+import pb from '@/api/pocketbase';
+import { Form } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDebounce } from '@/hooks/index';
+import { useQuery } from '@tanstack/react-query';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_USER_INFO = {
@@ -51,16 +51,16 @@ export function BasicInfo() {
 
   //중복 이메일 체크
   useQuery({
-    queryKey: ['emailDuplicate'],
+    queryKey: ['emailDuplicate', debouncedUserInfo.email],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
       });
-
-      return setIsValidateState({
+      setIsValidateState({
         ...isValidateState,
         ['isNotRegisteredEmail']: fetchData.items.length == 0,
       });
+      return isValidateState.isNotRegisteredEmail;
     },
     enabled: isValidateState.isValidateEmail,
   });
