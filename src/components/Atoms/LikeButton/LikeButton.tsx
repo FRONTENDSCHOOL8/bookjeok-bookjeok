@@ -1,7 +1,16 @@
-import { string, bool } from 'prop-types';
-import Svg from '../Svg/Svg';
+import { Svg } from '@/components/Atoms';
 
-function LikeButton({ className, active = false, ...rest }) {
+interface LikeButtonProps {
+  className?: string;
+  active?: boolean;
+  [key: string]: any;
+}
+
+const LikeButton = ({
+  className,
+  active = false,
+  ...rest
+}: LikeButtonProps) => {
   return (
     <button
       className={`absolute bottom-3 right-3 ${className}`}
@@ -36,11 +45,6 @@ function LikeButton({ className, active = false, ...rest }) {
       )}
     </button>
   );
-}
+};
 
 export default LikeButton;
-
-LikeButton.propTypes = {
-  className: string,
-  active: bool,
-};

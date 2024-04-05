@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet-async';
 import { useInView } from 'react-intersection-observer';
 import { useLoaderData, useLocation } from 'react-router-dom';
 import { getClubListQueryOption } from './queryOption';
-
 export function MainClub() {
   const loadedClubList = useLoaderData();
   const { state } = useLocation();
@@ -19,8 +18,7 @@ export function MainClub() {
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getClubListQueryOption(10, filters),
-    initialData: loadedClubList,
+    ...getClubListQueryOption(filters, 10, loadedClubList),
   });
 
   const clubList = cachedClubList
