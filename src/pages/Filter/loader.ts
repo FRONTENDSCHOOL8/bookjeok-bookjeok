@@ -1,7 +1,7 @@
 import { queryClient } from '@/client/queryClient';
-import { fetchFilter } from './fetchFilter';
+import { fetchFilter } from '@/pages/Filter';
 
-export const loader = () => async () => {
+export const loader = async () => {
   return await queryClient.ensureQueryData({
     queryKey: ['filter'],
     queryFn: fetchFilter(),

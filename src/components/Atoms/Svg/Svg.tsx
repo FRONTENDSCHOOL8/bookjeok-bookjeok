@@ -1,4 +1,11 @@
-import { string, number } from 'prop-types';
+interface SVGProps {
+  id: string;
+  size: number;
+  width?: number;
+  height?: number;
+  color?: string;
+  [key: string]: any;
+}
 
 function Svg({
   id,
@@ -7,7 +14,7 @@ function Svg({
   height,
   color = '#212121',
   ...restProps
-}) {
+}: SVGProps) {
   const iconStyles = { width: width ?? size, height: height ?? size, color };
 
   return (
@@ -16,13 +23,5 @@ function Svg({
     </svg>
   );
 }
-
-Svg.propTypes = {
-  id: string.isRequired,
-  size: number,
-  width: number,
-  height: number,
-  color: string,
-};
 
 export default Svg;

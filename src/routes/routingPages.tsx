@@ -41,14 +41,14 @@ const routingPages = [
     path: '/mainClub',
     async lazy() {
       const { loader, MainClub } = await import('@/pages/MainClub');
-      return { Component: MainClub, loader: loader(queryClient) };
+      return { Component: MainClub, loader: loader };
     },
   },
   {
     path: '/mainClub/filter',
     async lazy() {
       const { loader, Filter } = await import('@/pages/Filter');
-      return { Component: Filter, loader: loader(queryClient) };
+      return { Component: Filter, loader: loader };
     },
   },
   {
@@ -99,7 +99,7 @@ const routingPages = [
     async lazy() {
       const { loader } = await import('@/pages/Filter');
       const { CreateClub2 } = await import('@/pages/CreateClub/CreateClub2');
-      return { Component: CreateClub2, loader: loader(queryClient) };
+      return { Component: CreateClub2, loader: loader };
     },
   },
   {
@@ -148,7 +148,7 @@ const routingPages = [
     path: '/chatRoom/:chattingRoomId',
     async lazy() {
       const { loader, ChatRoom } = await import('@/pages/Chatting/ChatRoom');
-      return { loader: loader(queryClient), Component: ChatRoom };
+      return { loader: loader, Component: ChatRoom };
     },
   },
   {
@@ -158,7 +158,7 @@ const routingPages = [
         '@/pages/Chatting/ChatRoomListPage'
       );
       return {
-        loader: loader(queryClient),
+        loader: loader,
         Component: ChatRoomListPage,
       };
     },

@@ -1,12 +1,10 @@
 import { queryClient } from '@/client/queryClient';
 import { FetchChattingRoomList } from './FetchChattingRoomList';
 
-export const loader =
-  () =>
-  async ({ params }) => {
-    const { userId } = params;
-    return await queryClient.ensureQueryData({
-      queryKey: ['chattingRoomList', userId],
-      queryFn: () => FetchChattingRoomList(userId),
-    });
-  };
+export const loader = async ({ params }) => {
+  const { userId } = params;
+  return await queryClient.ensureQueryData({
+    queryKey: ['chattingRoomList', userId],
+    queryFn: () => FetchChattingRoomList(userId),
+  });
+};
