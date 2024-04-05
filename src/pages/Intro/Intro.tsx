@@ -2,7 +2,6 @@ import { Svg } from '@/components/Atoms';
 import { Helmet } from 'react-helmet-async';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { bool } from 'prop-types';
 import useUserInfoStore from '@/store/useUserInfoStore';
 
 export function Intro() {
@@ -19,7 +18,7 @@ export function Intro() {
       </Helmet>
       <div className="flex min-h-svh w-full justify-center bg-bjyellow-400">
         <div className="absolute top-[30%] flex flex-col items-center gap-2">
-          <Svg width={60} height={60} id="logo" />
+          <Svg size={60} id="logo" />
           <h1 className="text-h-1-semibold">북적북적</h1>
         </div>
         <div className="absolute bottom-0 mx-auto flex h-[20%] flex-col items-center gap-2">
@@ -32,7 +31,3 @@ export function Intro() {
     </>
   );
 }
-
-Intro.propTypes = {
-  isAllowed: bool,
-};

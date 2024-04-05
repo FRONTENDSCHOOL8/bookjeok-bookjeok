@@ -44,14 +44,16 @@ export function Filter() {
           </NomalTitle>
 
           <ul className="mx-4">
-            {cachedFilterList.map((filterInfo) => {
-              return <FilterList key={filterInfo.id} filterInfo={filterInfo} />;
-            })}
+            {Array.isArray(cachedFilterList)
+              ? cachedFilterList.map((filterInfo) => {
+                  return (
+                    <FilterList key={filterInfo.id} filterInfo={filterInfo} />
+                  );
+                })
+              : '등록된 필터가 없습니다!'}
           </ul>
           <div className="p-4">
-            <MainButton as="button" type="submit">
-              선택완료
-            </MainButton>
+            <MainButton type="submit">선택완료</MainButton>
           </div>
         </form>
       </main>
