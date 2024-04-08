@@ -10,9 +10,11 @@ import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
+import { useMutation } from '@tanstack/react-query';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { getDocumentTitle, createRandomId } from '@/utils';
+
 /*
 1.pb api data 
   const data = {
@@ -50,25 +52,22 @@ export function CreateBookReview() {
     set: ({ target }) => {
       setBookReviewForm({ ...bookReviewForm, [target.id]: target.value });
     },
-    submit: () =>
-      pb
-        .collection('bookReview')
-        .create(bookReviewForm)
-        .then(() => {
-          setIsModalState(true);
-        })
-        .catch((Error) => console.error(Error)),
-  };
-
-  const handleReviewImage = {
-    set: ({ target: { files } }) => {
+    imageSet: ({ target: { files } }) => {
       setBookReviewForm({ ...bookReviewForm, img: files[0] });
     },
-    remove: (e) => {
+    imageRemove: (e) => {
       e.preventDefault();
       setBookReviewForm({ ...bookReviewForm, img: null });
     },
   };
+
+  const { mutateAsync: submitReview } = useMutation({
+    mutationFn: async () => {
+      await pb.collection('bookReview').create(bookReviewForm);
+    },
+    onSuccess: () => setIsModalState(true),
+  });
+
   return (
     <>
       <Helmet>
@@ -83,8 +82,8 @@ export function CreateBookReview() {
             <h2 className="py-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
             <ImageForm
               id="img"
-              onChange={handleReviewImage.set}
-              onClick={handleReviewImage.remove}
+              onChange={handleReviewForm.imageSet}
+              onClick={handleReviewForm.imageRemove}
               src={bookReviewForm.img}
             />
             <div className={`${style['div']}`}>
@@ -123,7 +122,7 @@ export function CreateBookReview() {
           </Form>
           <div>
             <MainButton
-              onClick={handleReviewForm.submit}
+              onClick={async () => await submitReview()}
               as="button"
               color={
                 bookReviewForm.img &&
