@@ -14,7 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { getDocumentTitle, createRandomId } from '@/utils';
-
+import ReactQuill from 'react-quill';
 /*
 1.pb api data 
   const data = {
@@ -49,8 +49,12 @@ export function CreateBookReview() {
   });
 
   const handleReviewForm = {
-    set: ({ target }) => {
-      setBookReviewForm({ ...bookReviewForm, [target.id]: target.value });
+    set: (e) => {
+      if (!e.target) {
+        setBookReviewForm({ ...bookReviewForm, detail: e });
+        return;
+      }
+      setBookReviewForm({ ...bookReviewForm, [e.target.id]: e.target.value });
     },
     imageSet: ({ target: { files } }) => {
       setBookReviewForm({ ...bookReviewForm, img: files[0] });
@@ -67,7 +71,7 @@ export function CreateBookReview() {
     },
     onSuccess: () => setIsModalState(true),
   });
-
+  console.log(bookReviewForm);
   return (
     <>
       <Helmet>
@@ -111,15 +115,9 @@ export function CreateBookReview() {
                 독후감에 걸맞는 멋진 제목을 지어주세요 !
               </span>
             </div>
-            <Textarea
-              placeholder="내용을 입력해 주세요. (필수)"
-              label="독후감 상세내용"
-              id="detail"
-              length={bookReviewForm['detail'].length || ''.length}
-              onChange={handleReviewForm.set}
-              maxLength={200}
-            />
+            <ReactQuill id="detail" onChange={handleReviewForm.set} />
           </Form>
+
           <div>
             <MainButton
               onClick={async () => await submitReview()}
