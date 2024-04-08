@@ -3,7 +3,6 @@ import {
   MainButton,
   NomalTitle,
   TextForm,
-  Textarea,
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
@@ -71,7 +70,7 @@ export function CreateBookReview() {
     },
     onSuccess: () => setIsModalState(true),
   });
-  console.log(bookReviewForm);
+
   return (
     <>
       <Helmet>
