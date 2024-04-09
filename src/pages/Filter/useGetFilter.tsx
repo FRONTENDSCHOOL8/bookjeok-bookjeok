@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useLoaderData } from 'react-router-dom';
-import { fetchFilter } from './fetchFilter';
+import { fetchFilter } from '@/pages/Filter';
 
-function useGetFilter() {
+const useGetFilter = () => {
   const loadedfilterList = useLoaderData();
+
   const { data: cachedFilterList } = useQuery({
     queryKey: ['filter'],
     queryFn: fetchFilter(),
@@ -11,6 +12,6 @@ function useGetFilter() {
   });
 
   return cachedFilterList;
-}
+};
 
 export default useGetFilter;

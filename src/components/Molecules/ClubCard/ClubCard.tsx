@@ -1,23 +1,23 @@
 import { Badge, LikeButton, Svg } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay } from '@/utils';
-import { array, bool, number, object, string } from 'prop-types';
 import { Link } from 'react-router-dom';
+import {
+  SocialingResponse,
+  GenresResponse,
+  UsersResponse,
+} from '@/types/pocketbase-types';
 
-ClubCard.propTypes = {
-  clubInfo: object,
-  id: string,
-  photo: string,
-  title: string,
-  expand: object,
-  dateTime: string,
-  isOffline: bool,
-  location: string,
-  limitPerson: number,
-  confirmUser: array,
+type Texpand = {
+  genre: GenresResponse;
+  users: UsersResponse;
 };
 
-function ClubCard({
+interface ClubCardProps {
+  clubInfo: SocialingResponse<Texpand>;
+}
+
+const ClubCard = ({
   clubInfo: {
     id,
     photo,
@@ -30,7 +30,7 @@ function ClubCard({
     confirmUser,
     like,
   },
-}) {
+}: ClubCardProps) => {
   const { userInfo } = useUserInfoStore();
 
   // const addLike = useMutation({
@@ -79,7 +79,7 @@ function ClubCard({
             alt={title}
           />
           <Badge className="absolute left-2 top-2 w-[30%]">
-            {expand.genre.title}
+            {expand?.genre.title}
           </Badge>
         </Link>
         <LikeButton
@@ -107,8 +107,7 @@ function ClubCard({
             <span className="flex items-center text-pretty text-b-3-medium text-bjgray-500">
               <Svg
                 color="#9e9e9e"
-                width={14}
-                height={14}
+                size={14}
                 id="pin"
                 className="mr-[2px] flex-shrink-0 align-middle"
               />
@@ -117,13 +116,7 @@ function ClubCard({
               </span>
             </span>
             <span className="flex items-center text-b-3-medium text-bjgray-500">
-              <Svg
-                color="#9e9e9e"
-                width={14}
-                height={14}
-                id="user"
-                className="mr-[2px]"
-              />
+              <Svg color="#9e9e9e" size={14} id="user" className="mr-[2px]" />
               {confirmUser.length ? confirmUser.length : 0}/{limitPerson}
             </span>
           </div>
@@ -131,6 +124,6 @@ function ClubCard({
       </Link>
     </li>
   );
-}
+};
 
 export default ClubCard;
