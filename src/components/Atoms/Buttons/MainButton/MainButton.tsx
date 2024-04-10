@@ -10,6 +10,7 @@ interface MainButtonProps {
   className?: string;
   size?: 'lg' | 'sm';
   svgId?: string;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
