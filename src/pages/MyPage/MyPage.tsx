@@ -22,6 +22,7 @@ import {
   BookReviewResponse,
   UsersResponse,
   SocialingResponse,
+  Collections,
 } from '@/types/pocketbase-types';
 
 type Texpand = {
@@ -42,16 +43,16 @@ type Fetch = UsersResponse<Texpand>;
 5. 독후감 
 6. 로그아웃 버튼 클릭시 ->모달) 진짜?? 진짜 로그아웃할거야?? -> 웅 -> 로그아웃
 */
-
+Collections;
 export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: fetchAllUserInfo } = useQuery({
-    queryFn: async (): Promise<Fetch> => {
+    queryFn: async () => {
       const fetchAllUserInfo = await pb
-        .collection('users')
-        .getOne(`${userInfo.id}`, {
+        .collection(Collections.Users)
+        .getOne<UsersResponse<Texpand>>(`${userInfo.id}`, {
           expand: 'createSocialing, participantSocialing',
         });
       return fetchAllUserInfo;
@@ -73,7 +74,7 @@ export function MyPage() {
     clearUserInfo();
     pb.authStore.clear();
   };
-  console.log( fetchAllUserInfo?.expand);
+  console.log(fetchAllUserInfo?.expand);
   return (
     <>
       <Helmet>

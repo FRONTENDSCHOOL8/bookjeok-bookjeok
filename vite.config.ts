@@ -8,6 +8,8 @@ import imageminMozjpeg from 'imagemin-mozjpeg';
 import imageminPngQuant from 'imagemin-pngquant';
 import imageminSvgo from 'imagemin-svgo';
 import imageminWebp from 'imagemin-webp';
+
+// @ts-ignore
 import VitePluginAssetsCopy from './plugins/vite-plugin-assets-copy';
 
 export default defineConfig({

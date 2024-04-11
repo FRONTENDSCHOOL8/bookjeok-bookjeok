@@ -1,25 +1,24 @@
-// import { string, bool, func, oneOfType, array } from 'prop-types';
+/* eslint-disable no-unused-vars */
+import * as React from 'react';
 import { MainButton, Svg } from '@/components/Atoms';
 
-interface ButtonModalManagement {
+interface ButtonModalForManageMentTypes {
   className?: string;
-  open: boolean;
-  title: string;
-  primaryButtonText?: string;
-  secondaryButtonText?: string;
-  primaryButtonPath?: string;
-  secondaryButtonPath?: string;
+  open?: boolean;
   svgId?: string;
+  title?: string;
+  children?: React.ReactNode;
+  primaryButtonText?: string;
+  primaryButtonPath?: string;
+  secondaryButtonText?: string;
+  secondaryButtonPath?: string;
   closeButton?: boolean;
-  onClickCancel?: undefined;
-  onClick?: () => void;
-  children: React.ReactNode;
-  primaryAs?: string;
-  secondaryAs?: string;
-  primaryOnClick?: () => void;
-  secondaryOnClick?: () => void;
+  onClickCancel?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  primaryAs?: React.ReactNode;
+  secondaryAs?: React.ReactNode;
+  primaryOnClick?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  secondaryOnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
-
 function ButtonModalForManageMent({
   className,
   open = false,
@@ -37,7 +36,7 @@ function ButtonModalForManageMent({
   primaryOnClick,
   secondaryOnClick,
   ...rest
-}: ButtonModalManagement) {
+}: ButtonModalForManageMentTypes) {
   const modalStyle = {
     className: 'relative z-10',
   };
@@ -62,8 +61,7 @@ function ButtonModalForManageMent({
               {svgId && (
                 <Svg
                   id={svgId}
-                  width={60}
-                  height={60}
+                  size={60}
                   color="#FFD60A"
                   className="m-auto my-5"
                 />
@@ -89,9 +87,9 @@ function ButtonModalForManageMent({
               <div className="flex flex-col gap-y-2">
                 {primaryButtonText && (
                   <MainButton
-                    as={primaryAs}
+                    // as={primaryAs}
                     onClick={primaryOnClick}
-                    to={primaryButtonPath}
+                    type="button"
                     color="primary"
                   >
                     {primaryButtonText}
@@ -99,9 +97,10 @@ function ButtonModalForManageMent({
                 )}
                 {secondaryButtonText && (
                   <MainButton
-                    as={secondaryAs}
+                    // as={secondaryAs}
                     onClick={secondaryOnClick}
-                    to={secondaryButtonPath}
+                    type="button"
+                    // to={secondaryButtonPath}
                     color="secondary"
                   >
                     {secondaryButtonText}
@@ -117,8 +116,7 @@ function ButtonModalForManageMent({
                 >
                   <Svg
                     id="close"
-                    width={24}
-                    height={24}
+                    size={24}
                     color="#212121"
                     className="absolute right-0 top-0"
                   />
@@ -133,23 +131,3 @@ function ButtonModalForManageMent({
 }
 
 export default ButtonModalForManageMent;
-
-// ButtonModalForManageMent.propTypes = {
-//   className: string,
-//   open: bool,
-//   svgId: string,
-//   title: string,
-//   children: oneOfType([string, array]),
-//   primaryButton: string,
-//   primaryButtonText: string,
-//   primaryButtonPath: string,
-//   secondaryButton: string,
-//   secondaryButtonText: string,
-//   secondaryButtonPath: string,
-//   closeButton: bool,
-//   onClickCancel: func,
-//   primaryAs: string,
-//   secondaryAs: string,
-//   primaryOnClick: func,
-//   secondaryOnClick: func,
-// };
