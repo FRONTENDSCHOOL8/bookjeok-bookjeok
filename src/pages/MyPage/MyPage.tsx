@@ -18,8 +18,19 @@ import {
 } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
+import {
+  BookReviewResponse,
+  UsersResponse,
+  SocialingResponse,
+} from '@/types/pocketbase-types';
 
+type Texpand = {
+  participantSocialing?: SocialingResponse[];
+  createSocialing?: SocialingResponse[];
+};
+type Fetch = UsersResponse<Texpand>;
 /*
+
 1. userInfo에 있는 createSocialing, participantSocialing 
   배열에 있는 모임 id를 어떻게 가져올까...
   그냥 confirmUser, createUser에 사용자 id 있음 다 가져오고 
@@ -37,7 +48,7 @@ export function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: fetchAllUserInfo } = useQuery({
-    queryFn: async () => {
+    queryFn: async (): Promise<Fetch> => {
       const fetchAllUserInfo = await pb
         .collection('users')
         .getOne(`${userInfo.id}`, {
@@ -49,7 +60,7 @@ export function MyPage() {
   });
 
   const { data: bookReviewData } = useQuery({
-    queryFn: async () => {
+    queryFn: async (): Promise<BookReviewResponse[]> => {
       const fetchBookReview = await pb.collection('bookReview').getFullList({
         filter: `writer ="${userInfo.id}"`,
       });
@@ -62,7 +73,7 @@ export function MyPage() {
     clearUserInfo();
     pb.authStore.clear();
   };
-
+  console.log( fetchAllUserInfo?.expand);
   return (
     <>
       <Helmet>

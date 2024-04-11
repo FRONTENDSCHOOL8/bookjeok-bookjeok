@@ -3,16 +3,17 @@ import {
   MainButton,
   NomalTitle,
   TextForm,
-  Textarea,
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
+import { useMutation } from '@tanstack/react-query';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { getDocumentTitle, createRandomId } from '@/utils';
+import ReactQuill from 'react-quill';
 /*
 1.pb api data 
   const data = {
@@ -47,28 +48,29 @@ export function CreateBookReview() {
   });
 
   const handleReviewForm = {
-    set: ({ target }) => {
-      setBookReviewForm({ ...bookReviewForm, [target.id]: target.value });
+    set: (e) => {
+      if (!e.target) {
+        setBookReviewForm({ ...bookReviewForm, detail: e });
+        return;
+      }
+      setBookReviewForm({ ...bookReviewForm, [e.target.id]: e.target.value });
     },
-    submit: () =>
-      pb
-        .collection('bookReview')
-        .create(bookReviewForm)
-        .then(() => {
-          setIsModalState(true);
-        })
-        .catch((Error) => console.error(Error)),
-  };
-
-  const handleReviewImage = {
-    set: ({ target: { files } }) => {
+    imageSet: ({ target: { files } }) => {
       setBookReviewForm({ ...bookReviewForm, img: files[0] });
     },
-    remove: (e) => {
+    imageRemove: (e) => {
       e.preventDefault();
       setBookReviewForm({ ...bookReviewForm, img: null });
     },
   };
+
+  const { mutateAsync: submitReview } = useMutation({
+    mutationFn: async () => {
+      await pb.collection('bookReview').create(bookReviewForm);
+    },
+    onSuccess: () => setIsModalState(true),
+  });
+
   return (
     <>
       <Helmet>
@@ -83,8 +85,8 @@ export function CreateBookReview() {
             <h2 className="py-4 text-h-2-semibold">읽은 책을 소개해주세요.</h2>
             <ImageForm
               id="img"
-              onChange={handleReviewImage.set}
-              onClick={handleReviewImage.remove}
+              onChange={handleReviewForm.imageSet}
+              onClick={handleReviewForm.imageRemove}
               src={bookReviewForm.img}
             />
             <div className={`${style['div']}`}>
@@ -112,18 +114,12 @@ export function CreateBookReview() {
                 독후감에 걸맞는 멋진 제목을 지어주세요 !
               </span>
             </div>
-            <Textarea
-              placeholder="내용을 입력해 주세요. (필수)"
-              label="독후감 상세내용"
-              id="detail"
-              length={bookReviewForm['detail'].length || ''.length}
-              onChange={handleReviewForm.set}
-              maxLength={200}
-            />
+            <ReactQuill id="detail" onChange={handleReviewForm.set} />
           </Form>
+
           <div>
             <MainButton
-              onClick={handleReviewForm.submit}
+              onClick={async () => await submitReview()}
               as="button"
               color={
                 bookReviewForm.img &&
