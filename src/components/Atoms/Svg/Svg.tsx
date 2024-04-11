@@ -1,6 +1,6 @@
 interface SVGProps {
   id: string;
-  size: number;
+  size?: number;
   width?: number;
   height?: number;
   color?: string;

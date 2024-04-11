@@ -11,6 +11,7 @@ interface MainButtonProps {
   size?: 'lg' | 'sm';
   svgId?: string;
   onClick?: () => void;
+  as?: string;
   children: React.ReactNode;
 }
 
