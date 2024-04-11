@@ -51,15 +51,17 @@ const MainButton = ({
       </Link>
     );
   } else {
-    <button
-      className={`${buttonStyle[color]} ${className} ${buttonSize[size]}`}
-      type={type}
-      onClick={onClick}
-      {...rest}
-    >
-      {children}
-      {svgId && <Svg id={svgId} size={18} className="ml-1" />}
-    </button>;
+    return (
+      <button
+        className={`${buttonStyle[color]} ${className} ${buttonSize[size]}`}
+        type={type}
+        onClick={onClick}
+        {...rest}
+      >
+        {children}
+        {svgId && <Svg id={svgId} size={18} className="ml-1" />}
+      </button>
+    );
   }
 };
 
