@@ -12,6 +12,7 @@ interface MainButtonProps {
   className?: string;
   size?: 'lg' | 'sm';
   svgId?: string;
+  as?: string;
   children: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
