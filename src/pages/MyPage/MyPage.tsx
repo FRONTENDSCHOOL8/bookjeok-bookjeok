@@ -94,6 +94,7 @@ export function MyPage() {
           </div>
           <div className="flex gap-4">
             <MainButton
+              type="button"
               to={`/editProfile/${userInfo.id}`}
               size="sm"
               color="secondary"
@@ -192,7 +193,7 @@ export function MyPage() {
           title="로그아웃 하시겠습니까?"
           open={isModalOpen}
           closeButton
-          onClick={() => setIsModalOpen(false)}
+          onClickCancel={() => setIsModalOpen(false)}
           primaryButtonText="로그아웃하기"
           primaryAs="button"
           primaryOnClick={handleLogout}
