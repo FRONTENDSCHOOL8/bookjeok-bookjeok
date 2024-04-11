@@ -1,5 +1,24 @@
-import { string, bool, func, oneOfType, array } from 'prop-types';
+// import { string, bool, func, oneOfType, array } from 'prop-types';
 import { MainButton, Svg } from '@/components/Atoms';
+
+interface ButtonModalManagement {
+  className?: string;
+  open: boolean;
+  title: string;
+  primaryButtonText?: string;
+  secondaryButtonText?: string;
+  primaryButtonPath?: string;
+  secondaryButtonPath?: string;
+  svgId?: string;
+  closeButton?: boolean;
+  onClickCancel?: undefined;
+  onClick?: () => void;
+  children: React.ReactNode;
+  primaryAs?: string;
+  secondaryAs?: string;
+  primaryOnClick?: () => void;
+  secondaryOnClick?: () => void;
+}
 
 function ButtonModalForManageMent({
   className,
@@ -18,7 +37,7 @@ function ButtonModalForManageMent({
   primaryOnClick,
   secondaryOnClick,
   ...rest
-}) {
+}: ButtonModalManagement) {
   const modalStyle = {
     className: 'relative z-10',
   };
@@ -37,7 +56,7 @@ function ButtonModalForManageMent({
           <div className="relative w-full max-w-[400px] transform overflow-hidden rounded-5xl bg-white text-center shadow-xl transition-all">
             <div
               role="document"
-              tabIndex="-1"
+              tabIndex={-1}
               className="w-full flex-col gap-y-2 rounded-5xl p-4 pb-6 text-center"
             >
               {svgId && (
@@ -115,22 +134,22 @@ function ButtonModalForManageMent({
 
 export default ButtonModalForManageMent;
 
-ButtonModalForManageMent.propTypes = {
-  className: string,
-  open: bool,
-  svgId: string,
-  title: string,
-  children: oneOfType([string, array]),
-  primaryButton: string,
-  primaryButtonText: string,
-  primaryButtonPath: string,
-  secondaryButton: string,
-  secondaryButtonText: string,
-  secondaryButtonPath: string,
-  closeButton: bool,
-  onClickCancel: func,
-  primaryAs: string,
-  secondaryAs: string,
-  primaryOnClick: func,
-  secondaryOnClick: func,
-};
+// ButtonModalForManageMent.propTypes = {
+//   className: string,
+//   open: bool,
+//   svgId: string,
+//   title: string,
+//   children: oneOfType([string, array]),
+//   primaryButton: string,
+//   primaryButtonText: string,
+//   primaryButtonPath: string,
+//   secondaryButton: string,
+//   secondaryButtonText: string,
+//   secondaryButtonPath: string,
+//   closeButton: bool,
+//   onClickCancel: func,
+//   primaryAs: string,
+//   secondaryAs: string,
+//   primaryOnClick: func,
+//   secondaryOnClick: func,
+// };
