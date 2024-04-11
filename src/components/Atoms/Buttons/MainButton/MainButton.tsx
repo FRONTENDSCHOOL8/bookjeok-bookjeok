@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Atoms';
 
@@ -5,12 +7,13 @@ type ButtonStyle = { primary: string; secondary: string };
 
 interface MainButtonProps {
   to?: string;
-  type?: 'submit' | 'button' | 'reset';
+  type: 'submit' | 'button' | 'reset';
   color?: 'primary' | 'secondary';
   className?: string;
   size?: 'lg' | 'sm';
   svgId?: string;
   children: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const MainButton = ({
@@ -21,6 +24,7 @@ const MainButton = ({
   size = 'lg',
   svgId,
   children,
+  onClick,
   ...rest
 }: MainButtonProps) => {
   const buttonStyle: ButtonStyle = {
@@ -49,6 +53,7 @@ const MainButton = ({
     <button
       className={`${buttonStyle[color]} ${className} ${buttonSize[size]}`}
       type={type}
+      onClick={onClick}
       {...rest}
     >
       {children}
