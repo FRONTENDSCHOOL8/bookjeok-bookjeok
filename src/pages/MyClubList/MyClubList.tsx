@@ -12,31 +12,11 @@ import { useQuery } from '@tanstack/react-query';
 import { ClubList, GNB } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
-/*
-1. socialing db에서 applicant가 사용자인 경우, 
-  creator가 나인 경우를 분리하여 렌더링
-2. 3개이상인 경우 더보기 버튼 =>  
-  일단 3개가 초기 값인 상태를 보여줌......
-  더보기 버튼을 누르면 전체 길이로 상태변경 이게되나? 이게되네...
-    그럼 더보기 버튼은 클럽 전체 수가 3보다 많을때 보여주며 
-    보여진 정보개수 (showValue)가 전체 개수이면 더보기 버튼이 사라져야됨 ! 
-
-3. 검색 .........왜 수업 제대로 못들었지 
-  사용자가 입력을 멈춘뒤 500ms 뒤... 
-  전체 리스트에서 검색함 그러면..........우째해야대?
-  또 db에 접속할순 없음...
-  있는 전체 리스트에서 
-  약간 이런식으로 갖고오고싶음 
-  select * from 테이블 where title like %검색어% ..이런식 ..
-  정규식으로 해야되나...=>^.*검색어.*$ ? 
-  근데 ... 초-중-종성 분리해야되나...? 
-
-  지금 검색 상태임? 을 어케 해야대? Input에 머 하나 있으면 검색상태인걸까나
-  검색 결과를 담은 상태를 생성하자 그 결과엔 {created:, confirumed:}이케 있는거임..... 
-  그걸 그대로 렌더링 ...
-  
-4. 해당 항목 클릭시 상세페이지로 이동 ! 
-*/
+import {
+  Collections,
+  SocialingResponse,
+  SocialingRecord,
+} from '@/types/pocketbase-types';
 
 const INITIAL_QUANTITY = {
   createdClub: 3,
@@ -48,22 +28,28 @@ const style = {
   h2: 'pl-1 py-2 text-b-0-medium text-bjblack',
 };
 
+type StateType = {
+  confirmedClub: SocialingResponse[];
+  createdClub: SocialingResponse[];
+};
 export function MyClubList() {
   const { userInfo } = useUserInfoStore();
   const [showQuantity, setShowQuantity] = useState(INITIAL_QUANTITY);
-  const [clubData, setClubData] = useState({});
+  const [clubData, setClubData] = useState<StateType>();
 
   const [isSearchState, setIsSearchState] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState();
-  const [searchResult, setSearchResult] = useState();
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchResult, setSearchResult] = useState<StateType>();
   const debouncedKeyword = useDebounce(searchKeyword, 500);
 
   const { data: fetchAllClubData, isSuccess } = useQuery({
     queryFn: async () => {
       const fetchData = (
-        await pb.collection('socialing').getList(1, 10, {
-          filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
-        })
+        await pb
+          .collection(Collections.Socialing)
+          .getList<SocialingResponse>(1, 10, {
+            filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
+          })
       ).items;
       return fetchData;
     },
@@ -72,8 +58,8 @@ export function MyClubList() {
 
   useEffect(() => {
     if (isSuccess) {
-      const created = [];
-      const confirmed = [];
+      const created: SocialingResponse[] = [];
+      const confirmed: SocialingResponse[] = [];
       fetchAllClubData.forEach((item) => {
         if (item.createUser === userInfo.id) {
           created.push(item);
@@ -86,36 +72,43 @@ export function MyClubList() {
   }, [isSuccess, fetchAllClubData, userInfo.id]);
 
   // 더보기 버튼 클릭시 작동하는 함수
-  const handleMoreValue = (e) => {
-    if (e.target.name == 'createdClub') {
+  const handleMoreValue: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    const target = e.currentTarget;
+
+    if (clubData && target.name === 'createdClub') {
       setShowQuantity({
         ...showQuantity,
-        [e.target.name]: clubData.createdClub.length,
+        [target.name]: clubData.createdClub.length,
       });
     }
-    if (e.target.name == 'confirmedClub') {
+    if (clubData && target.name === 'confirmedClub') {
       setShowQuantity({
         ...showQuantity,
-        [e.target.name]: clubData.confirmedClub.length,
+        [target.name]: clubData.confirmedClub.length,
       });
     }
   };
 
   // 검색창 이벤트 함수
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
     setIsSearchState(e.target.value !== '');
   };
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    const confirmValue = clubData.confirmedClub?.filter((item) =>
-      item['title'].includes(debouncedKeyword)
-    );
-    const createValue = clubData.createdClub?.filter((item) =>
-      item['title'].includes(debouncedKeyword)
-    );
-    setSearchResult({ confirmedClub: confirmValue, createdClub: createValue });
+    if (clubData) {
+      const confirmValue = clubData.confirmedClub?.filter((item) =>
+        item['title']?.includes(debouncedKeyword)
+      );
+      const createValue = clubData.createdClub?.filter(
+        (item: SocialingRecord) => item['title']?.includes(debouncedKeyword)
+      );
+      setSearchResult({
+        confirmedClub: confirmValue,
+        createdClub: createValue,
+      });
+    }
   }, [debouncedKeyword]);
 
   return (
@@ -136,8 +129,8 @@ export function MyClubList() {
         </ThinTextForm>
 
         <>
-          {(clubData.createdClub?.length == 0) &
-          (clubData.confirmedClub?.length === 0) ? (
+          {clubData?.createdClub.length == 0 &&
+          clubData?.confirmedClub.length === 0 ? (
             <BlankContents
               title="아무런 활동이 없으시네요..."
               description="북적북적에서 독후감을 기록하고,
@@ -148,7 +141,7 @@ export function MyClubList() {
               <main className="px-4">
                 <h2 className={`${style['h2']}`}>참여중인 모임</h2>
                 <ul className={`${style['ul']}`}>
-                  {isSearchState
+                  {searchResult && isSearchState
                     ? searchResult['confirmedClub']?.map((item) => (
                         <ClubList
                           id={item.id}
@@ -158,7 +151,8 @@ export function MyClubList() {
                           img={getPbImgs(item)}
                         ></ClubList>
                       ))
-                    : clubData.confirmedClub
+                    : clubData &&
+                      clubData.confirmedClub
                         ?.slice(0, showQuantity.confirmedClub)
                         ?.map((item) => (
                           <ClubList
@@ -170,7 +164,8 @@ export function MyClubList() {
                           ></ClubList>
                         ))}
                   {/*더보기버튼*/}
-                  {!isSearchState &&
+                  {clubData &&
+                  !isSearchState &&
                   clubData.confirmedClub?.length >
                     showQuantity.confirmedClub ? (
                     <button
@@ -188,7 +183,7 @@ export function MyClubList() {
                 <hr className="mb-4" />
                 <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
                 <ul className={`${style['ul']} mb-[90px]`}>
-                  {isSearchState
+                  {searchResult && isSearchState
                     ? searchResult['createdClub']?.map((item) => (
                         <ClubList
                           id={item.id}
@@ -198,7 +193,8 @@ export function MyClubList() {
                           img={getPbImgs(item)}
                         ></ClubList>
                       ))
-                    : clubData.createdClub
+                    : clubData &&
+                      clubData.createdClub
                         ?.slice(0, showQuantity.createdClub)
                         ?.map((item) => (
                           <ClubList
@@ -210,6 +206,7 @@ export function MyClubList() {
                           ></ClubList>
                         ))}
                   {!isSearchState &&
+                  clubData &&
                   showQuantity.createdClub < clubData.createdClub?.length ? (
                     <button
                       name="createdClub"
