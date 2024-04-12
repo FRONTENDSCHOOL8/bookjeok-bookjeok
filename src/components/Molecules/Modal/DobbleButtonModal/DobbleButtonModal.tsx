@@ -1,5 +1,19 @@
-import { string, bool, func } from 'prop-types';
 import { MainButton, Svg } from '@/components/Atoms';
+interface DobbleButtonModalType {
+  className?: string;
+  open?: boolean;
+  svgId?: string;
+  title?: string;
+  children?: React.ReactNode;
+  primaryButton?: string;
+  primaryButtonText?: string;
+  primaryButtonPath?: string;
+  secondaryButton?: string;
+  secondaryButtonText?: string;
+  secondaryButtonPath?: string;
+  closeButton?: boolean;
+  onClick?: () => void;
+}
 
 function DobbleButtonModal({
   className,
@@ -14,7 +28,7 @@ function DobbleButtonModal({
   closeButton = false,
   onClick,
   ...rest
-}) {
+}: DobbleButtonModalType) {
   const modalStyle = {
     className: 'relative z-10',
   };
@@ -33,7 +47,7 @@ function DobbleButtonModal({
           <div className="relative w-full max-w-[400px] transform overflow-hidden rounded-5xl bg-white text-center shadow-xl transition-all">
             <div
               role="document"
-              tabIndex="-1"
+              tabIndex={-1}
               className="w-full flex-col gap-y-2 rounded-5xl p-4 pb-6 text-center"
             >
               {svgId && (
@@ -65,12 +79,20 @@ function DobbleButtonModal({
               </div>
               <div className="flex flex-col gap-y-2">
                 {primaryButtonText && (
-                  <MainButton to={primaryButtonPath} color="primary">
+                  <MainButton
+                    type="button"
+                    to={primaryButtonPath}
+                    color="primary"
+                  >
                     {primaryButtonText}
                   </MainButton>
                 )}
                 {secondaryButtonText && (
-                  <MainButton to={secondaryButtonPath} color="secondary">
+                  <MainButton
+                    type="button"
+                    to={secondaryButtonPath}
+                    color="secondary"
+                  >
                     {secondaryButtonText}
                   </MainButton>
                 )}
@@ -100,19 +122,3 @@ function DobbleButtonModal({
 }
 
 export default DobbleButtonModal;
-
-DobbleButtonModal.propTypes = {
-  className: string,
-  open: bool,
-  svgId: string,
-  title: string,
-  children: string,
-  primaryButton: string,
-  primaryButtonText: string,
-  primaryButtonPath: string,
-  secondaryButton: string,
-  secondaryButtonText: string,
-  secondaryButtonPath: string,
-  closeButton: bool,
-  onClick: func,
-};
