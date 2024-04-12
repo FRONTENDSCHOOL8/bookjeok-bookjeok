@@ -1,5 +1,23 @@
-import { string, bool, number } from 'prop-types';
 import { Svg } from '@/components/Atoms';
+
+interface TextFormType {
+  className?: string;
+  svgId?: string;
+  hiddenLabel?: boolean;
+  children?: React.ReactNode;
+  type?: string;
+  id?: string;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  description?: string;
+  error?: boolean;
+}
 
 function TextForm({
   className,
@@ -10,9 +28,7 @@ function TextForm({
   defaultValue,
   placeholder,
   disabled,
-  readOnly,
   required,
-  minLength,
   maxLength,
   description,
   error = false,
@@ -20,7 +36,7 @@ function TextForm({
   svgId,
   hiddenLabel = false,
   ...rest
-}) {
+}: TextFormType) {
   const textFormStyle = {
     className: 'flex flex-col',
     input:
@@ -61,9 +77,7 @@ function TextForm({
             defaultValue={defaultValue}
             placeholder={placeholder}
             disabled={disabled}
-            readOnly={readOnly}
             required={required}
-            minLength={minLength}
             maxLength={maxLength}
             className={textFormStyle.input}
             {...rest}
@@ -82,23 +96,3 @@ function TextForm({
 }
 
 export default TextForm;
-
-TextForm.propTypes = {
-  className: string,
-  svgId: string,
-  hiddenLabel: bool,
-  children: string,
-  type: string,
-  id: string,
-  name: string,
-  value: string,
-  defaultValue: string,
-  placeholder: string,
-  disabled: bool,
-  readOnly: bool,
-  required: bool,
-  minLength: number,
-  maxLength: number,
-  description: string,
-  error: bool,
-};
