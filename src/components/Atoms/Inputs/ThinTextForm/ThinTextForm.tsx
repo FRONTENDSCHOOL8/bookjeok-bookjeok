@@ -1,6 +1,25 @@
-import { string, bool, number, func } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 import { Link } from 'react-router-dom';
+
+interface ThinTextFormType {
+  className?: string;
+  type: string;
+  id?: string;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  children?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: () => void;
+  path?: string;
+  searchIcon?: boolean;
+  backLink?: boolean;
+  sendButton?: boolean;
+}
 
 function ThinTextForm({
   className,
@@ -14,14 +33,14 @@ function ThinTextForm({
   minLength,
   maxLength,
   children,
-  handleInput,
+  onChange,
   onSubmit,
   path,
   searchIcon = false,
   backLink = false,
   sendButton = false,
   ...rest
-}) {
+}: ThinTextFormType) {
   const thinTextFormStyle = {
     className: 'flex flex-col',
     input:
@@ -40,7 +59,7 @@ function ThinTextForm({
           </label>
           <input
             type={type}
-            onChange={handleInput}
+            onChange={onChange}
             id={id}
             name={name}
             value={value}
@@ -54,7 +73,7 @@ function ThinTextForm({
           />
         </div>
         {searchIcon && <Svg id="search" color="#9E9E9E" />}
-        {backLink && (
+        {path && backLink && (
           <Link to={path} title="뒤로 가기" aria-label="뒤로 가기">
             <Svg id="arrow-left" />
           </Link>
@@ -75,23 +94,3 @@ function ThinTextForm({
 }
 
 export default ThinTextForm;
-
-ThinTextForm.propTypes = {
-  className: string,
-  children: string,
-  type: string,
-  id: string,
-  name: string,
-  value: string,
-  defaultValue: string,
-  placeholder: string,
-  required: bool,
-  minLength: number,
-  maxLength: number,
-  path: string,
-  searchIcon: bool,
-  backLink: bool,
-  sendButton: bool,
-  onSubmit: func,
-  handleInput: func,
-};

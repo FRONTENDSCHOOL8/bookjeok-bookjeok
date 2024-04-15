@@ -16,8 +16,8 @@ export function Login() {
   const { setUserInfo } = useUserInfoStore((state) => state);
   useCloseModal(isModalOpen, () => setIsModalOpen(false));
 
-  const handleLoginForm = (e) => {
-    const { name, value } = e.target;
+  const handleLoginForm: React.FormEventHandler<HTMLElement> = (e) => {
+    const { name, value } = e.target as HTMLInputElement;
     if (name === 'email') {
       emailRef.current = value;
     } else if (name === 'password') {
@@ -25,7 +25,7 @@ export function Login() {
     }
   };
 
-  const handleLogin = useCallback((e) => {
+  const handleLogin = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setIsClicked(true);
   }, []);
