@@ -1,4 +1,4 @@
-export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton';
+export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton.tsx';
 export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm';
@@ -11,7 +11,7 @@ export { default as ImageForm } from '@/components/Atoms/Inputs/ImageForm/ImageF
 export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioForm';
 export { default as GenreButton } from '@/components/Atoms/GenreButton/GenreButton';
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea';
-export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm';
+export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm.tsx';
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';
 export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle';
 export { default as LikeButton } from '@/components/Atoms/LikeButton/LikeButton.tsx';

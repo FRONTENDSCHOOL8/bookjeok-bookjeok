@@ -3,12 +3,12 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Atoms';
 
-type ButtonStyle = { primary: string; secondary: string };
+type ButtonStyle = { primary: string; secondary: string; custom: string };
 
 interface MainButtonProps {
   to?: string;
-  type: 'submit' | 'button' | 'reset';
-  color?: 'primary' | 'secondary';
+  type?: 'submit' | 'button' | 'reset';
+  color?: 'primary' | 'secondary' | 'custom';
   className?: string;
   size?: 'lg' | 'sm';
   svgId?: string;
@@ -33,6 +33,7 @@ const MainButton = ({
       'bg-bjyellow-400 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
     secondary:
       'bg-bjgray-100 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
+    custom: '',
   };
   const buttonSize = {
     lg: 'h-16',

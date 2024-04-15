@@ -1,16 +1,27 @@
 import { Badge, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { Avatar } from '@/components/Molecules';
+import { useLoaderData } from '@/hooks';
+import { Texpand, fetchDetailClub } from '@/pages/DetailClub';
 import useUserInfoStore from '@/store/useUserInfoStore';
+import { SocialingResponse } from '@/types/pocketbase-types';
 import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
-import { useLoaderData } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export function DetailClub() {
+  const { clubId } = useParams();
+
+  const initClubData = useLoaderData<SocialingResponse<Texpand>>();
+  const { data: clubData } = useQuery({
+    queryKey: ['detailClub', clubId],
+    queryFn: () => fetchDetailClub(clubId!),
+    initialData: initClubData,
+  });
+
   const {
     title,
     photo,
-    active,
     dateTime,
     detail,
     isOffline,
@@ -21,7 +32,8 @@ export function DetailClub() {
     location,
     expand,
     id,
-  } = useLoaderData();
+  } = clubData;
+
   const { userInfo } = useUserInfoStore();
   const { pathname } = useLocation();
   const ogURL = `https://bookjeok-bookjeok.vercel.app/${pathname}`;
@@ -50,16 +62,16 @@ export function DetailClub() {
               alt={title}
             />
             <Badge className="absolute left-2 top-2">
-              {expand.genre.title}
+              {expand?.genre.title}
             </Badge>
           </figure>
           <section className="flex flex-1 flex-col gap-4 bg-bjgray-50 px-4 pb-4 shadow-inner">
             <Avatar
-              nickName={expand.createUser.nickname}
+              nickName={expand?.createUser.nickname}
               src={
-                expand.createUser.img == ''
+                expand?.createUser.img == ''
                   ? null
-                  : getPbImgs(expand.createUser)
+                  : getPbImgs(expand?.createUser)
               }
               text={title}
               className="relative -mt-[58px]"
@@ -82,7 +94,6 @@ export function DetailClub() {
               {detail}
             </pre>
           </section>
-          <div>{active}</div>
         </main>
         <div className="fixed bottom-0 mx-auto w-full max-w-[430px] bg-white p-4">
           {userInfo.id === createUser ? (
@@ -102,7 +113,6 @@ export function DetailClub() {
             </MainButton>
           )}
         </div>
-        {/* <GNB createClub className="fixed" /> */}
       </div>
     </>
   );
