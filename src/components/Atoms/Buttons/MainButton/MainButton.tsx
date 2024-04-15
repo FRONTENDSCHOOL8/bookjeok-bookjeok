@@ -7,7 +7,7 @@ type ButtonStyle = { primary: string; secondary: string };
 
 interface MainButtonProps {
   to?: string;
-  type: 'submit' | 'button' | 'reset';
+  type?: 'submit' | 'button' | 'reset';
   color?: 'primary' | 'secondary';
   className?: string;
   size?: 'lg' | 'sm';

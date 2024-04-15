@@ -7,13 +7,18 @@ import {
 } from '@/components/Atoms';
 import { ButtonModalForManageMent, GNB } from '@/components/Molecules';
 import useLoaderData from '@/hooks/useLoaderData';
-import { UsersResponse } from '@/types/pocketbase-types';
+import { SocialingResponse, UsersResponse } from '@/types/pocketbase-types';
 import { getDocumentTitle, getPbImgs } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
 import * as React from 'react';
 import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useRevalidator } from 'react-router-dom';
-import { TExpandedSocialingQueryAnswer, TLoaderData, Texpand } from './loader';
+import { useParams, useRevalidator } from 'react-router-dom';
+import {
+  TExpandedSocialingQueryAnswer,
+  Texpand,
+  fetchManagement,
+} from './fetchManagement';
 
 const DEFAULT_MODAL_STATE = {
   failModal: false,
@@ -38,12 +43,17 @@ export function ManagementClub() {
 
   const revalidator = useRevalidator();
 
+  const { clubId } = useParams();
   // SocialingResponseAndExpand 타입 정의 및 분리 (types.ts)
-  const { socialing } = useLoaderData<TLoaderData>();
+  const initSocialing = useLoaderData<SocialingResponse<Texpand>>();
   const { applicant, confirmUser, answer, chattingRoom } =
-    socialing.expand as Texpand;
+    initSocialing.expand as Texpand;
 
-  // console.log({ socialing });
+  const { data: socialing } = useQuery({
+    queryKey: ['socialing', clubId],
+    queryFn: () => fetchManagement(clubId!),
+    initialData: initSocialing,
+  });
 
   const handleApproveButtonInModal =
     (userId: string) => async (e: React.MouseEvent<HTMLButtonElement>) => {
