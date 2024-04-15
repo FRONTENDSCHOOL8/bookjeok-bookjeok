@@ -7,6 +7,11 @@ import {
 } from '@/components/Atoms';
 import { ButtonModalForManageMent, GNB } from '@/components/Molecules';
 import useLoaderData from '@/hooks/useLoaderData';
+import {
+  TExpandedSocialingQueryAnswer,
+  Texpand,
+  fetchManagement,
+} from '@/pages/ManagementClub';
 import { SocialingResponse, UsersResponse } from '@/types/pocketbase-types';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -14,11 +19,6 @@ import * as React from 'react';
 import { useLayoutEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useRevalidator } from 'react-router-dom';
-import {
-  TExpandedSocialingQueryAnswer,
-  Texpand,
-  fetchManagement,
-} from './fetchManagement';
 
 const DEFAULT_MODAL_STATE = {
   failModal: false,
