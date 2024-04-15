@@ -9,7 +9,7 @@ import useCreateClubStore from '@/store/useCreateClubStore';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 
-export function CreateClub3() {
+export const CreateClub3 = () => {
   const { clubInfo, setImage, removeImage, addTitle, addDetail } =
     useCreateClubStore((state) => ({
       clubInfo: state.clubInfo,
@@ -19,20 +19,25 @@ export function CreateClub3() {
       addDetail: state.addDetail,
     }));
 
-  const handleInputImage = ({ target: { files } }) => {
-    setImage(files[0]);
+  const handleInputImage = ({
+    target: { files },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    if (files !== null) {
+      console.log(typeof files[0]);
+      setImage(files[0]);
+    }
   };
 
-  const handleRemoveImage = (e) => {
+  const handleRemoveImage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     removeImage();
   };
 
-  const handleTitle = ({ target }) => {
+  const handleTitle = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     addTitle(target.value);
   };
 
-  const handleDetail = ({ target }) => {
+  const handleDetail = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
     addDetail(target.value);
   };
 
@@ -94,4 +99,4 @@ export function CreateClub3() {
       </main>
     </>
   );
-}
+};

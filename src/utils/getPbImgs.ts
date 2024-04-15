@@ -1,6 +1,8 @@
 const PB_URL = import.meta.env.VITE_PB_URL;
 
-type TSource = { collectionId: string; id: string; img: string } | undefined;
+type TSource =
+  | { collectionId: string; id: string; img: string | File }
+  | undefined;
 
 export default function getPbImgs(source: TSource) {
   if (!source) return '';

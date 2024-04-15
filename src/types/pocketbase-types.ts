@@ -74,7 +74,7 @@ export type SocialingRecord = {
   dateTime?: IsoDateString;
   detail?: string;
   genre?: RecordIdString;
-  img?: string;
+  img?: File | string;
   isOffline?: boolean;
   like?: RecordIdString[];
   limitPerson?: number;
@@ -98,7 +98,7 @@ export type UsersRecord = {
   birth?: IsoDateString;
   createSocialing?: RecordIdString[];
   gender?: UsersGenderOptions;
-  img?: string;
+  img?: string | File;
   like?: RecordIdString[];
   nickname?: string;
   participantSocialing?: RecordIdString[];

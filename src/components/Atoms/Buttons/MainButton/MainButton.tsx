@@ -15,6 +15,7 @@ interface MainButtonProps {
   as?: string;
   children: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 }
 
 const MainButton = ({
@@ -26,6 +27,7 @@ const MainButton = ({
   svgId,
   children,
   onClick,
+  disabled,
   ...rest
 }: MainButtonProps) => {
   const buttonStyle: ButtonStyle = {
@@ -57,6 +59,7 @@ const MainButton = ({
         className={`${buttonStyle[color]} ${className} ${buttonSize[size]}`}
         type={type}
         onClick={onClick}
+        disabled={disabled}
         {...rest}
       >
         {children}
