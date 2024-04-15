@@ -1,6 +1,12 @@
-import { string, bool, number } from 'prop-types';
 import { Svg } from '@/components/Atoms';
-
+import { InputHTMLAttributes } from 'react';
+interface TTextForm extends InputHTMLAttributes<HTMLInputElement> {
+  description?: string;
+  error?: boolean;
+  svgId?: string;
+  hiddenLabel?: boolean;
+  // onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 function TextForm({
   className,
   type,
@@ -20,7 +26,7 @@ function TextForm({
   svgId,
   hiddenLabel = false,
   ...rest
-}) {
+}: TTextForm) {
   const textFormStyle = {
     className: 'flex flex-col',
     input:
@@ -82,23 +88,3 @@ function TextForm({
 }
 
 export default TextForm;
-
-TextForm.propTypes = {
-  className: string,
-  svgId: string,
-  hiddenLabel: bool,
-  children: string,
-  type: string,
-  id: string,
-  name: string,
-  value: string,
-  defaultValue: string,
-  placeholder: string,
-  disabled: bool,
-  readOnly: bool,
-  required: bool,
-  minLength: number,
-  maxLength: number,
-  description: string,
-  error: bool,
-};
