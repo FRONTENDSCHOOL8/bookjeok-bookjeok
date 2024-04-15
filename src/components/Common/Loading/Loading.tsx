@@ -1,6 +1,8 @@
-import { string } from 'prop-types';
-
-function Loading({ children = '로딩중', className, ...restProps }) {
+type TLoading = {
+  className?: string;
+  children?: React.ReactNode;
+};
+function Loading({ children = '로딩중', className, ...restProps }: TLoading) {
   const classNames =
     `flex flex-col min-h-svh justify-center items-center ${className}`.trim();
   return (
@@ -2748,8 +2750,3 @@ function Loading({ children = '로딩중', className, ...restProps }) {
 }
 
 export default Loading;
-
-Loading.propTypes = {
-  children: string,
-  className: string,
-};

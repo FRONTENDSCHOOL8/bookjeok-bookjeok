@@ -4,6 +4,6 @@ import { fetchFilter } from '@/pages/Filter';
 export const loader = async () => {
   return await queryClient.ensureQueryData({
     queryKey: ['filter'],
-    queryFn: fetchFilter(),
+    queryFn: () => fetchFilter(),
   });
 };

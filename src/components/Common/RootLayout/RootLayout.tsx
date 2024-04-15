@@ -1,6 +1,6 @@
 import { useNavigation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import Loading from '../Loading/Loading';
+import { Loading } from '@/components/Common';
 
 function RootLayout() {
   const { state } = useNavigation();

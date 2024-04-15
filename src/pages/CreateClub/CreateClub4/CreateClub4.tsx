@@ -8,6 +8,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+type TdateTimeRef = {
+  date: string | null;
+  time: string | null;
+};
+
 export function CreateClub4() {
   // zustand store 안의 상태 및 메서드 호출
   const { clubInfo, setLimit, setQuery, setDateTime, resetClubInfo } =
@@ -18,14 +23,15 @@ export function CreateClub4() {
       setDateTime: state.setDateTime,
       resetClubInfo: state.resetClubInfo,
     }));
+  console.log(clubInfo);
 
   // 입력받은 date 및 time을 ref에 임시 저장
-  const dateTimeRef = useRef({
+  const dateTimeRef = useRef<TdateTimeRef>({
     date: null,
     time: null,
   });
   // ref에 저장된 date 및 time을 handler 함수에서 조합 및 전역 상태 업데이트
-  const handleDate = ({ target }) => {
+  const handleDate = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     dateTimeRef.current.date = target.value;
     if (
       dateTimeRef.current.date !== null &&
@@ -37,7 +43,7 @@ export function CreateClub4() {
       setDateTime(dateTime);
     }
   };
-  const handleTime = ({ target }) => {
+  const handleTime = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     dateTimeRef.current.time = target.value;
     if (
       dateTimeRef.current.date !== null &&
@@ -51,10 +57,10 @@ export function CreateClub4() {
   };
 
   // 인원 제한 및 질문 상태 업데이트
-  const handleLimit = ({ target }) => {
-    setLimit(target.value);
+  const handleLimit = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
+    setLimit(+target.value);
   };
-  const handleQuery = ({ target }) => {
+  const handleQuery = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(target.value);
   };
 
@@ -64,11 +70,15 @@ export function CreateClub4() {
   const createNewClub = useMutation({
     mutationFn: async () => {
       await pb.collection('socialing').create(clubInfo);
-      const user = await pb.collection('users').getOne(clubInfo.createUser);
+
+      const user = await pb.collection('users').getOne(clubInfo.createUser!);
       const clubDataForUser = {
         createSocialing: [...user.createSocialing, `${clubInfo.id}`],
       };
-      await pb.collection('users').update(clubInfo.createUser, clubDataForUser);
+      await pb
+        .collection('users')
+        .update(clubInfo.createUser!, clubDataForUser);
+
       const chattingRoomData = {
         title: clubInfo.title,
         socialing: clubInfo.id,
@@ -80,12 +90,14 @@ export function CreateClub4() {
 
       await pb
         .collection('socialing')
-        .update(clubInfo.id, { chattingRoom: newChattingRoom.id });
+        .update(clubInfo.id!, { chattingRoom: newChattingRoom.id });
     },
   });
 
   // 모임 생성을 위한 생성버튼 handler (상태 id 업데이트 및 제출 후 초기화, user컬렉션에 모임 id 업데이트, socialing 컬렉션에 create, 모달 open을 위한 상태 업데이트 수행)
-  const handleSubmitClubInfoForCreate = async (e) => {
+  const handleSubmitClubInfoForCreate = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     await createNewClub.mutateAsync();
     setModalState(true);

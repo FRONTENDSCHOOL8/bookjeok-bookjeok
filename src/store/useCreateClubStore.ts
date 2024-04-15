@@ -1,48 +1,68 @@
 import { createRandomId } from '@/utils';
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+
+interface TclubInfo {
+  id: string | undefined;
+  chattingRoom?: string | undefined;
+  isOffline: boolean | undefined;
+  location: string;
+  genre: string | undefined;
+  img: File | undefined;
+  alt: string | undefined;
+  title: string | undefined;
+  detail: string | undefined;
+  dateTime: string | undefined;
+  limitPerson: number | undefined;
+  query: string | undefined;
+  createUser: string | undefined;
+}
+type State = {
+  clubInfo: TclubInfo;
+};
+type Action = {
+  setId: (id: string) => void;
+  setUserId: (createUser: string) => void;
+  changeLocationType: (isOffline: boolean) => void;
+  addPlaceName: (location: string) => void;
+  addGenre: (genre: string) => void;
+  removeGenre: () => void;
+  setImage: (file: File) => void;
+  removeImage: () => void;
+  addTitle: (text: string) => void;
+  addDetail: (text: string) => void;
+  setDateTime: (dateTime: string) => void;
+  setLimit: (limitPerson: number) => void;
+  setQuery: (query: string) => void;
+  resetClubInfo: () => void;
+};
+
 const DEFALUT_CLUB_INFO = {
   id: createRandomId(),
-  chattingRoom: null,
+  chattingRoom: '',
   isOffline: false,
   location: '',
-  genre: null,
-  img: null,
-  alt: null,
-  title: null,
-  detail: null,
-  dateTime: null,
+  genre: '',
+  img: undefined,
+  alt: '',
+  title: undefined,
+  detail: undefined,
+  dateTime: undefined,
   limitPerson: 3,
-  query: null,
-  createUser: null,
+  query: undefined,
+  createUser: undefined,
 };
-const clubInfoStore = (set) => ({
+const useCreateClubStore = create<State & Action>()((set) => ({
   clubInfo: DEFALUT_CLUB_INFO,
   setId: (id) => {
-    set(
-      (state) => ({
-        clubInfo: { ...state.clubInfo, id },
-      }),
-      false,
-      'setId'
-    );
+    set((state) => ({ clubInfo: { ...state.clubInfo, id } }), false);
   },
   setUserId: (createUser) => {
-    set(
-      (state) => ({
-        clubInfo: { ...state.clubInfo, createUser },
-      }),
-      false,
-      'setUserId'
-    );
+    set((state) => ({ clubInfo: { ...state.clubInfo, createUser } }), false);
   },
   changeLocationType: (isOffline) => {
     set(
-      (state) => ({
-        clubInfo: { ...state.clubInfo, isOffline, location: '' },
-      }),
-      false,
-      'changeLocationType'
+      (state) => ({ clubInfo: { ...state.clubInfo, isOffline, location: '' } }),
+      false
     );
   },
   addPlaceName: (location) => {
@@ -50,8 +70,7 @@ const clubInfoStore = (set) => ({
       (state) => ({
         clubInfo: { ...state.clubInfo, location },
       }),
-      false,
-      'addPlaceName'
+      false
     );
   },
   addGenre: (genre) => {
@@ -62,8 +81,7 @@ const clubInfoStore = (set) => ({
           genre,
         },
       }),
-      false,
-      'addGenre'
+      false
     );
   },
   removeGenre: () => {
@@ -71,11 +89,10 @@ const clubInfoStore = (set) => ({
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          genre: null,
+          genre: '',
         },
       }),
-      false,
-      'removeGenre'
+      false
     );
   },
   setImage: (file) => {
@@ -87,8 +104,7 @@ const clubInfoStore = (set) => ({
           alt: file.name,
         },
       }),
-      false,
-      'setImage'
+      false
     );
   },
   removeImage: () => {
@@ -96,12 +112,11 @@ const clubInfoStore = (set) => ({
       (state) => ({
         clubInfo: {
           ...state.clubInfo,
-          img: null,
-          alt: null,
+          img: undefined,
+          alt: '',
         },
       }),
-      false,
-      'removeImage'
+      false
     );
   },
   addTitle: (text) => {
@@ -112,8 +127,7 @@ const clubInfoStore = (set) => ({
           title: text,
         },
       }),
-      false,
-      'addTitle'
+      false
     );
   },
   addDetail: (text) => {
@@ -124,8 +138,7 @@ const clubInfoStore = (set) => ({
           detail: text,
         },
       }),
-      false,
-      'addDetail'
+      false
     );
   },
   setDateTime: (dateTime) => {
@@ -136,8 +149,7 @@ const clubInfoStore = (set) => ({
           dateTime,
         },
       }),
-      false,
-      'setDateTime'
+      false
     );
   },
   setLimit: (limitPerson) => {
@@ -148,8 +160,7 @@ const clubInfoStore = (set) => ({
           limitPerson: limitPerson * 1,
         },
       }),
-      false,
-      'setLimit'
+      false
     );
   },
   setQuery: (query) => {
@@ -160,8 +171,7 @@ const clubInfoStore = (set) => ({
           query,
         },
       }),
-      false,
-      'setQuery'
+      false
     );
   },
   resetClubInfo: () => {
@@ -169,11 +179,10 @@ const clubInfoStore = (set) => ({
       () => ({
         clubInfo: DEFALUT_CLUB_INFO,
       }),
-      false,
-      'resetClubInfo'
+      false
     );
   },
-});
+}));
 
-const useCreateClubStore = create(devtools(clubInfoStore));
+// const useCreateClubStore = create(devtools(clubInfoStore));
 export default useCreateClubStore;
