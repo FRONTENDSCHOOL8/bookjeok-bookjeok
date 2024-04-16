@@ -14,32 +14,26 @@ import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { getDocumentTitle, createRandomId } from '@/utils';
 import ReactQuill from 'react-quill';
-/*
-1.pb api data 
-  const data = {
-    "writer": "RELATION_RECORD_ID",( 필수 )
-    "title": "test", ( 필수 )
-    "detail": "test", ( 필수 )
-    "bookTitle": "test"
-};
-2. 다음 버튼이 링크가 아니라 버튼 ! 
-3. 등록 성공하면 모달-> 홈 화면으로 이동? / 상세페이지로 이동 ! 
-4. title, detail이 없으면 submit 통신 방지 => disabled 해버림 ! 
-
-*/
 
 const style = {
   div: 'flex flex-col gap-2',
   span: 'px-2 text-b-2-regular text-bjgray-500',
 };
 
+interface FormType {
+  set: (e: React.ChangeEvent<HTMLInputElement> | string) => void;
+  imageSet: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  imageRemove: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 export function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
   const INITIAL_DATA = {
     id: createRandomId(),
     writer: userInfo.id,
-    detail: '',
+    bookTitle: '',
+    detail: '' || {},
     title: '',
+    img: {},
   };
   const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
   const [isModalState, setIsModalState] = useState(false);
@@ -47,20 +41,23 @@ export function CreateBookReview() {
     setIsModalState(false);
   });
 
-  const handleReviewForm = {
+  const handleReviewForm: FormType = {
     set: (e) => {
-      if (!e.target) {
+      if (typeof e == 'string') {
         setBookReviewForm({ ...bookReviewForm, detail: e });
         return;
+      } else {
+        setBookReviewForm({ ...bookReviewForm, [e.target.id]: e.target.value });
       }
-      setBookReviewForm({ ...bookReviewForm, [e.target.id]: e.target.value });
     },
     imageSet: ({ target: { files } }) => {
-      setBookReviewForm({ ...bookReviewForm, img: files[0] });
+      if (files) {
+        setBookReviewForm({ ...bookReviewForm, img: files[0] });
+      }
     },
     imageRemove: (e) => {
       e.preventDefault();
-      setBookReviewForm({ ...bookReviewForm, img: null });
+      setBookReviewForm({ ...bookReviewForm, img: {} });
     },
   };
 
@@ -114,11 +111,12 @@ export function CreateBookReview() {
                 독후감에 걸맞는 멋진 제목을 지어주세요 !
               </span>
             </div>
-            <ReactQuill id="detail" onChange={handleReviewForm.set} />
+            <ReactQuill id="detail" onChange={(e) => handleReviewForm.set(e)} />
           </Form>
 
           <div>
             <MainButton
+              type="button"
               onClick={async () => await submitReview()}
               as="button"
               color={
