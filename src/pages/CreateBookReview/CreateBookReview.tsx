@@ -23,17 +23,21 @@ const style = {
 interface FormType {
   set: (e: React.ChangeEvent<HTMLInputElement> | string) => void;
   imageSet: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  imageRemove: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  imageRemove: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+interface State {
+  id: string;
+  writer: string;
+  detail?: string;
+  title?: string;
+  img?: File | undefined;
+  bookTitle?: string;
 }
 export function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
-  const INITIAL_DATA = {
+  const INITIAL_DATA: State = {
     id: createRandomId(),
     writer: userInfo.id,
-    bookTitle: '',
-    detail: '' || {},
-    title: '',
-    img: {},
   };
   const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
   const [isModalState, setIsModalState] = useState(false);
@@ -57,7 +61,7 @@ export function CreateBookReview() {
     },
     imageRemove: (e) => {
       e.preventDefault();
-      setBookReviewForm({ ...bookReviewForm, img: {} });
+      setBookReviewForm({ ...bookReviewForm, img: undefined });
     },
   };
 
