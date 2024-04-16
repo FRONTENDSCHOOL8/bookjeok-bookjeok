@@ -1,35 +1,36 @@
 import pb from '@/api/pocketbase';
+import { BlankContents, NomalTitle, ThinTextForm } from '@/components/Atoms';
+import { ChatList, DobbleButtonModal, GNB } from '@/components/Molecules';
+import { useDebounce, useLoaderData } from '@/hooks';
 import {
-  BlankContents,
-  NomalTitle,
-  RoundImage,
-  ThinTextForm,
-} from '@/components/Atoms';
-import { DobbleButtonModal, GNB } from '@/components/Molecules';
-import { useDebounce } from '@/hooks';
-import { FetchChattingRoomList } from '@/pages/Chatting/ChatRoomListPage';
+  FetchChattingRoomList,
+  Texpand,
+} from '@/pages/Chatting/ChatRoomListPage';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { getCreatedHoursAgo, getDocumentTitle, getPbImgs } from '@/utils';
+import { ChattingRoomResponse, Collections } from '@/types/pocketbase-types';
+import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
-import { string } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLoaderData, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export function ChatRoomListPage() {
-  const chattingRoom = useLoaderData();
+  const chattingRoom = useLoaderData<ChattingRoomResponse<Texpand>[]>();
   const { userInfo } = useUserInfoStore();
   const { userId } = useParams();
 
   const [observer, setObserver] = useState(false);
 
   useEffect(() => {
-    pb.collection('chattingRoom').subscribe(
+    pb.collection(Collections.ChattingRoom).subscribe<
+      ChattingRoomResponse<Texpand>
+    >(
       '*',
       function (e) {
         // console.log(e.action);
+
         if (
-          e.record.expand.message[e.record.expand.message.length - 1]
+          e.record.expand!.message[e.record.expand!.message.length - 1]
             .sendUser !== userInfo.id
         ) {
           setObserver(true);
@@ -42,23 +43,24 @@ export function ChatRoomListPage() {
     return () => {
       pb.collection('chattingRoom').unsubscribe();
       setObserver(false);
-      console.log('클린업 함수로 업데이트 된', observer);
+      // console.log('클린업 함수로 업데이트 된', observer);
     };
   }, [observer, userInfo?.id]);
 
   const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoomList', userId, observer],
-    queryFn: () => FetchChattingRoomList(userId),
+    queryFn: () => FetchChattingRoomList(userId!),
     initialData: chattingRoom,
   });
 
-  const [searchKey, setSearchKey] = useState();
+  const [searchKey, setSearchKey] = useState('');
   const [isSearch, setIsSearch] = useState(false);
-  const [searchResult, setSearchResult] = useState();
+  const [searchResult, setSearchResult] =
+    useState<ChattingRoomResponse<Texpand>[]>();
 
   const debouncedKey = useDebounce(searchKey, 500);
 
-  const handleSearch = ({ target }) => {
+  const handleSearch = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKey(target.value);
     setIsSearch(target.value !== '');
   };
@@ -85,6 +87,7 @@ export function ChatRoomListPage() {
   }
 
   const content = isSearch ? searchResult : chattingRoomData;
+
   return (
     <>
       <Helmet>
@@ -103,19 +106,24 @@ export function ChatRoomListPage() {
             검색
           </ThinTextForm>
           <ul className="flex flex-1 flex-col">
-            {content && content.length > 1 ? (
-              content.map(({ id, created, expand: { socialing, message } }) => (
-                <ChatList
-                  title={socialing.title}
-                  key={socialing.id}
-                  id={id}
-                  updated={
-                    message ? message[message.length - 1].updated : created
-                  }
-                  src={getPbImgs(socialing)}
-                  message={message ? message[message.length - 1].text : ''}
-                ></ChatList>
-              ))
+            {content && content.length >= 1 ? (
+              content.map(({ id, created, expand }) => {
+                if (expand) {
+                  const { socialing, message }: Texpand = expand;
+                  return (
+                    <ChatList
+                      title={socialing.title}
+                      key={socialing.id}
+                      id={id}
+                      updated={
+                        message ? message[message.length - 1].updated : created
+                      }
+                      src={getPbImgs(socialing)}
+                      message={message ? message[message.length - 1].text : ''}
+                    ></ChatList>
+                  );
+                }
+              })
             ) : (
               <li className="flex flex-1">
                 <BlankContents
@@ -131,34 +139,3 @@ export function ChatRoomListPage() {
     </>
   );
 }
-
-const ChatList = ({ id, src, title, updated, message }) => {
-  return (
-    <li>
-      <Link to={`/chatRoom/${id}`} className="flex h-16 items-center gap-x-4">
-        <RoundImage src={src} alt="" size="md"></RoundImage>
-        <div className="flex w-full items-center justify-between">
-          <div className="flex flex-col">
-            <span className="line-clamp-1 text-b-1-regular text-bjblack">
-              {title}
-            </span>
-            <p className="max-w-[290px] truncate text-b-2-regular text-bjgray-500">
-              {message}
-            </p>
-          </div>
-          <span className="whitespace-nowrap pl-2 text-b-3-light text-bjgray-400">
-            {getCreatedHoursAgo(updated)}
-          </span>
-        </div>
-      </Link>
-    </li>
-  );
-};
-
-ChatList.propTypes = {
-  id: string,
-  src: string,
-  title: string,
-  message: string,
-  updated: string,
-};

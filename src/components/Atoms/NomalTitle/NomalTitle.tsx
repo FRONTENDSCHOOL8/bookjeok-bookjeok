@@ -1,15 +1,22 @@
 import { Svg } from '@/components/Atoms';
-import { bool, string } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-function NomalTitle({
+interface TNomalTitle {
+  className?: string;
+  backLink?: boolean;
+  path?: string;
+  children: React.ReactNode;
+  subText?: string;
+  resetButton?: boolean;
+}
+const NomalTitle = ({
   className,
   backLink = false,
   path,
   children,
   subText,
   resetButton = false,
-}) {
+}: TNomalTitle) => {
   const nomalTitleStyle = {
     className:
       'z-10 flex h-[56px] items-center justify-between bg-white shadow-md',
@@ -18,7 +25,7 @@ function NomalTitle({
   const goBack = () => {
     navigate(-1);
   };
-  const goPath = (path) => () => {
+  const goPath = (path: string) => () => {
     navigate(`/${path}`, { replace: true });
   };
   let backLinkElement = null;
@@ -61,15 +68,6 @@ function NomalTitle({
       </div>
     </header>
   );
-}
+};
 
 export default NomalTitle;
-
-NomalTitle.propTypes = {
-  path: string,
-  className: string,
-  backLink: bool,
-  children: string,
-  subText: string,
-  resetButton: bool,
-};

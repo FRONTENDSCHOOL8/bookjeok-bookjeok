@@ -13,7 +13,7 @@ export { default as GenreButton } from '@/components/Atoms/GenreButton/GenreButt
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea.tsx';
 export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm.tsx';
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';
-export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle';
+export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle.tsx';
 export { default as LikeButton } from '@/components/Atoms/LikeButton/LikeButton.tsx';
 export { default as Accordion } from '@/components/Atoms/Accordion/Accordion';
 export { default as TextBox } from '@/components/Atoms/TextBox/TextBox';
