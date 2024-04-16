@@ -10,20 +10,24 @@ export function CreateClub2() {
     addGenre: state.addGenre,
     removeGenre: state.removeGenre,
   }));
+  console.log(clubInfo);
 
   const filterData = useGetFilter();
 
-  const handlegenreButton = (e) => {
+  const handlegenreButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (clubInfo.genre === null) {
-      addGenre(e.target.value);
+
+    if (clubInfo.genre === '') {
+      addGenre(e.currentTarget.value);
       return;
     }
 
-    if (clubInfo.genre.includes(e.target.value)) {
-      removeGenre(e.target.value);
-    } else {
-      addGenre(e.target.value);
+    if (clubInfo.genre) {
+      removeGenre();
+      addGenre(e.currentTarget.value);
+    }
+    if (clubInfo.genre === e.currentTarget.value) {
+      removeGenre();
     }
   };
 
@@ -48,7 +52,7 @@ export function CreateClub2() {
                   <GenreButton
                     key={filterData.id}
                     filterData={filterData}
-                    state={clubInfo}
+                    clubInfo={clubInfo}
                     onClick={handlegenreButton}
                   />
                 );
@@ -59,7 +63,7 @@ export function CreateClub2() {
         <div className="px-4">
           <MainButton
             color="custom"
-            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium ${clubInfo.genre === null ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
+            className={`my-4 flex w-full items-center justify-center rounded-5xl text-b-1-medium ${clubInfo.genre === '' ? 'pointer-events-none bg-bjgray-300 text-bjgray-500' : 'bg-bjyellow-400 text-bjblack'}`}
             to="/createClub3"
           >
             다음

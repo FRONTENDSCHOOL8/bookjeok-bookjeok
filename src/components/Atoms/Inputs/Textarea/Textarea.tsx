@@ -1,6 +1,11 @@
-import { string, bool, number } from 'prop-types';
+import { TextareaHTMLAttributes } from 'react';
 
-function Textarea({
+interface TTextarea extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label: string;
+  length: number;
+  // onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
+const Textarea = ({
   className,
   label,
   id,
@@ -13,17 +18,17 @@ function Textarea({
   required,
   minLength,
   maxLength,
-  rows = '5',
+  rows = 5,
   length = 0,
-  ...rest
-}) {
+  onChange,
+}: TTextarea) => {
   const textareaStyle = {
     textarea:
       'resize-none w-full p-4 rounded-5xl bg-bjgray-100 border-[1px] border-bjgray-100 focus:border-bjgray-400 focus:outline-none text-b-1-regular text-bjblack  placeholder:text-b-1-regular placeholder:text-bjgray-500 disabled:bg-bjgray-200 disabled:text-bjgray-500',
   };
 
   return (
-    <div className={`${textareaStyle.className} ${className}`}>
+    <div className={className}>
       <label htmlFor={id} className="sr-only">
         {label}
       </label>
@@ -40,30 +45,13 @@ function Textarea({
         maxLength={maxLength}
         rows={rows}
         className={textareaStyle.textarea}
-        {...rest}
+        onChange={onChange}
       />
       <p className="m-0 text-right text-b-2-regular text-bjgray-500">
         <span className="text-bjblack">{length}</span>/{maxLength}
       </p>
     </div>
   );
-}
+};
 
 export default Textarea;
-
-Textarea.propTypes = {
-  className: string,
-  label: string,
-  id: string,
-  name: string,
-  value: string,
-  defaultValue: string,
-  placeholder: string,
-  disabled: bool,
-  readOnly: bool,
-  required: bool,
-  minLength: number,
-  maxLength: number,
-  rows: number,
-  length: number,
-};

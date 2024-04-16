@@ -19,15 +19,15 @@ export function CreateClub1() {
       addPlaceName: state.addPlaceName,
     }));
 
-  const handleClickOnline = (e) => {
+  const handleClickOnline = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     changeLocationType(false);
   };
-  const handleClickOffline = (e) => {
+  const handleClickOffline = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     changeLocationType(true);
   };
-  const handlePlaceName = (e) => {
+  const handlePlaceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     addPlaceName(e.target.value);
   };
 
@@ -36,7 +36,6 @@ export function CreateClub1() {
   }));
 
   useEffect(() => setUserID(userInfo.id), [setUserID, userInfo.id]);
-
 
   return (
     <>
@@ -52,7 +51,6 @@ export function CreateClub1() {
           <div className="flex flex-col px-4">
             <div className="flex flex-col gap-4">
               <OutlineButton
-                as="button"
                 type="button"
                 onClick={handleClickOnline}
                 clicked={!clubInfo.isOffline}
@@ -60,7 +58,6 @@ export function CreateClub1() {
                 온라인
               </OutlineButton>
               <OutlineButton
-                as="button"
                 type="button"
                 onClick={handleClickOffline}
                 clicked={clubInfo.isOffline}

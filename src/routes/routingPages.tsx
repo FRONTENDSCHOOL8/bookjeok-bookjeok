@@ -7,9 +7,7 @@ import {
   loader as ApplicationClub2Loader,
 } from '@/pages/ApplicationClub/ApplicationClub2';
 import { CreateBookReview } from '@/pages/CreateBookReview';
-import { CreateClub1 } from '@/pages/CreateClub/CreateClub1';
-import { CreateClub3 } from '@/pages/CreateClub/CreateClub3';
-import { CreateClub4 } from '@/pages/CreateClub/CreateClub4';
+import { CreateClub1, CreateClub3, CreateClub4 } from '@/pages/CreateClub';
 import {
   DetailBookReview,
   loader as detailBookReviewloader,
@@ -98,7 +96,7 @@ const routingPages = [
     path: '/createClub2',
     async lazy() {
       const { loader } = await import('@/pages/Filter');
-      const { CreateClub2 } = await import('@/pages/CreateClub/CreateClub2');
+      const { CreateClub2 } = await import('@/pages/CreateClub');
       return { Component: CreateClub2, loader: loader };
     },
   },

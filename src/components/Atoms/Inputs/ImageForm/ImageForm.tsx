@@ -1,6 +1,16 @@
-import { string, func, object, bool } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
+interface TImageForm {
+  className?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  id?: string;
+  name?: string;
+  src?: File | null;
+  alt?: string;
+  required?: boolean;
+  srOnly?: string;
+}
 function ImageForm({
   className,
   onChange,
@@ -12,7 +22,7 @@ function ImageForm({
   required = true,
   srOnly = '사진업로드',
   ...rest
-}) {
+}: TImageForm) {
   const imageFormStyle = {
     className: 'flex justify-center gap-2',
   };
@@ -65,15 +75,3 @@ function ImageForm({
 }
 
 export default ImageForm;
-
-ImageForm.propTypes = {
-  className: string,
-  src: object,
-  alt: string,
-  onChange: func,
-  onClick: func,
-  id: string,
-  name: string,
-  required: bool,
-  srOnly: string,
-};

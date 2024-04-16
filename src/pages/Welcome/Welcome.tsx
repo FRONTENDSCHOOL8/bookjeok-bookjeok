@@ -1,7 +1,7 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { OutlineButton } from '@/components/Atoms';
-export function Welcome() {
+export const Welcome = () => {
   return (
     <>
       <Helmet>
@@ -36,4 +36,4 @@ export function Welcome() {
       </div>
     </>
   );
-}
+};
