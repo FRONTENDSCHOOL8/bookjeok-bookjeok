@@ -15,6 +15,7 @@ interface MainButtonProps {
   as?: string;
   children: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 }
 
 const MainButton = ({

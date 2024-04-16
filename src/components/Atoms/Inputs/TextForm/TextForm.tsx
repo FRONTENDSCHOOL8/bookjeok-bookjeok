@@ -17,6 +17,7 @@ interface TextFormType {
   maxLength?: number;
   description?: string;
   error?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TextForm({
