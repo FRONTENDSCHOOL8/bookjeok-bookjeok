@@ -16,7 +16,9 @@ interface ButtonModalForManageMentTypes {
   onClickCancel?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   primaryAs?: React.ReactNode;
   secondaryAs?: React.ReactNode;
-  primaryOnClick?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  primaryOnClick?: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void> | void;
   secondaryOnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 function ButtonModalForManageMent({
