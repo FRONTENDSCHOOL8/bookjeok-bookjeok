@@ -1,4 +1,12 @@
-import { string, bool, oneOfType, node } from 'prop-types';
+interface CheckboxType {
+  className?: string;
+  id: string;
+  name?: string;
+  value?: string;
+  checked?: boolean;
+  children?: React.ReactNode;
+  onChange?: () => void;
+}
 
 function CheckboxForm({
   className,
@@ -8,7 +16,7 @@ function CheckboxForm({
   checked,
   children,
   ...rest
-}) {
+}: CheckboxType) {
   const checkboxFormStyle = {
     className: 'flex flex-row flex-nowrap justify-between items-center gap-4',
     classNameLabelText: 'text-b-2-regular text-bjblack flex-grow',
@@ -28,7 +36,7 @@ function CheckboxForm({
         value={value}
         checked={checked}
         className={checkboxFormStyle.classNameInput}
-        aria-pressed={checked ? '체크됨' : '체크되지 않음'}
+        // aria-pressed={checked ? '체크됨' : '체크되지 않음'}
         {...rest}
       />
     </div>
@@ -36,12 +44,3 @@ function CheckboxForm({
 }
 
 export default CheckboxForm;
-
-CheckboxForm.propTypes = {
-  className: string,
-  id: string,
-  name: string,
-  value: string,
-  checked: bool,
-  children: oneOfType([string, node]),
-};
