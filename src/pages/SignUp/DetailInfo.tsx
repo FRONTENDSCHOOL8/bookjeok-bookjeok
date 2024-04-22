@@ -19,7 +19,7 @@ export function DetailInfo() {
   const [validateState, setValidateState] = useState(INITIAL_STATE);
   const debouncedUserInfo = useDebounce(userInfo, 500);
 
-  const handleUserInfo = (e) => {
+  const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
     setUserInfo(updatedUserInfo);
   };
@@ -128,7 +128,6 @@ export function DetailInfo() {
                 </legend>
                 <div className="inline-flex justify-evenly gap-4">
                   <RadioForm
-                    type="radio"
                     value="male"
                     name="gender"
                     checked={userInfo.gender === 'male'}
@@ -137,7 +136,6 @@ export function DetailInfo() {
                     남자
                   </RadioForm>
                   <RadioForm
-                    type="radio"
                     value="female"
                     name="gender"
                     checked={userInfo.gender === 'female'}
