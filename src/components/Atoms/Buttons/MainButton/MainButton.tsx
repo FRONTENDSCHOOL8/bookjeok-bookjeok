@@ -16,6 +16,7 @@ interface MainButtonProps {
   children: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
+  state?: {} | undefined;
 }
 
 const MainButton = ({
