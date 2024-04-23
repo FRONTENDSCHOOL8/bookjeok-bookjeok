@@ -1,7 +1,9 @@
-function getCreatedHoursAgo(createdTime) {
+type TgetCreatedHoursAgo = (createdTime:string) => string | undefined
+
+const getCreatedHoursAgo:TgetCreatedHoursAgo= (createdTime)=> {
   const now = new Date();
   const create = new Date(createdTime);
-  const timeDiff = now - create;
+  const timeDiff = now.getTime() - create.getTime();
 
   if (timeDiff / 1000 < 60) {
     return '방금 전';

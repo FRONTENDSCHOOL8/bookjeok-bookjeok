@@ -5,7 +5,7 @@ interface CheckboxType {
   value?: string;
   checked?: boolean;
   children?: React.ReactNode;
-  onChange?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function CheckboxForm({
@@ -15,6 +15,7 @@ function CheckboxForm({
   value,
   checked,
   children,
+  onChange,
   ...rest
 }: CheckboxType) {
   const checkboxFormStyle = {
@@ -35,6 +36,7 @@ function CheckboxForm({
         name={name}
         value={value}
         checked={checked}
+        onChange={onChange}
         className={checkboxFormStyle.classNameInput}
         aria-checked={checked ? 'true' : 'false'}
         {...rest}

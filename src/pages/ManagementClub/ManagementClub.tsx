@@ -2,6 +2,7 @@ import pb from '@/api/pocketbase';
 import {
   Accordion,
   AccordionChidren1,
+  MainButton,
   NomalTitle,
   TextBox,
 } from '@/components/Atoms';
@@ -25,6 +26,7 @@ const DEFAULT_MODAL_STATE = {
   approveModal: false,
   cancelModal: false,
   completeModal: false,
+  deleteModal: false,
 };
 
 export function ManagementClub() {
@@ -129,6 +131,11 @@ export function ManagementClub() {
     };
   };
 
+  const handleDeleteButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setModalState({ ...modalState, deleteModal: true });
+  };
+
   // 작동이 안됌 ㅜㅠ
   useLayoutEffect(() => {
     pb.collection('socialing').subscribe(socialing.id, (e) => {
@@ -196,6 +203,14 @@ export function ManagementClub() {
               );
             })}
           </Accordion>
+          <MainButton
+            color="primary"
+            type="button"
+            onClick={handleDeleteButton}
+            className="mt-10"
+          >
+            모임 삭제하기
+          </MainButton>
         </main>
         <GNB className="fixed" createClub />
       </div>
@@ -233,6 +248,7 @@ export function ManagementClub() {
         <br />
         불이익이 있을 수 있습니다.
       </ButtonModalForManageMent>
+
       {/* 인원추가 실패 모달 */}
       <ButtonModalForManageMent
         open={modalState.failModal}
@@ -244,6 +260,7 @@ export function ManagementClub() {
       >
         이미 승인가능한 인원이 모두 찼어요.
       </ButtonModalForManageMent>
+
       {/* 인원모집완료 모달 */}
       <ButtonModalForManageMent
         open={modalState.completeModal}
@@ -256,6 +273,26 @@ export function ManagementClub() {
         모든 모임인원이 찼어요!
         <br />
         채팅방에서 참여자들에게 모임안내를 해주세요.
+      </ButtonModalForManageMent>
+
+      {/* 모임삭제 모달*/}
+      <ButtonModalForManageMent
+        title={'모임을 삭제하시겠습니까??'}
+        closeButton
+        primaryButtonText="삭제"
+        onClickCancel={handleCloseButton('deleteModal')}
+        open={modalState.deleteModal}
+        primaryOnClick={async (e) => {
+          e.preventDefault();
+          await pb.collection('socialing').delete(socialing.id);
+          await pb.collection('chattingRoom').delete(chattingRoom?.id!);
+        }}
+        secondaryOnClick={handleCloseButton('deleteModal')}
+        secondaryButtonText="닫기"
+      >
+        특별한 사유없이 모임을 삭제하면
+        <br />
+        불이익이 있을 수 있습니다.
       </ButtonModalForManageMent>
     </>
   );

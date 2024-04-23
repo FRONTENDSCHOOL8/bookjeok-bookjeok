@@ -3,9 +3,8 @@ module.exports = {
     extensions: ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx'],
   },
   plugins: ['prettier-plugin-tailwindcss'],
-  tailwindConfig: './tailwind.config.js',
- 
-  
+  tailwindConfig: './tailwind.config.ts',
+
   // 닫는 괄호(>) 위치 설정
   // ex: <div
   //       id="unique-id"

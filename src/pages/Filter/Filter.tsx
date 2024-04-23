@@ -1,6 +1,6 @@
 import { MainButton, NomalTitle } from '@/components/Atoms';
-import FilterList from '@/components/Molecules/FilterList/FilterList';
-import useFilterStore, { getFilterStrings } from '@/store/useFilterStore';
+import { FilterList } from '@/components/Molecules';
+import useFilterStore, { getFilterStrings } from '@/store/useFilterStore.ts';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +39,7 @@ export function Filter() {
             );
           }}
         >
-          <NomalTitle backLink resetButton textButton path="mainClub">
+          <NomalTitle backLink resetButton path="mainClub">
             필터
           </NomalTitle>
 

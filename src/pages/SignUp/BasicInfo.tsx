@@ -8,7 +8,7 @@ import {
 import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useDebounce } from '@/hooks/index';
+import { useDebounce } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';

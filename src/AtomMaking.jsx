@@ -16,8 +16,8 @@ import {
   TextForm,
   Textarea,
   ThinTextForm,
-} from './components/Atoms';
-import { DobbleButtonModal } from './components/Molecules';
+} from '@/components/Atoms';
+import { DobbleButtonModal } from '@/components/Molecules';
 
 export default function AtomMaking() {
   return (

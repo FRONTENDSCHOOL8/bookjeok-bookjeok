@@ -1,15 +1,23 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
 
-const filterStore = (set) => ({
+type State = {
+  filterList: string[];
+};
+type Action = {
+  addFilter: (filterKey: string) => void;
+  removeFilter: (filterKey: string) => void;
+  resetFilter: () => void;
+};
+type TgetFilterStrings = (state: State) => string;
+
+const useFilterStore = create<State & Action>()((set) => ({
   filterList: [],
   addFilter: (filterKey) => {
     set(
       (state) => ({
         filterList: [...state.filterList, filterKey],
       }),
-      false,
-      'addFilter'
+      false
     );
   },
   removeFilter: (filterKey) => {
@@ -17,8 +25,7 @@ const filterStore = (set) => ({
       (state) => ({
         filterList: state.filterList.filter((f) => f !== filterKey),
       }),
-      false,
-      'removeFilter'
+      false
     );
   },
   resetFilter: () => {
@@ -26,14 +33,12 @@ const filterStore = (set) => ({
       () => ({
         filterList: [],
       }),
-      false,
-      'resetFilter'
+      false
     );
   },
-});
-
-const useFilterStore = create(devtools(filterStore));
+}));
 
 export default useFilterStore;
 
-export const getFilterStrings = (state) => state.filterList.join(',');
+export const getFilterStrings: TgetFilterStrings = (state) =>
+  state.filterList.join(',');
