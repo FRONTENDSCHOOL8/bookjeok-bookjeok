@@ -13,10 +13,6 @@ import { useQuery } from '@tanstack/react-query';
 import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
-const INITIAL_USER_INFO = {
-  emailVisibility: true,
-};
-
 const INITIAL_VALIDATE_STATE = {
   isNotRegisteredEmail: false,
   isValidateEmail: false,
@@ -25,14 +21,14 @@ const INITIAL_VALIDATE_STATE = {
 };
 
 export function BasicInfo() {
-  const setInfo = useSignUpStore((state) => state.setInfo);
-  const setNextPage = useSignUpStore((state) => state.setNextPage);
-  const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
+  const { setInfo, setNextPage, enteredUserInfo } = useSignUpStore(
+    (state) => state
+  );
+  const [userInfo, setUserInfo] = useState(enteredUserInfo);
   const [isValidateState, setIsValidateState] = useState(
     INITIAL_VALIDATE_STATE
   );
   const debouncedUserInfo = useDebounce(userInfo, 500);
-
   // 폼 change event 함수
   const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };

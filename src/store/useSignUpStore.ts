@@ -8,7 +8,7 @@ interface SignUpInfo {
   phone?: string;
   birth?: string;
   gender?: 'male' | 'female';
-  emailVisibility: boolean;
+  emailVisibility?: boolean;
 }
 type State = {
   currentPage: 'basicInfo' | 'detailInfo';
@@ -23,13 +23,13 @@ type Action = {
 const useSignUpStore = create<State & Action>((set) => ({
   currentPage: 'basicInfo',
 
-  enteredUserInfo: <SignUpInfo>{},
+  enteredUserInfo: { emailVisibility: true },
 
   setNextPage: (page) => set({ currentPage: page }),
 
   setInfo: (userInfo) =>
-    set((state) => ({
-      enteredUserInfo: { ...state.enteredUserInfo, userInfo },
+    set(() => ({
+      enteredUserInfo: userInfo,
     })),
 }));
 
