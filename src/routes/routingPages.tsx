@@ -1,5 +1,4 @@
 import AtomMaking from '@/AtomMaking';
-import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
 import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
 import {
@@ -172,7 +171,7 @@ const routingPages = [
   {
     path: '/editProfile/:userId',
     element: (
-      <ProtectRoute client={queryClient}>
+      <ProtectRoute >
         <EditProfile />
       </ProtectRoute>
     ),

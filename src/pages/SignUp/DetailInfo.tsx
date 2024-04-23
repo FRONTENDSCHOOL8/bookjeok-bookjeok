@@ -6,7 +6,7 @@ import {
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
-import { useDebounce } from '@/hooks/index';
+import { useDebounce } from '@/hooks';
 import { useNavigate, Form } from 'react-router-dom';
 import useSignUpStore from '@/store/useSignUpStore';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -20,7 +20,6 @@ export function DetailInfo() {
   const [userInfo, setUserInfo] = useState(enteredUserInfo);
   const [validateState, setValidateState] = useState(INITIAL_STATE);
   const debouncedUserInfo = useDebounce(userInfo, 500);
-
 
   const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };

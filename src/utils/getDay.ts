@@ -1,5 +1,6 @@
 // yyyy-MM-dd 형식으로 날짜를 받아오면 해당 요일을 계산해주는 함수
-function getDay(yyyyMMdd) {
+
+const getDay = (yyyyMMdd:string)=> {
   const dateStr = yyyyMMdd.replaceAll('-', '/');
   const dayOfWeek = new Date(dateStr).getDay();
   switch (dayOfWeek) {

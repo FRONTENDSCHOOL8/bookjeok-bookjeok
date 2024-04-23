@@ -1,7 +1,22 @@
-import { string } from 'prop-types';
-import RoundImage from '../RoundImage/RoundImage';
+import { RoundImage } from '@/components/Atoms';
 
-function MessageBubble({ align = 'left', src, alt, nickname, children, time }) {
+type TMessageBubble = {
+  align: 'left' | 'right';
+  src: string;
+  alt: string;
+  nickname: string;
+  children: React.ReactNode;
+  time: string;
+};
+
+const MessageBubble = ({
+  align = 'left',
+  src,
+  alt,
+  nickname,
+  children,
+  time,
+}: TMessageBubble) => {
   const messageBubbleStyle = {
     left: 'group-left',
     right: 'group-right',
@@ -32,15 +47,6 @@ function MessageBubble({ align = 'left', src, alt, nickname, children, time }) {
       </li>
     </>
   );
-}
+};
 
 export default MessageBubble;
-
-MessageBubble.propTypes = {
-  align: string,
-  src: string,
-  alt: string,
-  nickname: string,
-  children: string,
-  time: string,
-};

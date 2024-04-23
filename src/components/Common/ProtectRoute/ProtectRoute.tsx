@@ -1,15 +1,23 @@
 import { DobbleButtonModal } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { node, string } from 'prop-types';
 
-function isEmpty(obj) {
+type TisEmpty = (obj:typeof useUserInfoStore)=>boolean
+
+interface TprotectRoute {
+  redirectPath? : string;
+  children?:React.ReactNode
+}
+const isEmpty:TisEmpty=(obj)=> {
   for (const key in obj) {
     return false;
   }
   return true;
 }
-function ProtectRoute({ redirectPath = '/', children }) {
+
+const ProtectRoute=({ redirectPath = '/', children }:TprotectRoute)=> {
   const { userInfo } = useUserInfoStore();
+  
+  
 
   if (isEmpty(userInfo)) {
     return (
@@ -28,8 +36,3 @@ function ProtectRoute({ redirectPath = '/', children }) {
 }
 
 export default ProtectRoute;
-
-ProtectRoute.propTypes = {
-  redirectPath: string,
-  children: node,
-};

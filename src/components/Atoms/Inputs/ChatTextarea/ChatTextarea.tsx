@@ -1,23 +1,34 @@
-import { bool, number, string, element, oneOfType, object } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
+interface TChatTexarea {
+  forwardRef: React.Ref<HTMLTextAreaElement>;
+  label: string;
+  id: string;
+  name: string;
+  placeholder: string;
+  value?: string;
+  required?: boolean;
+  rows?: number;
+  className?: string;
+}
+
 function ChatTextarea({
-  className,
-  forwardRef = null,
   label,
+  forwardRef = null,
   id,
   name,
-  value,
-  defaultValue,
   placeholder,
-  disabled,
-  readOnly,
-  required,
-  minLength,
-  maxLength,
-  rows = '1',
-  ...rest
-}) {
+  value,
+  required = true,
+  rows = 1,
+  className,
+  // defaultValue,
+  // disabled,
+  // readOnly,
+  // minLength,
+  // maxLength,
+  // ...rest
+}: TChatTexarea) {
   const textareaStyle = {
     className:
       'flex min-h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:disabled]:bg-bjgray-200',
@@ -35,17 +46,17 @@ function ChatTextarea({
           ref={forwardRef}
           id={id}
           name={name}
-          value={value}
-          defaultValue={defaultValue}
           placeholder={placeholder}
-          disabled={disabled}
-          readOnly={readOnly}
+          value={value}
           required={required}
-          minLength={minLength}
-          maxLength={maxLength}
           rows={rows}
           className={textareaStyle.textarea}
-          {...rest}
+          // defaultValue={defaultValue}
+          // disabled={disabled}
+          // readOnly={readOnly}
+          // minLength={minLength}
+          // maxLength={maxLength}
+          // {...rest}
         />
       </div>
       <button type="submit" title="보내기" aria-label="보내기">
@@ -56,20 +67,3 @@ function ChatTextarea({
 }
 
 export default ChatTextarea;
-
-ChatTextarea.propTypes = {
-  className: string,
-  forwardRef: oneOfType([element, object]),
-  label: string,
-  id: string,
-  name: string,
-  value: string,
-  defaultValue: string,
-  placeholder: string,
-  disabled: bool,
-  readOnly: bool,
-  required: bool,
-  minLength: number,
-  maxLength: number,
-  rows: number,
-};

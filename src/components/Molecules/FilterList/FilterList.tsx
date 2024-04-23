@@ -1,7 +1,9 @@
 import { CheckboxForm } from '@/components/Atoms';
 import useFilterStore from '@/store/useFilterStore';
-import { string, object } from 'prop-types';
-export default function FilterList({ filterInfo: { id, title } }) {
+type TProps = {
+  filterInfo: { id: string; title: string };
+};
+const FilterList = ({ filterInfo: { id, title } }: TProps) => {
   const { addFilter, removeFilter, filterListState } = useFilterStore(
     (state) => ({
       addFilter: state.addFilter,
@@ -9,7 +11,7 @@ export default function FilterList({ filterInfo: { id, title } }) {
       filterListState: state.filterList,
     })
   );
-  const handleFilterCheckbox = (e) => {
+  const handleFilterCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     if (checked) {
       addFilter(name);
@@ -31,10 +33,5 @@ export default function FilterList({ filterInfo: { id, title } }) {
       </CheckboxForm>
     </li>
   );
-}
-
-FilterList.propTypes = {
-  filterInfo: object,
-  id: string,
-  title: string,
 };
+export default FilterList;
