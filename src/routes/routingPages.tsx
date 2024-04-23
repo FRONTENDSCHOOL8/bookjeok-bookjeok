@@ -23,7 +23,7 @@ import {
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
 import { MyClubList } from '@/pages/MyClubList';
 import { MyPage } from '@/pages/MyPage';
-import { BasicInfo, DetailInfo } from '@/pages/SignUp';
+import { SignUp } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
 
 const routingPages = [
@@ -187,11 +187,7 @@ const routingPages = [
   },
   {
     path: '/signup',
-    element: <BasicInfo />,
-  },
-  {
-    path: '/signup/detail',
-    element: <DetailInfo />,
+    element: <SignUp />,
   },
   {
     path: '/Welcome',
