@@ -10,17 +10,8 @@ import { Form } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/hooks/index';
 import { useQuery } from '@tanstack/react-query';
+import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
-
-const INITIAL_USER_INFO = {
-  email: '',
-  password: '',
-  nickname: '',
-  phone: '',
-  birth: '',
-  gender: '',
-  emailVisibility: true,
-};
 
 const INITIAL_VALIDATE_STATE = {
   isNotRegisteredEmail: false,
@@ -30,13 +21,16 @@ const INITIAL_VALIDATE_STATE = {
 };
 
 export function BasicInfo() {
-  const [userInfo, setUserInfo] = useState(INITIAL_USER_INFO);
+  const { setInfo, setNextPage, enteredUserInfo } = useSignUpStore(
+    (state) => state
+  );
+  const [userInfo, setUserInfo] = useState(enteredUserInfo);
   const [isValidateState, setIsValidateState] = useState(
     INITIAL_VALIDATE_STATE
   );
   const debouncedUserInfo = useDebounce(userInfo, 500);
-
-  const handleUserInfo = (e) => {
+  // 폼 change event 함수
+  const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
     setUserInfo(updatedUserInfo);
   };
@@ -83,6 +77,12 @@ export function BasicInfo() {
       });
     }
   }, [debouncedUserInfo.password, debouncedUserInfo.passwordConfirm]);
+
+  //버튼 클릭 이벤트 함수
+  function handleButton() {
+    setInfo(userInfo);
+    setNextPage('detailInfo');
+  }
 
   return (
     <>
@@ -137,14 +137,13 @@ export function BasicInfo() {
         </div>
         <div className="mt-auto p-4">
           <MainButton
-            state={userInfo}
-            to={
+            onClick={
               isValidateState.isConfirmPassword &&
               isValidateState.isValidateEmail &&
               isValidateState.isNotRegisteredEmail &&
               isValidateState.isValidatePassword
-                ? '/signup/detail'
-                : null
+                ? handleButton
+                : undefined
             }
             color={
               isValidateState.isConfirmPassword &&

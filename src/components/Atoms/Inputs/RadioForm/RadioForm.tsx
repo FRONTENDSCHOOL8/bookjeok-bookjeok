@@ -1,15 +1,21 @@
-import { string, bool, oneOfType, node } from 'prop-types';
+interface RadioFormType {
+  className?: string;
+  name?: string;
+  value: string;
+  checked?: boolean;
+  children?: React.ReactNode;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-function CheckboxForm({
+function RadioForm({
   className,
-  id,
   name,
   value,
   checked,
   children,
   ...rest
-}) {
-  const checkboxFormStyle = {
+}: RadioFormType) {
+  const radioFormStyle = {
     className: 'flex flex-row flex-nowrap justify-between items-center gap-4',
     classNameLabelText: 'text-b-2-regular text-bjblack flex-grow',
     classNameInput:
@@ -17,31 +23,21 @@ function CheckboxForm({
   };
 
   return (
-    <div className={`${checkboxFormStyle.className} ${className}`}>
-      <label htmlFor={id} className={checkboxFormStyle.classNameLabelText}>
+    <div className={`${radioFormStyle.className} ${className}`}>
+      <label htmlFor={value} className={radioFormStyle.classNameLabelText}>
         {children}
       </label>
       <input
-        type="checkbox"
-        id={id}
+        id={value}
+        type="radio"
         name={name}
         value={value}
         checked={checked}
-        className={checkboxFormStyle.classNameInput}
-        aria-pressed={checked ? '체크됨' : '체크되지 않음'}
+        className={radioFormStyle.classNameInput}
         {...rest}
       />
     </div>
   );
 }
 
-export default CheckboxForm;
-
-CheckboxForm.propTypes = {
-  className: string,
-  id: string,
-  name: string,
-  value: string,
-  checked: bool,
-  children: oneOfType([string, node]),
-};
+export default RadioForm;

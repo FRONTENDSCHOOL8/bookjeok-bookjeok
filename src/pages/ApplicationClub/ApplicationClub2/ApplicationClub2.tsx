@@ -7,6 +7,7 @@ import {
 } from '@/components/Atoms';
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
+import { LoaderType } from './loader';
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
@@ -22,23 +23,29 @@ import { DobbleButtonModal } from '@/components/Molecules';
   10자 이상이어야 버튼 활성화 
 4. users, socialing DB에 적재 
 */
+interface SubmitType {
+  (e: React.MouseEvent<HTMLButtonElement>): void;
+}
 
 export function ApplicationClub2() {
-  const { club, profilePhoto } = useLoaderData();
+  const { club, profilePhoto } = useLoaderData() as LoaderType;
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   useCloseModal(isOpenModal, () => {
-    setIsOpenModal(close);
+    setIsOpenModal(false);
   });
+
   // 답변 폼
-  const handleAnswerForm = (e) => {
+  const handleAnswerForm = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ): void => {
     setAnswerForm(e.target.value);
   };
 
   //제출 버튼
-  const handleSubmit = (e) => {
+  const handleSubmit: SubmitType = (e) => {
     e.preventDefault();
     if (!isOpenModal && answerForm) {
       const answerData = {
@@ -92,6 +99,8 @@ export function ApplicationClub2() {
               </div>
             </div>
             <Textarea
+              id="socialingAnswer"
+              label="모입 신청 질문에 대한 답변"
               onChange={handleAnswerForm}
               placeholder={'내용을 입력해 주세요. (10자 이상)'}
               maxLength={200}

@@ -3,11 +3,13 @@ import { Avatar, GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
-
+import { BookReviewResponse, UsersResponse } from '@/types/pocketbase-types';
+type Texpand = {
+  writer: UsersResponse;
+};
 export function DetailBookReview() {
-  const {
-    reviewInfo: { bookTitle, img, title, detail, expand },
-  } = useLoaderData();
+  const { bookTitle, img, title, detail, expand } =
+    useLoaderData() as BookReviewResponse<Texpand>;
   return (
     <>
       <Helmet>
@@ -25,10 +27,10 @@ export function DetailBookReview() {
               alt={title}
             />
           </figure>
-          <section className="bg-bjgray-50 flex flex-1 flex-col gap-4 px-4 pb-20 shadow-inner">
+          <section className="flex flex-1 flex-col gap-4 bg-bjgray-50 px-4 pb-20 shadow-inner">
             <Avatar
-              nickName={expand.writer.nickname}
-              src={expand.writer.img == '' ? null : getPbImgs(expand.writer)}
+              nickName={expand?.writer?.nickname}
+              src={expand?.writer?.img == '' ? null : getPbImgs(expand?.writer)}
               text={title}
               className="relative -mt-[58px]"
             ></Avatar>

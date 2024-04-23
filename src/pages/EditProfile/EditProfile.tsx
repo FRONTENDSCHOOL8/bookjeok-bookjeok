@@ -13,6 +13,7 @@ import { useDebounce, useCloseModal } from '@/hooks';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { UsersResponse } from '@/types/pocketbase-types';
 
 /*
 1. duplicated 닉네임일 경우 하단에 에러메시지
@@ -21,6 +22,17 @@ import { useQuery, useMutation } from '@tanstack/react-query';
   => 이미지/닉네임 변경시 그냥 
 
 */
+interface Error {
+  code: number;
+  message: string;
+  data: { data: ErrorOb };
+}
+
+interface ErrorOb {
+  img?: {};
+  password?: {};
+  passwordConfirm?: {};
+}
 
 const error = {
   'Missing or invalid old password.': '기존 비밀번호를 확인해주세요.',
@@ -31,11 +43,29 @@ const error = {
   validation_file_size_limit: '지원하지 않는 이미지 사이즈 입니다.',
 };
 
+interface EditForm {
+  img?: File | undefined;
+  nickname?: string;
+  password?: string;
+  passwordConfirm?: string;
+}
+
+interface HandleType {
+  (e: React.ChangeEvent<HTMLFormElement>): void;
+}
+interface ErrorTT {
+  title:
+    | 'Missing or invalid old password.'
+    | 'The length must be between 8 and 72.'
+    | 'Cannot be blank.'
+    | "Values don't match."
+    | 'validation_file_size_limit';
+}
 export function EditProfile() {
   const { userId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorContents, setErrorContents] = useState({});
-  const [editUserInfo, setEditUserInfo] = useState(null);
+  const [errorContents, setErrorContents] = useState<ErrorTT>();
+  const [editUserInfo, setEditUserInfo] = useState<EditForm>();
   const debouncedData = useDebounce(editUserInfo, 700);
   const { setUserInfo } = useUserInfoStore((state) => state);
 
@@ -45,9 +75,9 @@ export function EditProfile() {
 
   //이미지 지우는법
   const handleReviewImage = {
-    remove: (e) => {
+    remove: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
       e.preventDefault();
-      setEditUserInfo({ ...setEditUserInfo, img: null });
+      setEditUserInfo({ ...setEditUserInfo, img: undefined });
     },
   };
 
@@ -56,7 +86,9 @@ export function EditProfile() {
     queryFn: async () => {
       const fetchedData = await pb
         .collection('users')
-        .getList(1, 1, { filter: `nickname = "${debouncedData.nickname}"` });
+        .getList<UsersResponse>(1, 1, {
+          filter: `nickname = "${debouncedData.nickname}"`,
+        });
       return fetchedData.items;
     },
     queryKey: ['nickname', debouncedData.nickname],
@@ -76,7 +108,7 @@ export function EditProfile() {
       setUserInfo(userData);
       setIsModalOpen(true);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       if (Object.keys(error.data.data)[0] === 'img') {
         setErrorContents({ title: Object.values(error.data.data)[0].code });
       } else {
@@ -86,10 +118,11 @@ export function EditProfile() {
     },
   });
 
-  const handleEditForm = (e) => {
+  const handleEditForm: HandleType = (e) => {
     const target = e.target.closest('input');
+    console.log(target);
     if (!target) return;
-    if (target.name === 'img') {
+    if (target.name === 'img' && target.files) {
       setEditUserInfo({ ...editUserInfo, img: target.files[0] });
     } else {
       setEditUserInfo({ ...editUserInfo, [target.name]: target.value });
@@ -112,7 +145,7 @@ export function EditProfile() {
             id="img"
             name="img"
             onClick={handleReviewImage.remove}
-            src={editUserInfo?.img}
+            src={editUserInfo ? editUserInfo.img : null}
             srOnly="프로필 사진 변경"
           />
           <TextForm
@@ -120,7 +153,7 @@ export function EditProfile() {
             id="nickname"
             name="nickname"
             description={
-              hasDuplicatedNickname?.length > 0
+              hasDuplicatedNickname && hasDuplicatedNickname?.length > 0
                 ? '이미 사용 중인 닉네임입니다.'
                 : ''
             }
@@ -161,7 +194,10 @@ export function EditProfile() {
                 ? 'primary'
                 : 'secondary'
             }
-            disabled={!editUserInfo || hasDuplicatedNickname?.length > 0}
+            disabled={
+              !editUserInfo ||
+              (hasDuplicatedNickname && hasDuplicatedNickname.length > 0)
+            }
             onClick={async () => {
               await updateUsers();
             }}
@@ -186,7 +222,7 @@ export function EditProfile() {
               open={isModalOpen}
               closeButton
               onClick={() => setIsModalOpen(false)}
-              title={error[`${errorContents.title}`]}
+              title={errorContents ? error[`${errorContents.title}`] : ''}
             ></DobbleButtonModal>
           )}
         </div>
