@@ -1,6 +1,20 @@
-import { string, bool } from 'prop-types';
+interface RadioFormType {
+  className?: string;
+  name?: string;
+  value: string;
+  checked?: boolean;
+  children?: React.ReactNode;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-function RadioForm({ className, name, value, checked, children, ...rest }) {
+function RadioForm({
+  className,
+  name,
+  value,
+  checked,
+  children,
+  ...rest
+}: RadioFormType) {
   const radioFormStyle = {
     className: 'flex flex-row flex-nowrap justify-between items-center gap-4',
     classNameLabelText: 'text-b-2-regular text-bjblack flex-grow',
@@ -27,11 +41,3 @@ function RadioForm({ className, name, value, checked, children, ...rest }) {
 }
 
 export default RadioForm;
-
-RadioForm.propTypes = {
-  className: string,
-  name: string,
-  value: string,
-  checked: bool,
-  children: string,
-};
