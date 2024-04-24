@@ -1,5 +1,5 @@
 export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton.tsx';
-export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
+export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1.tsx';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm.tsx';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm.tsx';
 export { default as ChatTextarea } from '@/components/Atoms/Inputs/ChatTextarea/ChatTextarea.tsx';
@@ -15,7 +15,7 @@ export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';
 export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle.tsx';
 export { default as LikeButton } from '@/components/Atoms/LikeButton/LikeButton.tsx';
-export { default as Accordion } from '@/components/Atoms/Accordion/Accordion';
+export { default as Accordion } from '@/components/Atoms/Accordion/Accordion.tsx';
 export { default as TextBox } from '@/components/Atoms/TextBox/TextBox';
 export { default as Badge } from '@/components/Atoms/Badge/Badge';
 export { default as Svg } from '@/components/Atoms/Svg/Svg.tsx';

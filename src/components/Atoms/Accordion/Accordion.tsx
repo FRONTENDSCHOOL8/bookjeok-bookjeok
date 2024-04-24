@@ -1,6 +1,18 @@
-import { bool, string, array, number, node, oneOfType } from 'prop-types';
 import { Svg } from '@/components/Atoms';
 
+interface TAccordion {
+  applicant?: string | number;
+  confirmUser?: number;
+  limitPerson?: number;
+  className?: string;
+  open?: boolean;
+  children?: React.ReactNode;
+  mainText?: string[] | string;
+  smallText?: string;
+  src?: string;
+  nickname?: string;
+  text?: string;
+}
 function Accordion({
   applicant,
   confirmUser,
@@ -10,7 +22,7 @@ function Accordion({
   mainText,
   smallText,
   children,
-}) {
+}: TAccordion) {
   const accordionStyle = {
     className: 'group/item',
   };
@@ -55,17 +67,3 @@ function Accordion({
 }
 
 export default Accordion;
-
-Accordion.propTypes = {
-  applicant: oneOfType([number, string]),
-  confirmUser: number,
-  limitPerson: number,
-  className: string,
-  open: bool,
-  children: oneOfType([array, string, node]),
-  mainText: oneOfType([array, string]),
-  smallText: string,
-  src: string,
-  nickname: string,
-  text: string,
-};
