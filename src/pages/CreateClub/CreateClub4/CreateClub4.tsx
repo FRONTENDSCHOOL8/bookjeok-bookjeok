@@ -193,7 +193,7 @@ export function CreateClub4() {
                 svgId="logo"
                 title="모임을 개설했습니다."
                 primaryButtonText="홈으로"
-                primaryButtonPath="/mainClub"
+                primaryButtonPath="/main/club"
               >
                 참가자들의 신청을 기다려볼까요?
               </DobbleButtonModal>

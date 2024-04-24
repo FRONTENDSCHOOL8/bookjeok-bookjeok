@@ -19,7 +19,7 @@ function BookReviewList({
       key={id}
       className="border-t-[1px] border-bjgray-200 py-4 first:border-0"
     >
-      <Link to={`/mainBookReview/${id}`} className="block">
+      <Link to={`/bookReview/${id}`} className="block">
         <div className="flex items-center gap-x-2">
           <RoundImage
             src={getPbImgs({

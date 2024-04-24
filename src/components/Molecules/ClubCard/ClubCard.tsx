@@ -72,7 +72,7 @@ const ClubCard = ({
   return (
     <li key={id}>
       <figure className="relative mx-auto w-full">
-        <Link to={`/mainClub/${id}`} aria-label={`${title}`}>
+        <Link to={`/club/${id}`} aria-label={`${title}`}>
           <img
             className="aspect-square w-full rounded-5xl border-[1px] border-bjgray-200 object-cover"
             src={photo}
@@ -87,7 +87,7 @@ const ClubCard = ({
           active={userInfo?.id ? like.includes(userInfo?.id) : false}
         />
       </figure>
-      <Link to={`/mainClub/${id}`} aria-label={`${title}`}>
+      <Link to={`/club/${id}`} aria-label={`${title}`}>
         <div className="flex w-full flex-col gap-y-1 px-1 py-4 pt-3">
           <div className="flex justify-between">
             <h3 className="line-clamp-2 h-12 max-w-full text-b-1-regular">

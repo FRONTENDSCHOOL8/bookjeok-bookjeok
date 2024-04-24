@@ -29,8 +29,8 @@ export function Filter() {
             e.preventDefault();
             navigate(
               !filterStrings
-                ? '/mainClub'
-                : `/mainClub?filters=${filterStrings}`,
+                ? '/main/club'
+                : `/main/club?filters=${filterStrings}`,
               {
                 state: {
                   filters: filterStrings,
@@ -39,7 +39,7 @@ export function Filter() {
             );
           }}
         >
-          <NomalTitle backLink resetButton path="mainClub">
+          <NomalTitle backLink resetButton path="main/club">
             필터
           </NomalTitle>
 

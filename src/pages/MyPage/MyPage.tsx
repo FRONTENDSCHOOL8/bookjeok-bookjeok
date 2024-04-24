@@ -81,7 +81,7 @@ export function MyPage() {
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col bg-white">
-        <NomalTitle backLink path="/mainClub">
+        <NomalTitle backLink path="/main/club">
           마이페이지
         </NomalTitle>
         <main className="flex flex-grow flex-col bg-white px-4">
@@ -155,7 +155,7 @@ export function MyPage() {
                     >
                       <Link
                         className="boreder-b-1"
-                        to={`/mainBookReview/${item.id}`}
+                        to={`/bookReview/${item.id}`}
                       >
                         <div className="my-[7px] flex items-center gap-x-4">
                           <div>

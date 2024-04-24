@@ -44,7 +44,7 @@ export function ChatRoomListPage() {
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col">
-        <NomalTitle backLink path="mainClub">
+        <NomalTitle backLink path="main/club">
           채팅리스트
         </NomalTitle>
         <main className="px-4">

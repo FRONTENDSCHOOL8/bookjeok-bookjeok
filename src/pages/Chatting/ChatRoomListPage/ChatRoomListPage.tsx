@@ -94,7 +94,7 @@ export function ChatRoomListPage() {
         <title>{getDocumentTitle('채팅리스트')}</title>
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col">
-        <NomalTitle path="mainClub">나의 채팅</NomalTitle>
+        <NomalTitle path="main/club">나의 채팅</NomalTitle>
         <main className="flex flex-1 flex-col px-4 pb-20">
           <ThinTextForm
             onChange={handleSearch}

@@ -78,7 +78,7 @@ export function CreateBookReview() {
         <title>{getDocumentTitle('독후감 쓰기')}</title>
       </Helmet>
       <div className="flex min-h-svh flex-col">
-        <NomalTitle backLink path="mainBookReview">
+        <NomalTitle backLink path="main/bookReview">
           독후감 작성하기
         </NomalTitle>
         <main className="flex flex-grow flex-col justify-between px-4">
@@ -150,9 +150,9 @@ export function CreateBookReview() {
         open={isModalState}
         title="독후감 작성 완료! "
         primaryButtonText="홈으로"
-        primaryButtonPath="/mainBookReview"
+        primaryButtonPath="/main/bookReview"
         secondaryButtonText="내가 쓴 독후감 보기"
-        secondaryButtonPath={`/mainBookReview/${bookReviewForm.id}`}
+        secondaryButtonPath={`/bookReview/${bookReviewForm.id}`}
       >
         작성한 독후감을 확인해보세요
       </DobbleButtonModal>

@@ -12,7 +12,7 @@ const ClubList = ({ id, title, img, schedule }: TclubList) => {
     <li>
       <Link
         className="flex h-[100px] w-full flex-row overflow-hidden rounded-5xl border-[1px] border-bjgray-200 bg-bjgray-50"
-        to={`/mainClub/${id}`}
+        to={`/club/${id}`}
         aria-label={`${title} 모임 자세히 보기`}
       >
         <div className="flex flex-grow flex-col justify-between p-3">
