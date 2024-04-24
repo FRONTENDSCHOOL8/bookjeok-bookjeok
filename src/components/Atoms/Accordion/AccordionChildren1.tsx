@@ -1,6 +1,21 @@
 import { RoundImage, SmallButton, TextBox } from '@/components/Atoms';
-import { bool, func, string } from 'prop-types';
-function AccordionChildren1({ confirmed, src, nickname, answer, onClick }) {
+
+interface Taccordion {
+  src: string;
+  confirmed: boolean;
+  photo: string;
+  nickname: string;
+  answer: string;
+  onClick: (e: React.ChangeEvent<HTMLButtonElement>) => void;
+}
+
+function AccordionChildren1({
+  confirmed,
+  src,
+  nickname,
+  answer,
+  onClick,
+}: Taccordion) {
   return (
     <div>
       <dl className="flex flex-col">
@@ -36,11 +51,3 @@ function AccordionChildren1({ confirmed, src, nickname, answer, onClick }) {
 }
 
 export default AccordionChildren1;
-AccordionChildren1.propTypes = {
-  src: string,
-  confirmed: bool,
-  photo: string,
-  nickname: string,
-  answer: string,
-  onClick: func,
-};
