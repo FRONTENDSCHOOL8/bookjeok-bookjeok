@@ -3,7 +3,7 @@ module.exports = {
     extensions: ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx'],
   },
   plugins: ['prettier-plugin-tailwindcss'],
-  tailwindConfig: './tailwind.config.ts',
+  tailwindConfig: './tailwind.config.js',
 
   // 닫는 괄호(>) 위치 설정
   // ex: <div
