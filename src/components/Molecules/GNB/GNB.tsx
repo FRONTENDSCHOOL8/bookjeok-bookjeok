@@ -28,7 +28,7 @@ const assignActiveClassNames =
 const classNames = 'flex flex-col p-1 items-center';
 const activeClaseNames = 'border-b-4 border-bjyellow-500';
 
-function GNB({ createClub, createBookReview, className }: Tgnb) {
+const GNB = ({ createClub, createBookReview, className }: Tgnb) => {
   const { pathname } = useLocation();
   const { userInfo } = useUserInfoStore();
   const isIncludeMain = () => pathname.startsWith('/main');
@@ -61,7 +61,7 @@ function GNB({ createClub, createBookReview, className }: Tgnb) {
       })}
     </ul>
   );
-}
+};
 
 export default memo(GNB);
 

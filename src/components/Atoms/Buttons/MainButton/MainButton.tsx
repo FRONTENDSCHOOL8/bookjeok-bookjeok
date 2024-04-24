@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Svg } from '@/components/Atoms';
 
@@ -70,4 +70,4 @@ const MainButton = ({
   }
 };
 
-export default MainButton;
+export default memo(MainButton);

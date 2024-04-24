@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface SVGProps {
   id: string;
   size?: number;
@@ -24,4 +26,4 @@ function Svg({
   );
 }
 
-export default Svg;
+export default memo(Svg);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 interface TOutlineButton {
   className?: string;
@@ -43,4 +44,4 @@ const OutlineButton = ({
   }
 };
 
-export default OutlineButton;
+export default memo(OutlineButton);

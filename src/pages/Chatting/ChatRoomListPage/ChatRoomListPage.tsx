@@ -10,7 +10,7 @@ import useUserInfoStore from '@/store/useUserInfoStore';
 import { ChattingRoomResponse, Collections } from '@/types/pocketbase-types';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
@@ -60,10 +60,15 @@ export function ChatRoomListPage() {
 
   const debouncedKey = useDebounce(searchKey, 500);
 
-  const handleSearch = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKey(target.value);
-    setIsSearch(target.value !== '');
-  };
+  const handleSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const { target } = e;
+      setSearchKey(target.value);
+      setIsSearch(target.value !== '');
+    },
+    [searchKey, isSearch]
+  );
   useEffect(() => {
     setSearchResult(
       chattingRoomData?.filter((item) => {
@@ -98,6 +103,9 @@ export function ChatRoomListPage() {
         <main className="flex flex-1 flex-col px-4 pb-20">
           <ThinTextForm
             onChange={handleSearch}
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
             type="search"
             searchIcon
             placeholder="모임을 입력해주세요."

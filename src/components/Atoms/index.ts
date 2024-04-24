@@ -5,7 +5,7 @@ export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/
 export { default as ChatTextarea } from '@/components/Atoms/Inputs/ChatTextarea/ChatTextarea.tsx';
 export { default as SmallButton } from '@/components/Atoms/Buttons/SmallButton/SmallButton';
 export { default as MessageBubble } from '@/components/Atoms/MessageBubble/MessageBubble.tsx';
-export { default as BlankContents } from '@/components/Atoms/BlankContents/BlankContents';
+export { default as BlankContents } from '@/components/Atoms/BlankContents/BlankContents.tsx';
 export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/MainButton';
 export { default as ImageForm } from '@/components/Atoms/Inputs/ImageForm/ImageForm.tsx';
 export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioForm.tsx';
@@ -16,6 +16,6 @@ export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage'
 export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle.tsx';
 export { default as LikeButton } from '@/components/Atoms/LikeButton/LikeButton.tsx';
 export { default as Accordion } from '@/components/Atoms/Accordion/Accordion.tsx';
-export { default as TextBox } from '@/components/Atoms/TextBox/TextBox';
+export { default as TextBox } from '@/components/Atoms/TextBox/TextBox.tsx';
 export { default as Badge } from '@/components/Atoms/Badge/Badge';
 export { default as Svg } from '@/components/Atoms/Svg/Svg.tsx';

@@ -7,6 +7,7 @@ import {
   GenresResponse,
   UsersResponse,
 } from '@/types/pocketbase-types';
+import { memo } from 'react';
 
 type Texpand = {
   genre: GenresResponse;
@@ -126,4 +127,4 @@ const ClubCard = ({
   );
 };
 
-export default ClubCard;
+export default memo(ClubCard);

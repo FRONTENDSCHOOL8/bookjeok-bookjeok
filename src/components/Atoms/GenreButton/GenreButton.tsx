@@ -1,16 +1,15 @@
 import { GenresResponse } from '@/types/pocketbase-types';
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, memo } from 'react';
 
 interface TGenreButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   filterData: GenresResponse;
   clubInfo: any;
 }
-
-export default function GenreButton({
+const GenreButton = ({
   filterData: { title, id },
   clubInfo,
   onClick,
-}: TGenreButton) {
+}: TGenreButton) => {
   const BASE_SYTLE = {
     className: 'h-9 rounded-5xl border px-4 text-b-2-medium',
   };
@@ -26,4 +25,6 @@ export default function GenreButton({
       {title}
     </button>
   );
-}
+};
+
+export default memo(GenreButton);
