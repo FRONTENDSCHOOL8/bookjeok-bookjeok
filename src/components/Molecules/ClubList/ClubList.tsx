@@ -1,7 +1,13 @@
 import { Svg } from '@/components/Atoms';
-import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
-function ClubList({ id, title, img, schedule }) {
+interface TclubList {
+  id: string;
+  title: string;
+  img?: string;
+  schedule: string;
+}
+
+const ClubList = ({ id, title, img, schedule }: TclubList) => {
   return (
     <li>
       <Link
@@ -33,14 +39,6 @@ function ClubList({ id, title, img, schedule }) {
       </Link>
     </li>
   );
-}
-
-export default ClubList;
-ClubList.propTypes = {
-  id: string.isRequired,
-  title: string.isRequired,
-  img: string,
-  schedule: string.isRequired,
 };
 
-ClubList.displayName = 'ClubList';
+export default ClubList;

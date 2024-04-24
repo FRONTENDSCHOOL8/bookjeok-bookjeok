@@ -1,12 +1,12 @@
 import { RoundImage, SmallButton, TextBox } from '@/components/Atoms';
 
 interface Taccordion {
-  src: string;
-  confirmed: boolean;
-  photo: string;
-  nickname: string;
-  answer: string;
-  onClick: (e: React.ChangeEvent<HTMLButtonElement>) => void;
+  src?: string;
+  confirmed?: boolean;
+  photo?: string;
+  nickname?: string | undefined;
+  answer?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 function AccordionChildren1({
@@ -26,13 +26,13 @@ function AccordionChildren1({
           </div>
           {confirmed ? (
             <div>
-              <SmallButton as="button" onClick={onClick} type="button">
+              <SmallButton onClick={onClick} type="button">
                 취소
               </SmallButton>
             </div>
           ) : (
             <div>
-              <SmallButton as="button" onClick={onClick} type="button">
+              <SmallButton onClick={onClick} type="button">
                 승인
               </SmallButton>
             </div>

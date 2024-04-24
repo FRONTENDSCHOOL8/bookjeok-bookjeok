@@ -1,10 +1,15 @@
 import { Svg } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { bool, string } from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
-function GNB({ createClub, createBookReview, className }) {
+interface Tgnb {
+  createClub: boolean;
+  createBookReview: boolean;
+  className: string;
+}
+
+function GNB({ createClub, createBookReview, className }: Tgnb) {
   const { pathname } = useLocation();
   let centerIconPath;
   if (createClub) {
@@ -36,6 +41,7 @@ function GNB({ createClub, createBookReview, className }) {
       }
       return classNames + (isActive ? ` ${activeClassName}` : '');
     };
+
   const classNames = 'flex flex-col p-1 items-center';
   const activeClaseNames = 'border-b-4 border-bjyellow-500';
   return (
@@ -46,7 +52,7 @@ function GNB({ createClub, createBookReview, className }) {
         return (
           <li key={id}>
             <NavLink
-              to={to}
+              to={to!}
               className={assignActiveClassNames(
                 classNames,
                 activeClaseNames,
@@ -62,11 +68,5 @@ function GNB({ createClub, createBookReview, className }) {
     </ul>
   );
 }
-
-GNB.propTypes = {
-  createClub: bool,
-  createBookReview: bool,
-  className: string,
-};
 
 export default GNB;
