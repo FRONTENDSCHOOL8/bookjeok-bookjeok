@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface Tbox {
   className?: string;
   children: React.ReactNode;
@@ -13,4 +15,4 @@ const TextBox = ({ className, children }: Tbox) => {
   );
 };
 
-export default TextBox;
+export default memo(TextBox);

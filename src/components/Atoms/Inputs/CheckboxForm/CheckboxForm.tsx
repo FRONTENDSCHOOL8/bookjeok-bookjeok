@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface CheckboxType {
   className?: string;
   id: string;
@@ -45,4 +47,4 @@ function CheckboxForm({
   );
 }
 
-export default CheckboxForm;
+export default memo(CheckboxForm);

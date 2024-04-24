@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
+import { memo } from 'react';
 import { MainButton, Svg } from '@/components/Atoms';
 
 interface ButtonModalForManageMentTypes {
@@ -132,4 +132,4 @@ function ButtonModalForManageMent({
   );
 }
 
-export default ButtonModalForManageMent;
+export default memo(ButtonModalForManageMent);

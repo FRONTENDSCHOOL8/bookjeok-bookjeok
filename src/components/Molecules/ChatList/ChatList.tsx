@@ -1,5 +1,6 @@
 import { RoundImage } from '@/components/Atoms';
 import { getCreatedHoursAgo } from '@/utils';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface TChatList {
@@ -31,4 +32,4 @@ const ChatList = ({ id, src, title, updated, message }: TChatList) => {
     </li>
   );
 };
-export default ChatList;
+export default memo(ChatList);

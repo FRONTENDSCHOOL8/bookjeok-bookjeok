@@ -1,5 +1,6 @@
 import { CheckboxForm } from '@/components/Atoms';
 import useFilterStore from '@/store/useFilterStore';
+import { useCallback } from 'react';
 type TProps = {
   filterInfo: { id: string; title: string };
 };
@@ -11,14 +12,17 @@ const FilterList = ({ filterInfo: { id, title } }: TProps) => {
       filterListState: state.filterList,
     })
   );
-  const handleFilterCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    if (checked) {
-      addFilter(name);
-    } else {
-      removeFilter(name);
-    }
-  };
+  const handleFilterCheckbox = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, checked } = e.target;
+      if (checked) {
+        addFilter(name);
+      } else {
+        removeFilter(name);
+      }
+    },
+    []
+  );
 
   return (
     <li key={id}>

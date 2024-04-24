@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const navLinks = [
@@ -35,4 +36,4 @@ const MainKindToggle = () => {
   );
 };
 
-export default MainKindToggle;
+export default memo(MainKindToggle);

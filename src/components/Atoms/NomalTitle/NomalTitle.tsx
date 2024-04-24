@@ -1,4 +1,5 @@
 import { Svg } from '@/components/Atoms';
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TNomalTitle {
@@ -70,4 +71,4 @@ const NomalTitle = ({
   );
 };
 
-export default NomalTitle;
+export default memo(NomalTitle);

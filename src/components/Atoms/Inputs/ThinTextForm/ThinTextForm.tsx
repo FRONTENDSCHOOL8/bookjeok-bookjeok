@@ -1,4 +1,5 @@
 import { Svg } from '@/components/Atoms';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface ThinTextFormType {
@@ -14,7 +15,7 @@ interface ThinTextFormType {
   maxLength?: number;
   children?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit?: () => void;
+  onSubmit?: (e: React.FormEvent) => void;
   path?: string;
   searchIcon?: boolean;
   backLink?: boolean;
@@ -93,4 +94,4 @@ function ThinTextForm({
   );
 }
 
-export default ThinTextForm;
+export default memo(ThinTextForm);
