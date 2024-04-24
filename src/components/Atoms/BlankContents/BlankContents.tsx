@@ -1,5 +1,9 @@
-import { string } from 'prop-types';
-function BlankContents({ title, description, children }) {
+interface Tblank {
+  title: string;
+  description: string;
+  children?: string;
+}
+const BlankContents = ({ title, description, children }: Tblank) => {
   return (
     <div className="flex flex-grow flex-col items-center justify-center gap-2 gap-y-5 p-4">
       <svg
@@ -49,10 +53,5 @@ function BlankContents({ title, description, children }) {
       </div>
     </div>
   );
-}
-export default BlankContents;
-BlankContents.propTypes = {
-  title: string,
-  description: string,
-  children: string,
 };
+export default BlankContents;

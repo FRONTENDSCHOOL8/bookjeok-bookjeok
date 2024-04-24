@@ -1,6 +1,9 @@
-import { string } from 'prop-types';
+interface Tbox {
+  className?: string;
+  children: React.ReactNode;
+}
 
-function TextBox({ className, children }) {
+const TextBox = ({ className, children }: Tbox) => {
   return (
     <div
       className={`min-h-5 w-full rounded-5xl bg-bjgray-100 p-4 text-b-1-regular text-bjblack ${className}`}
@@ -8,11 +11,6 @@ function TextBox({ className, children }) {
       {children}
     </div>
   );
-}
+};
 
 export default TextBox;
-
-TextBox.propTypes = {
-  className: string,
-  children: string,
-};
