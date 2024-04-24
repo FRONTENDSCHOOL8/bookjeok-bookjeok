@@ -16,7 +16,7 @@ export function DetailBookReview() {
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
       <div className="flex min-h-svh flex-col">
-        <NomalTitle backLink path="mainBookReview">
+        <NomalTitle backLink path="main/bookReview">
           독후감 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col">

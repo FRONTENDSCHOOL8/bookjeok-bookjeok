@@ -126,7 +126,7 @@ export function ApplicationClub2() {
               open={isOpenModal}
               title="모임 신청이 완료되었습니다."
               primaryButtonText="홈으로"
-              primaryButtonPath="/mainClub"
+              primaryButtonPath="/main/club"
             >
               호스트의 수락을 기다려주세요
             </DobbleButtonModal>

@@ -8,11 +8,11 @@ const assignActiveClassNames =
 
 const navLinks = [
   {
-    path: '/mainClub',
+    path: '/main/club',
     text: '북적클럽',
   },
   {
-    path: '/mainBookReview',
+    path: '/main/bookReview',
     text: '독후감',
   },
 ];
