@@ -9,4 +9,4 @@ export { default as ChatList } from '@/components/Molecules/ChatList/ChatList.ts
 export { default as ClubCard } from '@/components/Molecules/ClubCard/ClubCard.tsx';
 export { default as ClubList } from '@/components/Molecules/ClubList/ClubList.tsx';
 export { default as Avatar } from '@/components/Molecules/Avatar/Avatar';
-export { default as GNB } from '@/components/Molecules/GNB/GNB';
+export { default as GNB } from '@/components/Molecules/GNB/GNB.tsx';
