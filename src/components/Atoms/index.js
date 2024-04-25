@@ -1,6 +1,7 @@
 export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton.tsx';
-export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm.tsx';
+export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1';
+export { default as SkipToContent } from '@/components/Atoms/SkipToContent/SkipToContent.tsx';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm';
 export { default as ChatTextarea } from '@/components/Atoms/Inputs/ChatTextarea/ChatTextarea';
 export { default as SmallButton } from '@/components/Atoms/Buttons/SmallButton/SmallButton';
