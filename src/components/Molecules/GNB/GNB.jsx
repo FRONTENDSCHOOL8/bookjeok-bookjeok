@@ -40,6 +40,7 @@ function GNB({ createClub, createBookReview, className }) {
   const activeClaseNames = 'border-b-4 border-bjyellow-500';
   return (
     <ul
+      id="GNB"
       className={`bottom-[-4px] flex w-full max-w-[430px] justify-evenly border-t bg-white py-4 shadow-inner ${className}`}
     >
       {menu.map(({ id, to, title }, index) => {

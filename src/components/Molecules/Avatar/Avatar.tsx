@@ -4,7 +4,7 @@ interface AvatarType {
   className?: string;
   nickName?: string;
   text?: string;
-  src?: string;
+  src: string;
 }
 
 function Avatar({ className = '', nickName, text, src }: AvatarType) {
