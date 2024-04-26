@@ -31,7 +31,7 @@ export function ChatRoomListPage() {
 
         if (
           e.record.expand!.message[e.record.expand!.message.length - 1]
-            .sendUser !== userInfo.id
+            .sendUser !== userInfo!.id
         ) {
           setObserver(true);
           // console.log('조건처리로 업데이트 된', observer);

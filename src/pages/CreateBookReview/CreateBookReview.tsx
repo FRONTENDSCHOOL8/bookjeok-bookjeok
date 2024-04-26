@@ -37,7 +37,7 @@ export function CreateBookReview() {
   const { userInfo } = useUserInfoStore((state) => state);
   const INITIAL_DATA: State = {
     id: createRandomId(),
-    writer: userInfo.id,
+    writer: userInfo!.id,
   };
   const [bookReviewForm, setBookReviewForm] = useState(INITIAL_DATA);
   const [isModalState, setIsModalState] = useState(false);

@@ -37,7 +37,7 @@ export const ChatRoom = () => {
       function (e) {
         if (
           e.record.expand!.message[e.record.expand!.message.length - 1]
-            .sendUser !== userInfo.id
+            .sendUser !== userInfo!.id
         ) {
           setObserver(true);
         }
@@ -49,7 +49,7 @@ export const ChatRoom = () => {
       pb.collection(Collections.ChattingRoom).unsubscribe(chattingRoomId);
       setObserver(false);
     };
-  }, [chattingRoomId, observer, userInfo.id]);
+  }, [chattingRoomId, observer, userInfo!.id]);
 
   const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoom', chattingRoomId, observer],
@@ -167,11 +167,11 @@ export const ChatRoom = () => {
       );
       // const newMessage = Object.fromEntries(formData.entries());
       const text = formData.text as string;
-      const sendUser = expand?.users.find((u) => u.id === userInfo.id);
+      const sendUser = expand?.users.find((u) => u.id === userInfo!.id);
       const newMessage = {
         text: text,
         chattingRoom: chattingRoomId,
-        sendUser: userInfo.id,
+        sendUser: userInfo!.id,
         expand: { sendUser: sendUser },
       };
       // newMessage.sendUser = userInfo.id;
@@ -192,7 +192,7 @@ export const ChatRoom = () => {
         <NomalTitle
           className="fixed left-[50%] top-0 w-full max-w-[430px] translate-x-[-50%]"
           backLink
-          path={`chatRoomList/${userInfo.id}`}
+          path={`chatRoomList/${userInfo!.id}`}
         >
           {title}
         </NomalTitle>
@@ -210,7 +210,9 @@ export const ChatRoom = () => {
                       return (
                         <MessageBubble
                           key={id ? id : index}
-                          align={sendUser.id === userInfo.id ? 'right' : 'left'}
+                          align={
+                            sendUser.id === userInfo!.id ? 'right' : 'left'
+                          }
                           src={getPbImgs(sendUser)}
                           alt={sendUser.nickname}
                           nickname={sendUser.nickname}

@@ -49,26 +49,26 @@ export function MainClub() {
       e.preventDefault();
       const nowUser = await pb
         .collection('users')
-        .getOne<UsersResponse<Texpand2>>(userInfo.id, { expand: 'like' });
+        .getOne<UsersResponse<Texpand2>>(userInfo!.id, { expand: 'like' });
 
       const clickedClub = clubList.find((i) => i.id === clubId);
       const addedLikeListForSocialing = clickedClub?.like
-        ? [...clickedClub?.like, userInfo.id]
-        : [userInfo.id];
+        ? [...clickedClub?.like, userInfo!.id]
+        : [userInfo!.id];
       const addedLikeListForUser = [...nowUser.like, clubId];
       const removedLikeListForSocialing = clickedClub?.like.filter(
-        (i) => i !== userInfo.id
+        (i) => i !== userInfo!.id
       );
       const removedLikeListForUser = nowUser.like.filter((i) => i !== clubId);
 
-      if (clickedClub?.like.includes(userInfo.id)) {
+      if (clickedClub?.like.includes(userInfo!.id)) {
         console.log('좋아요취소');
         await pb
           .collection('socialing')
           .update(clubId, { like: removedLikeListForSocialing });
         await pb
           .collection('users')
-          .update(userInfo.id, { like: removedLikeListForUser });
+          .update(userInfo!.id, { like: removedLikeListForUser });
       } else {
         console.log('좋아요 추가');
         await pb
@@ -76,7 +76,7 @@ export function MainClub() {
           .update(clubId, { like: addedLikeListForSocialing });
         await pb
           .collection('users')
-          .update(userInfo.id, { like: addedLikeListForUser });
+          .update(userInfo!.id, { like: addedLikeListForUser });
       }
       refetch();
       revalidator.revalidate();

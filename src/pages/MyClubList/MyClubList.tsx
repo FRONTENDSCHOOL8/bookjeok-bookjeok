@@ -48,12 +48,12 @@ export function MyClubList() {
         await pb
           .collection(Collections.Socialing)
           .getList<SocialingResponse>(1, 10, {
-            filter: `createUser = "${userInfo.id}" || confirmUser ?~ "${userInfo.id}" `,
+            filter: `createUser = "${userInfo!.id}" || confirmUser ?~ "${userInfo!.id}" `,
           })
       ).items;
       return fetchData;
     },
-    queryKey: ['allClubData', userInfo.id],
+    queryKey: ['allClubData', userInfo!.id],
   });
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function MyClubList() {
       const created: SocialingResponse[] = [];
       const confirmed: SocialingResponse[] = [];
       fetchAllClubData.forEach((item) => {
-        if (item.createUser === userInfo.id) {
+        if (item.createUser === userInfo!.id) {
           created.push(item);
         } else {
           confirmed.push(item);
@@ -69,7 +69,7 @@ export function MyClubList() {
       });
       setClubData({ createdClub: created, confirmedClub: confirmed });
     }
-  }, [isSuccess, fetchAllClubData, userInfo.id]);
+  }, [isSuccess, fetchAllClubData, userInfo!.id]);
 
   // 더보기 버튼 클릭시 작동하는 함수
   const handleMoreValue: React.MouseEventHandler<HTMLButtonElement> = (e) => {
