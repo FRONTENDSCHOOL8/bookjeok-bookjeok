@@ -51,7 +51,7 @@ export function ApplicationClub2() {
       const answerData = {
         id: createRandomId(),
         socialing: club.id,
-        answerUser: userInfo.id,
+        answerUser: userInfo?.id,
         answer: answerForm,
       };
       pb.collection('socialingQueryAnswer')
@@ -59,16 +59,16 @@ export function ApplicationClub2() {
         .then(() => {
           const updateData = {
             participantSocialing: [
-              ...userInfo.participantSocialing,
+              ...userInfo!.participantSocialing,
               `${club.id}`,
             ],
           };
-          pb.collection('users').update(userInfo.id, updateData);
+          pb.collection('users').update(userInfo!.id, updateData);
         })
         .then(() => {
           const updateData = {
             answer: [...club.answer, `${answerData.id}`],
-            applicant: [...club.applicant, `${userInfo.id}`],
+            applicant: [...club.applicant, `${userInfo!.id}`],
           };
           pb.collection('socialing').update(club.id, updateData);
           setIsSuccess(true);
@@ -90,7 +90,7 @@ export function ApplicationClub2() {
         <main className="flex flex-grow flex-col px-4 pt-4">
           <div className="flex-grow">
             <div className="flex gap-4 pt-2">
-              <RoundImage size="md" src={profilePhoto} />
+              <RoundImage size="md" src={profilePhoto!} />
               <div>
                 <p className="text-b-1-regular">{club.query}</p>
                 <span className="text-b-2-regular text-bjgray-500">

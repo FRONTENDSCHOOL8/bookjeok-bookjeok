@@ -12,7 +12,7 @@ export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioF
 export { default as GenreButton } from '@/components/Atoms/GenreButton/GenreButton.tsx';
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea.tsx';
 export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm.tsx';
-export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage';
+export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage.tsx';
 export { default as NomalTitle } from '@/components/Atoms/NomalTitle/NomalTitle.tsx';
 export { default as LikeButton } from '@/components/Atoms/LikeButton/LikeButton.tsx';
 export { default as Accordion } from '@/components/Atoms/Accordion/Accordion.tsx';
