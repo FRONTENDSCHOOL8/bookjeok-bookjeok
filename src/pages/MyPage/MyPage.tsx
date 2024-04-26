@@ -81,7 +81,7 @@ export function MyPage() {
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col bg-white">
-        <NomalTitle backLink path="/main/club">
+        <NomalTitle backLink path="main/club">
           마이페이지
         </NomalTitle>
         <main className="flex flex-grow flex-col bg-white px-4">
