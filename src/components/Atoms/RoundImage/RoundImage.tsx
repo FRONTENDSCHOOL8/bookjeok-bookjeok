@@ -1,6 +1,10 @@
-import { string } from 'prop-types';
+interface RoundImageType {
+  size: 'sm' | 'md' | 'lg' | 'xlg';
+  src: string;
+  alt?: string;
+}
 
-function RoundImage({ size, src, alt = '', ...rest }) {
+function RoundImage({ size, src, alt = '', ...rest }: RoundImageType) {
   const roundImageStyle = {
     sm: 'w-[24px] h-[24px]',
     md: 'w-[36px] h-[36px]',
@@ -13,23 +17,15 @@ function RoundImage({ size, src, alt = '', ...rest }) {
   const defaultProfileImage = '/defaultProfile.webp';
 
   return (
-    // <div className={`${roundImageStyle.className} ${className}`}>
     <div className={`${roundImageStyle[size]} ${roundImageStyle.imgWrap}`}>
       <img
-        src={!src ? defaultProfileImage : src}
+        src={src || defaultProfileImage}
         alt={alt}
         className={roundImageStyle.img}
         {...rest}
       />
     </div>
-    // </div>
   );
 }
 
 export default RoundImage;
-
-RoundImage.propTypes = {
-  size: string,
-  src: string,
-  alt: string,
-};
