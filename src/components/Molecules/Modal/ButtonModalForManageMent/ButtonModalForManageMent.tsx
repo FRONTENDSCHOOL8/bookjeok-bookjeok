@@ -91,6 +91,7 @@ function ButtonModalForManageMent({
                   <MainButton
                     // as={primaryAs}
                     onClick={primaryOnClick}
+                    to={primaryButtonPath}
                     type="button"
                     color="primary"
                   >

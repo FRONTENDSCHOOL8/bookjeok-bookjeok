@@ -1,14 +1,19 @@
 /* eslint-disable no-unused-vars */
+import { Svg } from '@/components/Atoms';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Svg } from '@/components/Atoms';
 
-type ButtonStyle = { primary: string; secondary: string; custom: string };
+type ButtonStyle = {
+  primary: string;
+  secondary: string;
+  custom: string;
+  warning: string;
+};
 
 interface MainButtonProps {
   to?: string;
   type?: 'submit' | 'button' | 'reset';
-  color?: 'primary' | 'secondary' | 'custom';
+  color?: 'primary' | 'secondary' | 'custom' | 'warning';
   className?: string;
   size?: 'lg' | 'sm';
   svgId?: string;
@@ -37,6 +42,8 @@ const MainButton = ({
     secondary:
       'bg-bjgray-100 flex justify-center items-center w-full rounded-5xl text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
     custom: '',
+    warning:
+      'bg-bjgray-100 flex justify-center items-center w-full rounded-5xl text-bjred-400 text-b-1-medium text-bjblack disabled:bg-bjgray-300 disabled:text-bjgray-500',
   };
   const buttonSize = {
     lg: 'h-16',
