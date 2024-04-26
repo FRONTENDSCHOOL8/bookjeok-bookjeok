@@ -1,7 +1,16 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { UsersResponse } from '@/types/pocketbase-types';
+type State = {
+  userInfo: null | UsersResponse;
+};
 
-const useUserInfoStore = create(
+type Action = {
+  setUserInfo: (userInfo: UsersResponse & { token: string }) => void;
+  clearUserInfo: () => void;
+};
+
+const useUserInfoStore = create<State & Action>()(
   persist(
     (set) => ({
       userInfo: null,
