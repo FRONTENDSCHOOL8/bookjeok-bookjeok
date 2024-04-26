@@ -1,7 +1,13 @@
 import { RoundImage } from '@/components/Atoms';
-import { string } from 'prop-types';
 
-function Avatar({ className = '', nickName, text, src }) {
+interface AvatarType {
+  className?: string;
+  nickName?: string;
+  text?: string;
+  src: string;
+}
+
+function Avatar({ className = '', nickName, text, src }: AvatarType) {
   return (
     <div
       className={`mx-auto flex min-h-[102px] w-[90%] justify-center rounded-8xl bg-white shadow-sm ${className}`}
@@ -20,10 +26,3 @@ function Avatar({ className = '', nickName, text, src }) {
 }
 
 export default Avatar;
-
-Avatar.propTypes = {
-  className: string,
-  nickName: string,
-  text: string,
-  src: string,
-};
