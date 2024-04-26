@@ -44,7 +44,7 @@ export function CreateClub1() {
       </Helmet>
       <main className="flex min-h-svh flex-col justify-between">
         <div>
-          <NomalTitle backLink path="mainClub" subText="1 of 4">
+          <NomalTitle backLink path="main/club" subText="1 of 4">
             모임 만들기
           </NomalTitle>
           <h2 className="p-4 text-h-2-semibold">어디서 만날까요?</h2>

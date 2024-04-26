@@ -1,5 +1,4 @@
 import AtomMaking from '@/AtomMaking';
-import { queryClient } from '@/client/queryClient';
 import { ProtectRoute } from '@/components/Common';
 import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
 import {
@@ -36,21 +35,21 @@ const routingPages = [
     element: <AtomMaking />,
   },
   {
-    path: '/mainClub',
+    path: '/main/club',
     async lazy() {
       const { loader, MainClub } = await import('@/pages/MainClub');
       return { Component: MainClub, loader: loader };
     },
   },
   {
-    path: '/mainClub/filter',
+    path: '/main/club/filter',
     async lazy() {
       const { loader, Filter } = await import('@/pages/Filter');
       return { Component: Filter, loader: loader };
     },
   },
   {
-    path: '/mainClub/:clubId',
+    path: '/club/:clubId',
     element: (
       <ProtectRoute>
         <DetailClub />
@@ -59,12 +58,12 @@ const routingPages = [
     loader: clubDetailLoader,
   },
   {
-    path: '/mainBookReview',
+    path: '/main/bookReview',
     element: <MainBookReview />,
     loader: bookReviewListLoader,
   },
   {
-    path: '/mainBookReview/:bookreviewId',
+    path: '/bookReview/:bookreviewId',
     element: (
       <ProtectRoute>
         <DetailBookReview />
@@ -172,7 +171,7 @@ const routingPages = [
   {
     path: '/editProfile/:userId',
     element: (
-      <ProtectRoute client={queryClient}>
+      <ProtectRoute>
         <EditProfile />
       </ProtectRoute>
     ),

@@ -212,7 +212,7 @@ export function EditProfile() {
               closeButton
               onClick={() => setIsModalOpen(false)}
               primaryButtonText="홈으로"
-              primaryButtonPath={'/mainClub'}
+              primaryButtonPath={'/main/club'}
               secondaryButtonText="마이페이지로"
               secondaryButtonPath={'/myPage'}
             ></DobbleButtonModal>

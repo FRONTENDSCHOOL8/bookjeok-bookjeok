@@ -2,6 +2,7 @@ import { GenreButton, MainButton, NomalTitle } from '@/components/Atoms';
 import useGetFilter from '@/pages/Filter/useGetFilter';
 import useCreateClubStore from '@/store/useCreateClubStore';
 import { getDocumentTitle } from '@/utils';
+import { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 export function CreateClub2() {
@@ -10,26 +11,28 @@ export function CreateClub2() {
     addGenre: state.addGenre,
     removeGenre: state.removeGenre,
   }));
-  console.log(clubInfo);
 
   const filterData = useGetFilter();
 
-  const handlegenreButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handlegenreButton = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
 
-    if (clubInfo.genre === '') {
-      addGenre(e.currentTarget.value);
-      return;
-    }
+      if (clubInfo.genre === '') {
+        addGenre(e.currentTarget.value);
+        return;
+      }
 
-    if (clubInfo.genre) {
-      removeGenre();
-      addGenre(e.currentTarget.value);
-    }
-    if (clubInfo.genre === e.currentTarget.value) {
-      removeGenre();
-    }
-  };
+      if (clubInfo.genre) {
+        removeGenre();
+        addGenre(e.currentTarget.value);
+      }
+      if (clubInfo.genre === e.currentTarget.value) {
+        removeGenre();
+      }
+    },
+    [clubInfo]
+  );
 
   return (
     <>

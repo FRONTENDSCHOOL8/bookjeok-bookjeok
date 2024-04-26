@@ -101,7 +101,7 @@ export function Login() {
           title={isSuccess ? '로그인 성공' : '로그인 실패'}
           onClick={() => setIsModalOpen(false)}
           primaryButtonText={isSuccess ? '홈으로' : undefined}
-          primaryButtonPath={isSuccess ? '/MainClub' : undefined}
+          primaryButtonPath={isSuccess ? '/Main/club' : undefined}
         >
           {isSuccess ? null : '계정 정보를 확인해주세요'}
         </DobbleButtonModal>

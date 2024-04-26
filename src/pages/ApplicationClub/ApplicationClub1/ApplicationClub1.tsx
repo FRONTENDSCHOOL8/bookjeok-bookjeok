@@ -1,8 +1,7 @@
+import { CheckboxForm, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 import { getDocumentTitle } from '@/utils';
-import { Helmet } from 'react-helmet-async';
-import { NomalTitle, CheckboxForm, MainButton } from '@/components/Atoms';
-import { Svg } from '@/components/Atoms';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 export function ApplicationClub1() {

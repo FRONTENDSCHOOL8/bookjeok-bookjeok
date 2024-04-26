@@ -44,7 +44,7 @@ export function MainClub() {
           <MainButton
             size="sm"
             color="secondary"
-            to="/mainClub/"
+            to="/main/club"
             svgId="direction-vertical"
           >
             정렬
@@ -52,7 +52,7 @@ export function MainClub() {
           <MainButton
             size="sm"
             color="secondary"
-            to="/mainClub/filter"
+            to="/main/club/filter"
             svgId="filter"
           >
             필터

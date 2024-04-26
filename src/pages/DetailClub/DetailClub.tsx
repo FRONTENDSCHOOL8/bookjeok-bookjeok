@@ -51,7 +51,7 @@ export function DetailClub() {
         <meta property="og:type" content="website" />
       </Helmet>
       <div className="flex min-h-svh flex-col">
-        <NomalTitle backLink path="mainClub">
+        <NomalTitle backLink path="main/club">
           모임 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col pb-[96px]">

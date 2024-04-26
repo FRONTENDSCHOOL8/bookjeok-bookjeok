@@ -2,12 +2,19 @@ import pb from '@/api/pocketbase';
 import {
   Accordion,
   AccordionChidren1,
+  MainButton,
   NomalTitle,
   TextBox,
 } from '@/components/Atoms';
-import { ButtonModalForManageMent, GNB } from '@/components/Molecules';
+import { GNB } from '@/components/Molecules';
 import useLoaderData from '@/hooks/useLoaderData';
 import {
+  ApproveUserModal,
+  CancelUserModal,
+  CompleteDeleteModal,
+  CompleteModal,
+  DeleteModal,
+  FailModal,
   TExpandedSocialingQueryAnswer,
   Texpand,
   fetchManagement,
@@ -25,11 +32,12 @@ const DEFAULT_MODAL_STATE = {
   approveModal: false,
   cancelModal: false,
   completeModal: false,
+  deleteModal: false,
+  completeDeleteModal: false,
 };
 
 export function ManagementClub() {
   const [modalState, setModalState] = useState(DEFAULT_MODAL_STATE);
-
   const [activeApproveUser, setActiveApproveUser] = useState<
     { nickname: string; id: string } | UsersResponse
   >({
@@ -44,7 +52,6 @@ export function ManagementClub() {
   const revalidator = useRevalidator();
 
   const { clubId } = useParams();
-  // SocialingResponseAndExpand 타입 정의 및 분리 (types.ts)
   const initSocialing = useLoaderData<SocialingResponse<Texpand>>();
   const { applicant, confirmUser, answer, chattingRoom } =
     initSocialing.expand as Texpand;
@@ -55,6 +62,7 @@ export function ManagementClub() {
     initialData: initSocialing,
   });
 
+  // 모달을 위한 핸들러 함수
   const handleApproveButtonInModal =
     (userId: string) => async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -129,7 +137,20 @@ export function ManagementClub() {
     };
   };
 
-  // 작동이 안됌 ㅜㅠ
+  const handleDeleteButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setModalState({ ...modalState, deleteModal: true });
+  };
+
+  const handleDeleteButtonInModal = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    await pb.collection('socialing').delete(socialing.id);
+    await pb.collection('chattingRoom').delete(chattingRoom?.id!);
+    setModalState({ ...modalState, completeDeleteModal: true });
+  };
+
   useLayoutEffect(() => {
     pb.collection('socialing').subscribe(socialing.id, (e) => {
       if (e.record.confirmUser.length === socialing.limitPerson) {
@@ -196,67 +217,50 @@ export function ManagementClub() {
               );
             })}
           </Accordion>
+          <MainButton
+            color="warning"
+            type="button"
+            onClick={handleDeleteButton}
+            className="mt-10"
+          >
+            모임 삭제하기
+          </MainButton>
         </main>
         <GNB className="fixed" createClub />
       </div>
 
-      {/* 승인버튼 모달 */}
-      <ButtonModalForManageMent
-        title={`${activeApproveUser.nickname}님의 신청을 승인하시겠습니까?`}
-        closeButton
-        // primaryAs="button"
-        // secondaryAs="button"
+      <ApproveUserModal
+        title={activeApproveUser.nickname}
         open={modalState.approveModal}
         onClickCancel={handleCloseButton('approveModal')}
         primaryOnClick={handleApproveButtonInModal(activeApproveUser.id)}
-        primaryButtonText="승인"
         secondaryOnClick={handleCloseButton('approveModal')}
-        secondaryButtonText="취소"
-      >
-        신청을 승인하면 모임 채팅방에 초대됩니다.
-      </ButtonModalForManageMent>
-
-      {/* 승인취소버튼 모달 */}
-      <ButtonModalForManageMent
-        title={`${activeCancelUser.nickname}님의 승인을 취소하시겠습니까?`}
-        closeButton
-        // primaryAs="button"
-        // secondaryAs="button"
-        primaryButtonText="취소"
+      />
+      <CancelUserModal
+        title={activeCancelUser.nickname}
         onClickCancel={handleCloseButton('cancelModal')}
         open={modalState.cancelModal}
         primaryOnClick={handleCancleButtonInModal(activeCancelUser.id)}
         secondaryOnClick={handleCloseButton('cancelModal')}
-        secondaryButtonText="닫기"
-      >
-        특별한 사유없이 승인을 취소하면
-        <br />
-        불이익이 있을 수 있습니다.
-      </ButtonModalForManageMent>
-      {/* 인원추가 실패 모달 */}
-      <ButtonModalForManageMent
+      />
+      <FailModal
         open={modalState.failModal}
         onClickCancel={handleCloseButton('failModal')}
-        closeButton
-        title="더이상 승인할 수 없어요!"
-        primaryButtonText="채팅방으로 이동하기"
-        primaryButtonPath={`/chatRoom/${chattingRoom?.id}`}
-      >
-        이미 승인가능한 인원이 모두 찼어요.
-      </ButtonModalForManageMent>
-      {/* 인원모집완료 모달 */}
-      <ButtonModalForManageMent
+        primaryButtonPath={chattingRoom?.id}
+      />
+      <CompleteModal
         open={modalState.completeModal}
         onClickCancel={handleCloseButton('completeModal')}
-        closeButton
-        title="축하합니다!"
-        primaryButtonText="채팅방으로 이동하기"
-        primaryButtonPath={`/chatRoom/${chattingRoom?.id}`}
-      >
-        모든 모임인원이 찼어요!
-        <br />
-        채팅방에서 참여자들에게 모임안내를 해주세요.
-      </ButtonModalForManageMent>
+        primaryButtonPath={chattingRoom?.id}
+      />
+
+      <DeleteModal
+        open={modalState.deleteModal}
+        onClickCancel={handleCloseButton('deleteModal')}
+        primaryOnClick={handleDeleteButtonInModal}
+        secondaryOnClick={handleCloseButton('deleteModal')}
+      />
+      <CompleteDeleteModal open={modalState.completeDeleteModal} />
     </>
   );
 }
