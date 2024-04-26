@@ -1,7 +1,18 @@
 import { RoundImage } from '@/components/Atoms';
 import { getCreatedHoursAgo, getPbImgs } from '@/utils';
-import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
+interface TbookReviewList {
+  id: string;
+  title: string;
+  nickname: string;
+  writerCollectionId: string;
+  writerID: string;
+  writerImg: string | File;
+  detail: string;
+  img: string;
+  created: string;
+  collectionId: string;
+}
 function BookReviewList({
   id,
   title,
@@ -13,7 +24,7 @@ function BookReviewList({
   img,
   created,
   collectionId,
-}) {
+}: TbookReviewList) {
   return (
     <li
       key={id}
@@ -58,15 +69,3 @@ function BookReviewList({
 }
 
 export default BookReviewList;
-BookReviewList.propTypes = {
-  id: string,
-  title: string,
-  nickname: string,
-  writerCollectionId: string,
-  writerID: string,
-  writerImg: string,
-  detail: string,
-  img: string,
-  created: string,
-  collectionId: string,
-};
