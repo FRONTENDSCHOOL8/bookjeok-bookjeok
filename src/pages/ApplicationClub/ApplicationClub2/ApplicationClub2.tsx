@@ -47,7 +47,7 @@ export function ApplicationClub2() {
   //제출 버튼
   const handleSubmit: SubmitType = (e) => {
     e.preventDefault();
-    if (!isOpenModal && answerForm) {
+    if (!isOpenModal && answerForm && userInfo) {
       const answerData = {
         id: createRandomId(),
         socialing: club.id,
@@ -90,7 +90,7 @@ export function ApplicationClub2() {
         <main className="flex flex-grow flex-col px-4 pt-4">
           <div className="flex-grow">
             <div className="flex gap-4 pt-2">
-              <RoundImage size="md" src={profilePhoto} />
+              <RoundImage size="md" src={profilePhoto || ''} />
               <div>
                 <p className="text-b-1-regular">{club.query}</p>
                 <span className="text-b-2-regular text-bjgray-500">
