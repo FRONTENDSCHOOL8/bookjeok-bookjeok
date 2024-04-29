@@ -52,22 +52,22 @@ export function MyPage() {
     queryFn: async () => {
       const fetchAllUserInfo = await pb
         .collection(Collections.Users)
-        .getOne<UsersResponse<Texpand>>(`${userInfo.id}`, {
+        .getOne<UsersResponse<Texpand>>(`${userInfo!.id}`, {
           expand: 'createSocialing, participantSocialing',
         });
       return fetchAllUserInfo;
     },
-    queryKey: ['clubInfo', userInfo.id],
+    queryKey: ['clubInfo', userInfo!.id],
   });
 
   const { data: bookReviewData } = useQuery({
     queryFn: async (): Promise<BookReviewResponse[]> => {
       const fetchBookReview = await pb.collection('bookReview').getFullList({
-        filter: `writer ="${userInfo.id}"`,
+        filter: `writer ="${userInfo!.id}"`,
       });
       return fetchBookReview;
     },
-    queryKey: ['bookReview', userInfo.id],
+    queryKey: ['bookReview', userInfo!.id],
   });
 
   const handleLogout = () => {
@@ -81,7 +81,7 @@ export function MyPage() {
         <title>{getDocumentTitle('마이페이지')}</title>
       </Helmet>
       <div className="relative flex h-screen w-full flex-col bg-white">
-        <NomalTitle backLink path="/main/club">
+        <NomalTitle backLink path="main/club">
           마이페이지
         </NomalTitle>
         <main className="flex flex-grow flex-col bg-white px-4">
@@ -90,12 +90,12 @@ export function MyPage() {
               size="xlg"
               src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
             ></RoundImage>
-            <p>{userInfo.nickname}</p>
+            <p>{userInfo!.nickname}</p>
           </div>
           <div className="flex gap-4">
             <MainButton
               type="button"
-              to={`/editProfile/${userInfo.id}`}
+              to={`/editProfile/${userInfo!.id}`}
               size="sm"
               color="secondary"
             >

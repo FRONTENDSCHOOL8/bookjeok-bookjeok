@@ -6,7 +6,7 @@ import {
 import pb from '@/api/pocketbase';
 import { getPbImgs } from '@/utils';
 
-type Texpand = {
+export type Texpand = {
   genre: GenresResponse;
   users: UsersResponse;
 };

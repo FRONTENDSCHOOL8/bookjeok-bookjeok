@@ -35,7 +35,7 @@ export function CreateClub1() {
     userInfo: state.userInfo,
   }));
 
-  useEffect(() => setUserID(userInfo.id), [setUserID, userInfo.id]);
+  useEffect(() => setUserID(userInfo!.id), [setUserID, userInfo!.id]);
 
   return (
     <>

@@ -3,19 +3,28 @@ import { Svg } from '@/components/Atoms';
 interface LikeButtonProps {
   className?: string;
   active?: boolean;
-  [key: string]: any;
+  id: string;
+  onClick: (
+    id: string
+  ) => (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  // [key: string]: any;
 }
 
 const LikeButton = ({
   className,
   active = false,
-  ...rest
+  onClick,
+  id,
+  // ...rest
 }: LikeButtonProps) => {
   return (
     <button
+      type="button"
+      onClick={onClick(id)}
+      data-club-id={id}
       className={`absolute bottom-3 right-3 ${className}`}
       aria-label="좋아요"
-      {...rest}
+      // {...rest}
     >
       {active ? (
         <>

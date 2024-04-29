@@ -8,7 +8,6 @@ import {
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
 import { LoaderType } from './loader';
-
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
 import useUserInfoStore from '@/store/useUserInfoStore';

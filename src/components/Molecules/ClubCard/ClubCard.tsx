@@ -1,5 +1,4 @@
 import { Badge, LikeButton, Svg } from '@/components/Atoms';
-import useUserInfoStore from '@/store/useUserInfoStore';
 import { calcDay } from '@/utils';
 import { Link } from 'react-router-dom';
 import {
@@ -16,6 +15,10 @@ type Texpand = {
 
 interface ClubCardProps {
   clubInfo: SocialingResponse<Texpand>;
+  handleLike: (
+    id: string
+  ) => (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  userInfo: any;
 }
 
 const ClubCard = ({
@@ -31,45 +34,9 @@ const ClubCard = ({
     confirmUser,
     like,
   },
+  handleLike,
+  userInfo,
 }: ClubCardProps) => {
-  const { userInfo } = useUserInfoStore();
-
-  // const addLike = useMutation({
-  //   mutationFn: (clubId) => async () => {
-  //     const newLike = { like: like ? [...like, userInfo.id] : [userInfo.id] };
-  //     await pb.collection('socialing').update(clubId, newLike);
-  //   },
-  //   onMutate: async (clubId) => {
-  //     const queryKey = ['mainClub'];
-  //     await queryClient.cancelQueries({ queryKey });
-  //     const previousLike = queryClient.getQueryData(['mainClub']);
-  //     queryClient.setQueryData(queryKey, () => {});
-  //     return { previousLike };
-  //   },
-  //   onError: (err, clubId, context) => {
-  //     queryClient.setQueryData(['mainClub'], context.previousLike);
-  //   },
-  //   onSettled: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['mainClub'] });
-  //   },
-  // });
-
-  // const removeLike = useMutation({
-  //   mutationFn: (clubId) => async () => {
-  //     const newLike = { like: like?.filter((id) => id !== userInfo.id) };
-  //     await pb.collection('socialing').update(clubId, newLike);
-  //   },
-  // });
-  // const handleLike = (id) => async (e) => {
-  //   e.preventDefault();
-
-  //   if (like.includes(userInfo.id)) {
-  //     await removeLike.mutateAsync(id);
-  //   } else {
-  //     await addLike.mutateAsync(id);
-  //   }
-  // };
-
   return (
     <li key={id}>
       <figure className="relative mx-auto w-full">
@@ -84,8 +51,9 @@ const ClubCard = ({
           </Badge>
         </Link>
         <LikeButton
-          // onClick={handleLike(id)}
-          active={userInfo?.id ? like.includes(userInfo?.id) : false}
+          onClick={handleLike}
+          id={id}
+          active={like.includes(userInfo.id)}
         />
       </figure>
       <Link to={`/club/${id}`} aria-label={`${title}`}>

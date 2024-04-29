@@ -70,7 +70,7 @@ export function DetailClub() {
               nickName={expand?.createUser.nickname}
               src={
                 expand?.createUser.img == ''
-                  ? null
+                  ? ''
                   : getPbImgs(expand?.createUser)
               }
               text={title}
@@ -96,18 +96,18 @@ export function DetailClub() {
           </section>
         </main>
         <div className="fixed bottom-0 mx-auto w-full max-w-[430px] bg-white p-4">
-          {userInfo.id === createUser ? (
+          {userInfo!.id === createUser ? (
             <MainButton className="w-full" to={`/managementClub/${id}`}>
               모임 관리하기
             </MainButton>
           ) : (
             <MainButton
               color="custom"
-              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium ${!applicant.includes(userInfo.id) && !confirmUser.includes(userInfo.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
+              className={`flex w-full items-center justify-center rounded-5xl text-b-1-medium ${!applicant.includes(userInfo!.id) && !confirmUser.includes(userInfo!.id) ? 'bg-bjyellow-400 text-bjblack ' : 'pointer-events-none bg-bjgray-300 text-bjgray-500'}`}
               to={`/applicationClub/${id}`}
             >
-              {applicant.includes(userInfo.id) ||
-              confirmUser.includes(userInfo.id)
+              {applicant.includes(userInfo!.id) ||
+              confirmUser.includes(userInfo!.id)
                 ? '이미 신청한 모임입니다.'
                 : '신청하기'}
             </MainButton>
