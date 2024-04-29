@@ -1,29 +1,25 @@
-import AtomMaking from '@/AtomMaking';
-import { ProtectRoute } from '@/components/Common';
-import { ApplicationClub1 } from '@/pages/ApplicationClub/ApplicationClub1';
-import {
-  ApplicationClub2,
-  loader as ApplicationClub2Loader,
-} from '@/pages/ApplicationClub/ApplicationClub2';
-import { CreateBookReview } from '@/pages/CreateBookReview';
-import { CreateClub1, CreateClub3, CreateClub4 } from '@/pages/CreateClub';
-import {
-  DetailBookReview,
-  loader as detailBookReviewloader,
-} from '@/pages/DetailBookReview';
-import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
-import { EditProfile } from '@/pages/EditProfile';
-import { Intro } from '@/pages/Intro';
-import { Login } from '@/pages/Login';
 import {
   MainBookReview,
   loader as bookReviewListLoader,
 } from '@/pages/MainBookReview';
-import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
-import { MyClubList } from '@/pages/MyClubList';
+import {
+  DetailBookReview,
+  loader as detailBookReviewloader,
+} from '@/pages/DetailBookReview';
+import { Intro } from '@/pages/Intro';
+import { Login } from '@/pages/Login';
+import AtomMaking from '@/AtomMaking';
 import { MyPage } from '@/pages/MyPage';
 import { SignUp } from '@/pages/SignUp';
 import { Welcome } from '@/pages/Welcome';
+import { MyClubList } from '@/pages/MyClubList';
+import { EditProfile } from '@/pages/EditProfile';
+import { ProtectRoute } from '@/components/Common';
+import { ApplicationClub } from '@/pages/ApplicationClub';
+import { CreateBookReview } from '@/pages/CreateBookReview';
+import { CreateClub1, CreateClub3, CreateClub4 } from '@/pages/CreateClub';
+import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
+import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
 
 const routingPages = [
   {
@@ -119,18 +115,9 @@ const routingPages = [
     path: '/applicationClub/:clubId',
     element: (
       <ProtectRoute>
-        <ApplicationClub1 />
+        <ApplicationClub />
       </ProtectRoute>
     ),
-  },
-  {
-    path: '/applicationClub2/:clubId',
-    element: (
-      <ProtectRoute>
-        <ApplicationClub2 />
-      </ProtectRoute>
-    ),
-    loader: ApplicationClub2Loader,
   },
   {
     path: '/managementClub/:clubId',
