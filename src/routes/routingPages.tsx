@@ -15,11 +15,14 @@ import { Welcome } from '@/pages/Welcome';
 import { MyClubList } from '@/pages/MyClubList';
 import { EditProfile } from '@/pages/EditProfile';
 import { ProtectRoute } from '@/components/Common';
-import { ApplicationClub } from '@/pages/ApplicationClub';
 import { CreateBookReview } from '@/pages/CreateBookReview';
 import { CreateClub1, CreateClub3, CreateClub4 } from '@/pages/CreateClub';
 import { DetailClub, loader as clubDetailLoader } from '@/pages/DetailClub';
 import { ManagementClub, loader as answerLoader } from '@/pages/ManagementClub';
+import {
+  ApplicationClub,
+  loader as ApplicationLoader,
+} from '@/pages/ApplicationClub';
 
 const routingPages = [
   {
@@ -118,6 +121,7 @@ const routingPages = [
         <ApplicationClub />
       </ProtectRoute>
     ),
+    loader: ApplicationLoader,
   },
   {
     path: '/managementClub/:clubId',
