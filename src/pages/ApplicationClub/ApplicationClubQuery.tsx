@@ -8,27 +8,18 @@ import {
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
 import { LoaderType } from './loader';
+
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from 'react-router-dom';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getDocumentTitle, createRandomId } from '@/utils';
 import { DobbleButtonModal } from '@/components/Molecules';
 
-/*
-1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
-2. socialingQueryAnswer-> clubid, 답변자, 답변
-  socialing -> 해당하는 club에 applicant에 답변자 적재
-3. onChange시 하단의 length 가 변경되어야됨. 
-  10자 이상이어야 버튼 활성화 
-4. users, socialing DB에 적재 
-*/
 interface SubmitType {
   (e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export function ApplicationQuery() {
-  const { club, profilePhoto } = useLoaderData() as LoaderType;
+export function ApplicationQuery({ club, profilePhoto }: LoaderType) {
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
