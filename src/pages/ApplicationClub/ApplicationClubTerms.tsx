@@ -1,10 +1,10 @@
-import { CheckboxForm, MainButton, NomalTitle, Svg } from '@/components/Atoms';
-import { getDocumentTitle } from '@/utils';
 import { useState } from 'react';
+import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import { CheckboxForm, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 
-export function ApplicationClub1() {
+export function ApplicationTerms() {
   const { clubId } = useParams();
   const [isAgreement, setIsAgreement] = useState(false);
 

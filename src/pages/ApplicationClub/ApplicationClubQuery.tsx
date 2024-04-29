@@ -27,7 +27,7 @@ interface SubmitType {
   (e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export function ApplicationClub2() {
+export function ApplicationQuery() {
   const { club, profilePhoto } = useLoaderData() as LoaderType;
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
