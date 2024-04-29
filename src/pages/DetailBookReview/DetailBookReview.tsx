@@ -30,7 +30,7 @@ export function DetailBookReview() {
           <section className="flex flex-1 flex-col gap-4 bg-bjgray-50 px-4 pb-20 shadow-inner">
             <Avatar
               nickName={expand?.writer?.nickname}
-              src={expand?.writer?.img == '' ? null : getPbImgs(expand?.writer)}
+              src={expand?.writer?.img == '' ? '' : getPbImgs(expand?.writer)}
               text={title}
               className="relative -mt-[58px]"
             ></Avatar>

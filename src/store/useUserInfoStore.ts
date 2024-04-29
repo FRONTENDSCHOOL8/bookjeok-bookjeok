@@ -6,7 +6,7 @@ type State = {
 };
 
 type Action = {
-  setUserInfo: (userInfo: UsersResponse & { token: string }) => void;
+  setUserInfo: (userInfo: UsersResponse & { token?: string }) => void;
   clearUserInfo: () => void;
 };
 

@@ -10,25 +10,15 @@ import pb from '@/api/pocketbase';
 import { LoaderType } from './loader';
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from 'react-router-dom';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getDocumentTitle, createRandomId } from '@/utils';
 import { DobbleButtonModal } from '@/components/Molecules';
 
-/*
-1. 호스트 (모임 생성자)의 프로필사진 (users)모임 가입시 질문(socialing)
-2. socialingQueryAnswer-> clubid, 답변자, 답변
-  socialing -> 해당하는 club에 applicant에 답변자 적재
-3. onChange시 하단의 length 가 변경되어야됨. 
-  10자 이상이어야 버튼 활성화 
-4. users, socialing DB에 적재 
-*/
 interface SubmitType {
   (e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export function ApplicationClub2() {
-  const { club, profilePhoto } = useLoaderData() as LoaderType;
+export function ApplicationQuery({ club, profilePhoto }: LoaderType) {
   const { userInfo } = useUserInfoStore((state) => state);
   const [answerForm, setAnswerForm] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -47,11 +37,11 @@ export function ApplicationClub2() {
   //제출 버튼
   const handleSubmit: SubmitType = (e) => {
     e.preventDefault();
-    if (!isOpenModal && answerForm) {
+    if (!isOpenModal && answerForm && userInfo) {
       const answerData = {
         id: createRandomId(),
         socialing: club.id,
-        answerUser: userInfo?.id,
+        answerUser: userInfo.id,
         answer: answerForm,
       };
       pb.collection('socialingQueryAnswer')
@@ -59,16 +49,16 @@ export function ApplicationClub2() {
         .then(() => {
           const updateData = {
             participantSocialing: [
-              ...userInfo!.participantSocialing,
+              ...userInfo.participantSocialing,
               `${club.id}`,
             ],
           };
-          pb.collection('users').update(userInfo!.id, updateData);
+          pb.collection('users').update(userInfo.id, updateData);
         })
         .then(() => {
           const updateData = {
             answer: [...club.answer, `${answerData.id}`],
-            applicant: [...club.applicant, `${userInfo!.id}`],
+            applicant: [...club.applicant, `${userInfo.id}`],
           };
           pb.collection('socialing').update(club.id, updateData);
           setIsSuccess(true);
@@ -90,7 +80,7 @@ export function ApplicationClub2() {
         <main className="flex flex-grow flex-col px-4 pt-4">
           <div className="flex-grow">
             <div className="flex gap-4 pt-2">
-              <RoundImage size="md" src={profilePhoto!} />
+              <RoundImage size="md" src={profilePhoto || ''} />
               <div>
                 <p className="text-b-1-regular">{club.query}</p>
                 <span className="text-b-2-regular text-bjgray-500">

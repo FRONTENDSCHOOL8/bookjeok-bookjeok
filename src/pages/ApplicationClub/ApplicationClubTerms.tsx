@@ -1,11 +1,13 @@
-import { CheckboxForm, MainButton, NomalTitle, Svg } from '@/components/Atoms';
-import { getDocumentTitle } from '@/utils';
 import { useState } from 'react';
+import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { CheckboxForm, MainButton, NomalTitle, Svg } from '@/components/Atoms';
 
-export function ApplicationClub1() {
-  const { clubId } = useParams();
+type Action = {
+  nextpageFn: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export function ApplicationTerms({ nextpageFn }: Action) {
   const [isAgreement, setIsAgreement] = useState(false);
 
   const handleChecked = () => {
@@ -64,7 +66,8 @@ export function ApplicationClub1() {
           <div className="my-4 mt-auto">
             <MainButton
               color={isAgreement ? 'primary' : 'secondary'}
-              to={isAgreement ? `/applicationClub2/${clubId}` : ''}
+              type="button"
+              onClick={() => nextpageFn(true)}
               className={
                 isAgreement ? `pointer-events-auto` : `pointer-events-none`
               }
