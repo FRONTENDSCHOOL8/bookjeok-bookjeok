@@ -2,6 +2,7 @@ import { queryClient } from '@/client/queryClient';
 import { getClubListQueryOption } from './queryOption';
 import { fetchClubList } from './fetchClubList';
 import type { LoaderFunction } from 'react-router-dom';
+import { fetchUserInfo } from './fetchUserInfo';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -18,5 +19,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   } else {
     clubData = await queryClient.fetchInfiniteQuery(queryOptions);
   }
-  return clubData;
+
+  const userInfo = await fetchUserInfo();
+  const data = { userInfo, clubData };
+  return data;
 };

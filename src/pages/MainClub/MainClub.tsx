@@ -1,33 +1,33 @@
 import pb from '@/api/pocketbase';
 import { MainButton, NomalTitle } from '@/components/Atoms';
 import { ClubCard, GNB, MainKindToggle } from '@/components/Molecules';
-import useUserInfoStore from '@/store/useUserInfoStore';
+import { useLoaderData } from '@/hooks';
+import { Texpand, Texpand2, getClubListQueryOption } from '@/pages/MainClub';
+import {
+  Collections,
+  SocialingResponse,
+  UsersResponse,
+} from '@/types/pocketbase-types';
 import { getDocumentTitle } from '@/utils';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useInView } from 'react-intersection-observer';
-import { useLocation, useRevalidator } from 'react-router-dom';
-import { getClubListQueryOption, Texpand } from '@/pages/MainClub';
-import { SocialingResponse, UsersResponse } from '@/types/pocketbase-types';
-import { useLoaderData } from '@/hooks';
+import { useLocation } from 'react-router-dom';
 
-interface Texpand2 {
-  like: SocialingResponse;
+interface Tloader {
+  userInfo: UsersResponse<Texpand2>;
+  clubData: SocialingResponse<Texpand>[];
 }
 export function MainClub() {
-  const loadedClubList = useLoaderData<SocialingResponse<Texpand>[]>();
-  const revalidator = useRevalidator();
+  const { userInfo, clubData: loadedClubList } = useLoaderData<Tloader>();
   const { state } = useLocation();
-  const { userInfo } = useUserInfoStore();
-
   const filters = state?.filters ?? '';
 
   const {
     data: cachedClubList,
     hasNextPage,
     fetchNextPage,
-    refetch,
   } = useInfiniteQuery({
     ...getClubListQueryOption(filters, 10, loadedClubList),
   });
@@ -36,51 +36,23 @@ export function MainClub() {
     ? cachedClubList.pages.flatMap((page) => page.items)
     : [];
 
+  const { data: nowUser } = useQuery({
+    queryFn: async () => {
+      const data = await pb
+        .collection(Collections.Users)
+        .getOne(userInfo!.id, { expand: 'like' });
+      return data;
+    },
+    queryKey: ['user', userInfo?.id],
+    initialData: userInfo,
+  });
+
   const [ref, isView] = useInView();
   useEffect(() => {
     if (isView && hasNextPage) {
       fetchNextPage();
     }
   });
-
-  const handleLike =
-    (clubId: string) => async (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-      e.preventDefault();
-      const nowUser = await pb
-        .collection('users')
-        .getOne<UsersResponse<Texpand2>>(userInfo!.id, { expand: 'like' });
-
-      const clickedClub = clubList.find((i) => i.id === clubId);
-      const addedLikeListForSocialing = clickedClub?.like
-        ? [...clickedClub?.like, userInfo!.id]
-        : [userInfo!.id];
-      const addedLikeListForUser = [...nowUser.like, clubId];
-      const removedLikeListForSocialing = clickedClub?.like.filter(
-        (i) => i !== userInfo!.id
-      );
-      const removedLikeListForUser = nowUser.like.filter((i) => i !== clubId);
-
-      if (clickedClub?.like.includes(userInfo!.id)) {
-        console.log('좋아요취소');
-        await pb
-          .collection('socialing')
-          .update(clubId, { like: removedLikeListForSocialing });
-        await pb
-          .collection('users')
-          .update(userInfo!.id, { like: removedLikeListForUser });
-      } else {
-        console.log('좋아요 추가');
-        await pb
-          .collection('socialing')
-          .update(clubId, { like: addedLikeListForSocialing });
-        await pb
-          .collection('users')
-          .update(userInfo!.id, { like: addedLikeListForUser });
-      }
-      refetch();
-      revalidator.revalidate();
-    };
 
   return (
     <>
@@ -115,8 +87,7 @@ export function MainClub() {
                 <ClubCard
                   key={clubInfo.id}
                   clubInfo={clubInfo}
-                  userInfo={userInfo}
-                  handleLike={handleLike}
+                  userInfo={nowUser}
                 />
               );
             })}

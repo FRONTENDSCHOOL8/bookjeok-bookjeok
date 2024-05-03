@@ -4,27 +4,20 @@ interface LikeButtonProps {
   className?: string;
   active?: boolean;
   id: string;
-  onClick: (
-    id: string
-  ) => (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
-  // [key: string]: any;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
 const LikeButton = ({
   className,
   active = false,
   onClick,
-  id,
-  // ...rest
 }: LikeButtonProps) => {
   return (
     <button
       type="button"
-      onClick={onClick(id)}
-      data-club-id={id}
+      onClick={onClick}
       className={`absolute bottom-3 right-3 ${className}`}
       aria-label="좋아요"
-      // {...rest}
     >
       {active ? (
         <>

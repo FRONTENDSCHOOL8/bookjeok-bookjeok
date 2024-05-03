@@ -5,6 +5,7 @@ export { default as validatePassword } from '@/utils/validatePassword.ts';
 export { default as createRandomId } from '@/utils/createRandomId';
 export { default as validateEmail } from '@/utils/validateEmail.ts';
 export { default as getPbImgs } from '@/utils/getPbImgs.ts';
+export { default as updateLike } from '@/utils/updateLike';
 export { default as calcDay } from '@/utils/calcDay.ts';
 export { default as getDay } from '@/utils/getDay.ts';
 export {

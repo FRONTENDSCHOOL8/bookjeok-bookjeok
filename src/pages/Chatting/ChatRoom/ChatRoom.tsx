@@ -84,7 +84,6 @@ export const ChatRoom = () => {
             : [],
         },
       };
-
       await pb
         .collection(Collections.ChattingRoom)
         .update(chattingRoomId!, nextChattingRoom);
