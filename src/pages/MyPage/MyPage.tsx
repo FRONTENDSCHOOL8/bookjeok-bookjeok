@@ -88,7 +88,7 @@ export function MyPage() {
           <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
-              src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
+              src={getPbImgs(fetchAllUserInfo) || ''}
             ></RoundImage>
             <p>{userInfo!.nickname}</p>
           </div>
