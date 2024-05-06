@@ -6,5 +6,6 @@ export { default as FilterList } from '@/components/Molecules/FilterList/FilterL
 export { default as ChatList } from '@/components/Molecules/ChatList/ChatList.tsx';
 export { default as ClubCard } from '@/components/Molecules/ClubCard/ClubCard.tsx';
 export { default as ClubList } from '@/components/Molecules/ClubList/ClubList.tsx';
+export { default as Comment } from '@/components/Molecules/Comment/Comment.tsx';
 export { default as Avatar } from '@/components/Molecules/Avatar/Avatar.tsx';
 export { default as GNB } from '@/components/Molecules/GNB/GNB.tsx';

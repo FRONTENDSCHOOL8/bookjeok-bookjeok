@@ -16,7 +16,7 @@ export function DetailBookReview() {
         <title>{getDocumentTitle(title)}</title>
       </Helmet>
       <div className="flex min-h-svh flex-col">
-        <NomalTitle backLink path="main/bookReview">
+        <NomalTitle backLink path="main/bookReview" iconButton>
           독후감 상세보기
         </NomalTitle>
         <main className="flex flex-1 flex-col">
@@ -40,9 +40,17 @@ export function DetailBookReview() {
                 {bookTitle}
               </span>
             </div>
-            <pre className="whitespace-pre-wrap p-4 px-6 text-b-1-light text-bjblack">
-              {detail}
-            </pre>
+            <div className="px-6 py-4">
+              <div className="text-b-2-regular text-bjgray-500">
+                좋아요 100개
+              </div>
+              <pre className="my-2 whitespace-pre-wrap text-b-1-light text-bjblack">
+                {detail}
+              </pre>
+              <div className="text-b-2-regular text-bjgray-500">
+                댓글 <span className="font-semibold">100</span>개 모두 보기
+              </div>
+            </div>
           </section>
         </main>
         <GNB createBookReview className="fixed" />
