@@ -1,15 +1,12 @@
-import pb from '@/api/pocketbase';
-import { BookReviewResponse, UsersResponse } from '@/types/pocketbase-types';
-export interface Texpand {
-  writer: UsersResponse;
-}
+import { queryClient } from '@/client/queryClient';
+import { fetchBookReview } from './fetchBookReview';
+import { bookReviewQueryOption } from './queryOptions';
+import type { LoaderFunction } from 'react-router-dom';
 
-export async function loader() {
-  const bookReview = await pb
-    .collection('bookReview')
-    .getFullList<BookReviewResponse<Texpand>>({
-      sort: '-created',
-      expand: 'writer',
-    });
-  return { bookReview };
-}
+export const loader: LoaderFunction = async () => {
+  const queryOptions = bookReviewQueryOption(10, fetchBookReview);
+  const cacheBookReviewData = queryClient.getQueryData(queryOptions.queryKey);
+  const bookReview =
+    cacheBookReviewData || (await queryClient.fetchInfiniteQuery(queryOptions));
+  return bookReview;
+};

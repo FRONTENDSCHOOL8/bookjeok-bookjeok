@@ -7,6 +7,8 @@ import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { Texpand } from '@/pages/MainBookReview';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { bookReviewQueryOption } from './queryOptions';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -18,24 +20,33 @@ export function MainBookReview() {
   const data = useLoaderData<Tloader>();
   console.log(data);
 
-  // 검색창 이벤트 함수
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(e.target.value);
-    setIsSearchState(e.target.value !== '');
-  };
+  const { data: bookReviewData } = useInfiniteQuery({
+    ...bookReviewQueryOption(10, data),
+  });
 
-  const [isSearchState, setIsSearchState] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchResult, setSearchResult] = useState<TsearchResult>();
-  const debouncedKeyword = useDebounce(searchKeyword, 500);
+  const bookReviewList = bookReviewData
+    ? bookReviewData.pages.flatMap((page) => page.items)
+    : [];
+
+    
+  // 검색창 이벤트 함수
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchKeyword(e.target.value);
+  //   setIsSearchState(e.target.value !== '');
+  // };
+
+  // const [isSearchState, setIsSearchState] = useState(false);
+  // const [searchKeyword, setSearchKeyword] = useState('');
+  // const [searchResult, setSearchResult] = useState<TsearchResult>();
+  // const debouncedKeyword = useDebounce(searchKeyword, 500);
 
   //검색시 실행되는 이펙트 함수
-  useEffect(() => {
-    const createValue = data.bookReview.filter((item) =>
-      item['bookTitle'].includes(debouncedKeyword)
-    );
-    setSearchResult({ resultArray: createValue });
-  }, [data, debouncedKeyword]);
+  // useEffect(() => {
+  //   const createValue = data.bookReview.filter((item) =>
+  //     item['bookTitle'].includes(debouncedKeyword)
+  //   );
+  //   setSearchResult({ resultArray: createValue });
+  // }, [data, debouncedKeyword]);
 
   return (
     <>
@@ -48,7 +59,7 @@ export function MainBookReview() {
           <MainKindToggle />
           <div className="mb-16 px-4">
             <ThinTextForm
-              onChange={handleSearch}
+              // onChange={handleSearch}
               type="search"
               searchIcon
               placeholder="책 제목을 입력해주세요"
@@ -57,7 +68,7 @@ export function MainBookReview() {
               검색
             </ThinTextForm>
             <ul className="py-2">
-              {isSearchState
+              {/* {isSearchState
                 ? searchResult?.resultArray.map(
                     ({
                       id,
@@ -95,7 +106,8 @@ export function MainBookReview() {
                       }
                     }
                   )
-                : data.bookReview.map(
+                :  */}
+                {bookReviewList.map(
                     ({
                       id,
                       title,

@@ -8,7 +8,6 @@ export const bookReviewQueryOption = (perPage: number, loaderFn: any) => {
     initialData: loaderFn,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage', lastPage, 'allPages', allPages);
       return lastPage.page < lastPage.totalPages ? allPages.length + 1 : null;
     },
   });
