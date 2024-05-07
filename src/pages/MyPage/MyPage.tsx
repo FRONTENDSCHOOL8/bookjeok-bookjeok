@@ -29,20 +29,7 @@ type Texpand = {
   participantSocialing?: SocialingResponse[];
   createSocialing?: SocialingResponse[];
 };
-type Fetch = UsersResponse<Texpand>;
-/*
 
-1. userInfo에 있는 createSocialing, participantSocialing 
-  배열에 있는 모임 id를 어떻게 가져올까...
-  그냥 confirmUser, createUser에 사용자 id 있음 다 가져오고 
-  렌더링할때 creteSocialing에 모임 id가 있음 만든모임에 두고 confirm user에 있으면 참여한 모임으로 렌더링하구 
-2. 로그아웃 기능 구현   
-  useUserInfoStore에서 clearUserInfo
-3. 프로필 사진 수정 기능 구현
-4. GNB 고정
-5. 독후감 
-6. 로그아웃 버튼 클릭시 ->모달) 진짜?? 진짜 로그아웃할거야?? -> 웅 -> 로그아웃
-*/
 Collections;
 export function MyPage() {
   const { userInfo, clearUserInfo } = useUserInfoStore((state) => state);
@@ -88,7 +75,7 @@ export function MyPage() {
           <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
             <RoundImage
               size="xlg"
-              src={fetchAllUserInfo && getPbImgs(fetchAllUserInfo)}
+              src={getPbImgs(fetchAllUserInfo) || ''}
             ></RoundImage>
             <p>{userInfo!.nickname}</p>
           </div>

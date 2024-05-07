@@ -1,12 +1,14 @@
-import { useDebounce } from '@/hooks';
 import { getDocumentTitle } from '@/utils';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from '@/hooks';
-import { NomalTitle, ThinTextForm } from '@/components/Atoms';
-import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
-import { BookReviewResponse } from '@/types/pocketbase-types';
 import { Texpand } from '@/pages/MainBookReview';
+import { useDebounce, useLoaderData } from '@/hooks';
+import { bookReviewQueryOption } from './queryOptions';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { NomalTitle, ThinTextForm } from '@/components/Atoms';
+import { BookReviewResponse } from '@/types/pocketbase-types';
+import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -15,8 +17,21 @@ interface TsearchResult {
 }
 
 export function MainBookReview() {
+  const [ref, inView] = useInView();
+
   const data = useLoaderData<Tloader>();
-  console.log(data);
+
+  const { data: bookReviewData, fetchNextPage } = useInfiniteQuery({
+    ...bookReviewQueryOption(10, data),
+  });
+
+  const bookReviewList = bookReviewData
+    ? bookReviewData.pages.flatMap((page) => page.items)
+    : [];
+
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  });
 
   // 검색창 이벤트 함수
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +46,7 @@ export function MainBookReview() {
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    const createValue = data.bookReview.filter((item) =>
+    const createValue = bookReviewList.filter((item) =>
       item['bookTitle'].includes(debouncedKeyword)
     );
     setSearchResult({ resultArray: createValue });
@@ -95,7 +110,7 @@ export function MainBookReview() {
                       }
                     }
                   )
-                : data.bookReview.map(
+                : bookReviewList.map(
                     ({
                       id,
                       title,
@@ -132,6 +147,7 @@ export function MainBookReview() {
                       }
                     }
                   )}
+              <li role="none" ref={ref}></li>
             </ul>
           </div>
         </main>
