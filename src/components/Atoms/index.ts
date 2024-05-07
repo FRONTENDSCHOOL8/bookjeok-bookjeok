@@ -1,4 +1,6 @@
+export { default as CommentLikeButton } from '@/components/Atoms/CommentLikeButton/CommentLikeButton.tsx';
 export { default as OutlineButton } from '@/components/Atoms/Buttons/OutlineButton/OutlineButton.tsx';
+export { default as CommentNickname } from '@/components/Atoms/CommentNickname/CommentNickname.tsx';
 export { default as AccordionChidren1 } from '@/components/Atoms/Accordion/AccordionChildren1.tsx';
 export { default as ThinTextForm } from '@/components/Atoms/Inputs/ThinTextForm/ThinTextForm.tsx';
 export { default as CheckboxForm } from '@/components/Atoms/Inputs/CheckboxForm/CheckboxForm.tsx';
@@ -10,6 +12,7 @@ export { default as MainButton } from '@/components/Atoms/Buttons/MainButton/Mai
 export { default as ImageForm } from '@/components/Atoms/Inputs/ImageForm/ImageForm.tsx';
 export { default as RadioForm } from '@/components/Atoms/Inputs/RadioForm/RadioForm.tsx';
 export { default as GenreButton } from '@/components/Atoms/GenreButton/GenreButton.tsx';
+export { default as CommentText } from '@/components/Atoms/CommentText/CommentText.tsx';
 export { default as Textarea } from '@/components/Atoms/Inputs/Textarea/Textarea.tsx';
 export { default as TextForm } from '@/components/Atoms/Inputs/TextForm/TextForm.tsx';
 export { default as RoundImage } from '@/components/Atoms/RoundImage/RoundImage.tsx';
