@@ -1,6 +1,7 @@
 import pb from '@/api/pocketbase';
 import { queryClient } from '@/client/queryClient';
 import { ChatTextarea, MessageBubble, NomalTitle } from '@/components/Atoms';
+import ChatDate from '@/components/Atoms/ChatDate/ChatDate';
 import { useLoaderData } from '@/hooks';
 import { FetchChatRoom, Texpand } from '@/pages/Chatting/ChatRoom';
 import useUserInfoStore from '@/store/useUserInfoStore';
@@ -11,7 +12,13 @@ import {
 } from '@/types/pocketbase-types';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  FormEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
@@ -57,6 +64,7 @@ export const ChatRoom = () => {
     initialData: chattingRoom,
   });
   const { expand, title, message } = chattingRoomData;
+  const expandMessage = chattingRoomData?.expand?.message;
 
   const chattingListRef = useRef<HTMLDivElement>(null);
   // console.log(chattingListRef.current);
@@ -181,7 +189,9 @@ export const ChatRoom = () => {
       await mutateMessage.mutateAsync(newMessage as MessageResponse);
     }
   };
-
+  const calcToCompareDay = (date: string) => {
+    return date.slice(0, 10);
+  };
   return (
     <>
       <Helmet>
@@ -202,13 +212,26 @@ export const ChatRoom = () => {
               className="flex flex-1 flex-col overflow-y-auto bg-bjgray-50 px-4"
             >
               <ul className="mt-auto *:py-[9px]">
-                {expand?.message?.map(
-                  ({ id, text, created, expand }, index) => {
-                    if (expand) {
-                      const { sendUser } = expand;
-                      return (
+                {expandMessage?.map((i, index) => {
+                  const { id, text, created, expand } = i;
+                  if (expand) {
+                    const { sendUser } = expand;
+
+                    const isNewDate =
+                      index === 0 ||
+                      (index > 0 &&
+                        calcToCompareDay(i.created) !==
+                          calcToCompareDay(expandMessage[index - 1].created));
+
+                    return (
+                      <React.Fragment key={id ? id : index}>
+                        {isNewDate ? (
+                          <ChatDate thisDay={new Date(created)} />
+                        ) : (
+                          ''
+                        )}
                         <MessageBubble
-                          key={id ? id : index}
+                          // key={}
                           align={
                             sendUser.id === userInfo!.id ? 'right' : 'left'
                           }
@@ -219,10 +242,10 @@ export const ChatRoom = () => {
                         >
                           {text}
                         </MessageBubble>
-                      );
-                    }
+                      </React.Fragment>
+                    );
                   }
-                )}
+                })}
               </ul>
             </div>
             <form

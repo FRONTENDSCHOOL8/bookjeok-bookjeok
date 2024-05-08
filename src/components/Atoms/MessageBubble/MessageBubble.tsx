@@ -25,7 +25,7 @@ const MessageBubble = ({
   return (
     <>
       <li className={`${messageBubbleStyle[align]} group`}>
-        <div className="flex flex-row items-center gap-4 group-[.group-right]:flex-row-reverse group-[.group-right]:text-right">
+        <div className="flex flex-row items-center gap-2 group-[.group-right]:flex-row-reverse group-[.group-right]:text-right">
           <div className="self-start pt-3">
             <RoundImage src={src} alt={alt} size="md"></RoundImage>
           </div>
