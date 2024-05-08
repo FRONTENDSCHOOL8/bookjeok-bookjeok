@@ -9,6 +9,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
+import { queryClient } from '@/client/queryClient';
+import { fetchAllBookReview } from '@/pages/MainBookReview/fetchBookReview';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -19,10 +21,13 @@ interface TsearchResult {
 export function MainBookReview() {
   const [ref, inView] = useInView();
 
-  const data = useLoaderData<Tloader>();
-
-  const { data: bookReviewData, fetchNextPage } = useInfiniteQuery({
-    ...bookReviewQueryOption(10, data),
+  const cachedData = useLoaderData<Tloader>();
+  const {
+    data: bookReviewData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    ...bookReviewQueryOption(10, cachedData),
   });
 
   const bookReviewList = bookReviewData
@@ -30,7 +35,9 @@ export function MainBookReview() {
     : [];
 
   useEffect(() => {
-    if (inView) fetchNextPage();
+    if (inView) {
+      fetchNextPage();
+    }
   });
 
   // 검색창 이벤트 함수
@@ -46,11 +53,27 @@ export function MainBookReview() {
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    const createValue = bookReviewList.filter((item) =>
-      item['bookTitle'].includes(debouncedKeyword)
-    );
-    setSearchResult({ resultArray: createValue });
-  }, [data, debouncedKeyword]);
+    //search 상태이며, 전체 데이터가 로딩돼있어야 됨
+    if (isSearchState) {
+      queryClient
+        .fetchQuery({
+          queryKey: ['bookReviewItemAll'],
+          queryFn: fetchAllBookReview,
+        })
+        .then((item) => {
+          console.log(item);
+          const createValue = item.filter((item) =>
+            item['bookTitle'].includes(debouncedKeyword)
+          );
+          setSearchResult({ resultArray: createValue });
+        });
+
+      // const createValue = bookReviewList.filter((item) =>
+      //   item['bookTitle'].includes(debouncedKeyword)
+      // );
+      // setSearchResult({ resultArray: createValue });
+    }
+  }, [cachedData, debouncedKeyword]);
 
   return (
     <>
