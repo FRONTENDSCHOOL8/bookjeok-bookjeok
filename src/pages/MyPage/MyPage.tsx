@@ -1,29 +1,29 @@
+import pb from '@/api/pocketbase';
 import {
   Accordion,
-  NomalTitle,
-  MainButton,
-  RoundImage,
   BlankContents,
+  MainButton,
+  NomalTitle,
+  RoundImage,
 } from '@/components/Atoms';
-import { useState } from 'react';
-import pb from '@/api/pocketbase';
-import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
 import {
+  BookReviewList,
+  ButtonModalForManageMent,
   ClubList,
   GNB,
-  ButtonModalForManageMent,
-  BookReviewList,
 } from '@/components/Molecules';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
 import {
   BookReviewResponse,
-  UsersResponse,
-  SocialingResponse,
   Collections,
+  SocialingResponse,
+  UsersResponse,
 } from '@/types/pocketbase-types';
+import { convertTime, getDocumentTitle, getPbImgs } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 type Texpand = {
   participantSocialing?: SocialingResponse[];
@@ -107,7 +107,7 @@ export function MyPage() {
                         key={item.id}
                         id={item.id}
                         title={item.title}
-                        schedule={calcDay(item.created)}
+                        schedule={convertTime(item.created, 1)}
                         img={getPbImgs(item)}
                       />
                     )
@@ -122,7 +122,7 @@ export function MyPage() {
                       key={item.id}
                       id={item.id}
                       title={item.title}
-                      schedule={calcDay(item.created)}
+                      schedule={convertTime(item.created, 1)}
                       img={getPbImgs(item)}
                     />
                   ))}

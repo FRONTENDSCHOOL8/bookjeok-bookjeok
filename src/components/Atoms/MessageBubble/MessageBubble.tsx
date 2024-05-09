@@ -1,4 +1,5 @@
 import { RoundImage } from '@/components/Atoms';
+import { convertTime } from '@/utils';
 
 type TMessageBubble = {
   align: 'left' | 'right';
@@ -37,9 +38,9 @@ const MessageBubble = ({
               </div>
               <time
                 className="whitespace-nowrap text-b-3-light text-bjgray-500"
-                dateTime={time}
+                dateTime={convertTime(time, 2)}
               >
-                {time}
+                {convertTime(time, 2)}
               </time>
             </div>
           </div>

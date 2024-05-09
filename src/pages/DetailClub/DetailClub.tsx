@@ -4,7 +4,7 @@ import { useLoaderData } from '@/hooks';
 import { Texpand, fetchDetailClub } from '@/pages/DetailClub';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { SocialingResponse } from '@/types/pocketbase-types';
-import { calcDay, getDocumentTitle, getPbImgs } from '@/utils';
+import { convertTime, getDocumentTitle, getPbImgs } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useParams } from 'react-router-dom';
@@ -83,7 +83,7 @@ export function DetailClub() {
               </span>
               <span className="flex items-center">
                 <Svg color="#9e9e9e" size={15} id="calendar" className="mr-1" />
-                {calcDay(dateTime)}
+                {convertTime(dateTime, 1)}
               </span>
               <span className="flex items-center">
                 <Svg color="#9e9e9e" size={15} id="user" className="mr-1" />
