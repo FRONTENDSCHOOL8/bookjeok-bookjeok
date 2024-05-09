@@ -4,25 +4,25 @@ const getDay = (yyyyMMdd: string) => {
   const dateStr = yyyyMMdd.replaceAll('-', '/');
   const dayOfWeek = new Date(dateStr).getDay();
   switch (dayOfWeek) {
-    case 0:
+    case 1:
       return '(월)';
 
-    case 1:
+    case 2:
       return '(화)';
 
-    case 2:
+    case 3:
       return '(수)';
 
-    case 3:
+    case 4:
       return '(목)';
 
-    case 4:
+    case 5:
       return '(금)';
 
-    case 5:
+    case 6:
       return '(토)';
 
-    case 6:
+    case 0:
       return '(일)';
   }
 

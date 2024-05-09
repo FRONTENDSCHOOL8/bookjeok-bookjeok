@@ -225,20 +225,15 @@ export const ChatRoom = () => {
 
                     return (
                       <React.Fragment key={id ? id : index}>
-                        {isNewDate ? (
-                          <ChatDate thisDay={new Date(created)} />
-                        ) : (
-                          ''
-                        )}
+                        {isNewDate ? <ChatDate thisDay={created} /> : ''}
                         <MessageBubble
-                          // key={}
                           align={
                             sendUser.id === userInfo!.id ? 'right' : 'left'
                           }
                           src={getPbImgs(sendUser)}
                           alt={sendUser.nickname}
                           nickname={sendUser.nickname}
-                          time={created.slice(11, 16)}
+                          time={created}
                         >
                           {text}
                         </MessageBubble>

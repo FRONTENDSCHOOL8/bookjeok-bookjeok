@@ -5,7 +5,7 @@ import {
   SocialingResponse,
   UsersResponse,
 } from '@/types/pocketbase-types';
-import { calcDay, updateLike } from '@/utils';
+import { convertTime, updateLike } from '@/utils';
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -85,7 +85,7 @@ const ClubCard = ({
     } else {
       await removeLike.mutateAsync();
     }
-    queryClient.invalidateQueries(['socialing', id]);
+    queryClient.invalidateQueries();
   };
 
   const [likeState, setLikeState] = useState(like);
@@ -122,7 +122,7 @@ const ClubCard = ({
               id="calendar"
               className="mr-[2px] inline-block align-middle"
             />
-            <span className="align-middle">{calcDay(dateTime)}</span>
+            <span className="align-middle">{convertTime(dateTime, 1)}</span>
           </span>
           <div className="flex justify-between">
             <span className="flex items-center text-pretty text-b-3-medium text-bjgray-500">
