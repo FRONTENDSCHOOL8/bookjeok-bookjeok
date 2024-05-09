@@ -10,7 +10,7 @@ import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 import { queryClient } from '@/client/queryClient';
-import { fetchAllBookReview } from '@/pages/MainBookReview/fetchBookReview';
+import { fetchSearchBookReview } from '@/pages/MainBookReview/fetchBookReview';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -35,7 +35,7 @@ export function MainBookReview() {
     : [];
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isSearchState) {
       fetchNextPage();
     }
   });
@@ -49,29 +49,27 @@ export function MainBookReview() {
   const [isSearchState, setIsSearchState] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState<TsearchResult>();
-  const debouncedKeyword = useDebounce(searchKeyword, 500);
+  const debouncedKeyword: string = useDebounce(searchKeyword, 500);
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    //search 상태이며, 전체 데이터가 로딩돼있어야 됨
-    if (isSearchState) {
+    //전체 페이지가 페칭되지 않은 상태에서의 검색
+    if (isSearchState && hasNextPage) {
+      console.log('새로데이터를데려와요');
       queryClient
         .fetchQuery({
-          queryKey: ['bookReviewItemAll'],
-          queryFn: fetchAllBookReview,
+          queryKey: ['bookTitleSearchResults'],
+          queryFn: () => fetchSearchBookReview(debouncedKeyword),
         })
         .then((item) => {
-          console.log(item);
-          const createValue = item.filter((item) =>
-            item['bookTitle'].includes(debouncedKeyword)
-          );
-          setSearchResult({ resultArray: createValue });
+          setSearchResult({ resultArray: item });
         });
-
-      // const createValue = bookReviewList.filter((item) =>
-      //   item['bookTitle'].includes(debouncedKeyword)
-      // );
-      // setSearchResult({ resultArray: createValue });
+    } else if (isSearchState && !hasNextPage) {
+      console.log("캐싱된데이터로검색해요")
+      const createValue = bookReviewList.filter((item) =>
+        item['bookTitle'].includes(debouncedKeyword)
+      );
+      setSearchResult({ resultArray: createValue });
     }
   }, [cachedData, debouncedKeyword]);
 
