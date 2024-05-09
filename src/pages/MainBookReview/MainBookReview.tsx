@@ -2,6 +2,7 @@ import { getDocumentTitle } from '@/utils';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Texpand } from '@/pages/MainBookReview';
+import { queryClient } from '@/client/queryClient';
 import { useDebounce, useLoaderData } from '@/hooks';
 import { bookReviewQueryOption } from './queryOptions';
 import { useInView } from 'react-intersection-observer';
@@ -9,7 +10,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
-import { queryClient } from '@/client/queryClient';
 import { fetchSearchBookReview } from '@/pages/MainBookReview/fetchBookReview';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
@@ -55,7 +55,6 @@ export function MainBookReview() {
   useEffect(() => {
     //전체 페이지가 페칭되지 않은 상태에서의 검색
     if (isSearchState && hasNextPage) {
-      console.log('새로데이터를데려와요');
       queryClient
         .fetchQuery({
           queryKey: ['bookTitleSearchResults'],
@@ -65,7 +64,6 @@ export function MainBookReview() {
           setSearchResult({ resultArray: item });
         });
     } else if (isSearchState && !hasNextPage) {
-      console.log("캐싱된데이터로검색해요")
       const createValue = bookReviewList.filter((item) =>
         item['bookTitle'].includes(debouncedKeyword)
       );
