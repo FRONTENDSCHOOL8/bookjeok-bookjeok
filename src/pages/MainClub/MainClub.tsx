@@ -22,17 +22,13 @@ interface Tloader {
 export function MainClub() {
   const { userInfo, clubData: loadedClubList } = useLoaderData<Tloader>();
   const { state } = useLocation();
-  console.log(state);
-
-  const filters = state?.filters ?? '';
-  const sort = state?.sort;
 
   const {
     data: cachedClubList,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getClubListQueryOption(filters, 10, loadedClubList),
+    ...getClubListQueryOption(state, 10, loadedClubList),
   });
 
   const clubList = cachedClubList

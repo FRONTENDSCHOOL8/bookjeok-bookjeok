@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 const sortType = [
   { id: 'like', title: '좋아요 많은순' },
   { id: '-like', title: '좋아요 적은순' },
-  { id: 'dateTime', title: '최신순' },
-  { id: '-dateTime', title: '과거순' },
+  { id: 'dateTime', title: '과거순' },
+  { id: '-dateTime', title: '미래순' },
 ];
 
 const Sort = () => {
