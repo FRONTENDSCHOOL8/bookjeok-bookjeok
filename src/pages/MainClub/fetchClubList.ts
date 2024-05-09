@@ -1,3 +1,4 @@
+import { NavigateOptions } from 'react-router-dom';
 import {
   GenresResponse,
   UsersResponse,
@@ -12,7 +13,10 @@ export type Texpand = {
 };
 
 export const fetchClubList =
-  (filters: string, perPage: number) => async (pageInfo: any) => {
+  (state: NavigateOptions['state'], perPage: number) =>
+  async (pageInfo: any) => {
+    const { filters, sort }: { filters: string; sort: string } = state;
+
     let filterQuery: string | null = null;
 
     if (filters) {
@@ -25,7 +29,10 @@ export const fetchClubList =
         filterQuery = `genre.title~"${filters}"`;
       }
     }
-
+    let sortType = '-created';
+    if (sort) {
+      sortType = sort;
+    }
     const clubs = await pb
       .collection('socialing')
       .getList<SocialingResponse<Texpand>>(pageInfo.pageParam, perPage, {
@@ -33,7 +40,7 @@ export const fetchClubList =
           'id,title,dateTime,isOffline,collectionId,location,limitPerson,confirmUser,img,expand.genre.title,like, expand.like',
         expand: 'genre,like',
         filter: filterQuery!,
-        sort: '-created',
+        sort: sortType,
       });
 
     const clubItems = clubs.items.map((club) => {

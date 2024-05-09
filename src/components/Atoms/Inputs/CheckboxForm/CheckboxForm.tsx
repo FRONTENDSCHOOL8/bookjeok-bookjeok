@@ -1,6 +1,7 @@
 import { memo } from 'react';
 
 interface CheckboxType {
+  type?: 'checkBox' | 'radio';
   className?: string;
   id: string;
   name?: string;
@@ -11,6 +12,7 @@ interface CheckboxType {
 }
 
 function CheckboxForm({
+  type = 'checkBox',
   className,
   id,
   name,
@@ -33,7 +35,7 @@ function CheckboxForm({
         {children}
       </label>
       <input
-        type="checkbox"
+        type={type}
         id={id}
         name={name}
         value={value}

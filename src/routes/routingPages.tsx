@@ -23,6 +23,7 @@ import {
   ApplicationClub,
   loader as ApplicationLoader,
 } from '@/pages/ApplicationClub';
+import { Sort } from '@/pages/Sort';
 
 const routingPages = [
   {
@@ -39,6 +40,7 @@ const routingPages = [
       const { loader, MainClub } = await import('@/pages/MainClub');
       return { Component: MainClub, loader: loader };
     },
+    children: [{ path: 'sort', element: <Sort /> }],
   },
   {
     path: '/main/club/filter',

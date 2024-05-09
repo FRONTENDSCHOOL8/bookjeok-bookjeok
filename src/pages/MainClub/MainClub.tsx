@@ -13,7 +13,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useInView } from 'react-intersection-observer';
-import { useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 interface Tloader {
   userInfo: UsersResponse<Texpand2>;
@@ -22,14 +22,13 @@ interface Tloader {
 export function MainClub() {
   const { userInfo, clubData: loadedClubList } = useLoaderData<Tloader>();
   const { state } = useLocation();
-  const filters = state?.filters ?? '';
 
   const {
     data: cachedClubList,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getClubListQueryOption(filters, 10, loadedClubList),
+    ...getClubListQueryOption(state, 10, loadedClubList),
   });
 
   const clubList = cachedClubList
@@ -59,6 +58,7 @@ export function MainClub() {
       <Helmet>
         <title>{getDocumentTitle('모임')}</title>
       </Helmet>
+      <Outlet />
       <div className="relative flex min-h-svh w-full flex-col">
         <NomalTitle>북적북적</NomalTitle>
         <MainKindToggle />
@@ -66,7 +66,7 @@ export function MainClub() {
           <MainButton
             size="sm"
             color="secondary"
-            to="/main/club"
+            to="/main/club/sort"
             svgId="direction-vertical"
           >
             정렬
