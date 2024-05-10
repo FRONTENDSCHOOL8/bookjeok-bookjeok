@@ -1,6 +1,7 @@
 import { RoundImage } from '@/components/Atoms';
 import { getCreatedHoursAgo, getPbImgs } from '@/utils';
 import { Link } from 'react-router-dom';
+import parse from 'html-react-parser';
 interface TbookReviewList {
   id: string;
   title: string;
@@ -52,7 +53,7 @@ function BookReviewList({
               {title}
             </p>
             <p className="mt-[2px] line-clamp-2 text-b-2-regular text-bjgray-500">
-              {detail}
+              {parse(detail)}
             </p>
           </div>
           <div className="ml-auto shrink-0">

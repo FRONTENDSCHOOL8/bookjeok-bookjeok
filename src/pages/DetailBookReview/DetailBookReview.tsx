@@ -4,6 +4,8 @@ import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
 import { useLoaderData } from 'react-router-dom';
 import { BookReviewResponse, UsersResponse } from '@/types/pocketbase-types';
+import parse from 'html-react-parser';
+
 type Texpand = {
   writer: UsersResponse;
 };
@@ -45,7 +47,7 @@ export function DetailBookReview() {
                 좋아요 100개
               </div>
               <pre className="my-2 whitespace-pre-wrap text-b-1-light text-bjblack">
-                {detail}
+                {parse(detail)}
               </pre>
               <div className="text-b-2-regular text-bjgray-500">
                 댓글 <span className="font-semibold">100</span>개 모두 보기
