@@ -13,29 +13,23 @@ import {
 } from '@/types/pocketbase-types';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, {
-  FormEvent,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 export const ChatRoom = () => {
-  useLayoutEffect(() => {
-    document.documentElement.style.overflowY = 'hidden';
-    return () => {
-      document.documentElement.style.removeProperty('overflow-y');
-    };
-  });
-
   const { userInfo } = useUserInfoStore();
   const { chattingRoomId } = useParams();
   const chattingRoom = useLoaderData<ChattingRoomResponse<Texpand>>();
-  const [observer, setObserver] = useState(false);
 
+  const [observer, setObserver] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState<number>();
+  const [scrollLength, setScrollLenth] = useState<number>();
+
+  const chattingListRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  //실시간 채팅 감지
   useEffect(() => {
     pb.collection(Collections.ChattingRoom).subscribe<
       ChattingRoomResponse<Texpand>
@@ -58,6 +52,7 @@ export const ChatRoom = () => {
     };
   }, [chattingRoomId, observer, userInfo!.id]);
 
+  // 채팅 렌더링
   const { data: chattingRoomData } = useQuery({
     queryKey: ['chattingRoom', chattingRoomId, observer],
     queryFn: () => FetchChatRoom(chattingRoomId!),
@@ -66,6 +61,7 @@ export const ChatRoom = () => {
   const { expand, title, message } = chattingRoomData;
   const expandMessage = chattingRoomData?.expand?.message;
 
+  // 채팅 업로드
   const mutateMessage = useMutation({
     mutationFn: async (newMessage: MessageResponse) => {
       const addedMessage = await pb
@@ -121,9 +117,15 @@ export const ChatRoom = () => {
     },
   });
 
-  const chattingListRef = useRef<HTMLDivElement>(null);
-  // console.log(chattingListRef.current);
+  // 세로 스크롤바 숨기기
+  useLayoutEffect(() => {
+    document.documentElement.style.overflowY = 'hidden';
+    return () => {
+      document.documentElement.style.removeProperty('overflow-y');
+    };
+  });
 
+  // 초기 스크롤 최하단으로 렌더링
   useLayoutEffect(() => {
     if (chattingListRef.current) {
       chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
@@ -131,6 +133,23 @@ export const ChatRoom = () => {
     }
   }, [message.length, observer, chattingRoomData]);
 
+  // 스크롤 초기넓이 지정
+  useEffect(() => {
+    setScrollLenth(chattingListRef.current?.scrollTop);
+  }, []);
+
+  // 스크롤 이동위치 지정
+  useEffect(() => {
+    const onScroll = () => {
+      setScrollPosition(chattingListRef.current?.scrollTop);
+    };
+    chattingListRef.current?.addEventListener('scroll', onScroll);
+    return () => {
+      chattingListRef.current?.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
+  // 스크롤 최하단 이동버튼
   const handleDownButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (chattingListRef.current) {
@@ -138,9 +157,40 @@ export const ChatRoom = () => {
     }
   };
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const formRef = useRef<HTMLFormElement | null>(null);
+  // textarea 크기 조절
+  useEffect(() => {
+    const { current: textarea } = textareaRef;
+    if (textarea) {
+      const handleInput = () => {
+        textarea.style.height = 'auto'; // 높이 초기화
+        textarea.style.height = textarea.scrollHeight + 'px'; // 스크롤 높이에 맞춰 높이 설정
+      };
 
+      textarea.addEventListener('input', handleInput);
+      return () => textarea.removeEventListener('input', handleInput);
+    }
+  }, []);
+
+  // 보내기 버튼 핸들러
+  const handleSendButton = async (
+    e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
+  ) => {
+    if (!(e instanceof KeyboardEvent)) {
+      e.preventDefault();
+    }
+
+    const sendUser = expand?.users.find((u) => u.id === userInfo!.id);
+    const newMessage = {
+      text: textareaRef.current?.value,
+      chattingRoom: chattingRoomId,
+      sendUser: userInfo!.id,
+      expand: { sendUser: sendUser },
+    };
+
+    await mutateMessage.mutateAsync(newMessage as MessageResponse);
+  };
+
+  // 보내기 버튼 키보드로 작동
   useEffect(() => {
     const { current: textarea } = textareaRef;
 
@@ -155,45 +205,20 @@ export const ChatRoom = () => {
       if (isPressedEnterKey && !isPressedShiftKey) {
         // console.log('Enter만 눌렀을 때');
         e.preventDefault();
-        if (!textarea!.value) {
+        if (!textarea?.value) {
           return;
         }
-        handleSendMessage(e);
+        handleSendButton(e);
       }
     };
-    if (textarea) {
-      textarea.addEventListener('keydown', handleKeydown);
-    }
+
+    textarea?.addEventListener('keydown', handleKeydown);
 
     return () => {
       textarea?.removeEventListener('keydown', handleKeydown);
     };
   }, []);
 
-  const handleSendMessage = async (
-    e: FormEvent<HTMLFormElement> | KeyboardEvent
-  ) => {
-    e.preventDefault();
-    if (formRef.current) {
-      const formData = Object.fromEntries(
-        new FormData(formRef.current).entries()
-      );
-
-      const text = formData.text as string;
-      const sendUser = expand?.users.find((u) => u.id === userInfo!.id);
-      const newMessage = {
-        text: text,
-        chattingRoom: chattingRoomId,
-        sendUser: userInfo!.id,
-        expand: { sendUser: sendUser },
-      };
-
-      await mutateMessage.mutateAsync(newMessage as MessageResponse);
-    }
-  };
-  const calcToCompareDay = (date: string) => {
-    return date.slice(0, 10);
-  };
   return (
     <>
       <Helmet>
@@ -222,8 +247,8 @@ export const ChatRoom = () => {
                     const isNewDate =
                       index === 0 ||
                       (index > 0 &&
-                        calcToCompareDay(i.created) !==
-                          calcToCompareDay(expandMessage[index - 1].created));
+                        i.created.slice(0, 10) !==
+                          expandMessage[index - 1].created.slice(0, 10));
 
                     return (
                       <React.Fragment key={id ? id : index}>
@@ -244,25 +269,23 @@ export const ChatRoom = () => {
                   }
                 })}
               </ul>
-              <DownButton
-                onClick={handleDownButton}
-                className="absolute bottom-20 right-4 opacity-85"
-              />
+              {scrollPosition! < scrollLength! * 0.8 ? (
+                <DownButton
+                  onClick={handleDownButton}
+                  className="absolute bottom-20 right-4 opacity-85"
+                />
+              ) : null}
             </div>
-            <form
-              onSubmit={handleSendMessage}
-              id="form"
-              ref={formRef}
-              className="mt-auto px-4 py-3"
-            >
+            <div className="mt-auto px-4 py-3">
               <ChatTextarea
                 label="메세지 입력창"
                 forwardRef={textareaRef}
+                onClick={handleSendButton}
                 id="text"
                 name="text"
                 placeholder="메세지를 입력하세요."
               />
-            </form>
+            </div>
           </div>
         </main>
       </div>
