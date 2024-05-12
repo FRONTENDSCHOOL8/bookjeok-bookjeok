@@ -1,6 +1,7 @@
 import pb from '@/api/pocketbase';
 import { queryClient } from '@/client/queryClient';
 import { ChatTextarea, MessageBubble, NomalTitle } from '@/components/Atoms';
+import DownButton from '@/components/Atoms/Buttons/DownButton/DownButton';
 import ChatDate from '@/components/Atoms/ChatDate/ChatDate';
 import { useLoaderData } from '@/hooks';
 import { FetchChatRoom, Texpand } from '@/pages/Chatting/ChatRoom';
@@ -33,7 +34,6 @@ export const ChatRoom = () => {
   const { userInfo } = useUserInfoStore();
   const { chattingRoomId } = useParams();
   const chattingRoom = useLoaderData<ChattingRoomResponse<Texpand>>();
-
   const [observer, setObserver] = useState(false);
 
   useEffect(() => {
@@ -65,16 +65,6 @@ export const ChatRoom = () => {
   });
   const { expand, title, message } = chattingRoomData;
   const expandMessage = chattingRoomData?.expand?.message;
-
-  const chattingListRef = useRef<HTMLDivElement>(null);
-  // console.log(chattingListRef.current);
-
-  useLayoutEffect(() => {
-    if (chattingListRef.current) {
-      chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
-      // console.log('실행');
-    }
-  }, [message.length, observer, chattingRoomData]);
 
   const mutateMessage = useMutation({
     mutationFn: async (newMessage: MessageResponse) => {
@@ -125,12 +115,28 @@ export const ChatRoom = () => {
       );
     },
     onSettled: () => {
-      // console.log('서버에 채팅 데이터 업데이트 성공');
       queryClient.invalidateQueries({
         queryKey: ['chattingRoom', chattingRoomId],
       });
     },
   });
+
+  const chattingListRef = useRef<HTMLDivElement>(null);
+  // console.log(chattingListRef.current);
+
+  useLayoutEffect(() => {
+    if (chattingListRef.current) {
+      chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
+      // console.log('실행');
+    }
+  }, [message.length, observer, chattingRoomData]);
+
+  const handleDownButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (chattingListRef.current) {
+      chattingListRef.current.scrollTop = chattingListRef.current.scrollHeight;
+    }
+  };
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -172,7 +178,7 @@ export const ChatRoom = () => {
       const formData = Object.fromEntries(
         new FormData(formRef.current).entries()
       );
-      // const newMessage = Object.fromEntries(formData.entries());
+
       const text = formData.text as string;
       const sendUser = expand?.users.find((u) => u.id === userInfo!.id);
       const newMessage = {
@@ -181,10 +187,6 @@ export const ChatRoom = () => {
         sendUser: userInfo!.id,
         expand: { sendUser: sendUser },
       };
-      // newMessage.sendUser = userInfo.id;
-      // newMessage.chattingRoom = chattingRoomId!;
-      // newMessage.expand = {};
-      // newMessage.expand.sendUser = sendUser;
 
       await mutateMessage.mutateAsync(newMessage as MessageResponse);
     }
@@ -206,10 +208,10 @@ export const ChatRoom = () => {
           {title}
         </NomalTitle>
         <main className="flex h-[calc(100svh-56px)] flex-col">
-          <div className="flex min-h-full flex-col">
+          <div className="relative flex min-h-full flex-col">
             <div
               ref={chattingListRef}
-              className="flex flex-1 flex-col overflow-y-auto bg-bjgray-50 px-4"
+              className=" flex flex-1 flex-col overflow-y-auto bg-bjgray-50 px-4"
             >
               <ul className="mt-auto *:py-[9px]">
                 {expandMessage?.map((i, index) => {
@@ -242,6 +244,10 @@ export const ChatRoom = () => {
                   }
                 })}
               </ul>
+              <DownButton
+                onClick={handleDownButton}
+                className="absolute bottom-20 right-4 opacity-85"
+              />
             </div>
             <form
               onSubmit={handleSendMessage}
@@ -249,17 +255,6 @@ export const ChatRoom = () => {
               ref={formRef}
               className="mt-auto px-4 py-3"
             >
-              {/* <ThinTextForm
-                  className=""
-                  onSubmit={handleSendMessage}
-                  type="text"
-                  placeholder="메세지를 입력하세요."
-                  sendButton
-                  id="text"
-                  name="text"
-                >
-                  채팅 메세지
-                </ThinTextForm> */}
               <ChatTextarea
                 label="메세지 입력창"
                 forwardRef={textareaRef}
