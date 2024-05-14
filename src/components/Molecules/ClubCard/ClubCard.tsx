@@ -1,12 +1,14 @@
+import { queryClient } from '@/client/queryClient';
 import { Badge, LikeButton, Svg } from '@/components/Atoms';
-import { calcDay } from '@/utils';
-import { Link } from 'react-router-dom';
 import {
-  SocialingResponse,
   GenresResponse,
+  SocialingResponse,
   UsersResponse,
 } from '@/types/pocketbase-types';
-import { memo } from 'react';
+import { convertTime, updateLike } from '@/utils';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { memo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type Texpand = {
   genre: GenresResponse;
@@ -15,11 +17,9 @@ type Texpand = {
 
 interface ClubCardProps {
   clubInfo: SocialingResponse<Texpand>;
-  handleLike: (
-    id: string
-  ) => (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
-  userInfo: any;
+  userInfo: UsersResponse | null;
 }
+useInfiniteQuery;
 
 const ClubCard = ({
   clubInfo: {
@@ -34,9 +34,61 @@ const ClubCard = ({
     confirmUser,
     like,
   },
-  handleLike,
   userInfo,
 }: ClubCardProps) => {
+  const addedLikeListForSocialing = [...like, userInfo!.id];
+  const removedLikeListForSocialing = like.filter((i) => i !== userInfo?.id);
+  const addedLikeListForUser = [...userInfo!.like, id];
+  const removedLikeListForUser = userInfo?.like.filter((i) => i !== id);
+
+  const addLike = useMutation({
+    mutationFn: async () => {
+      await Promise.all([
+        updateLike('socialing', id, removedLikeListForSocialing),
+        updateLike('users', userInfo!.id, removedLikeListForUser),
+      ]);
+    },
+    onMutate: () => {
+      const prevLike = likeState;
+      setLikeState(removedLikeListForSocialing);
+      return { prevLike };
+    },
+    onError: (error, variable, context) => {
+      setLikeState(context!.prevLike);
+      console.error(error);
+    },
+  });
+
+  const removeLike = useMutation({
+    mutationFn: async () => {
+      await Promise.all([
+        updateLike('socialing', id, addedLikeListForSocialing),
+        updateLike('users', userInfo!.id, addedLikeListForUser),
+      ]);
+    },
+    onMutate: () => {
+      const prevLike = likeState;
+      setLikeState(addedLikeListForSocialing);
+      return { prevLike, id };
+    },
+    onError: (error, variables, context) => {
+      setLikeState(context!.prevLike);
+      console.error(error);
+    },
+  });
+
+  const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (like.includes(userInfo!.id)) {
+      await addLike.mutateAsync();
+    } else {
+      await removeLike.mutateAsync();
+    }
+    queryClient.invalidateQueries();
+  };
+
+  const [likeState, setLikeState] = useState(like);
   return (
     <li key={id}>
       <figure className="relative mx-auto w-full">
@@ -53,7 +105,7 @@ const ClubCard = ({
         <LikeButton
           onClick={handleLike}
           id={id}
-          active={like.includes(userInfo.id)}
+          active={likeState.includes(userInfo!.id)}
         />
       </figure>
       <Link to={`/club/${id}`} aria-label={`${title}`}>
@@ -70,7 +122,7 @@ const ClubCard = ({
               id="calendar"
               className="mr-[2px] inline-block align-middle"
             />
-            <span className="align-middle">{calcDay(dateTime)}</span>
+            <span className="align-middle">{convertTime(dateTime, 1)}</span>
           </span>
           <div className="flex justify-between">
             <span className="flex items-center text-pretty text-b-3-medium text-bjgray-500">

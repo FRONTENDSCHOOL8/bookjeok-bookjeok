@@ -9,6 +9,7 @@ interface TNomalTitle {
   children: React.ReactNode;
   subText?: string;
   resetButton?: boolean;
+  iconButton?: boolean;
 }
 const NomalTitle = ({
   className,
@@ -17,6 +18,7 @@ const NomalTitle = ({
   children,
   subText,
   resetButton = false,
+  iconButton = false,
 }: TNomalTitle) => {
   const nomalTitleStyle = {
     className:
@@ -55,6 +57,23 @@ const NomalTitle = ({
     );
   }
 
+  let iconButtonElement = null;
+
+  if (iconButton) {
+    iconButtonElement = (
+      <>
+        <div className="flex gap-1 p-4 pl-0">
+          <button type="button" aria-label="댓글 보기">
+            <Svg id="chat"></Svg>
+          </button>
+          <button type="button" aria-label="좋아요">
+            <Svg id="heart-filled" color="#EF5350"></Svg>
+          </button>
+        </div>
+      </>
+    );
+  }
+
   return (
     <header className={`${nomalTitleStyle.className} ${className}`}>
       <div className="basis-[56px]">{backLinkElement}</div>
@@ -65,7 +84,10 @@ const NomalTitle = ({
         <span className="text-b-3-medium text-bjgray-500">{subText}</span>
       </div>
       <div className="basis-[56px]">
-        <span className="whitespace-nowrap">{resetButtonElement}</span>
+        <span className="whitespace-nowrap">
+          {resetButtonElement}
+          {iconButtonElement}
+        </span>
       </div>
     </header>
   );

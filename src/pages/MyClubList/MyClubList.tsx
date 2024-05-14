@@ -1,22 +1,22 @@
+import pb from '@/api/pocketbase';
 import {
+  BlankContents,
   NomalTitle,
   Svg,
   ThinTextForm,
-  BlankContents,
 } from '@/components/Atoms';
-import pb from '@/api/pocketbase';
-import { useDebounce } from '@/hooks';
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
 import { ClubList, GNB } from '@/components/Molecules';
+import { useDebounce } from '@/hooks';
 import useUserInfoStore from '@/store/useUserInfoStore';
-import { getPbImgs, getDocumentTitle, calcDay } from '@/utils';
 import {
   Collections,
-  SocialingResponse,
   SocialingRecord,
+  SocialingResponse,
 } from '@/types/pocketbase-types';
+import { convertTime, getDocumentTitle, getPbImgs } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const INITIAL_QUANTITY = {
   createdClub: 3,
@@ -149,7 +149,7 @@ export function MyClubList() {
                           id={item.id}
                           key={item.id}
                           title={item.title}
-                          schedule={calcDay(item.dateTime)}
+                          schedule={convertTime(item.dateTime, 1)}
                           img={getPbImgs(item)}
                         ></ClubList>
                       ))
@@ -161,7 +161,7 @@ export function MyClubList() {
                             id={item.id}
                             key={item.id}
                             title={item.title}
-                            schedule={calcDay(item.dateTime)}
+                            schedule={convertTime(item.dateTime, 1)}
                             img={getPbImgs(item)}
                           ></ClubList>
                         ))}
@@ -191,7 +191,7 @@ export function MyClubList() {
                           id={item.id}
                           key={item.id}
                           title={item.title}
-                          schedule={calcDay(item.dateTime)}
+                          schedule={convertTime(item.dateTime, 1)}
                           img={getPbImgs(item)}
                         ></ClubList>
                       ))
@@ -203,7 +203,7 @@ export function MyClubList() {
                             id={item.id}
                             key={item.id}
                             title={item.title}
-                            schedule={calcDay(item.dateTime)}
+                            schedule={convertTime(item.dateTime, 1)}
                             img={getPbImgs(item)}
                           ></ClubList>
                         ))}

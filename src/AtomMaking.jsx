@@ -17,7 +17,7 @@ import {
   Textarea,
   ThinTextForm,
 } from '@/components/Atoms';
-import { DobbleButtonModal } from '@/components/Molecules';
+import { Comment, DobbleButtonModal } from '@/components/Molecules';
 
 export default function AtomMaking() {
   return (
@@ -37,7 +37,7 @@ export default function AtomMaking() {
 
       <div className="p-5">
         <details open>
-          <summary>Accordion</summary>
+          <summary className="my-4 text-h-2-semibold">Accordion</summary>
           <div className="pb-5">
             <Accordion
               smallText="신청 후 24시간이 지나면 자동으로 대기가 취소돼요."
@@ -59,14 +59,14 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>Badge</summary>
+          <summary className="my-4 text-h-2-semibold">Badge</summary>
           <div className="pb-5">
             <Badge>뱃지</Badge>
           </div>
         </details>
 
         <details open>
-          <summary>Buttons</summary>
+          <summary className="my-4 text-h-2-semibold">Buttons</summary>
           <div className="pb-5">
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               MainButton
@@ -130,7 +130,7 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>Inputs</summary>
+          <summary className="my-4 text-h-2-semibold">Inputs</summary>
           <div className="pb-5">
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               CheckboxForm
@@ -307,14 +307,14 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>TextBox</summary>
+          <summary className="my-4 text-h-2-semibold">TextBox</summary>
           <div className="pb-5">
             <TextBox>모임에 참석하기 전에 책을 읽어오셔야 돼요 !</TextBox>
           </div>
         </details>
 
         <details open>
-          <summary>MessageBubble</summary>
+          <summary className="my-4 text-h-2-semibold">MessageBubble</summary>
           <div className="pb-5">
             <ul className="*:py-[9px]">
               <MessageBubble
@@ -339,7 +339,7 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>RoundImage</summary>
+          <summary className="my-4 text-h-2-semibold">RoundImage</summary>
           <div className="pb-5">
             <div className="flex flex-row gap-2">
               <RoundImage
@@ -362,7 +362,7 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>Svg</summary>
+          <summary className="my-4 text-h-2-semibold">Svg</summary>
           <div className="pb-5">
             <div className="flex flex-wrap">
               <Svg id="add" />
@@ -432,7 +432,7 @@ export default function AtomMaking() {
         </details>
 
         <details open>
-          <summary>Title</summary>
+          <summary className="my-4 text-h-2-semibold">Title</summary>
           <div className="pb-5">
             <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
               NomalTitle
@@ -449,6 +449,25 @@ export default function AtomMaking() {
               <NomalTitle backLink subText="1 of 3">
                 페이지 제목
               </NomalTitle>
+            </div>
+          </div>
+        </details>
+
+        <details open>
+          <summary className="my-4 text-h-2-semibold">Comment</summary>
+          <div className="pb-5">
+            <h3 className="text-h-3-regular my-4 border-b-[1px] border-bjgray-400 py-2">
+              Comment
+            </h3>
+            <div className="flex flex-col gap-2">
+              <Comment
+                src=""
+                nickName="댓글쓴사람"
+                time="1시간전"
+                text="댓글입니다."
+                active={false}
+                like={10}
+              ></Comment>
             </div>
           </div>
         </details>
