@@ -4,228 +4,33 @@ import {
   TextForm,
   MainButton,
 } from '@/components/Atoms';
-import { useState } from 'react';
-import pb from '@/api/pocketbase';
+
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { Form, useParams } from 'react-router-dom';
-import { useDebounce, useCloseModal } from '@/hooks';
-import useUserInfoStore from '@/store/useUserInfoStore';
+import { Form, Link } from 'react-router-dom';
+
 import { DobbleButtonModal } from '@/components/Molecules';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { UsersResponse } from '@/types/pocketbase-types';
 
-/*
-1. duplicated 닉네임일 경우 하단에 에러메시지
-2. 이미지 / 닉네임만 변경하고자 하면 이전비밀번호,비밀번호,비밀번호 확인 안해도 되는데 
-  비밀번호를 변경하고자 하면 저 세가지 항목들을 다 해야됨 ! 
-  => 이미지/닉네임 변경시 그냥 
-
-*/
-interface Error {
-  code: number;
-  message: string;
-  data: { data: ErrorOb };
-}
-
-interface ErrorOb {
-  img?: {};
-  password?: {};
-  passwordConfirm?: {};
-}
-
-const error = {
-  'Missing or invalid old password.': '기존 비밀번호를 확인해주세요.',
-  'The length must be between 8 and 72.':
-    '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요',
-  'Cannot be blank.': '비밀번호에 해당하는 입력창은 모두 입력해주세요.',
-  "Values don't match.": '비밀번호가 일치하지 않습니다.',
-  validation_file_size_limit: '지원하지 않는 이미지 사이즈 입니다.',
-};
-
-interface EditForm {
-  img?: File | undefined;
-  nickname?: string;
-  password?: string;
-  passwordConfirm?: string;
-}
-
-interface HandleType {
-  (e: React.ChangeEvent<HTMLFormElement>): void;
-}
-interface ErrorTT {
-  title:
-    | 'Missing or invalid old password.'
-    | 'The length must be between 8 and 72.'
-    | 'Cannot be blank.'
-    | "Values don't match."
-    | 'validation_file_size_limit';
-}
 export function EditProfile() {
-  const { userId } = useParams();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [errorContents, setErrorContents] = useState<ErrorTT>();
-  const [editUserInfo, setEditUserInfo] = useState<EditForm>();
-  const debouncedData = useDebounce(editUserInfo, 700);
-  const { setUserInfo } = useUserInfoStore((state) => state);
-
-  useCloseModal(isModalOpen, () => {
-    setIsModalOpen(false);
-  });
-
-  //이미지 지우는법
-  const handleReviewImage = {
-    remove: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-      e.preventDefault();
-      setEditUserInfo({ ...setEditUserInfo, img: undefined });
-    },
-  };
-
-  //중복 닉네임 확인
-  const { data: hasDuplicatedNickname } = useQuery({
-    queryFn: async () => {
-      const fetchedData = await pb
-        .collection('users')
-        .getList<UsersResponse>(1, 1, {
-          filter: `nickname = "${debouncedData.nickname}"`,
-        });
-      return fetchedData.items;
-    },
-    queryKey: ['nickname', debouncedData.nickname],
-    //최초실행 방지
-    enabled: !!debouncedData.nickname,
-  });
-
-  // 수정 실행하는 mutation 함수
-  const { mutateAsync: updateUsers, isSuccess } = useMutation({
-    mutationFn: async () => {
-      const userData = await pb
-        .collection('users')
-        .update(`${userId}`, editUserInfo);
-      return userData;
-    },
-    onSuccess: (userData) => {
-      setUserInfo(userData);
-      setIsModalOpen(true);
-    },
-    onError: (error: Error) => {
-      if (Object.keys(error.data.data)[0] === 'img') {
-        setErrorContents({ title: Object.values(error.data.data)[0].code });
-      } else {
-        setErrorContents({ title: Object.values(error.data.data)[0].message });
-      }
-      setIsModalOpen(true);
-    },
-  });
-
-  const handleEditForm: HandleType = (e) => {
-    const target = e.target.closest('input');
-    console.log(target);
-    if (!target) return;
-    if (target.name === 'img' && target.files) {
-      setEditUserInfo({ ...editUserInfo, img: target.files[0] });
-    } else {
-      setEditUserInfo({ ...editUserInfo, [target.name]: target.value });
-    }
-  };
-
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('프로필 수정')}</title>
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col ">
-        <NomalTitle backLink path="/myPage">
+        <NomalTitle backLink path="myPage">
           프로필 수정
         </NomalTitle>
 
-        <Form className="flex flex-col gap-4 p-4" onChange={handleEditForm}>
-          <ImageForm
-            required={false}
-            id="img"
-            name="img"
-            onClick={handleReviewImage.remove}
-            src={editUserInfo ? editUserInfo.img : null}
-            srOnly="프로필 사진 변경"
-          />
-          <TextForm
-            type="text"
-            id="nickname"
-            name="nickname"
-            description={
-              hasDuplicatedNickname && hasDuplicatedNickname?.length > 0
-                ? '이미 사용 중인 닉네임입니다.'
-                : ''
-            }
-          >
-            닉네임
-          </TextForm>
-          <TextForm
-            type="password"
-            id="oldPassword"
-            name="oldPassword"
-            autoComplete="off"
-          >
-            현재 비밀번호
-          </TextForm>
-          <TextForm
-            type="password"
-            id="password"
-            name="password"
-            autoComplete="off"
-          >
-            변경할 비밀번호
-          </TextForm>
-          <TextForm
-            id="passwordConfirm"
-            type="password"
-            name="passwordConfirm"
-            autoComplete="off"
-          >
-            비밀번호 확인
-          </TextForm>
-        </Form>
-        <div className="mt-auto p-4">
-          <MainButton
-            className="mt-auto"
-            as="button"
-            color={
-              editUserInfo && hasDuplicatedNickname?.length == 0
-                ? 'primary'
-                : 'secondary'
-            }
-            disabled={
-              !editUserInfo ||
-              (hasDuplicatedNickname && hasDuplicatedNickname.length > 0)
-            }
-            onClick={async () => {
-              await updateUsers();
-            }}
-          >
-            저장
-          </MainButton>{' '}
-          {isSuccess ? (
-            <DobbleButtonModal
-              svgId="logo"
-              title="변경성공 ! "
-              open={isModalOpen}
-              closeButton
-              onClick={() => setIsModalOpen(false)}
-              primaryButtonText="홈으로"
-              primaryButtonPath={'/main/club'}
-              secondaryButtonText="마이페이지로"
-              secondaryButtonPath={'/myPage'}
-            ></DobbleButtonModal>
-          ) : (
-            <DobbleButtonModal
-              svgId="alert"
-              open={isModalOpen}
-              closeButton
-              onClick={() => setIsModalOpen(false)}
-              title={errorContents ? error[`${errorContents.title}`] : ''}
-            ></DobbleButtonModal>
-          )}
-        </div>
+        <ul className="flex flex-col justify-between gap-4 pt-4">
+          <li className="my-auto border-b-2 border-solid pb-4">
+            <Link to="">회원정보 수정하기</Link>
+          </li>
+
+          <li className="my-auto border-b-2 border-solid pb-4">
+            <Link to="">비밀번호 변경하기</Link>
+          </li>
+        </ul>
       </div>
     </>
   );
