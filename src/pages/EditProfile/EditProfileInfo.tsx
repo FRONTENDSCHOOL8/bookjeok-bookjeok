@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce, useCloseModal } from '@/hooks';
 import { UsersResponse } from '@/types/pocketbase-types';
+import { DobbleButtonModal } from '@/components/Molecules';
 
 interface EditUserInfo {
   img?: File | undefined;
@@ -25,6 +26,7 @@ interface HandleType {
 export function EditProfileInfo() {
   const [userInfo, setUserInfo] = useState<EditUserInfo>();
   const debouncedData = useDebounce(userInfo, 700);
+  //닉네임 중복 확인
   const { data: hasDuplicatedNickname } = useQuery({
     queryFn: async () => {
       const fetchedData = await pb
@@ -35,9 +37,10 @@ export function EditProfileInfo() {
       return fetchedData.items;
     },
     queryKey: ['nickname', debouncedData.nickname],
-    //최초실행 방지
     enabled: !!debouncedData.nickname,
   });
+
+  // 회원정보 변경 이벤트 함수
   const handleEditForm: HandleType = (e) => {
     const target = e.target.closest('input');
     console.log(target);
@@ -47,6 +50,14 @@ export function EditProfileInfo() {
     } else {
       setUserInfo({ ...userInfo, [target.name]: target.value });
     }
+  };
+
+  //이미지 삭제 버튼 클릭이벤트
+  const handleReviewImage = {
+    remove: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+      e.preventDefault();
+      setUserInfo({ ...setUserInfo, img: undefined });
+    },
   };
   return (
     <>
@@ -63,8 +74,10 @@ export function EditProfileInfo() {
             id="img"
             name="img"
             srOnly="프로필 사진 변경"
+            src={userInfo ? userInfo.img : null}
+            onClick={handleReviewImage.remove}
           />
-          <TextForm>이메일</TextForm>
+
           <TextForm
             autoComplete="off"
             type="text"
