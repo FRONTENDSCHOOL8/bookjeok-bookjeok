@@ -1,16 +1,19 @@
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 
 function Error404() {
+  const error = useRouteError();
+  console.error(error);
+
   return (
     <>
       <Helmet>
         <title>{getDocumentTitle('404 error')}</title>
       </Helmet>
-      <div className="flex min-h-svh flex-col items-center bg-white pb-5 pt-[56px]">
+      <main className="flex min-h-svh flex-col items-center bg-white pb-5 pt-[56px]">
         <h1 className="flex-grow text-h-1-light text-bjblack">북적북적</h1>
-        <main className="flex flex-grow flex-col items-center gap-2">
+        <div className="flex flex-grow flex-col items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={120}
@@ -54,14 +57,14 @@ function Error404() {
           <span className="text-b-1-regular  text-bjgray-500">
             페이지를 찾을 수 없습니다.
           </span>
-        </main>
+        </div>
         <Link
           className="mx-4 h-[64px] w-[90%] rounded-5xl bg-bjyellow-400 text-center text-b-1-medium leading-[64px] text-black"
           to="/"
         >
           홈으로
         </Link>
-      </div>
+      </main>
     </>
   );
 }

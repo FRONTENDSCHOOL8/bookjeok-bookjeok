@@ -4,7 +4,9 @@ interface LikeButtonProps {
   className?: string;
   active?: boolean;
   id: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  onClick:
+    | ((e: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
+    | undefined;
 }
 
 const LikeButton = ({
