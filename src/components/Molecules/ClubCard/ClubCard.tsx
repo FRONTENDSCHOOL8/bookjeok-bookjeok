@@ -36,11 +36,16 @@ const ClubCard = ({
   },
   userInfo,
 }: ClubCardProps) => {
-  const addedLikeListForSocialing = [...like, userInfo!.id];
-  const removedLikeListForSocialing = like.filter((i) => i !== userInfo?.id);
-  const addedLikeListForUser = [...userInfo!.like, id];
+  const [likeState, setLikeState] = useState<string[] | undefined>(like);
+
+  const addedLikeListForSocialing = userInfo
+    ? [...like, userInfo!.id]
+    : undefined;
+  const removedLikeListForSocialing = userInfo
+    ? like.filter((i) => i !== userInfo?.id)
+    : undefined;
+  const addedLikeListForUser = userInfo ? [...userInfo!.like, id] : undefined;
   const removedLikeListForUser = userInfo?.like.filter((i) => i !== id);
-  const [likeState, setLikeState] = useState(like);
 
   const addLike = useMutation({
     mutationFn: async () => {
@@ -82,7 +87,7 @@ const ClubCard = ({
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (likeState.includes(userInfo!.id)) {
+    if (likeState?.includes(userInfo!.id)) {
       await removeLike.mutateAsync();
     } else {
       await addLike.mutateAsync();
@@ -105,9 +110,9 @@ const ClubCard = ({
           </Badge>
         </Link>
         <LikeButton
-          onClick={handleLike}
+          onClick={userInfo ? handleLike : undefined}
           id={id}
-          active={likeState.includes(userInfo!.id)}
+          active={userInfo ? likeState?.includes(userInfo!.id) : false}
         />
       </figure>
       <Link to={`/club/${id}`} aria-label={`${title}`}>

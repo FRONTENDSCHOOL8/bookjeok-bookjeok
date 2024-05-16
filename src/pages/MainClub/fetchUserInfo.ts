@@ -11,9 +11,11 @@ export type Texpand2 = {
 };
 export const fetchUserInfo = async () => {
   const { userInfo } = useUserInfoStore.getState();
-  const loginUserData = await pb
 
-    .collection(Collections.Users)
-    .getOne<UsersResponse<Texpand2>>(userInfo!.id, { expand: 'like' });
-  return loginUserData;
+  if (userInfo) {
+    const loginUserData = await pb
+      .collection(Collections.Users)
+      .getOne<UsersResponse<Texpand2>>(userInfo!.id, { expand: 'like' });
+    return loginUserData;
+  }
 };
