@@ -24,6 +24,7 @@ import {
   loader as ApplicationLoader,
 } from '@/pages/ApplicationClub';
 import { Sort } from '@/pages/Sort';
+import BookReviewComment from '@/pages/BookReviewComment/BookReviewComment';
 
 const routingPages = [
   {
@@ -63,6 +64,7 @@ const routingPages = [
     element: <MainBookReview />,
     loader: bookReviewListLoader,
   },
+
   {
     path: '/bookReview/:bookreviewId',
     element: (
@@ -71,7 +73,12 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: detailBookReviewloader,
+    children: [
+      { path: 'comments', element: <BookReviewComment /> },
+      // /bookReview/:bookreviewId/comments
+    ],
   },
+
   {
     path: '/login',
     element: <Login />,
