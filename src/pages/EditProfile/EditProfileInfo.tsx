@@ -78,6 +78,9 @@ export function EditProfileInfo() {
       setUserInfo(userData);
       setIsModalOpen(true);
     },
+    onError: () => {
+      setIsModalOpen(true);
+    },
   });
   return (
     <>
@@ -139,7 +142,7 @@ export function EditProfileInfo() {
           open={isModalOpen}
           closeButton
           onClick={() => setIsModalOpen(false)}
-          title="잠시후 다시 이용해 주세요."
+          title="잠시 후 다시 이용해 주세요."
         ></DobbleButtonModal>
       )}
     </>
