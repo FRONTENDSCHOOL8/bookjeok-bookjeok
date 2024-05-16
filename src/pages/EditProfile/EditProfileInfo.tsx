@@ -9,11 +9,11 @@ import pb from '@/api/pocketbase';
 import { Form } from 'react-router-dom';
 import { getDocumentTitle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
 import { useDebounce, useCloseModal } from '@/hooks';
 import { UsersResponse } from '@/types/pocketbase-types';
+import useUserInfoStore from '@/store/useUserInfoStore';
 import { DobbleButtonModal } from '@/components/Molecules';
-
+import { useQuery, useMutation } from '@tanstack/react-query';
 interface EditUserInfo {
   img?: File | undefined;
   nickname?: string;
@@ -24,8 +24,15 @@ interface HandleType {
   (e: React.ChangeEvent<HTMLFormElement>): void;
 }
 export function EditProfileInfo() {
-  const [userInfo, setUserInfo] = useState<EditUserInfo>();
-  const debouncedData = useDebounce(userInfo, 700);
+  const userId = useUserInfoStore((state) => state.userInfo?.id);
+  const setUserInfo = useUserInfoStore((state) => state.setUserInfo);
+  const [editUserInfo, setEditUserInfo] = useState<EditUserInfo>();
+  const debouncedData = useDebounce(editUserInfo, 700);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  useCloseModal(isModalOpen, () => {
+    setIsModalOpen(false);
+  });
+
   //닉네임 중복 확인
   const { data: hasDuplicatedNickname } = useQuery({
     queryFn: async () => {
@@ -43,12 +50,11 @@ export function EditProfileInfo() {
   // 회원정보 변경 이벤트 함수
   const handleEditForm: HandleType = (e) => {
     const target = e.target.closest('input');
-    console.log(target);
     if (!target) return;
     if (target.name === 'img' && target.files) {
-      setUserInfo({ ...userInfo, img: target.files[0] });
+      setEditUserInfo({ ...editUserInfo, img: target.files[0] });
     } else {
-      setUserInfo({ ...userInfo, [target.name]: target.value });
+      setEditUserInfo({ ...editUserInfo, [target.name]: target.value });
     }
   };
 
@@ -56,9 +62,23 @@ export function EditProfileInfo() {
   const handleReviewImage = {
     remove: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
       e.preventDefault();
-      setUserInfo({ ...setUserInfo, img: undefined });
+      setEditUserInfo({ ...setEditUserInfo, img: undefined });
     },
   };
+
+  //수정 실행하는 mutation
+  const { mutateAsync: updateUsers, isSuccess } = useMutation({
+    mutationFn: async () => {
+      const userData = await pb
+        .collection('users')
+        .update(`${userId}`, editUserInfo);
+      return userData;
+    },
+    onSuccess: (userData) => {
+      setUserInfo(userData);
+      setIsModalOpen(true);
+    },
+  });
   return (
     <>
       <Helmet>
@@ -74,7 +94,7 @@ export function EditProfileInfo() {
             id="img"
             name="img"
             srOnly="프로필 사진 변경"
-            src={userInfo ? userInfo.img : null}
+            src={editUserInfo ? editUserInfo.img : null}
             onClick={handleReviewImage.remove}
           />
 
@@ -91,20 +111,37 @@ export function EditProfileInfo() {
           >
             닉네임
           </TextForm>
-          <TextForm type="number" id="number" name="number">
-            휴대폰 번호
-          </TextForm>
-          <TextForm
-            type="password"
-            id="oldPassword"
-            name="oldPassword"
-            autoComplete="off"
-          >
-            비밀번호
-          </TextForm>
         </Form>
-        <MainButton className="mb-4 mt-auto">변경하기</MainButton>
+        <MainButton
+          className="mb-4 mt-auto"
+          onClick={async () => {
+            await updateUsers();
+          }}
+        >
+          변경하기
+        </MainButton>
       </div>
+      {isSuccess ? (
+        <DobbleButtonModal
+          svgId="logo"
+          title="변경성공 ! "
+          open={isModalOpen}
+          closeButton
+          onClick={() => setIsModalOpen(false)}
+          primaryButtonText="홈으로"
+          primaryButtonPath={'/main/club'}
+          secondaryButtonText="마이페이지로"
+          secondaryButtonPath={'/myPage'}
+        ></DobbleButtonModal>
+      ) : (
+        <DobbleButtonModal
+          svgId="alert"
+          open={isModalOpen}
+          closeButton
+          onClick={() => setIsModalOpen(false)}
+          title="잠시후 다시 이용해 주세요."
+        ></DobbleButtonModal>
+      )}
     </>
   );
 }
