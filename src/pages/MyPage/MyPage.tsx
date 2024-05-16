@@ -24,6 +24,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 type Texpand = {
   participantSocialing?: SocialingResponse[];
@@ -150,7 +151,7 @@ export function MyPage() {
                               {item.title}
                             </p>
                             <p className="mt-1 line-clamp-2 text-b-2-regular text-bjgray-500">
-                              {item.detail}
+                              {parse(item.detail)}
                             </p>
                           </div>
                           <div className="ml-auto shrink-0">
