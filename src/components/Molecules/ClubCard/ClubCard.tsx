@@ -40,17 +40,18 @@ const ClubCard = ({
   const removedLikeListForSocialing = like.filter((i) => i !== userInfo?.id);
   const addedLikeListForUser = [...userInfo!.like, id];
   const removedLikeListForUser = userInfo?.like.filter((i) => i !== id);
+  const [likeState, setLikeState] = useState(like);
 
   const addLike = useMutation({
     mutationFn: async () => {
       await Promise.all([
-        updateLike('socialing', id, removedLikeListForSocialing),
-        updateLike('users', userInfo!.id, removedLikeListForUser),
+        updateLike('socialing', id, addedLikeListForSocialing),
+        updateLike('users', userInfo!.id, addedLikeListForUser),
       ]);
     },
     onMutate: () => {
+      setLikeState(addedLikeListForSocialing);
       const prevLike = likeState;
-      setLikeState(removedLikeListForSocialing);
       return { prevLike };
     },
     onError: (error, variable, context) => {
@@ -62,15 +63,16 @@ const ClubCard = ({
   const removeLike = useMutation({
     mutationFn: async () => {
       await Promise.all([
-        updateLike('socialing', id, addedLikeListForSocialing),
-        updateLike('users', userInfo!.id, addedLikeListForUser),
+        updateLike('socialing', id, removedLikeListForSocialing),
+        updateLike('users', userInfo!.id, removedLikeListForUser),
       ]);
     },
     onMutate: () => {
+      setLikeState(removedLikeListForSocialing);
       const prevLike = likeState;
-      setLikeState(addedLikeListForSocialing);
       return { prevLike, id };
     },
+
     onError: (error, variables, context) => {
       setLikeState(context!.prevLike);
       console.error(error);
@@ -80,15 +82,15 @@ const ClubCard = ({
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (like.includes(userInfo!.id)) {
-      await addLike.mutateAsync();
-    } else {
+    if (likeState.includes(userInfo!.id)) {
       await removeLike.mutateAsync();
+    } else {
+      await addLike.mutateAsync();
     }
+
     queryClient.invalidateQueries();
   };
 
-  const [likeState, setLikeState] = useState(like);
   return (
     <li key={id}>
       <figure className="relative mx-auto w-full">

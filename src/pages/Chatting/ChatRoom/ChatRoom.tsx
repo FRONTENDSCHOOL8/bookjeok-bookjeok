@@ -61,7 +61,7 @@ export const ChatRoom = () => {
   const { expand, title, message } = chattingRoomData;
   const expandMessage = chattingRoomData?.expand?.message;
 
-  // 채팅 업로드
+  // 채팅 업데이트
   const mutateMessage = useMutation({
     mutationFn: async (newMessage: MessageResponse) => {
       const addedMessage = await pb
@@ -117,7 +117,7 @@ export const ChatRoom = () => {
     },
   });
 
-  // 세로 스크롤바 숨기기
+  // 윈도우 스크롤바 숨기기
   useLayoutEffect(() => {
     document.documentElement.style.overflowY = 'hidden';
     return () => {
@@ -157,20 +157,6 @@ export const ChatRoom = () => {
     }
   };
 
-  // textarea 크기 조절
-  useEffect(() => {
-    const { current: textarea } = textareaRef;
-    if (textarea) {
-      const handleInput = () => {
-        textarea.style.height = 'auto'; // 높이 초기화
-        textarea.style.height = textarea.scrollHeight + 'px'; // 스크롤 높이에 맞춰 높이 설정
-      };
-
-      textarea.addEventListener('input', handleInput);
-      return () => textarea.removeEventListener('input', handleInput);
-    }
-  }, []);
-
   // 보내기 버튼 핸들러
   const handleSendButton = async (
     e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
@@ -189,35 +175,6 @@ export const ChatRoom = () => {
 
     await mutateMessage.mutateAsync(newMessage as MessageResponse);
   };
-
-  // 보내기 버튼 키보드로 작동
-  useEffect(() => {
-    const { current: textarea } = textareaRef;
-
-    const handleKeydown = (e: KeyboardEvent) => {
-      const isPressedEnterKey = e.key === 'Enter';
-      const isPressedShiftKey = e.shiftKey;
-
-      if (isPressedShiftKey && isPressedEnterKey) {
-        // console.log('Shift + Enter 눌렀을 때 ');
-        textarea!.value += '\n';
-      }
-      if (isPressedEnterKey && !isPressedShiftKey) {
-        // console.log('Enter만 눌렀을 때');
-        e.preventDefault();
-        if (!textarea?.value) {
-          return;
-        }
-        handleSendButton(e);
-      }
-    };
-
-    textarea?.addEventListener('keydown', handleKeydown);
-
-    return () => {
-      textarea?.removeEventListener('keydown', handleKeydown);
-    };
-  }, []);
 
   return (
     <>
