@@ -87,7 +87,7 @@ export function MainClub() {
                 <ClubCard
                   key={clubInfo.id}
                   clubInfo={clubInfo}
-                  userInfo={nowUser}
+                  userInfo={userInfo ?? nowUser}
                 />
               );
             })}

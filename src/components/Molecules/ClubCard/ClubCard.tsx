@@ -36,21 +36,27 @@ const ClubCard = ({
   },
   userInfo,
 }: ClubCardProps) => {
-  const addedLikeListForSocialing = [...like, userInfo!.id];
-  const removedLikeListForSocialing = like.filter((i) => i !== userInfo?.id);
-  const addedLikeListForUser = [...userInfo!.like, id];
+  const [likeState, setLikeState] = useState<string[] | undefined>(like);
+
+  const addedLikeListForSocialing = userInfo
+    ? [...like, userInfo!.id]
+    : undefined;
+  const removedLikeListForSocialing = userInfo
+    ? like.filter((i) => i !== userInfo?.id)
+    : undefined;
+  const addedLikeListForUser = userInfo ? [...userInfo!.like, id] : undefined;
   const removedLikeListForUser = userInfo?.like.filter((i) => i !== id);
 
   const addLike = useMutation({
     mutationFn: async () => {
       await Promise.all([
-        updateLike('socialing', id, removedLikeListForSocialing),
-        updateLike('users', userInfo!.id, removedLikeListForUser),
+        updateLike('socialing', id, addedLikeListForSocialing),
+        updateLike('users', userInfo!.id, addedLikeListForUser),
       ]);
     },
     onMutate: () => {
+      setLikeState(addedLikeListForSocialing);
       const prevLike = likeState;
-      setLikeState(removedLikeListForSocialing);
       return { prevLike };
     },
     onError: (error, variable, context) => {
@@ -62,15 +68,16 @@ const ClubCard = ({
   const removeLike = useMutation({
     mutationFn: async () => {
       await Promise.all([
-        updateLike('socialing', id, addedLikeListForSocialing),
-        updateLike('users', userInfo!.id, addedLikeListForUser),
+        updateLike('socialing', id, removedLikeListForSocialing),
+        updateLike('users', userInfo!.id, removedLikeListForUser),
       ]);
     },
     onMutate: () => {
+      setLikeState(removedLikeListForSocialing);
       const prevLike = likeState;
-      setLikeState(addedLikeListForSocialing);
       return { prevLike, id };
     },
+
     onError: (error, variables, context) => {
       setLikeState(context!.prevLike);
       console.error(error);
@@ -80,15 +87,15 @@ const ClubCard = ({
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (like.includes(userInfo!.id)) {
-      await addLike.mutateAsync();
-    } else {
+    if (likeState?.includes(userInfo!.id)) {
       await removeLike.mutateAsync();
+    } else {
+      await addLike.mutateAsync();
     }
+
     queryClient.invalidateQueries();
   };
 
-  const [likeState, setLikeState] = useState(like);
   return (
     <li key={id}>
       <figure className="relative mx-auto w-full">
@@ -103,9 +110,9 @@ const ClubCard = ({
           </Badge>
         </Link>
         <LikeButton
-          onClick={handleLike}
+          onClick={userInfo ? handleLike : undefined}
           id={id}
-          active={likeState.includes(userInfo!.id)}
+          active={userInfo ? likeState?.includes(userInfo!.id) : false}
         />
       </figure>
       <Link to={`/club/${id}`} aria-label={`${title}`}>

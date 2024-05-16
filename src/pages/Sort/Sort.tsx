@@ -1,4 +1,6 @@
 import { CheckboxForm, MainButton } from '@/components/Atoms';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import { useNavigate } from 'react-router-dom';
 
 const sortType = [
@@ -10,7 +12,6 @@ const sortType = [
 
 const Sort = () => {
   const navigate = useNavigate();
-
   const handleClickBG = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
   ) => {
@@ -23,6 +24,12 @@ const Sort = () => {
     navigate(`/main/club?sort=${id}`, { state: { sort: id } });
   };
 
+  gsap.registerPlugin(useGSAP);
+  useGSAP(() => {
+    const tl = gsap.timeline();
+    tl.from('.modal', { y: '100%' });
+  });
+
   return (
     <>
       <div
@@ -30,7 +37,7 @@ const Sort = () => {
         className="fixed top-0 z-[100] h-svh w-full max-w-[430px] bg-bjblack bg-opacity-90"
       />
       <dialog
-        className="fixed bottom-0 z-[100] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4 "
+        className="modal fixed bottom-0 z-[100] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4 "
         open={true}
       >
         <h2 className="pb-4 pt-[56px] text-h-1-semibold">정렬</h2>

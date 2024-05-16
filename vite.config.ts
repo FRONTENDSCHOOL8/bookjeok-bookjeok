@@ -25,7 +25,18 @@ export default defineConfig({
         jpg: imageminMozjpeg(),
         png: imageminPngQuant(),
         gif: imageminGifSicle(),
-        svg: imageminSvgo(),
+        svg: imageminSvgo({
+          plugins: [
+            {
+              name: 'preset-default',
+              params: {
+                overrides: {
+                  removeViewBox: false,
+                },
+              },
+            },
+          ],
+        }),
       },
       makeWebp: {
         plugins: {
