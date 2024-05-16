@@ -2,7 +2,7 @@ import { NomalTitle, Svg } from '@/components/Atoms';
 import { Avatar, GNB } from '@/components/Molecules';
 import { getDocumentTitle, getPbImgs } from '@/utils';
 import { Helmet } from 'react-helmet-async';
-import { useLoaderData } from 'react-router-dom';
+import { Link, Outlet, useLoaderData } from 'react-router-dom';
 import { BookReviewResponse, UsersResponse } from '@/types/pocketbase-types';
 import parse from 'html-react-parser';
 
@@ -10,7 +10,7 @@ type Texpand = {
   writer: UsersResponse;
 };
 export function DetailBookReview() {
-  const { bookTitle, img, title, detail, expand } =
+  const { id, bookTitle, img, title, detail, expand } =
     useLoaderData() as BookReviewResponse<Texpand>;
   return (
     <>
@@ -49,13 +49,17 @@ export function DetailBookReview() {
               <pre className="my-2 whitespace-pre-wrap text-b-1-light text-bjblack">
                 {parse(detail)}
               </pre>
-              <div className="text-b-2-regular text-bjgray-500">
+              <Link
+                to={`/bookReview/${id}/comments`}
+                className="text-b-2-regular text-bjgray-500"
+              >
                 댓글 <span className="font-semibold">100</span>개 모두 보기
-              </div>
+              </Link>
             </div>
           </section>
         </main>
         <GNB createBookReview className="fixed" />
+        <Outlet />
       </div>
     </>
   );
