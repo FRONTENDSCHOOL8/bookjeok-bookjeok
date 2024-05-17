@@ -88,7 +88,7 @@ export function EditProfileInfo() {
         <title>{getDocumentTitle('회원정보 수정')}</title>
       </Helmet>
       <div className="relative flex min-h-svh w-full flex-col ">
-        <NomalTitle backLink path="/myPage">
+        <NomalTitle backLink path="myPage">
           프로필 수정
         </NomalTitle>
         <Form className="flex flex-col gap-4 p-4" onChange={handleEditForm}>
