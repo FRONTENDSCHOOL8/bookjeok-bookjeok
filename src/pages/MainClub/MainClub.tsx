@@ -3,6 +3,9 @@ import { MainButton, NomalTitle } from '@/components/Atoms';
 import { ClubCard, GNB, MainKindToggle } from '@/components/Molecules';
 import { useLoaderData } from '@/hooks';
 import { Texpand, Texpand2, getClubListQueryOption } from '@/pages/MainClub';
+import useSearchParamsStore, {
+  combineParams,
+} from '@/store/useSearchParamsStore';
 import {
   Collections,
   SocialingResponse,
@@ -10,10 +13,11 @@ import {
 } from '@/types/pocketbase-types';
 import { getDocumentTitle } from '@/utils';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useInView } from 'react-intersection-observer';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import { Sort } from '../Sort';
 
 interface Tloader {
   userInfo: UsersResponse<Texpand2>;
@@ -21,15 +25,27 @@ interface Tloader {
 }
 export function MainClub() {
   const { userInfo, clubData: loadedClubList } = useLoaderData<Tloader>();
-  const { state } = useLocation();
-  console.log(state);
+  const [sortModalState, setSortModalState] = useState(false);
+
+  const navigate = useNavigate();
+  const newSearchParams = useSearchParamsStore(combineParams);
+
+  const handleSubmitButton = () => {
+    navigate(newSearchParams, { replace: true });
+    setSortModalState(false);
+  };
+
+  const [searchParams] = useSearchParams();
+
+  const filters = searchParams.get('filter');
+  const sort = searchParams.get('sort');
 
   const {
     data: cachedClubList,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    ...getClubListQueryOption(state, 10, loadedClubList),
+    ...getClubListQueryOption(filters, sort, 10, loadedClubList),
   });
 
   const clubList = cachedClubList
@@ -54,6 +70,14 @@ export function MainClub() {
     }
   });
 
+  const handleSortModal = () => {
+    if (sortModalState) {
+      setSortModalState(false);
+    } else {
+      setSortModalState(true);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -67,7 +91,7 @@ export function MainClub() {
           <MainButton
             size="sm"
             color="secondary"
-            to="/main/club/sort"
+            onClick={handleSortModal}
             svgId="direction-vertical"
           >
             정렬
@@ -97,6 +121,11 @@ export function MainClub() {
         </main>
         <GNB createClub className="fixed" />
       </div>
+      <Sort
+        handleSortModal={handleSortModal}
+        handleSubmit={handleSubmitButton}
+        isOpen={sortModalState}
+      />
     </>
   );
 }

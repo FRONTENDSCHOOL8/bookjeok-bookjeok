@@ -11,6 +11,7 @@ interface TNomalTitle {
   resetButton?: boolean;
   iconButton?: boolean;
   burgerButton?: boolean;
+  onClickReset?: () => void;
   handleBurger?: (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
   ) => void;
@@ -22,6 +23,7 @@ const NomalTitle = ({
   children,
   subText,
   resetButton = false,
+  onClickReset,
   iconButton = false,
   burgerButton = false,
   handleBurger,
@@ -57,7 +59,11 @@ const NomalTitle = ({
 
   if (resetButton) {
     resetButtonElement = (
-      <button type="reset" className="p-4 text-b-1-medium text-bjblack">
+      <button
+        type="button"
+        onClick={onClickReset}
+        className="p-4 text-b-1-medium text-bjblack"
+      >
         초기화
       </button>
     );

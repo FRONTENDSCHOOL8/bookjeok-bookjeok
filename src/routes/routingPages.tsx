@@ -46,7 +46,6 @@ const routingPages = [
       const { loader, MainClub } = await import('@/pages/MainClub');
       return { Component: MainClub, loader: loader };
     },
-    children: [{ path: 'sort', element: <Sort /> }],
   },
   {
     path: '/main/club/filter',
