@@ -6,9 +6,10 @@ import { fetchUserInfo } from './fetchUserInfo';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const filters = url.searchParams.get('filters') ?? '';
 
-  const queryOptions = getClubListQueryOption(filters, 10, fetchClubList);
+  const filters = url.searchParams.get('filters') ?? '';
+  const sort = url.searchParams.get('sort') ?? '';
+  const queryOptions = getClubListQueryOption(filters, sort, 10, fetchClubList);
 
   let clubData = null;
 

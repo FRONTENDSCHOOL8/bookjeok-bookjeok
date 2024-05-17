@@ -14,3 +14,12 @@ export const fetchBookReview = (perPage: number) => async (pageInfo: any) => {
     });
   return bookReviewData;
 };
+
+export const fetchSearchBookReview = async (keyword: string | object) => {
+  const bookReviewData = await pb
+    .collection('bookReview')
+    .getFullList<
+      BookReviewResponse<Texpand>
+    >({ filter: `bookTitle ~ "${keyword}"`, sort: '-created', expand: 'writer' });
+  return bookReviewData;
+};

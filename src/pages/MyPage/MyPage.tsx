@@ -83,7 +83,7 @@ export function MyPage() {
           <div className="flex gap-4">
             <MainButton
               type="button"
-              to={`/editProfile/${userInfo!.id}`}
+              to="/editProfileMenu"
               size="sm"
               color="secondary"
             >

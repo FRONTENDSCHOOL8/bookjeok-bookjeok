@@ -2,6 +2,7 @@ import { getDocumentTitle } from '@/utils';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Texpand } from '@/pages/MainBookReview';
+import { queryClient } from '@/client/queryClient';
 import { useDebounce, useLoaderData } from '@/hooks';
 import { bookReviewQueryOption } from './queryOptions';
 import { useInView } from 'react-intersection-observer';
@@ -9,6 +10,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
+import { fetchSearchBookReview } from '@/pages/MainBookReview/fetchBookReview';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -19,10 +21,13 @@ interface TsearchResult {
 export function MainBookReview() {
   const [ref, inView] = useInView();
 
-  const data = useLoaderData<Tloader>();
-
-  const { data: bookReviewData, fetchNextPage } = useInfiniteQuery({
-    ...bookReviewQueryOption(10, data),
+  const cachedData = useLoaderData<Tloader>();
+  const {
+    data: bookReviewData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    ...bookReviewQueryOption(10, cachedData),
   });
 
   const bookReviewList = bookReviewData
@@ -30,7 +35,9 @@ export function MainBookReview() {
     : [];
 
   useEffect(() => {
-    if (inView) fetchNextPage();
+    if (inView && !isSearchState) {
+      fetchNextPage();
+    }
   });
 
   // 검색창 이벤트 함수
@@ -42,15 +49,27 @@ export function MainBookReview() {
   const [isSearchState, setIsSearchState] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResult, setSearchResult] = useState<TsearchResult>();
-  const debouncedKeyword = useDebounce(searchKeyword, 500);
+  const debouncedKeyword: string = useDebounce(searchKeyword, 500);
 
   //검색시 실행되는 이펙트 함수
   useEffect(() => {
-    const createValue = bookReviewList.filter((item) =>
-      item['bookTitle'].includes(debouncedKeyword)
-    );
-    setSearchResult({ resultArray: createValue });
-  }, [data, debouncedKeyword]);
+    //전체 페이지가 페칭되지 않은 상태에서의 검색
+    if (isSearchState && hasNextPage) {
+      queryClient
+        .fetchQuery({
+          queryKey: ['bookTitleSearchResults'],
+          queryFn: () => fetchSearchBookReview(debouncedKeyword),
+        })
+        .then((item) => {
+          setSearchResult({ resultArray: item });
+        });
+    } else if (isSearchState && !hasNextPage) {
+      const createValue = bookReviewList.filter((item) =>
+        item['bookTitle'].includes(debouncedKeyword)
+      );
+      setSearchResult({ resultArray: createValue });
+    }
+  }, [cachedData, debouncedKeyword]);
 
   return (
     <>
