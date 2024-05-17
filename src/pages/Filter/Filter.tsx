@@ -66,7 +66,7 @@ export function Filter() {
             필터
           </NomalTitle>
 
-          <div className="h-[calc(100svh-56px)] overflow-y-auto">
+          <div className="h-[calc(100svh-152px)] overflow-y-auto">
             <ul className="mx-4">
               {Array.isArray(cachedFilterList)
                 ? cachedFilterList.map((filterInfo) => {
@@ -76,11 +76,11 @@ export function Filter() {
                   })
                 : '등록된 필터가 없습니다!'}
             </ul>
-            <div className="p-4">
-              <MainButton onClick={handleSubmitButton} type="button">
-                선택완료
-              </MainButton>
-            </div>
+          </div>
+          <div className="p-4">
+            <MainButton onClick={handleSubmitButton} type="button">
+              선택완료
+            </MainButton>
           </div>
         </div>
       </main>
