@@ -47,7 +47,10 @@ function ThinTextForm({
   };
 
   return (
-    <Form className={`${thinTextFormStyle.className} ${className ?? ''}`}>
+    <Form
+      onSubmit={(e) => e.preventDefault()}
+      className={`${thinTextFormStyle.className} ${className ?? ''}`}
+    >
       <div className="peer flex h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 has-[:disabled]:bg-bjgray-200">
         <div className="order-1 flex flex-grow flex-col">
           <label htmlFor={id} className="sr-only">
