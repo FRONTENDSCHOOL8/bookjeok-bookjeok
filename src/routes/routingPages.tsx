@@ -78,10 +78,7 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: detailBookReviewloader,
-    children: [
-      { path: 'comments', element: <BookReviewComment /> },
-      // /bookReview/:bookreviewId/comments
-    ],
+    children: [{ path: 'comments', element: <BookReviewComment /> }],
   },
 
   {

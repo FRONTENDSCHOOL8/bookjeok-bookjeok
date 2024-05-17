@@ -21,7 +21,7 @@ function AccordionChildren1({
       <dl className="flex flex-col">
         <dt className="flex h-[64px] flex-row items-center">
           <div className="flex flex-grow flex-row items-center gap-4">
-            <RoundImage src={src} alt="" size="md"></RoundImage>
+            <RoundImage src={src} alt={nickname} size="md"></RoundImage>
             <p>{nickname}</p>
           </div>
           {confirmed ? (

@@ -22,6 +22,7 @@ interface Tloader {
 export function MainClub() {
   const { userInfo, clubData: loadedClubList } = useLoaderData<Tloader>();
   const { state } = useLocation();
+  console.log(state);
 
   const {
     data: cachedClubList,

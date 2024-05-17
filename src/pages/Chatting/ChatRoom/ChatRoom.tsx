@@ -3,6 +3,7 @@ import { queryClient } from '@/client/queryClient';
 import { ChatTextarea, MessageBubble, NomalTitle } from '@/components/Atoms';
 import DownButton from '@/components/Atoms/Buttons/DownButton/DownButton';
 import ChatDate from '@/components/Atoms/ChatDate/ChatDate';
+import { ChatMemberModal } from '@/components/Molecules';
 import { useLoaderData } from '@/hooks';
 import { FetchChatRoom, Texpand } from '@/pages/Chatting/ChatRoom';
 import useUserInfoStore from '@/store/useUserInfoStore';
@@ -23,6 +24,7 @@ export const ChatRoom = () => {
   const chattingRoom = useLoaderData<ChattingRoomResponse<Texpand>>();
 
   const [observer, setObserver] = useState(false);
+  const [memberListModalState, setMemberListModalState] = useState(false);
   const [scrollPosition, setScrollPosition] = useState<number>();
   const [scrollLength, setScrollLenth] = useState<number>();
 
@@ -59,6 +61,7 @@ export const ChatRoom = () => {
     initialData: chattingRoom,
   });
   const { expand, title, message } = chattingRoomData;
+
   const expandMessage = chattingRoomData?.expand?.message;
 
   // 채팅 업데이트
@@ -176,6 +179,17 @@ export const ChatRoom = () => {
     await mutateMessage.mutateAsync(newMessage as MessageResponse);
   };
 
+  const handleBuger = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    if (memberListModalState) {
+      setMemberListModalState(false);
+    } else {
+      setMemberListModalState(true);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -185,12 +199,14 @@ export const ChatRoom = () => {
         <NomalTitle
           className="fixed left-[50%] top-0 w-full max-w-[430px] translate-x-[-50%]"
           backLink
+          burgerButton
+          handleBurger={handleBuger}
           path={`chatRoomList/${userInfo!.id}`}
         >
           {title}
         </NomalTitle>
-        <main className="flex h-[calc(100svh-56px)] flex-col">
-          <div className="relative flex min-h-full flex-col">
+        <main className="relative flex h-[calc(100svh-56px)] flex-col">
+          <div className="flex min-h-full flex-col">
             <div
               ref={chattingListRef}
               className=" flex flex-1 flex-col overflow-y-auto bg-bjgray-50 px-4"
@@ -244,6 +260,11 @@ export const ChatRoom = () => {
               />
             </div>
           </div>
+          <ChatMemberModal
+            users={expand?.users}
+            onClickBlank={handleBuger}
+            open={memberListModalState}
+          />
         </main>
       </div>
     </>
