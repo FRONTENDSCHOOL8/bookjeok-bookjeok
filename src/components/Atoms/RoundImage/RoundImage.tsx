@@ -1,6 +1,6 @@
 interface RoundImageType {
   size: 'sm' | 'md' | 'lg' | 'xlg';
-  src: string;
+  src: string | undefined;
   alt?: string;
 }
 

@@ -5,13 +5,8 @@ type TProps = {
   filterInfo: { id: string; title: string };
 };
 const FilterList = ({ filterInfo: { id, title } }: TProps) => {
-  const { addFilter, removeFilter, filterListState } = useFilterStore(
-    (state) => ({
-      addFilter: state.addFilter,
-      removeFilter: state.removeFilter,
-      filterListState: state.filterList,
-    })
-  );
+  const { addFilter, removeFilter, filterList } = useFilterStore();
+
   const handleFilterCheckbox = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, checked } = e.target;
@@ -21,7 +16,7 @@ const FilterList = ({ filterInfo: { id, title } }: TProps) => {
         removeFilter(name);
       }
     },
-    []
+    [filterList]
   );
 
   return (
@@ -31,7 +26,7 @@ const FilterList = ({ filterInfo: { id, title } }: TProps) => {
         className="h-[64px]"
         id={id}
         onChange={handleFilterCheckbox}
-        checked={filterListState.includes(title)}
+        checked={filterList.includes(title)}
       >
         {title}
       </CheckboxForm>

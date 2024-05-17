@@ -1,15 +1,13 @@
 import { fetchClubList } from '@/pages/MainClub';
 import { infiniteQueryOptions } from '@tanstack/react-query';
-import { NavigateOptions } from 'react-router-dom';
 
 const ININTIAL_PAGE = 1;
 export function getClubListQueryOption(
-  state: NavigateOptions['state'],
+  filters: string | null,
+  sort: string | null,
   perpage: number,
   loaderFunction: any
 ) {
-  const filters = state?.filters;
-  const sort = state?.sort;
   const queryKey = ['mainClub'];
 
   if (filters) {
@@ -21,7 +19,7 @@ export function getClubListQueryOption(
 
   const queryOption = infiniteQueryOptions({
     queryKey,
-    queryFn: fetchClubList(state, perpage),
+    queryFn: fetchClubList(filters, sort, perpage),
     initialData: loaderFunction,
     initialPageParam: ININTIAL_PAGE,
     getNextPageParam: (lastPage, allPages) => {

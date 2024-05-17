@@ -46,7 +46,6 @@ const routingPages = [
       const { loader, MainClub } = await import('@/pages/MainClub');
       return { Component: MainClub, loader: loader };
     },
-    children: [{ path: 'sort', element: <Sort /> }],
   },
   {
     path: '/main/club/filter',
@@ -78,10 +77,7 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: detailBookReviewloader,
-    children: [
-      { path: 'comments', element: <BookReviewComment /> },
-      // /bookReview/:bookreviewId/comments
-    ],
+    children: [{ path: 'comments', element: <BookReviewComment /> }],
   },
 
   {
