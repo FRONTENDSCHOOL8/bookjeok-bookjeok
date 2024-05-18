@@ -14,9 +14,10 @@ export const getDescriptionEmail: GetDescriptionEmailType = (email, state) => {
   if (!email) return;
   if (!state.isValidateEmail) {
     return '이메일 형식이 올바르지 않습니다.';
-  }
-  if (!state.isNotRegisteredEmail) {
-    return '이미 사용 중인 이메일 주소 입니다.';
+  } else {
+    if (!state.isNotRegisteredEmail) {
+      return '이미 사용 중인 이메일 주소 입니다.';
+    }
   }
 };
 
