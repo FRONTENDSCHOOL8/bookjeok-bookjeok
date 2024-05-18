@@ -29,6 +29,7 @@ import {
   loader as ApplicationLoader,
 } from '@/pages/ApplicationClub';
 import { Sort } from '@/pages/Sort';
+import BookReviewComment from '@/pages/BookReviewComment/BookReviewComment';
 
 const routingPages = [
   {
@@ -45,7 +46,6 @@ const routingPages = [
       const { loader, MainClub } = await import('@/pages/MainClub');
       return { Component: MainClub, loader: loader };
     },
-    children: [{ path: 'sort', element: <Sort /> }],
   },
   {
     path: '/main/club/filter',
@@ -68,6 +68,7 @@ const routingPages = [
     element: <MainBookReview />,
     loader: bookReviewListLoader,
   },
+
   {
     path: '/bookReview/:bookreviewId',
     element: (
@@ -76,7 +77,9 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: detailBookReviewloader,
+    children: [{ path: 'comments', element: <BookReviewComment /> }],
   },
+
   {
     path: '/login',
     element: <Login />,

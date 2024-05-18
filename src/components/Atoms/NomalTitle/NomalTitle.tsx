@@ -10,6 +10,11 @@ interface TNomalTitle {
   subText?: string;
   resetButton?: boolean;
   iconButton?: boolean;
+  burgerButton?: boolean;
+  onClickReset?: () => void;
+  handleBurger?: (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+  ) => void;
 }
 const NomalTitle = ({
   className,
@@ -18,7 +23,10 @@ const NomalTitle = ({
   children,
   subText,
   resetButton = false,
+  onClickReset,
   iconButton = false,
+  burgerButton = false,
+  handleBurger,
 }: TNomalTitle) => {
   const nomalTitleStyle = {
     className:
@@ -51,7 +59,11 @@ const NomalTitle = ({
 
   if (resetButton) {
     resetButtonElement = (
-      <button type="reset" className="p-4 text-b-1-medium text-bjblack">
+      <button
+        type="button"
+        onClick={onClickReset}
+        className="p-4 text-b-1-medium text-bjblack"
+      >
         초기화
       </button>
     );
@@ -73,6 +85,18 @@ const NomalTitle = ({
       </>
     );
   }
+  let burgerButtonElement = null;
+  if (burgerButton) {
+    burgerButtonElement = (
+      <button
+        type="button"
+        onClick={handleBurger}
+        className="p-4 text-b-1-medium text-bjblack"
+      >
+        <Svg id="burger" />
+      </button>
+    );
+  }
 
   return (
     <header className={`${nomalTitleStyle.className} ${className}`}>
@@ -87,6 +111,7 @@ const NomalTitle = ({
         <span className="whitespace-nowrap">
           {resetButtonElement}
           {iconButtonElement}
+          {burgerButtonElement}
         </span>
       </div>
     </header>

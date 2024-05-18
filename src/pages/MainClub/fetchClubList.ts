@@ -1,10 +1,9 @@
-import { NavigateOptions } from 'react-router-dom';
+import pb from '@/api/pocketbase';
 import {
   GenresResponse,
-  UsersResponse,
   SocialingResponse,
+  UsersResponse,
 } from '@/types/pocketbase-types';
-import pb from '@/api/pocketbase';
 import { getPbImgs } from '@/utils';
 
 export type Texpand = {
@@ -13,10 +12,8 @@ export type Texpand = {
 };
 
 export const fetchClubList =
-  (state: NavigateOptions['state'], perPage: number) =>
+  (filters: string | null, sort: string | null, perPage: number) =>
   async (pageInfo: any) => {
-    const { filters, sort }: { filters: string; sort: string } = state;
-
     let filterQuery: string | null = null;
 
     if (filters) {
@@ -29,6 +26,7 @@ export const fetchClubList =
         filterQuery = `genre.title~"${filters}"`;
       }
     }
+
     let sortType = '-created';
     if (sort) {
       sortType = sort;
