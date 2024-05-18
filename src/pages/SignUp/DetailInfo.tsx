@@ -88,6 +88,11 @@ export function DetailInfo() {
                 ? '이미 사용 중인 닉네임 입니다. '
                 : ''
             }
+            error={Boolean(
+              userInfo.nickname && validateState.isDuplicatedNickname
+                ? '이미 사용 중인 닉네임 입니다. '
+                : ''
+            )}
           >
             닉네임
           </TextForm>
@@ -102,6 +107,11 @@ export function DetailInfo() {
                 ? '이미 가입된 전화번호입니다!'
                 : ''
             }
+            error={Boolean(
+              userInfo.phone && validateState.isRegisteredPhone
+                ? '이미 가입된 전화번호입니다!'
+                : ''
+            )}
           >
             휴대폰
           </TextForm>
