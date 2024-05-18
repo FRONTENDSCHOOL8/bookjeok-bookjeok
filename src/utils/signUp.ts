@@ -50,3 +50,7 @@ export const getDescriptionConfirmPassword: GetDescriptionConfirmPasswordType =
       return '동일한 비밀번호를 입력해주세요.';
     }
   };
+
+export const phoneNumberFormatter = (value:string) => {
+  return value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+};
