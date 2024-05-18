@@ -69,7 +69,6 @@ export function ModifyPassword() {
   });
   const handleEditForm: HandleType = (e) => {
     const target = e.target.closest('input');
-    console.log(target);
     if (!target) return;
     else {
       setModifyPw({ ...modifyPw, [target.name]: target.value });
@@ -115,8 +114,14 @@ export function ModifyPassword() {
           <MainButton
             className="mt-auto"
             onClick={async () => await updateUsers()}
+            disabled={
+              !(
+                modifyPw?.oldPassword &&
+                modifyPw?.password &&
+                modifyPw?.passwordConfirm
+              )
+            }
           >
-            {' '}
             변경
           </MainButton>
         </div>
