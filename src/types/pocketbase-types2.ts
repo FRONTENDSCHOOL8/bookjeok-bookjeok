@@ -8,7 +8,6 @@ import type { RecordService } from 'pocketbase';
 export enum Collections {
   BookReview = 'bookReview',
   ChattingRoom = 'chattingRoom',
-  Comments = 'comments',
   Genres = 'genres',
   Message = 'message',
   Socialing = 'socialing',
@@ -55,14 +54,6 @@ export type ChattingRoomRecord = {
   users?: RecordIdString[];
 };
 
-export type CommentsRecord = {
-  author?: RecordIdString;
-  bookReviewId?: RecordIdString;
-  content?: string;
-  likePeoples?: RecordIdString[];
-  replyToId?: string;
-};
-
 export type GenresRecord = {
   title?: string;
 };
@@ -83,13 +74,14 @@ export type SocialingRecord = {
   dateTime?: IsoDateString;
   detail?: string;
   genre?: RecordIdString;
-  img?: string | File;
+  img?: File | string;
   isOffline?: boolean;
   like?: RecordIdString[];
   limitPerson?: number;
   location?: string;
   query?: string;
   title?: string;
+  photo?: string;
 };
 
 export type SocialingQueryAnswerRecord = {
@@ -118,8 +110,6 @@ export type BookReviewResponse<Texpand = unknown> = Required<BookReviewRecord> &
   BaseSystemFields<Texpand>;
 export type ChattingRoomResponse<Texpand = unknown> =
   Required<ChattingRoomRecord> & BaseSystemFields<Texpand>;
-export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> &
-  BaseSystemFields<Texpand>;
 export type GenresResponse<Texpand = unknown> = Required<GenresRecord> &
   BaseSystemFields<Texpand>;
 export type MessageResponse<Texpand = unknown> = Required<MessageRecord> &
@@ -136,7 +126,6 @@ export type UsersResponse<Texpand = unknown> = Required<UsersRecord> &
 export type CollectionRecords = {
   bookReview: BookReviewRecord;
   chattingRoom: ChattingRoomRecord;
-  comments: CommentsRecord;
   genres: GenresRecord;
   message: MessageRecord;
   socialing: SocialingRecord;
@@ -147,7 +136,6 @@ export type CollectionRecords = {
 export type CollectionResponses = {
   bookReview: BookReviewResponse;
   chattingRoom: ChattingRoomResponse;
-  comments: CommentsResponse;
   genres: GenresResponse;
   message: MessageResponse;
   socialing: SocialingResponse;
@@ -161,7 +149,6 @@ export type CollectionResponses = {
 export type TypedPocketBase = PocketBase & {
   collection(idOrName: 'bookReview'): RecordService<BookReviewResponse>;
   collection(idOrName: 'chattingRoom'): RecordService<ChattingRoomResponse>;
-  collection(idOrName: 'comments'): RecordService<CommentsResponse>;
   collection(idOrName: 'genres'): RecordService<GenresResponse>;
   collection(idOrName: 'message'): RecordService<MessageResponse>;
   collection(idOrName: 'socialing'): RecordService<SocialingResponse>;
