@@ -1,15 +1,30 @@
-import { ChatTextarea, Svg } from '@/components/Atoms';
-import { Comment } from '@/components/Molecules';
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import pb from '@/api/pocketbase';
+import { useGSAP } from '@gsap/react';
 import { useLayoutEffect, useRef } from 'react';
+import { Comment } from '@/components/Molecules';
+import { useMutation } from '@tanstack/react-query';
+import { ChatTextarea, Svg } from '@/components/Atoms';
+import useUserInfoStore from '@/store/useUserInfoStore';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const BookReviewComment = () => {
-  const { bookreviewId } = useParams();
   const navigate = useNavigate();
+  const { bookreviewId } = useParams();
+  const userId = useUserInfoStore((state) => state.userInfo?.id);
+  const textarea = useRef<HTMLTextAreaElement>(null);
 
-  const textarea = useRef(null);
+  const { mutate: createComments } = useMutation({
+    mutationFn: async () => {
+      const data = {
+        bookReviewId: bookreviewId,
+        content: textarea.current?.value,
+        author: userId,
+      };
+      await pb.collection('comments').create(data);
+    },
+  });
+
   const handleBackbutton = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
   ) => {
@@ -20,7 +35,7 @@ const BookReviewComment = () => {
   const hadleTextarea = (
     e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
   ) => {
-    e.preventDefault();
+    // e.preventDefault();
   };
   // 윈도우 스크롤바 숨기기
   useLayoutEffect(() => {
@@ -75,7 +90,7 @@ const BookReviewComment = () => {
           name="commentTextarea"
           id="comment"
           placeholder="댓글을 입력해주세요."
-          onClick={hadleTextarea}
+          onClick={async () => createComments()}
         />
       </dialog>
     </>
