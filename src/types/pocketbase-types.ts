@@ -60,6 +60,7 @@ export type CommentsRecord = {
   bookReviewId?: RecordIdString;
   content?: string;
   likePeoples?: RecordIdString[];
+  replyIdArray?: RecordIdString[];
   replyToId?: string;
 };
 
