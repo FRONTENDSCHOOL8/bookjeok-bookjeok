@@ -61,7 +61,7 @@ export type CommentsRecord = {
   content?: string;
   likePeoples?: RecordIdString[];
   replyIdArray?: RecordIdString[];
-  replyToId?: string;
+  replyToId?: RecordIdString;
 };
 
 export type GenresRecord = {
@@ -84,7 +84,7 @@ export type SocialingRecord = {
   dateTime?: IsoDateString;
   detail?: string;
   genre?: RecordIdString;
-  img?: string | File;
+  img?: File | string;
   isOffline?: boolean;
   like?: RecordIdString[];
   limitPerson?: number;
@@ -107,7 +107,7 @@ export type UsersRecord = {
   birth?: IsoDateString;
   createSocialing?: RecordIdString[];
   gender?: UsersGenderOptions;
-  img?: string | File;
+  img?: File | string;
   like?: RecordIdString[];
   nickname?: string;
   participantSocialing?: RecordIdString[];
