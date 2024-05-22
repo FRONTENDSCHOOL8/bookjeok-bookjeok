@@ -6,9 +6,9 @@ const fetchBookReviewComments =
     const commentsData = await pb
       .collection('comments')
       .getList(pageInfo.pageParam, perPage, {
-        filter: `bookReviewId="${bookReviewId}"`,
-        sort: '-created',
-        expand: 'writer',
+        filter: `bookReviewId="${bookReviewId}" && replyToId=""`,
+        sort: '+created',
+        expand: 'author',
       });
     return commentsData;
   };
