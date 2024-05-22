@@ -1,6 +1,6 @@
 import { Svg } from '@/components/Atoms';
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Form } from 'react-router-dom';
 
 interface ThinTextFormType {
   className?: string;
@@ -15,7 +15,6 @@ interface ThinTextFormType {
   maxLength?: number;
   children?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit?: (e: React.FormEvent) => void;
   path?: string;
   searchIcon?: boolean;
   backLink?: boolean;
@@ -35,7 +34,6 @@ function ThinTextForm({
   maxLength,
   children,
   onChange,
-  onSubmit,
   path,
   searchIcon = false,
   backLink = false,
@@ -49,8 +47,8 @@ function ThinTextForm({
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
+    <Form
+      onSubmit={(e) => e.preventDefault()}
       className={`${thinTextFormStyle.className} ${className ?? ''}`}
     >
       <div className="peer flex h-[40px] flex-row gap-4 rounded-5xl border-[1px] border-bjgray-100 bg-bjgray-100 px-4 py-2 focus-within:border-bjgray-500 has-[:invalid]:border-bjred-400 has-[:required]:border-bjred-400 has-[:disabled]:bg-bjgray-200">
@@ -90,7 +88,7 @@ function ThinTextForm({
           </button>
         )}
       </div>
-    </form>
+    </Form>
   );
 }
 

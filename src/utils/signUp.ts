@@ -14,9 +14,10 @@ export const getDescriptionEmail: GetDescriptionEmailType = (email, state) => {
   if (!email) return;
   if (!state.isValidateEmail) {
     return '이메일 형식이 올바르지 않습니다.';
-  }
-  if (!state.isNotRegisteredEmail) {
-    return '이미 사용 중인 이메일 주소 입니다.';
+  } else {
+    if (!state.isNotRegisteredEmail) {
+      return '이미 사용 중인 이메일 주소 입니다.';
+    }
   }
 };
 
@@ -49,3 +50,7 @@ export const getDescriptionConfirmPassword: GetDescriptionConfirmPasswordType =
       return '동일한 비밀번호를 입력해주세요.';
     }
   };
+
+export const phoneNumberFormatter = (value:string) => {
+  return value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+};
