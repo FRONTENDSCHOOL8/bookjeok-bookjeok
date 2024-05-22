@@ -101,7 +101,7 @@ export function MyPage() {
           {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
               <Accordion open mainText="내가 신청한 모임">
-                <ul className="flex flex-col mt-0">
+                <ul className="flex flex-col">
                   {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
                       <ClubList
@@ -116,8 +116,8 @@ export function MyPage() {
                 </ul>
               </Accordion>
               <hr />
-              <Accordion open mainText="내가 만든 모임" className="mb-4 mt-4">
-                <ul className="flex flex-col gap-y-4">
+              <Accordion open mainText="내가 만든 모임">
+                <ul className="flex flex-col">
                   {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList
                       key={item.id}
