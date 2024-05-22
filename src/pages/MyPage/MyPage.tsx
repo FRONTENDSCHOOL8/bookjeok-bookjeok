@@ -73,14 +73,14 @@ export function MyPage() {
           마이페이지
         </NomalTitle>
         <main className="flex flex-grow flex-col bg-white px-4">
-          <div className="mb-5 mt-12 flex flex-col items-center  gap-2">
+          <div className="mb-5 mt-12 flex flex-col items-center gap-2">
             <RoundImage
               size="xlg"
               src={getPbImgs(fetchAllUserInfo) || ''}
             ></RoundImage>
             <p>{userInfo!.nickname}</p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 mb-2">
             <MainButton
               type="button"
               to="/editProfileMenu"
@@ -100,8 +100,8 @@ export function MyPage() {
           </div>
           {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="내가 신청한 모임" className="mb-4 mt-8">
-                <ul className="flex flex-col gap-y-4">
+              <Accordion open mainText="내가 신청한 모임">
+                <ul className="flex flex-col mt-0">
                   {fetchAllUserInfo?.expand?.participantSocialing?.map(
                     (item) => (
                       <ClubList
@@ -131,11 +131,11 @@ export function MyPage() {
               </Accordion>
               <hr />
               <Accordion
-                className="mb-[100px] mt-4"
+                className="mb-[100px]"
                 open
                 mainText="내가 쓴 독후감"
               >
-                <ul className=" flex flex-col gap-2 px-1">
+                <ul className="flex flex-col gap-2 px-1">
                   {bookReviewData?.map((item) => (
                     <li
                       key={item.id}
