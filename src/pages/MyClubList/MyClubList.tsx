@@ -24,7 +24,7 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 mb-4',
+  ul: 'flex flex-col',
   h2: 'pl-1 py-2 text-b-0-medium text-bjblack',
 };
 
@@ -182,7 +182,7 @@ export function MyClubList() {
                     ''
                   )}
                 </ul>
-                <hr className="mb-4" />
+                <hr className="my-2" />
                 <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
                 <ul className={`${style['ul']} mb-[90px]`}>
                   {searchResult && isSearchState

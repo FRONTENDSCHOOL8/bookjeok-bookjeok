@@ -14,7 +14,7 @@ import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_VALIDATE_STATE = {
-  isNotRegisteredEmail: false,
+  isNotRegisteredEmail: true,
   isValidateEmail: false,
   isValidatePassword: false,
   isConfirmPassword: false,
@@ -83,7 +83,6 @@ export function BasicInfo() {
     setInfo(userInfo);
     setNextPage('detailInfo');
   }
-
   return (
     <>
       <div className="flex min-h-svh flex-col">
@@ -103,6 +102,9 @@ export function BasicInfo() {
                 debouncedUserInfo.email,
                 isValidateState
               )}
+              error={Boolean(
+                getDescriptionEmail(debouncedUserInfo.email, isValidateState)
+              )}
             >
               이메일
             </TextForm>
@@ -117,6 +119,12 @@ export function BasicInfo() {
                 debouncedUserInfo.password,
                 isValidateState
               )}
+              error={Boolean(
+                getDescriptionPassword(
+                  debouncedUserInfo.password,
+                  isValidateState
+                )
+              )}
             >
               비밀번호
             </TextForm>
@@ -129,6 +137,12 @@ export function BasicInfo() {
               description={getDescriptionConfirmPassword(
                 debouncedUserInfo.passwordConfirm,
                 isValidateState
+              )}
+              error={Boolean(
+                getDescriptionConfirmPassword(
+                  debouncedUserInfo.passwordConfirm,
+                  isValidateState
+                )
               )}
             >
               비밀번호 확인

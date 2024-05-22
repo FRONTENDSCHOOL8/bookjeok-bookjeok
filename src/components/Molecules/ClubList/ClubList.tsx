@@ -9,7 +9,7 @@ interface TclubList {
 
 const ClubList = ({ id, title, img, schedule }: TclubList) => {
   return (
-    <li>
+    <li className='mb-4'>
       <Link
         className="flex h-[100px] w-full flex-row overflow-hidden rounded-5xl border-[1px] border-bjgray-200 bg-bjgray-50"
         to={`/club/${id}`}
