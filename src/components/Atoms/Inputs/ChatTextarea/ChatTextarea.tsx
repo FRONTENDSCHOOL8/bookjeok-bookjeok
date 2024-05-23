@@ -1,5 +1,5 @@
-import { Svg } from '@/components/Atoms';
 import { useEffect } from 'react';
+import { Svg } from '@/components/Atoms';
 
 interface TChatTexarea {
   forwardRef: React.MutableRefObject<HTMLTextAreaElement | null>;
@@ -11,7 +11,9 @@ interface TChatTexarea {
   required?: boolean;
   rows?: number;
   className?: string;
+  reply?: string | null;
   onClick: (e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent) => void;
+  setReply?: () => void;
 }
 
 const ChatTextarea = ({
@@ -25,6 +27,8 @@ const ChatTextarea = ({
   rows = 1,
   className,
   onClick,
+  reply,
+  setReply,
 }: TChatTexarea) => {
   const textareaStyle = {
     className:
@@ -50,11 +54,10 @@ const ChatTextarea = ({
   // 보내기 버튼 키보드로 작동
   useEffect(() => {
     const { current: textarea } = forwardRef;
-
     const handleKeydown = (e: KeyboardEvent) => {
       const isPressedEnterKey = e.key === 'Enter';
       const isPressedShiftKey = e.shiftKey;
-
+      const isBackSpaceKey = e.key === 'Backspace';
       if (isPressedShiftKey && isPressedEnterKey) {
         // console.log('Shift + Enter 눌렀을 때 ');
         textarea!.value += '\n';
@@ -67,6 +70,10 @@ const ChatTextarea = ({
         }
         onClick(e);
       }
+      //독후감 리댓글시 사용
+      if (reply && isBackSpaceKey && setReply) {
+        setReply();
+      }
     };
 
     textarea?.addEventListener('keydown', handleKeydown);
@@ -74,7 +81,7 @@ const ChatTextarea = ({
     return () => {
       textarea?.removeEventListener('keydown', handleKeydown);
     };
-  }, []);
+  }, [reply]);
 
   return (
     <div className={`${textareaStyle.className} ${className}`}>
@@ -82,6 +89,7 @@ const ChatTextarea = ({
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
+        {reply ? <p className="flex gap-4 text-sm">@{reply}</p> : null}
         <textarea
           ref={forwardRef}
           id={id}
