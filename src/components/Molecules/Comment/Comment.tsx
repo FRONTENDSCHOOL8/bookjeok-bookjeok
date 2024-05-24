@@ -4,8 +4,11 @@ import {
   CommentText,
   RoundImage,
 } from '@/components/Atoms';
-
+import { CommentsResponse } from '@/types/pocketbase-types';
+import { Texpand } from '@/pages/BookReviewComment/useBookReviewCommentsQuery';
 interface CommentType {
+  replyIdArray?: boolean;
+  shownStateReply?: CommentsResponse<Texpand>[];
   className?: string;
   src: string;
   nickName?: string;
@@ -15,6 +18,7 @@ interface CommentType {
   like?: number;
   isNotReply?: boolean;
   createReplyFn?: () => void;
+  showReply?: () => Promise<void>;
 }
 
 function Comment({
@@ -27,16 +31,17 @@ function Comment({
   like,
   isNotReply,
   createReplyFn,
+  replyIdArray,
+  showReply,
+  shownStateReply,
 }: CommentType) {
   return (
-    <div className={`my-4 flex gap-x-4 ${className}`}>
+    <div className={`my-2 flex gap-x-4 ${className}`}>
       <div>
         <RoundImage size="md" src={src}></RoundImage>
       </div>
       <div className="flex-grow">
-        <div>
-          <CommentNickname time={time}>{nickName}</CommentNickname>
-        </div>
+        <CommentNickname time={time}>{nickName}</CommentNickname>
         <div className="flex gap-x-2">
           <div className="my-1 flex flex-grow gap-4">
             <CommentText>{text}</CommentText>{' '}
@@ -50,6 +55,14 @@ function Comment({
             <CommentLikeButton active={active}>{like}</CommentLikeButton>
           </div>
         </div>
+        {isNotReply &&
+        replyIdArray &&
+        showReply &&
+        shownStateReply?.length == 0 ? (
+          <button className=" text-sm" onClick={async () => showReply()}>
+            답글 더 보기
+          </button>
+        ) : null}
       </div>
     </div>
   );
