@@ -1,11 +1,16 @@
-import { useInfiniteQuery, infiniteQueryOptions } from '@tanstack/react-query';
 import pb from '@/api/pocketbase';
+import { CommentsResponse, UsersResponse } from '@/types/pocketbase-types';
+import { useInfiniteQuery, infiniteQueryOptions } from '@tanstack/react-query';
+export interface Texpand {
+  author: UsersResponse;
+}
+
 const fetchBookReviewComments =
   (perPage: number, bookReviewId: string) =>
   async (pageInfo: { pageParam: number | undefined }) => {
     const commentsData = await pb
       .collection('comments')
-      .getList(pageInfo.pageParam, perPage, {
+      .getList<CommentsResponse<Texpand>>(pageInfo.pageParam, perPage, {
         filter: `bookReviewId="${bookReviewId}" && replyToId=""`,
         sort: '+created',
         expand: 'author',
