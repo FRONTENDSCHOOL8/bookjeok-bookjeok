@@ -45,24 +45,26 @@ function Comment({
         <div className="flex gap-x-2">
           <div className="my-1 flex flex-grow gap-4">
             <CommentText>{text}</CommentText>{' '}
-            {isNotReply ? (
-              <button onClick={createReplyFn} className="text-xs">
-                답글 달기
-              </button>
-            ) : null}
-          </div>
+          </div>{' '}
           <div className="ml-auto">
             <CommentLikeButton active={active}>{like}</CommentLikeButton>
           </div>
+        </div>{' '}
+        <div className=" flex gap-2">
+          {isNotReply ? (
+            <button onClick={createReplyFn} className="text-xs">
+              답글 달기
+            </button>
+          ) : null}
+          {isNotReply &&
+          replyIdArray &&
+          showReply &&
+          shownStateReply?.length == 0 ? (
+            <button className=" text-xs" onClick={async () => showReply()}>
+              답글 더 보기
+            </button>
+          ) : null}
         </div>
-        {isNotReply &&
-        replyIdArray &&
-        showReply &&
-        shownStateReply?.length == 0 ? (
-          <button className=" text-sm" onClick={async () => showReply()}>
-            답글 더 보기
-          </button>
-        ) : null}
       </div>
     </div>
   );
