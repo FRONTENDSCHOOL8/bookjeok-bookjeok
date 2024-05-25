@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Svg } from '@/components/Atoms';
-
+import useBRReplyStore from '@/store/useBRReplyStore';
 interface TChatTexarea {
   forwardRef: React.MutableRefObject<HTMLTextAreaElement | null>;
   label: string;
@@ -33,6 +33,8 @@ const ChatTextarea = ({
       'resize-none h-auto overflow-y-hidden whitespace-pre-wrap bg-bjgray-100 text-b-1-regular text-bjblack placeholder:text-b-1-regular placeholder:text-bjgray-500 focus:outline-none disabled:text-bjgray-500',
   };
 
+  const { replyTo, setReplyTo } = useBRReplyStore((state) => state);
+
   // textarea 크기 조절
   useEffect(() => {
     const { current: textarea } = forwardRef;
@@ -53,6 +55,7 @@ const ChatTextarea = ({
     const handleKeydown = (e: KeyboardEvent) => {
       const isPressedEnterKey = e.key === 'Enter';
       const isPressedShiftKey = e.shiftKey;
+      const isBackSpaceKey = e.key === 'Backspace';
       if (isPressedShiftKey && isPressedEnterKey) {
         // console.log('Shift + Enter 눌렀을 때 ');
         textarea!.value += '\n';
@@ -64,6 +67,14 @@ const ChatTextarea = ({
           return;
         }
         onClick(e);
+      }
+      if (isBackSpaceKey && replyTo.nickname) {
+        if (!textarea?.value) {
+          setReplyTo(
+            replyTo.id,
+            replyTo?.nickname?.substring(0, replyTo.nickname.length - 1)
+          );
+        }
       }
     };
 
@@ -80,6 +91,7 @@ const ChatTextarea = ({
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
+        {replyTo.nickname ? <p>@{replyTo.nickname}</p> : null}
         <textarea
           ref={forwardRef}
           id={id}
