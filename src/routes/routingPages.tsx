@@ -29,7 +29,10 @@ import {
   loader as ApplicationLoader,
 } from '@/pages/ApplicationClub';
 import { Sort } from '@/pages/Sort';
-import BookReviewComment from '@/pages/BookReviewComment/BookReviewComment';
+import {
+  BookReviewComment,
+  loader as BRcommentsLoader,
+} from '@/pages/BookReviewComment';
 
 const routingPages = [
   {
@@ -77,7 +80,13 @@ const routingPages = [
       </ProtectRoute>
     ),
     loader: detailBookReviewloader,
-    children: [{ path: 'comments', element: <BookReviewComment /> }],
+    children: [
+      {
+        path: 'comments',
+        element: <BookReviewComment />,
+        loaer: BRcommentsLoader,
+      },
+    ],
   },
 
   {
