@@ -5,20 +5,20 @@ export interface Texpand {
   author: UsersResponse;
 }
 
-const fetchBookReviewComments =
+export const fetchBookReviewComments =
   (perPage: number, bookReviewId: string) =>
   async (pageInfo: { pageParam: number | undefined }) => {
     const commentsData = await pb
       .collection('comments')
       .getList<CommentsResponse<Texpand>>(pageInfo.pageParam, perPage, {
         filter: `bookReviewId="${bookReviewId}" && replyToId=""`,
-        sort: '+created',
+        sort: '-created',
         expand: 'author',
       });
     return commentsData;
   };
 
-const BRCommentqueryOptions = (perPage: number, bookReviewId: string) => {
+export const BRCommentqueryOptions = (perPage: number, bookReviewId: string) => {
   const queryOption = infiniteQueryOptions({
     queryKey: ['BRcomments'],
     queryFn: fetchBookReviewComments(perPage, bookReviewId),

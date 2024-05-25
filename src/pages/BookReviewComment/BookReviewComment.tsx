@@ -14,7 +14,7 @@ import { CommentsResponse } from '@/types/pocketbase-types';
 import useBRReplyStore from '@/store/useBRReplyStore';
 import useBookReviewCommentsQuery from './useBookReviewCommentsQuery';
 
-const BookReviewComment = () => {
+export const BookReviewComment = () => {
   const { setReplyTo, replyTo } = useBRReplyStore((state) => state);
   const navigate = useNavigate();
   const [ref, inView] = useInView();
@@ -148,5 +148,3 @@ const BookReviewComment = () => {
     </>
   );
 };
-
-export default BookReviewComment;
