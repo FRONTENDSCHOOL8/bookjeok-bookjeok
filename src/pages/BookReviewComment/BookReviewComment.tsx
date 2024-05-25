@@ -50,7 +50,7 @@ export const BookReviewComment = () => {
           replyIdArray: [...commentsInfo.replyIdArray, newMessage.id],
         };
         await Promise.all([
-          pb.collection('comments').update(`${replyTo.id}`, updateComments),
+          pb.collection('comments').update(commentsInfo.id, updateComments),
           pb.collection('comments').create(replyMessage),
         ]);
       } else {
