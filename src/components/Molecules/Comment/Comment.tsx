@@ -19,6 +19,7 @@ interface CommentType {
   isNotReply?: boolean;
   createReplyFn?: () => void;
   showReply?: () => Promise<void>;
+  pushLikeButton?: () => Promise<void>;
 }
 
 function Comment({
@@ -34,6 +35,7 @@ function Comment({
   replyIdArray,
   showReply,
   shownStateReply,
+  pushLikeButton,
 }: CommentType) {
   return (
     <div className={`my-2 flex gap-x-4 ${className}`}>
@@ -45,11 +47,13 @@ function Comment({
         <div className="flex gap-x-2">
           <div className="my-1 flex flex-grow gap-4">
             <CommentText>{text}</CommentText>{' '}
-          </div>{' '}
-          <div className="ml-auto">
-            <CommentLikeButton active={active}>{like}</CommentLikeButton>
           </div>
-        </div>{' '}
+          <div className="ml-auto">
+            <CommentLikeButton onClick={pushLikeButton} active={active}>
+              {like}
+            </CommentLikeButton>
+          </div>
+        </div>
         <div className=" flex gap-2">
           {isNotReply ? (
             <button onClick={createReplyFn} className="text-xs">

@@ -5,13 +5,13 @@ import { useGSAP } from '@gsap/react';
 import { createRandomId } from '@/utils';
 import { queryClient } from '@/client/queryClient';
 import { useMutation } from '@tanstack/react-query';
+import useBRReplyStore from '@/store/useBRReplyStore';
 import { useInView } from 'react-intersection-observer';
 import { ChatTextarea, Svg } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { CommentsResponse } from '@/types/pocketbase-types';
-import useBRReplyStore from '@/store/useBRReplyStore';
 import useBookReviewCommentsQuery from './useBookReviewCommentsQuery';
 
 export const BookReviewComment = () => {
@@ -28,10 +28,26 @@ export const BookReviewComment = () => {
     ? commentsData.pages.flatMap((page) => page.items)
     : [];
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
+  const { mutateAsync: pushLike } = useMutation<
+    void,
+    Error,
+    [string[], string]
+  >({
+    mutationFn: async ([likePeoples, id]) => {
+      if (userId && likePeoples.includes(userId)) {
+        const updateLike = {
+          likePeoples: likePeoples.filter((item) => item !== userId),
+        };
+        await pb.collection('comments').update(id, updateLike);
+      } else {
+        const updateLike = {
+          likePeoples: [...likePeoples, userId],
+        };
+        await pb.collection('comments').update(id, updateLike);
+      }
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ['BRcomments'] }),
   });
 
   //댓글 생성
@@ -104,6 +120,12 @@ export const BookReviewComment = () => {
   ) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  });
   return (
     <>
       <div
@@ -122,7 +144,7 @@ export const BookReviewComment = () => {
         <h2 className=" sr-only">댓글</h2>
         <section className="h-[70%] overflow-y-auto">
           {commentsList.map(
-            ({ expand, id, content, created, replyIdArray }) => (
+            ({ expand, id, content, created, replyIdArray, likePeoples }) => (
               <Comments
                 key={id}
                 author={expand?.author}
@@ -131,6 +153,8 @@ export const BookReviewComment = () => {
                 created={created}
                 replyIdArray={replyIdArray}
                 createReplyFn={() => setReplyTo(id, expand?.author.nickname)}
+                likePeoples={likePeoples}
+                pushLikeButton={() => pushLike([likePeoples, id])}
               />
             )
           )}
