@@ -2,11 +2,12 @@ import pb from '@/api/pocketbase';
 import { useCloseModal } from '@/hooks';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { getDocumentTitle, validateEmail } from '@/utils';
 import { DobbleButtonModal } from '@/components/Molecules';
 import { TextForm, NomalTitle, MainButton } from '@/components/Atoms';
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
   const emailRef = useRef('');
@@ -15,7 +16,7 @@ export function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { setUserInfo } = useUserInfoStore((state) => state);
   useCloseModal(isModalOpen, () => setIsModalOpen(false));
-
+  const navigate = useNavigate();
   const handleLoginForm: React.FormEventHandler<HTMLElement> = (e) => {
     const { name, value } = e.target as HTMLInputElement;
     if (name === 'email') {
@@ -46,7 +47,7 @@ export function Login() {
             ...record,
             token,
           });
-          setIsModalOpen(true);
+          navigate('/Main/club');
           setIsClicked(false);
           return { record, token };
         }
