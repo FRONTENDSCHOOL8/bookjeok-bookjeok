@@ -7,12 +7,12 @@ import { queryClient } from '@/client/queryClient';
 import { useMutation } from '@tanstack/react-query';
 import useBRReplyStore from '@/store/useBRReplyStore';
 import { useInView } from 'react-intersection-observer';
-import { ChatTextarea, Svg } from '@/components/Atoms';
 import useUserInfoStore from '@/store/useUserInfoStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { CommentsResponse } from '@/types/pocketbase-types';
 import useBookReviewCommentsQuery from './useBookReviewCommentsQuery';
+import { ChatTextarea, Svg, BlankContents } from '@/components/Atoms';
 
 export const BookReviewComment = () => {
   const { setReplyTo, replyTo } = useBRReplyStore((state) => state);
@@ -115,11 +115,11 @@ export const BookReviewComment = () => {
     e.preventDefault();
     navigate('..');
   };
-  const hadleTextarea = (
-    e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
-  ) => {
-    e.preventDefault();
-  };
+  // const hadleTextarea = (
+  //   e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
+  // ) => {
+  //   e.preventDefault();
+  // };
 
   useEffect(() => {
     if (inView) {
@@ -143,21 +143,28 @@ export const BookReviewComment = () => {
         </button>
         <h2 className=" sr-only">댓글</h2>
         <section className="h-[70%] overflow-y-auto">
-          {commentsList.map(
-            ({ expand, id, content, created, replyIdArray, likePeoples }) => (
-              <Comments
-                key={id}
-                author={expand?.author}
-                id={id}
-                content={content}
-                created={created}
-                replyIdArray={replyIdArray}
-                createReplyFn={() => setReplyTo(id, expand?.author.nickname)}
-                likePeoples={likePeoples}
-                pushLikeButton={() => pushLike([likePeoples, id])}
-              />
+          {commentsList.length ? (
+            commentsList.map(
+              ({ expand, id, content, created, replyIdArray, likePeoples }) => (
+                <Comments
+                  key={id}
+                  author={expand?.author}
+                  id={id}
+                  content={content}
+                  created={created}
+                  replyIdArray={replyIdArray}
+                  createReplyFn={() => setReplyTo(id, expand?.author.nickname)}
+                  likePeoples={likePeoples}
+                  pushLikeButton={() => pushLike([likePeoples, id])}
+                />
+              )
             )
+          ) : (
+            <BlankContents title="여긴 조용하네요...">
+              먼저 말을 건네 보는 건 어떨까요?
+            </BlankContents>
           )}
+
           <div ref={ref} />
         </section>
         <ChatTextarea
