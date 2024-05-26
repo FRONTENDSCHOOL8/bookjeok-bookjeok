@@ -14,7 +14,7 @@ import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_VALIDATE_STATE = {
-  isNotRegisteredEmail: true,
+  isNotRegisteredEmail: false,
   isValidateEmail: false,
   isValidatePassword: false,
   isConfirmPassword: false,
@@ -28,7 +28,7 @@ export function BasicInfo() {
   const [isValidateState, setIsValidateState] = useState(
     INITIAL_VALIDATE_STATE
   );
-  const debouncedUserInfo = useDebounce(userInfo, 500);
+  const debouncedUserInfo = useDebounce(userInfo, 300);
   // 폼 change event 함수
   const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
