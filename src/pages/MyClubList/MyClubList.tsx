@@ -1,23 +1,22 @@
-import pb from '@/api/pocketbase';
 import {
   BlankContents,
   NomalTitle,
   Svg,
   ThinTextForm,
 } from '@/components/Atoms';
-import { ClubList, GNB } from '@/components/Molecules';
-import { useDebounce } from '@/hooks';
-import useUserInfoStore from '@/store/useUserInfoStore';
 import {
   Collections,
   SocialingRecord,
   SocialingResponse,
 } from '@/types/pocketbase-types';
-import { convertTime, getDocumentTitle, getPbImgs } from '@/utils';
-import { useQuery } from '@tanstack/react-query';
+import pb from '@/api/pocketbase';
+import { useDebounce } from '@/hooks';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-
+import { useQuery } from '@tanstack/react-query';
+import { ClubList, GNB } from '@/components/Molecules';
+import useUserInfoStore from '@/store/useUserInfoStore';
+import { convertTime, getDocumentTitle, getPbImgs } from '@/utils';
 const INITIAL_QUANTITY = {
   createdClub: 3,
   confirmedClub: 3,
@@ -140,7 +139,7 @@ export function MyClubList() {
             />
           ) : (
             <>
-              <main className="px-4">
+              <main className="mb-[90px] px-4">
                 <h2 className={`${style['h2']}`}>참여중인 모임</h2>
                 <ul className={`${style['ul']}`}>
                   {searchResult && isSearchState
@@ -166,25 +165,24 @@ export function MyClubList() {
                           ></ClubList>
                         ))}
                   {/*더보기버튼*/}
-                  {clubData &&
-                  !isSearchState &&
-                  clubData.confirmedClub?.length >
-                    showQuantity.confirmedClub ? (
-                    <button
-                      name="confirmedClub"
-                      onClick={handleMoreValue}
-                      className="flex items-center justify-center py-1"
-                    >
-                      더 보기
-                      <Svg id="plus" size={14} className="ml-1" />
-                    </button>
-                  ) : (
-                    ''
-                  )}
-                </ul>
-                <hr className="my-2" />
+                </ul>{' '}
+                {clubData &&
+                !isSearchState &&
+                clubData.confirmedClub?.length > showQuantity.confirmedClub ? (
+                  <button
+                    name="confirmedClub"
+                    onClick={handleMoreValue}
+                    className="mx-auto my-4 flex items-center justify-center "
+                  >
+                    더 보기
+                    <Svg id="plus" size={14} className="ml-1" />
+                  </button>
+                ) : (
+                  ''
+                )}
+                <hr className="mb-4" />
                 <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
-                <ul className={`${style['ul']} mb-[90px]`}>
+                <ul className={`${style['ul']} `}>
                   {searchResult && isSearchState
                     ? searchResult['createdClub']?.map((item) => (
                         <ClubList
@@ -207,21 +205,21 @@ export function MyClubList() {
                             img={getPbImgs(item)}
                           ></ClubList>
                         ))}
-                  {!isSearchState &&
-                  clubData &&
-                  showQuantity.createdClub < clubData.createdClub?.length ? (
-                    <button
-                      name="createdClub"
-                      onClick={handleMoreValue}
-                      className="flex items-center justify-center py-1"
-                    >
-                      더 보기
-                      <Svg id="plus" size={14} className="ml-1" />
-                    </button>
-                  ) : (
-                    ''
-                  )}
                 </ul>
+                {!isSearchState &&
+                clubData &&
+                showQuantity.createdClub < clubData.createdClub?.length ? (
+                  <button
+                    name="createdClub"
+                    onClick={handleMoreValue}
+                    className="mx-auto flex items-center justify-center py-1"
+                  >
+                    더 보기
+                    <Svg id="plus" size={14} className="ml-1" />
+                  </button>
+                ) : (
+                  ''
+                )}
               </main>
             </>
           )}

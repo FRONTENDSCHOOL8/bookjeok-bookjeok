@@ -1,6 +1,6 @@
 interface Tblank {
   title: string;
-  description: string;
+  description?: string;
   children?: string;
 }
 const BlankContents = ({ title, description, children }: Tblank) => {
@@ -44,9 +44,9 @@ const BlankContents = ({ title, description, children }: Tblank) => {
           fill="#212121"
         />
       </svg>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-1">
         <p className="text-h-2-semibold">{title}</p>
-        <p className="w-[75%] break-keep text-center text-b-1-regular">
+        <p className=" text-b-1-regulap w-[75%] break-keep text-center">
           {description}
         </p>
         <p>{children}</p>

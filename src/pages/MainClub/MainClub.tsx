@@ -1,5 +1,5 @@
 import pb from '@/api/pocketbase';
-import { MainButton, NomalTitle } from '@/components/Atoms';
+import { MainButton, NomalTitle, SkipToContent } from '@/components/Atoms';
 import { ClubCard, GNB, MainKindToggle } from '@/components/Molecules';
 import { useLoaderData } from '@/hooks';
 import { Texpand, Texpand2, getClubListQueryOption } from '@/pages/MainClub';
@@ -85,6 +85,7 @@ export function MainClub() {
       </Helmet>
       <Outlet />
       <div className="relative flex min-h-svh w-full flex-col">
+        <SkipToContent id="GNB"> gnb로 이동하기</SkipToContent>
         <NomalTitle>북적북적</NomalTitle>
         <MainKindToggle />
         <section className="flex items-center justify-center gap-4 px-4 py-4">
