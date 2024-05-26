@@ -23,7 +23,7 @@ const INITIAL_QUANTITY = {
 };
 
 const style = {
-  ul: 'flex flex-col gap-y-4 mb-4',
+  ul: 'flex flex-col',
   h2: 'pl-1 py-2 text-b-0-medium text-bjblack',
 };
 

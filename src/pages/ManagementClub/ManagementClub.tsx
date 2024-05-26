@@ -172,7 +172,7 @@ export function ManagementClub() {
         <NomalTitle backLink>소셜링 멤버 관리</NomalTitle>
         <main className="mb-[65px] px-4">
           <h2 className="py-4 text-h-2-semibold text-bjblack">질문</h2>
-          <TextBox>{socialing.query}</TextBox>
+          <TextBox className='mb-4'>{socialing.query}</TextBox>
           <Accordion
             smallText={
               applicant === undefined
