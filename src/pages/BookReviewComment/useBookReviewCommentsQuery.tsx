@@ -18,9 +18,12 @@ export const fetchBookReviewComments =
     return commentsData;
   };
 
-export const BRCommentqueryOptions = (perPage: number, bookReviewId: string) => {
+export const BRCommentqueryOptions = (
+  perPage: number,
+  bookReviewId: string
+) => {
   const queryOption = infiniteQueryOptions({
-    queryKey: ['BRcomments'],
+    queryKey: ['BRcomments', bookReviewId],
     queryFn: fetchBookReviewComments(perPage, bookReviewId),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
