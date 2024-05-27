@@ -31,7 +31,8 @@ const activeClaseNames = 'border-b-4 border-bjyellow-500';
 const GNB = ({ createClub, createBookReview, className }: Tgnb) => {
   const { pathname } = useLocation();
   const { userInfo } = useUserInfoStore();
-  const isIncludeMain = () => pathname.startsWith('/main');
+  const isIncludeMain = () =>
+    pathname.startsWith('/main') || pathname.startsWith('/bookReview');
 
   let centerIconPath: string;
   if (createClub) {

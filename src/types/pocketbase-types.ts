@@ -91,6 +91,7 @@ export type SocialingRecord = {
   location?: string;
   query?: string;
   title?: string;
+  photo?: string;
 };
 
 export type SocialingQueryAnswerRecord = {

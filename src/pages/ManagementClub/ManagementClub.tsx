@@ -56,11 +56,12 @@ export function ManagementClub() {
   const { applicant, confirmUser, answer, chattingRoom } =
     initSocialing.expand as Texpand;
 
-  const { data: socialing } = useQuery({
+  const { data: socialing, refetch } = useQuery({
     queryKey: ['socialing', clubId],
     queryFn: () => fetchManagement(clubId!),
     initialData: initSocialing,
   });
+  console.log(socialing);
 
   // 모달을 위한 핸들러 함수
   const handleApproveButtonInModal =
@@ -94,6 +95,7 @@ export function ManagementClub() {
       revalidator.revalidate();
 
       setModalState({ ...modalState, approveModal: false });
+      refetch();
     };
 
   const handleApproveButton =
@@ -119,6 +121,7 @@ export function ManagementClub() {
       await pb.collection('socialing').update(socialing.id, Data);
       revalidator.revalidate();
       setModalState({ ...modalState, cancelModal: false });
+      refetch();
     };
   const handelCancelButton =
     (user: UsersResponse) => (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -172,7 +175,7 @@ export function ManagementClub() {
         <NomalTitle backLink>소셜링 멤버 관리</NomalTitle>
         <main className="mb-[65px] px-4">
           <h2 className="py-4 text-h-2-semibold text-bjblack">질문</h2>
-          <TextBox className='mb-4'>{socialing.query}</TextBox>
+          <TextBox className="mb-4">{socialing.query}</TextBox>
           <Accordion
             smallText={
               applicant === undefined
