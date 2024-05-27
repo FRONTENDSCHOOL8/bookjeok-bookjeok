@@ -29,6 +29,7 @@ import parse from 'html-react-parser';
 type Texpand = {
   participantSocialing?: SocialingResponse[];
   createSocialing?: SocialingResponse[];
+  like?: SocialingResponse[];
 };
 
 Collections;
@@ -41,7 +42,7 @@ export function MyPage() {
       const fetchAllUserInfo = await pb
         .collection(Collections.Users)
         .getOne<UsersResponse<Texpand>>(`${userInfo!.id}`, {
-          expand: 'createSocialing, participantSocialing',
+          expand: 'createSocialing, participantSocialing, like',
         });
       return fetchAllUserInfo;
     },
@@ -80,7 +81,7 @@ export function MyPage() {
             ></RoundImage>
             <p>{userInfo!.nickname}</p>
           </div>
-          <div className="flex gap-4 mb-2">
+          <div className="mb-2 flex gap-4">
             <MainButton
               type="button"
               to="/editProfileMenu"
@@ -100,23 +101,21 @@ export function MyPage() {
           </div>
           {fetchAllUserInfo?.expand || BookReviewList.length === 0 ? (
             <>
-              <Accordion open mainText="내가 신청한 모임">
+              <Accordion open mainText="좋아요 한 모임">
                 <ul className="flex flex-col">
-                  {fetchAllUserInfo?.expand?.participantSocialing?.map(
-                    (item) => (
-                      <ClubList
-                        key={item.id}
-                        id={item.id}
-                        title={item.title}
-                        schedule={convertTime(item.created, 1)}
-                        img={getPbImgs(item)}
-                      />
-                    )
-                  )}
+                  {fetchAllUserInfo?.expand?.like?.map((item) => (
+                    <ClubList
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      schedule={convertTime(item.created, 1)}
+                      img={getPbImgs(item)}
+                    />
+                  ))}
                 </ul>
               </Accordion>
               <hr />
-              <Accordion open mainText="내가 만든 모임">
+              {/* <Accordion open mainText="내가 만든 모임">
                 <ul className="flex flex-col">
                   {fetchAllUserInfo?.expand?.createSocialing?.map((item) => (
                     <ClubList
@@ -129,12 +128,8 @@ export function MyPage() {
                   ))}
                 </ul>
               </Accordion>
-              <hr />
-              <Accordion
-                className="mb-[100px]"
-                open
-                mainText="내가 쓴 독후감"
-              >
+              <hr /> */}
+              <Accordion className="mb-[100px]" open mainText="내가 쓴 독후감">
                 <ul className="flex flex-col gap-2 px-1">
                   {bookReviewData?.map((item) => (
                     <li
