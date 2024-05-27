@@ -76,6 +76,7 @@ const HomeLink = ({ isActive, userInfo }: THomeLink) => {
   return (
     <li>
       <NavLink
+        id="GNB"
         to={userInfo ? '/main/club' : '/'}
         className={assignActiveClassNames2(
           classNames,

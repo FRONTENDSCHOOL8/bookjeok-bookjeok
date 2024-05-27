@@ -19,7 +19,7 @@ export function DetailInfo() {
   const enteredUserInfo = useSignUpStore((state) => state.enteredUserInfo);
   const [userInfo, setUserInfo] = useState(enteredUserInfo);
   const [validateState, setValidateState] = useState(INITIAL_STATE);
-  const debouncedUserInfo = useDebounce(userInfo, 500);
+  const debouncedUserInfo = useDebounce(userInfo, 300);
 
   const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };

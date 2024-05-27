@@ -8,14 +8,13 @@ interface SkipToContentType {
   tab index 가장 최상단으로 존재
 */
 
-function SkipToContent({ id, children }: SkipToContentType) {
+export default function SkipToContent({ id, children }: SkipToContentType) {
   return (
     <a
-      className="absolute z-50 h-[40px] w-96 translate-y-[-100%] text-black focus:translate-y-0"
+      className="absolute z-50 h-[40px] translate-y-[-100%] bg-bjyellow-100 text-center text-black focus:translate-y-0"
       href={`#${id}`}
     >
       {children}
     </a>
   );
 }
-export default SkipToContent;
