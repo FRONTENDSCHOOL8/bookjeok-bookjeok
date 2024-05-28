@@ -63,7 +63,6 @@ export function MyPage() {
     clearUserInfo();
     pb.authStore.clear();
   };
-  console.log(fetchAllUserInfo?.expand);
   return (
     <>
       <Helmet>

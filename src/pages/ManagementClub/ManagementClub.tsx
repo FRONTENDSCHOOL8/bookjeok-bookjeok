@@ -61,7 +61,6 @@ export function ManagementClub() {
     queryFn: () => fetchManagement(clubId!),
     initialData: initSocialing,
   });
-  console.log(socialing);
 
   // 모달을 위한 핸들러 함수
   const handleApproveButtonInModal =

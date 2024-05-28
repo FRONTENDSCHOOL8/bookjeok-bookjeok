@@ -1,5 +1,5 @@
-import { Svg } from '@/components/Atoms';
 import { memo } from 'react';
+import { Svg } from '@/components/Atoms';
 import { Link, Form } from 'react-router-dom';
 
 interface ThinTextFormType {
