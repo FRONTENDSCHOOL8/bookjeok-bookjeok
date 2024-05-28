@@ -37,27 +37,34 @@ export function BasicInfo() {
 
   // 이메일 유효성검사
   useEffect(() => {
-    setIsValidateState({
-      ...isValidateState,
+    setIsValidateState((prev) => ({
+      ...prev,
       ['isValidateEmail']: validateEmail(debouncedUserInfo.email),
-    });
+    }));
   }, [debouncedUserInfo.email]);
 
   //중복 이메일 체크
-  useQuery({
+  const { data: duplicatedEmailItems } = useQuery({
     queryKey: ['emailDuplicate', debouncedUserInfo.email],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
       });
-      setIsValidateState({
-        ...isValidateState,
-        ['isNotRegisteredEmail']: fetchData.items.length == 0,
-      });
-      return isValidateState.isNotRegisteredEmail;
+      return fetchData;
     },
+    retry: 0,
     enabled: isValidateState.isValidateEmail,
   });
+
+  //중복 이메일 검사 결과
+  useEffect(() => {
+    if (duplicatedEmailItems) {
+      setIsValidateState((prev) => ({
+        ...prev,
+        ['isNotRegisteredEmail']: duplicatedEmailItems.items.length == 0,
+      }));
+    }
+  }, [duplicatedEmailItems]);
 
   //비밀번호 유효성 검사
   useEffect(() => {

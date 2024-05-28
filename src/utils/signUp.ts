@@ -33,7 +33,7 @@ export const getDescriptionPassword: GetDescriptionPasswordType = (
 ) => {
   if (!password) return;
   if (!state.isValidatePassword) {
-    return '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 작성해주세요';
+    return '비밀번호는 8자 이상 영문, 숫자, 특수문자를 포함해 입력하세요.';
   }
 };
 
@@ -51,6 +51,6 @@ export const getDescriptionConfirmPassword: GetDescriptionConfirmPasswordType =
     }
   };
 
-export const phoneNumberFormatter = (value:string) => {
+export const phoneNumberFormatter = (value: string) => {
   return value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
 };
