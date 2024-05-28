@@ -23,7 +23,6 @@ export function CreateClub4() {
       setDateTime: state.setDateTime,
       resetClubInfo: state.resetClubInfo,
     }));
-  console.log(clubInfo);
 
   // 입력받은 date 및 time을 ref에 임시 저장
   const dateTimeRef = useRef<TdateTimeRef>({

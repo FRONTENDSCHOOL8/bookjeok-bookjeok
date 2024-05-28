@@ -23,7 +23,6 @@ export const CreateClub3 = () => {
     target: { files },
   }: React.ChangeEvent<HTMLInputElement>) => {
     if (files !== null) {
-      console.log(typeof files[0]);
       setImage(files[0]);
     }
   };
