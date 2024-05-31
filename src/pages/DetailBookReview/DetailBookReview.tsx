@@ -43,17 +43,14 @@ export function DetailBookReview() {
               </span>
             </div>
             <div className="px-6 py-4">
-              <div className="text-b-2-regular text-bjgray-500">
-                좋아요 100개
-              </div>
               <pre className="my-2 whitespace-pre-wrap text-b-1-light text-bjblack">
                 {parse(detail)}
               </pre>
               <Link
                 to={`/bookReview/${id}/comments`}
                 className="text-b-2-regular text-bjgray-500"
-              >댓글 보기
-                {/* 댓글 <span className="font-semibold">100</span>개 모두 보기 */}
+              >
+                댓글 보기
               </Link>
             </div>
           </section>
