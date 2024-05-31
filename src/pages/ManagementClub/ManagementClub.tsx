@@ -223,7 +223,7 @@ export function ManagementClub() {
             color="warning"
             type="button"
             onClick={handleDeleteButton}
-            className="mt-10"
+            className="mb-4 mt-10"
           >
             모임 삭제하기
           </MainButton>
