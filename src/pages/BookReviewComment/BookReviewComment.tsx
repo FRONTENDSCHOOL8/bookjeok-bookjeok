@@ -24,6 +24,7 @@ export const BookReviewComment = () => {
   const { commentsData, fetchNextPage } = useBookReviewCommentsQuery(
     bookreviewId as string
   );
+
   const commentsList = commentsData
     ? commentsData.pages.flatMap((page) => page.items)
     : [];
@@ -47,7 +48,7 @@ export const BookReviewComment = () => {
       }
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['BRcomments'] }),
+      queryClient.invalidateQueries({ queryKey: ['BRcomments', bookreviewId] }),
   });
 
   //댓글 생성
@@ -74,7 +75,7 @@ export const BookReviewComment = () => {
       }
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['BRcomments'] }),
+      queryClient.invalidateQueries({ queryKey: ['BRcomments', bookreviewId] }),
     onSuccess: () => {
       (document.getElementById('comment') as HTMLInputElement).value = '';
     },
