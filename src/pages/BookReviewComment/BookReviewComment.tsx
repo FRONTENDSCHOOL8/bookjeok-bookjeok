@@ -134,48 +134,66 @@ export const BookReviewComment = () => {
         className="fixed top-0 z-[100] h-svh w-full max-w-[430px] bg-bjblack bg-opacity-90"
       />
       <dialog
-        className="modal fixed bottom-0 z-[100] h-[60%] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4 "
+        className="modal fixed bottom-0 z-[100] h-[60%] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4"
         open={true}
       >
-        <button onClick={handleBackbutton}>
-          <div className="my-4">
-            <Svg id="close" />
+        <div className="flex h-full flex-col">
+          <div>
+            <button onClick={handleBackbutton}>
+              <div className="my-4">
+                <Svg id="close" />
+              </div>
+            </button>
+            <h2 className="sr-only">댓글</h2>
           </div>
-        </button>
-        <h2 className=" sr-only">댓글</h2>
-        <section className="h-[70%] overflow-y-auto">
-          {commentsList.length ? (
-            commentsList.map(
-              ({ expand, id, content, created, replyIdArray, likePeoples }) => (
-                <Comments
-                  key={id}
-                  author={expand?.author}
-                  id={id}
-                  content={content}
-                  created={created}
-                  replyIdArray={replyIdArray}
-                  createReplyFn={() => setReplyTo(id, expand?.author.nickname)}
-                  likePeoples={likePeoples}
-                  pushLikeButton={() => pushLike([likePeoples, id])}
-                />
-              )
-            )
-          ) : (
-            <BlankContents title="여긴 조용하네요...">
-              먼저 말을 건네 보는 건 어떨까요?
-            </BlankContents>
-          )}
+          <div className="flex-auto overflow-y-auto pr-2">
+            <section className="h-full">
+              {commentsList.length ? (
+                commentsList.map(
+                  ({
+                    expand,
+                    id,
+                    content,
+                    created,
+                    replyIdArray,
+                    likePeoples,
+                  }) => (
+                    <Comments
+                      key={id}
+                      author={expand?.author}
+                      id={id}
+                      content={content}
+                      created={created}
+                      replyIdArray={replyIdArray}
+                      createReplyFn={() =>
+                        setReplyTo(id, expand?.author.nickname)
+                      }
+                      likePeoples={likePeoples}
+                      pushLikeButton={() => pushLike([likePeoples, id])}
+                    />
+                  )
+                )
+              ) : (
+                <BlankContents title="여긴 조용하네요...">
+                  먼저 말을 건네 보는 건 어떨까요?
+                </BlankContents>
+              )}
 
-          <div ref={ref} />
-        </section>
-        <ChatTextarea
-          forwardRef={textarea}
-          label="commentTextarea"
-          name="commentTextarea"
-          id="comment"
-          placeholder="댓글을 입력해주세요."
-          onClick={handleSubmit}
-        />
+              <div ref={ref} />
+            </section>
+          </div>
+          <div className="mt-auto flex flex-auto pb-4">
+            <ChatTextarea
+              forwardRef={textarea}
+              label="commentTextarea"
+              name="commentTextarea"
+              id="comment"
+              placeholder="댓글을 입력해주세요."
+              onClick={handleSubmit}
+              className="w-full self-end"
+            />
+          </div>
+        </div>
       </dialog>
     </>
   );
