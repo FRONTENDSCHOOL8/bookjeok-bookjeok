@@ -18,7 +18,7 @@ const LikeButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={`absolute right-3 top-[150px] ${className}`}
+      className={`absolute bottom-3 right-3 ${className}`}
       aria-label="좋아요"
     >
       {active ? (
