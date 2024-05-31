@@ -172,7 +172,7 @@ export function MyClubList() {
                   <button
                     name="confirmedClub"
                     onClick={handleMoreValue}
-                    className="mx-auto my-4 flex items-center justify-center "
+                    className="mx-auto mb-4 flex items-center justify-center"
                   >
                     더 보기
                     <Svg id="plus" size={14} className="ml-1" />
@@ -180,7 +180,7 @@ export function MyClubList() {
                 ) : (
                   ''
                 )}
-                <hr className="mb-4" />
+                <hr className="my-2" />
                 <h2 className={`${style['h2']}`}>내가 만든 모임</h2>
                 <ul className={`${style['ul']} `}>
                   {searchResult && isSearchState
@@ -212,7 +212,7 @@ export function MyClubList() {
                   <button
                     name="createdClub"
                     onClick={handleMoreValue}
-                    className="mx-auto flex items-center justify-center py-1"
+                    className="mx-auto mb-4 flex items-center justify-center"
                   >
                     더 보기
                     <Svg id="plus" size={14} className="ml-1" />
