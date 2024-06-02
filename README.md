@@ -180,7 +180,7 @@
 
 ### DataBase structure
 
-![ERD](https://github.com/FRONTENDSCHOOL8/bookjeok-bookjeok/assets/50475140/2dceca07-7709-4eff-b55a-736a90fd766e)
+![ERD](https://github.com/FRONTENDSCHOOL8/bookjeok-bookjeok/assets/134420660/05744bd8-e0f7-4ce3-be4c-f8b0936a2e33)
 
 ### 소감
 
