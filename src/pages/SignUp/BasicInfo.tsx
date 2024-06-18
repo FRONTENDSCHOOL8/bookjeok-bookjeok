@@ -14,7 +14,7 @@ import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_VALIDATE_STATE = {
-  isNotRegisteredEmail: false,
+  isNotRegisteredEmail: true,
   isValidateEmail: false,
   isValidatePassword: false,
   isConfirmPassword: false,
