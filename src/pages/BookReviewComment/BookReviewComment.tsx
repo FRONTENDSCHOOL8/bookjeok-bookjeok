@@ -19,11 +19,15 @@ export const BookReviewComment = () => {
   const navigate = useNavigate();
   const [ref, inView] = useInView();
   const { bookreviewId } = useParams();
-  const userId = useUserInfoStore((state) => state.userInfo?.id);
+  const user = useUserInfoStore((state) => state.userInfo ?? { id: '' });
+  const userId = user.id;
   const textarea = useRef<HTMLTextAreaElement>(null);
   const { commentsData, fetchNextPage } = useBookReviewCommentsQuery(
     bookreviewId as string
   );
+
+  // 쿼리 키
+  const QUERY_KEY = ['BRcomments', bookreviewId];
 
   const commentsList = commentsData
     ? commentsData.pages.flatMap((page) => page.items)
@@ -66,6 +70,7 @@ export const BookReviewComment = () => {
         const updateComments = {
           replyIdArray: [...commentsInfo.replyIdArray, newMessage.id],
         };
+
         await Promise.all([
           pb.collection('comments').update(commentsInfo.id, updateComments),
           pb.collection('comments').create(replyMessage),
@@ -74,44 +79,55 @@ export const BookReviewComment = () => {
         await pb.collection('comments').create(newMessage);
       }
     },
-    onMutate: async ([newMessage, commentsInfo]) => {
-      // 기존 캐시 데이터 가져오기
-      await queryClient.cancelQueries({
-        queryKey: ['BRcomments', bookreviewId],
+
+    onMutate: async ([newComment]) => {
+      await queryClient.cancelQueries({ queryKey: QUERY_KEY });
+
+      const previousSnapshot: any = queryClient.getQueryData(QUERY_KEY);
+
+      queryClient.setQueryData(QUERY_KEY, (prevData: any) => {
+        const optimisticCommentData = {
+          ...newComment,
+          expand: {
+            author: user,
+          },
+          created: new Date().toISOString().replace('T', ' '),
+        };
+
+        const nextData = {
+          ...prevData,
+          pages: [
+            {
+              ...prevData.pages[0],
+              items: [optimisticCommentData, ...prevData.pages[0].items],
+            },
+          ],
+        };
+
+        return nextData;
       });
-      const previousComments = queryClient.getQueryData<CommentsResponse[]>([
-        'BRcomments',
-        bookreviewId,
-      ]);
 
-      // Optimistic update 적용
-      if (commentsInfo && previousComments) {
-        const updatedComments = previousComments.map((comment) =>
-          comment.id === commentsInfo.id
-            ? {
-                ...comment,
-                replyIdArray: [...comment.replyIdArray, newMessage.id],
-              }
-            : comment
-        );
-        queryClient.setQueryData(['BRcomments', bookreviewId], updatedComments);
-      } else {
-        console.log(newMessage);
-        console.log(commentsList);
-        const nextComments = { ...commentsList, newMessage };
-
-        queryClient.setQueryData(['BRcomments', bookreviewId], (old) => {
-          console.log(old);
-          // return [...old.pages, newMessage];
-        });
-      }
-
-      return { previousComments };
+      return { previousSnapshot };
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['BRcomments', bookreviewId] }),
+
+    onError: (_error, _data, context) => {
+      queryClient.setQueryData(QUERY_KEY, (context as any)?.previousComments);
+    },
+
+    onSettled: async () => {
+      // queryClient.invalidateQueries({
+      //   queryKey: QUERY_KEY,
+      // });
+
+      await queryClient.refetchQueries({ queryKey: QUERY_KEY, type: 'active' });
+    },
+
     onSuccess: () => {
-      (document.getElementById('comment') as HTMLInputElement).value = '';
+      const commentElement = document.getElementById(
+        'comment'
+      ) as HTMLInputElement;
+
+      commentElement.value = '';
     },
   });
 
@@ -130,6 +146,7 @@ export const BookReviewComment = () => {
     };
     await createComments([newComment as CommentsResponse, isThisReply]);
   };
+
   // 윈도우 스크롤바 숨기기
   useLayoutEffect(() => {
     document.documentElement.style.overflowY = 'hidden';
@@ -161,6 +178,7 @@ export const BookReviewComment = () => {
       fetchNextPage();
     }
   });
+
   return (
     <>
       <div
@@ -168,48 +186,66 @@ export const BookReviewComment = () => {
         className="fixed top-0 z-[100] h-svh w-full max-w-[430px] bg-bjblack bg-opacity-90"
       />
       <dialog
-        className="modal fixed bottom-0 z-[100] h-[60%] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4 "
+        className="modal fixed bottom-0 z-[100] h-[60%] w-full max-w-[430px] overflow-hidden rounded-t-9xl bg-white px-4"
         open={true}
       >
-        <button onClick={handleBackbutton}>
-          <div className="my-4">
-            <Svg id="close" />
+        <div className="flex h-full flex-col">
+          <div>
+            <button onClick={handleBackbutton}>
+              <div className="my-4">
+                <Svg id="close" />
+              </div>
+            </button>
+            <h2 className="sr-only">댓글</h2>
           </div>
-        </button>
-        <h2 className=" sr-only">댓글</h2>
-        <section className="h-[70%] overflow-y-auto">
-          {commentsList.length ? (
-            commentsList.map(
-              ({ expand, id, content, created, replyIdArray, likePeoples }) => (
-                <Comments
-                  key={id}
-                  author={expand?.author}
-                  id={id}
-                  content={content}
-                  created={created}
-                  replyIdArray={replyIdArray}
-                  createReplyFn={() => setReplyTo(id, expand?.author.nickname)}
-                  likePeoples={likePeoples}
-                  pushLikeButton={() => pushLike([likePeoples, id])}
-                />
-              )
-            )
-          ) : (
-            <BlankContents title="여긴 조용하네요...">
-              먼저 말을 건네 보는 건 어떨까요?
-            </BlankContents>
-          )}
+          <div className="flex-auto overflow-y-auto pr-2">
+            <section className="h-full">
+              {commentsList.length ? (
+                commentsList.map(
+                  ({
+                    expand,
+                    id,
+                    content,
+                    created,
+                    replyIdArray,
+                    likePeoples,
+                  }) => (
+                    <Comments
+                      key={id}
+                      author={expand?.author}
+                      id={id}
+                      content={content}
+                      created={created}
+                      replyIdArray={replyIdArray}
+                      createReplyFn={() =>
+                        setReplyTo(id, expand?.author.nickname)
+                      }
+                      likePeoples={likePeoples}
+                      pushLikeButton={() => pushLike([likePeoples, id])}
+                    />
+                  )
+                )
+              ) : (
+                <BlankContents title="여긴 조용하네요...">
+                  먼저 말을 건네 보는 건 어떨까요?
+                </BlankContents>
+              )}
 
-          <div ref={ref} />
-        </section>
-        <ChatTextarea
-          forwardRef={textarea}
-          label="commentTextarea"
-          name="commentTextarea"
-          id="comment"
-          placeholder="댓글을 입력해주세요."
-          onClick={handleSubmit}
-        />
+              <div ref={ref} />
+            </section>
+          </div>
+          <div className="mt-auto flex flex-auto pb-4">
+            <ChatTextarea
+              forwardRef={textarea}
+              label="commentTextarea"
+              name="commentTextarea"
+              id="comment"
+              placeholder="댓글을 입력해주세요."
+              onClick={handleSubmit}
+              className="w-full self-end"
+            />
+          </div>
+        </div>
       </dialog>
     </>
   );
