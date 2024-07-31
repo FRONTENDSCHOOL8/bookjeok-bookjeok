@@ -46,11 +46,11 @@ const Comments = ({
         time={getCreatedHoursAgo(created)}
         isNotReply
         createReplyFn={createReplyFn}
-        replyIdArray={Boolean(replyIdArray.length > 0)}
+        replyIdArray={Boolean(replyIdArray?.length > 0)}
         showReply={() => handleReply(id)}
         shownStateReply={reply}
-        like={likePeoples.length === 0 ? undefined : likePeoples.length}
-        active={Boolean(likePeoples.find((item) => item === userId))}
+        like={likePeoples?.length === 0 ? undefined : likePeoples?.length}
+        active={Boolean(likePeoples?.find((item) => item === userId))}
         pushLikeButton={() => pushLikeButton([id, likePeoples])}
       />
       {/*리댓글 있으면 */}
@@ -63,8 +63,8 @@ const Comments = ({
               nickName={expand?.author.nickname}
               text={content}
               time={getCreatedHoursAgo(created)}
-              like={likePeoples.length === 0 ? undefined : likePeoples.length}
-              active={Boolean(likePeoples.find((item) => item === userId))}
+              like={likePeoples?.length === 0 ? undefined : likePeoples?.length}
+              active={Boolean(likePeoples?.find((item) => item === userId))}
             />
           ))}
         </div>
