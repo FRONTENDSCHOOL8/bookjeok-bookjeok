@@ -1,6 +1,6 @@
 import { Svg } from '@/components/Atoms';
 import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 interface TNomalTitle {
   className?: string;
@@ -28,6 +28,7 @@ const NomalTitle = ({
   burgerButton = false,
   handleBurger,
 }: TNomalTitle) => {
+  const { bookreviewId } = useParams();
   const nomalTitleStyle = {
     className:
       'z-10 flex h-[56px] items-center justify-between bg-white shadow-md',
@@ -75,12 +76,13 @@ const NomalTitle = ({
     iconButtonElement = (
       <>
         <div className="flex gap-1 p-4 pl-0">
-          <button type="button" aria-label="댓글 보기">
+          <Link
+            to={`/bookReview/${bookreviewId}/comments`}
+            type="button"
+            aria-label="댓글 보기"
+          >
             <Svg id="chat"></Svg>
-          </button>
-          <button type="button" aria-label="좋아요">
-            <Svg id="heart-filled" color="#EF5350"></Svg>
-          </button>
+          </Link>
         </div>
       </>
     );

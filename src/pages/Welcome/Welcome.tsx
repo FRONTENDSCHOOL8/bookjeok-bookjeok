@@ -27,12 +27,20 @@ export const Welcome = () => {
           <span>이제 북적북적에서 </span>
           <span>책을 모여서 읽어봐요!</span>
         </div>
-        <OutlineButton
-          className="mb-14 h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
-          to="/login"
-        >
-          로그인 하기
-        </OutlineButton>
+        <div className="flex w-full flex-col gap-2 px-4">
+          <OutlineButton
+            className="h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
+            to="/login"
+          >
+            로그인 하기
+          </OutlineButton>
+          <OutlineButton
+            className="mb-14 h-[64px] w-[90%] rounded-5xl border-black text-center text-b-1-medium leading-[64px] text-black"
+            to="/"
+          >
+            메인으로 이동 하기
+          </OutlineButton>
+        </div>
       </div>
     </>
   );

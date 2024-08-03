@@ -7,10 +7,10 @@ import { useDebounce, useLoaderData } from '@/hooks';
 import { bookReviewQueryOption } from './queryOptions';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { NomalTitle, ThinTextForm } from '@/components/Atoms';
 import { BookReviewResponse } from '@/types/pocketbase-types';
 import { BookReviewList, GNB, MainKindToggle } from '@/components/Molecules';
 import { fetchSearchBookReview } from '@/pages/MainBookReview/fetchBookReview';
+import { NomalTitle, ThinTextForm, SkipToContent } from '@/components/Atoms';
 interface Tloader {
   bookReview: BookReviewResponse<Texpand>[];
 }
@@ -73,6 +73,7 @@ export function MainBookReview() {
 
   return (
     <>
+      <SkipToContent id="GNB"> gnb로 이동하기</SkipToContent>
       <Helmet>
         <title>{getDocumentTitle('독후감')}</title>
       </Helmet>

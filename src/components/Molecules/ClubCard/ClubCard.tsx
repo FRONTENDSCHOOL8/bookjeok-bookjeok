@@ -108,7 +108,7 @@ const ClubCard = ({
           <Badge className="absolute left-2 top-2 w-[30%]">
             {expand?.genre.title}
           </Badge>
-        </Link>
+        </Link>{' '}
         <LikeButton
           onClick={userInfo ? handleLike : undefined}
           id={id}

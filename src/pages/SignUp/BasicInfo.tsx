@@ -14,7 +14,7 @@ import useSignUpStore from '@/store/useSignUpStore';
 import { MainButton, NomalTitle, TextForm } from '@/components/Atoms';
 
 const INITIAL_VALIDATE_STATE = {
-  isNotRegisteredEmail: false,
+  isNotRegisteredEmail: true,
   isValidateEmail: false,
   isValidatePassword: false,
   isConfirmPassword: false,
@@ -28,7 +28,7 @@ export function BasicInfo() {
   const [isValidateState, setIsValidateState] = useState(
     INITIAL_VALIDATE_STATE
   );
-  const debouncedUserInfo = useDebounce(userInfo, 500);
+  const debouncedUserInfo = useDebounce(userInfo, 300);
   // 폼 change event 함수
   const handleUserInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedUserInfo = { ...userInfo, [e.target.name]: e.target.value };
@@ -37,27 +37,34 @@ export function BasicInfo() {
 
   // 이메일 유효성검사
   useEffect(() => {
-    setIsValidateState({
-      ...isValidateState,
+    setIsValidateState((prev) => ({
+      ...prev,
       ['isValidateEmail']: validateEmail(debouncedUserInfo.email),
-    });
+    }));
   }, [debouncedUserInfo.email]);
 
   //중복 이메일 체크
-  useQuery({
+  const { data: duplicatedEmailItems } = useQuery({
     queryKey: ['emailDuplicate', debouncedUserInfo.email],
     queryFn: async () => {
       const fetchData = await pb.collection('users').getList(1, 1, {
         filter: `email="${debouncedUserInfo.email}"`,
       });
-      setIsValidateState({
-        ...isValidateState,
-        ['isNotRegisteredEmail']: fetchData.items.length == 0,
-      });
-      return isValidateState.isNotRegisteredEmail;
+      return fetchData;
     },
+    retry: 0,
     enabled: isValidateState.isValidateEmail,
   });
+
+  //중복 이메일 검사 결과
+  useEffect(() => {
+    if (duplicatedEmailItems) {
+      setIsValidateState((prev) => ({
+        ...prev,
+        ['isNotRegisteredEmail']: duplicatedEmailItems.items.length == 0,
+      }));
+    }
+  }, [duplicatedEmailItems]);
 
   //비밀번호 유효성 검사
   useEffect(() => {
@@ -83,7 +90,6 @@ export function BasicInfo() {
     setInfo(userInfo);
     setNextPage('detailInfo');
   }
-
   return (
     <>
       <div className="flex min-h-svh flex-col">
@@ -103,6 +109,9 @@ export function BasicInfo() {
                 debouncedUserInfo.email,
                 isValidateState
               )}
+              error={Boolean(
+                getDescriptionEmail(debouncedUserInfo.email, isValidateState)
+              )}
             >
               이메일
             </TextForm>
@@ -117,6 +126,12 @@ export function BasicInfo() {
                 debouncedUserInfo.password,
                 isValidateState
               )}
+              error={Boolean(
+                getDescriptionPassword(
+                  debouncedUserInfo.password,
+                  isValidateState
+                )
+              )}
             >
               비밀번호
             </TextForm>
@@ -129,6 +144,12 @@ export function BasicInfo() {
               description={getDescriptionConfirmPassword(
                 debouncedUserInfo.passwordConfirm,
                 isValidateState
+              )}
+              error={Boolean(
+                getDescriptionConfirmPassword(
+                  debouncedUserInfo.passwordConfirm,
+                  isValidateState
+                )
               )}
             >
               비밀번호 확인

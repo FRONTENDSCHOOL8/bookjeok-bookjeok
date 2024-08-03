@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { NomalTitle } from '@/components/Atoms';
 
 const style = {
-  li: 'my-auto border-b-2 border-solid pb-4',
+  li: 'pl-4 my-auto border-b-2 border-solid pb-4',
 };
 
 export function EditProfileMenu() {
